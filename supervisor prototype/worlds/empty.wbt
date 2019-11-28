@@ -1,0 +1,72 @@
+#VRML_SIM R2019b utf8
+WorldInfo {
+}
+Viewpoint {
+  orientation 0.060512957315558995 0.9585873111399958 0.2782957939285426 3.484427733037322
+  position -6.251836488581709 7.55110208027748 -8.137192348445193
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+Floor {
+  tileSize 10 10
+}
+Wall {
+  translation 0 0 4.89
+  size 10 1.5 0.2
+}
+Wall {
+  translation -0.01542 0 -4.89048
+  name "wall(1)"
+  size 10 1.5 0.2
+}
+Wall {
+  translation -0.01542 0 -1.58048
+  name "wall(6)"
+  size 5 1.5 0.2
+}
+Wall {
+  translation 4.89882 1.42109e-13 0.0112
+  rotation 0 1 0 1.5708
+  name "wall(2)"
+  size 10 1.5 0.2
+}
+Wall {
+  translation 0.878812 1.42109e-13 -2.38879
+  rotation 0 1 0 1.5708
+  name "wall(4)"
+  size 5 1.5 0.2
+}
+Wall {
+  translation 0.878813 1.42109e-13 3.46121
+  rotation 0 1 0 1.5708
+  name "wall(5)"
+  size 3 1.5 0.2
+}
+Wall {
+  translation -4.91118 1.42109e-13 0.0112366
+  rotation 0 1 0 1.5708
+  name "wall(3)"
+  size 10 1.5 0.2
+}
+DEF ROBOT Pioneer3dx {
+  translation -0.38 0.0975 4.15
+  rotation 0 1 0 1.5708
+  controller "pioneer_avoidance_py"
+}
+DEF HUMAN Pedestrian {
+  translation -3.27971 1.27 4.20946
+  rotation 0 1 0 -2.8797953071795863
+}
+Robot {
+  children [
+    Display {
+    }
+  ]
+  controller "supervisor"
+  supervisor TRUE
+}
+Radiator {
+  translation 0.66 0.65 3.47
+}
