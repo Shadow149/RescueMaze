@@ -1,0 +1,5 @@
+Robot {
+  supervisor TRUE
+  controller "supervisorTest2"
+  window "simulationControl1"
+}

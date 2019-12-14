@@ -1,0 +1,21 @@
+    Transform {{
+        children [
+            Solid {{
+            translation {0} 0.75 {1}
+            children [
+                Shape {{
+                appearance Appearance {{
+                    material Material {{
+                    diffuseColor 0.32549 0.32549 0.32549
+                    }}
+                }}
+                geometry DEF box Box {{
+                    size {2} 1.5 {3}
+                }}
+                }}
+            ]
+            name "{4}"
+            boundingObject USE box
+            }}
+        ]
+    }}
