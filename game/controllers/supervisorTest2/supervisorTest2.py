@@ -1,4 +1,4 @@
-"""Supervisor Controller Prototype v3
+"""Supervisor Controller Prototype v3.1 for prototype release
    Appended from Robbie's Supervisor Controller Prototype v2
    Written by Robbie Goldman and Alfred Roberts
 """
@@ -222,8 +222,18 @@ lastTime = -1
 #Send message to robot window to perform setup
 supervisor.wwiSendText("startup")
 
+#For checking the first update with the game running
+first = True
+
 #Until the match ends (also while paused)
 while simulationRunning:
+    
+    #The first frame of the game running only
+    if first and currentlyRunning:
+        #Restart both controllers
+        robot0.restartController()
+        robot1.restartController()
+        first = False
 	
     r0 = False
     r1 = False
@@ -301,6 +311,9 @@ while simulationRunning:
                 #Pause the match
                 currentlyRunning = False
             if parts[0] == "reset":
+                #Reset both controller files
+                resetControllerFile(0)
+                resetControllerFile(1)
                 #Reset the simulation
                 supervisor.simulationReset()
                 simulationRunning = False
