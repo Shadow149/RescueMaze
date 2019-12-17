@@ -1,4 +1,4 @@
-# Welcome to the Erebus wiki!
+# Erebus
 Erebus is a rescue simulation competition environment designed for semi-experienced to highly experienced programmers. 
 
 <p align="center"><img src="https://github.com/Shadow149/Erebus/raw/master/images/environment.JPG" width="500"><p/>  
