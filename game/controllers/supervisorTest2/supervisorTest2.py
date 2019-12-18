@@ -1,6 +1,10 @@
-"""Supervisor Controller Prototype v3.1 for prototype release
-   Appended from Robbie's Supervisor Controller Prototype v2
+"""Supervisor Controller Prototype v4
    Written by Robbie Goldman and Alfred Roberts
+
+Changelog:
+ - Only get points if you have a human loaded and enter a base
+ - Robots can only pick up one human at a time
+ - Robot must have stopped for 2 seconds to deposit
 """
 
 from controller import Supervisor
@@ -26,8 +30,58 @@ class Robot:
     def __init__(self):
         '''Initialises the in a base, has a human loaded and score values'''
         self.inBase = True
-        self.humanLoaded = False
-        self.score = 0
+        self._humanLoaded = False
+        self._score = 0
+    
+        self._timeStopped = 0
+        self._stopped = False
+        self._stoppedTime = None
+        
+        
+    @staticmethod
+    def _isStopped(robotNode) -> bool:
+        vel: list = robotNode.getVelocity()
+        robotStopped = abs(vel[0]) < 0.01 and abs(vel[1]) < 0.01 and abs(vel[2]) < 0.01
+        return robotStopped
+        
+    def timeStopped(self,robotNode) -> float:
+        self._stopped = Robot._isStopped(robotNode)
+        
+        #if it isn't stopped yet
+        if self._stoppedTime == None:
+            if self._stopped:
+                #get time the robot stopped
+                self._stoppedTime = supervisor.getTime()
+        else:
+            #if its stopped
+            if self._stopped:
+                #get current time
+                currentTime = supervisor.getTime()
+                #calculate the time the robot stopped
+                self._timeStopped = currentTime - self._stoppedTime
+            else:
+                #if it's no longer stopped, reset variables
+                self._stoppedTime = None
+                self._timeStopped = 0
+        
+        return self._timeStopped
+            
+    
+    def hasHumanLoaded(self) -> bool:
+        return self._humanLoaded
+
+    def loadHuman(self) -> None:
+        self._humanLoaded = True
+        
+    def unLoadHuman(self) -> None:
+        self._humanLoaded = False
+        
+    def increaseScore(self, score: int) -> None:
+        #TODO add win condition
+        self._score += score
+    
+    def getScore(self) -> None:
+        return self._score
 
 class Human:
     '''Human object holding the boundaries'''
@@ -51,6 +105,7 @@ class Human:
         humanPos = human.getField("translation")
         humanPos.setSFVec3f(position)
         self.position = position
+        
 
 class base ():
     '''Base object holding the boundaries'''
@@ -238,7 +293,6 @@ while simulationRunning:
     r0 = False
     r1 = False
     #Test if the robots are in bases
-    #TODO finish full deposit function -- Require stop
     for b in bases:
         if b.checkPosition(robot0Pos.getSFVec3f()):
             r0 = True
@@ -250,37 +304,78 @@ while simulationRunning:
     for i, h in enumerate(humans):
         #If within 0.5 metres of human
         if h.checkPosition(robot0Pos.getSFVec3f(),1):
-            print("Robot 0 is near a human")
-            robot0Obj.score += 1
-            #Move human to some position far away
-            newPosition = [0,-1000,0]
-            h.setPosition(newPosition)
+            if not robot0Obj.hasHumanLoaded():
+                #if the robot has stopped for more than 2 seconds
+                if robot0Obj.timeStopped(robot0) >= 2:
+                    print("Robot 0 is near a human")
+                    robot0Obj.increaseScore(1)
+                    robot0Obj.loadHuman()
+                    
+                    #send message to robot window saying human is loaded
+                    supervisor.wwiSendText("humanLoaded0")
+                    
+                    #Move human to some position far away
+                    newPosition = [0,-1000,0]
+                    h.setPosition(newPosition)
+                    
         if h.checkPosition(robot1Pos.getSFVec3f(),2):
-            print("Robot 1 is near a human")
-            robot1Obj.score += 1
-            #Move human to some position far away
-            newPosition = [0,-1000,0]
-            h.setPosition(newPosition)
+            if not robot1Obj.hasHumanLoaded():
+                #if the robot has stopped for more than 2 seconds
+                if robot0Obj.timeStopped(robot0) >= 2:
+                    print("Robot 1 is near a human")
+                    robot1Obj.increaseScore(1)
+                    robot1Obj.loadHuman()
+                    
+                    #send message to robot window saying human is loaded
+                    supervisor.wwiSendText("humanLoaded1")
+                    
+                    #Move human to some position far away
+                    newPosition = [0,-1000,0]
+                    h.setPosition(newPosition)
             
-    
     #Print when robot0 enters or exits a base
     if robot0Obj.inBase != r0:
         robot0Obj.inBase = r0
         if robot0Obj.inBase:
             print("Robot 0 entered a base")
-            robot0Obj.score += 1
         else:
             print("Robot 0 exited a base")
+
+    if robot0Obj.inBase:
+        if robot0Obj.hasHumanLoaded():
+            #if the robot has stopped for more than 2 seconds
+            if robot0Obj.timeStopped(robot0) >= 2:
+                #if robot has a human loaded, gain a point
+                robot0Obj.increaseScore(1)
+                robot0Obj.unLoadHuman()
+                
+                #send message to robot window saying human is unloaded
+                supervisor.wwiSendText("humanUnloaded0")
+                
+                print("Robot 0 brought a human to safety")
+        
     
     #Print when robot1 enters or exits a base
     if robot1Obj.inBase != r1:
         robot1Obj.inBase = r1
         if robot1Obj.inBase:
             print("Robot 1 entered a base")
-            robot1Obj.score += 1
         else:
             print("Robot 1 exited a base")
-	
+            
+    if robot1Obj.inBase:
+        if robot1Obj.hasHumanLoaded():
+            #if the robot has stopped for more than 2 seconds
+            if robot1Obj.timeStopped(robot1) >= 2:
+                #if robot has a human loaded, gain a point
+                robot1Obj.increaseScore(1)
+                robot1Obj.unLoadHuman()
+                
+                #send message to robot window saying human is unloaded
+                supervisor.wwiSendText("humanUnloaded1")
+                
+                print("Robot 1 brought a human to safety")
+                
     #If the running state changes
     if previousRunState != currentlyRunning:
 		#Update the value and print
@@ -345,7 +440,7 @@ while simulationRunning:
                     resetController(1)
     
     #Send the update information to the robot window
-    supervisor.wwiSendText("update," + str(robot0Obj.score) + "," + str(robot1Obj.score) + "," + str(timeElapsed))
+    supervisor.wwiSendText("update," + str(robot0Obj.getScore()) + "," + str(robot1Obj.getScore()) + "," + str(timeElapsed))
 
     #If the time is up
     if timeElapsed >= maxTime:

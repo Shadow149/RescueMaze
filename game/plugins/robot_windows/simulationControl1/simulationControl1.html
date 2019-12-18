@@ -1,3 +1,11 @@
+<!-- 
+simulationControl1.html v2
+
+Changelog:
+ - Added human loaded indicator svg
+
+-->
+
 <div style="width:100%; height:100%">
 	<!--<script src="simulationControl1.js"></script>-->
 	<link rel="stylesheet" type="text/css" href="simulationControl1.css">
@@ -36,8 +44,23 @@
 		<th colspan=2><p id="timer">00:00</p></th>
 		</tr>
 		<tr>
+		<th colspan=1>
+			<svg width="50" height="50">
+				<circle id="human0a" r="15" cx="25" cy="15"/>
+				<ellipse id="human0b" rx="20" ry="17" cx="25" cy="50"/>
+			</svg>
+		</th>
+		<th>
+			<svg width="50" height="50">
+				<circle id="human1a" r="15" cx="25" cy="15"/>
+				<ellipse id="human1b" rx="20" ry="17" cx="25" cy="50"/>
+			</svg>
+		</th>
+		</tr>
+		<tr>
 		<th class="halfRow score"><p id="score0">0</th>
 		<th class="halfRow score"><p id="score1">0</th>
+		</tr>
 		</table>
 	</div>
 </div>

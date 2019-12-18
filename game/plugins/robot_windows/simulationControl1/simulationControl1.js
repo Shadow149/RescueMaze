@@ -1,3 +1,11 @@
+/*
+simulationControl1.js v2
+
+Changelog:
+ - Added human loaded indicator
+*/
+
+
 //The total time at the start
 var maxTime = 120;
 
@@ -37,8 +45,39 @@ function receive (message){
 				//The game is over
 				endGame();
 				break;
+			case "humanLoaded0":
+				//Robot 0's human is loaded
+				humanLoadedColour(0);
+				break;
+			case "humanUnloaded0":
+				//Robot 0's human is unloaded
+				humanUnloadedColour(0);
+				break;
+			case "humanLoaded1":
+				//Robot 1's human is loaded
+				humanLoadedColour(1);
+				break;
+			case "humanUnloaded1":
+				//Robot 1's human is unloaded
+				humanUnloadedColour(1);
+				break;
 		}
 	}
+}
+
+function humanLoadedColour(id){
+	// Changes svg human indicator to gold to indicate a human is loaded
+	document.getElementById("human"+id+"a").style.fill = "gold";
+	document.getElementById("human"+id+"b").style.fill = "gold";
+	document.getElementById("human"+id+"a").style.stroke = "gold";
+	document.getElementById("human"+id+"b").style.stroke = "gold";
+}
+function humanUnloadedColour(id){
+	// Changes svg human indicator to black to indicate a human is unloaded
+	document.getElementById("human"+id+"a").style.fill = "black";
+	document.getElementById("human"+id+"b").style.fill = "black";
+	document.getElementById("human"+id+"a").style.stroke = "black";
+	document.getElementById("human"+id+"b").style.stroke = "black";
 }
 
 function loadedController(id, name){
