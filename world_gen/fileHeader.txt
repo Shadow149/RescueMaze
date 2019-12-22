@@ -9,7 +9,7 @@ TexturedBackground {
 }
 TexturedBackgroundLight {
 }
-Transform {
+DEF WALLGROUP Group {
   children [
     Transform {
       children [

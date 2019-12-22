@@ -1,3 +1,13 @@
+"""Map Generation World File Creator v2
+   Written by Robbie Goldman and Alfred Roberts
+
+Changelog:
+ V2:
+ - Added Group node for walls
+ - Incorporated obstacles into file
+"""
+
+
 from decimal import Decimal
 import os
 dirname = os.path.dirname(__file__)
@@ -33,7 +43,7 @@ def transformFromBounds(start, end):
     return pos, scale
 
 
-def createFileData (boxData, bases, robots):
+def createFileData (boxData, bases, obstacles, robots):
     '''Create a file data string from the positions and scales'''
     #Open the file containing the standard header
     headerFile = open(os.path.join(dirname, "fileHeader.txt"), "r")
@@ -90,6 +100,20 @@ def createFileData (boxData, bases, robots):
     humanPart = humanTemplate.read()
     #Close template file
     humanTemplate.close()
+	
+    #Open the file containing the template for an obstacle group
+    obstacleGroupTemplate = open(os.path.join(dirname, "obstacleGroupTemplate.txt"), "r")
+    #Read template
+    obstacleGroupPart = obstacleGroupTemplate.read()
+    #Close template file
+    obstacleGroupTemplate.close()
+	
+    #Open the file containing the template for an obstacle
+    obstacleTemplate = open(os.path.join(dirname, "obstacleTemplate.txt"), "r")
+    #Read template
+    obstaclePart = obstacleTemplate.read()
+    #Close template file
+    obstacleTemplate.close()
 
     #Open the file containing the template for the supervisor
     supervisorTemplate = open(os.path.join(dirname, "supervisorTemplate.txt"), "r")
@@ -107,7 +131,7 @@ def createFileData (boxData, bases, robots):
     #Iterate for each of the blocks
     for box in boxData:
         #Add a copy of the template to the end of the file with the position, scale data and name inserted
-        fileData = fileData + boxPart.format(box[0][0], box[0][1], box[1][0], box[1][1], "internalWall" + str(i))
+        fileData = fileData + boxPart.format(box[0][0], box[0][1], box[1][0], box[1][1], "internalWall" + str(i), str(i))
         #Increment solid name counter
         i = i + 1
 
@@ -152,7 +176,22 @@ def createFileData (boxData, bases, robots):
     
     #Insert humans into group and add to file
     fileData = fileData + humanGroupPart.format(humansAll)
-
+	
+    #String to contain all obstacle objects
+    obstaclesAll = ""
+	
+    #Number used to give a unique name to each obstacle
+    i = 0
+	
+    for obstacle in obstacles:
+        #Add the obstacle with unique identifiers and scale values
+        obstaclesAll = obstaclesAll + obstaclePart.format(i, obstacle[0], obstacle[1], obstacle[2])
+        #Increment name counter
+        i = i + 1
+	
+    #Insert obstacles into group and add to file
+    fileData = fileData + obstacleGroupPart.format(obstaclesAll)
+	
     #Add a supervisor robot
     fileData = fileData + supervisorPart
 
@@ -160,10 +199,10 @@ def createFileData (boxData, bases, robots):
     return fileData
 
 
-def makeFile(boxData, bases, robots):
+def makeFile(boxData, bases, obstacles, robots):
     '''Create and save the file for the information'''
     #Generate the file string for the map
-    data = createFileData(boxData, bases, robots)
+    data = createFileData(boxData, bases, obstacles, robots)
 
     #Open the file to store the world in (cleared when opened)
     worldFile = open(os.path.join(dirname, "generatedWorld.wbt"), "w")

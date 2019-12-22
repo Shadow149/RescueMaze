@@ -1,3 +1,11 @@
+"""Map Generation Main Script v2
+   Written by Robbie Goldman and Alfred Roberts
+
+Changelog:
+ V2:
+ - Added randomly sized cubes as obstacles
+"""
+
 import random
 from PIL import Image
 import math
@@ -642,6 +650,22 @@ def generateEdges(array):
     #Return the generated list
     return positions
 
+def addObstacle():
+	height = float(random.randrange(50, 130)) / 100.0
+	width = float(random.randrange(30, 220)) / 100.0
+	depth = float(random.randrange(30, 220)) / 100.0
+	obstacle = [width, height, depth]
+	return obstacle
+	
+
+def generateObstacles():
+	obstacles = []
+	num = random.randrange(4, 8)
+	for i in range(num):
+		newObstacle = addObstacle()
+		obstacles.append(newObstacle)
+	
+	return obstacles
 
 def mainGenerate():
     '''Perform a full generation run, from array, png to world creation'''
@@ -656,6 +680,9 @@ def mainGenerate():
     baseBlocks = createBaseBlocks(bases)
     #Convert the robot positions to world space
     robotPositions = convertRobotsToWorld(robots)
+	
+    #Create a list of obstacles
+    obstacles = generateObstacles()
 
     #Output the world as a picture
     printWorld(world, "")
@@ -668,7 +695,7 @@ def mainGenerate():
     walls, used = createAllWallBlocks(root, used)
 
     #Make a map from the walls
-    mapMake.makeFile(walls, baseBlocks, robotPositions)
+    mapMake.makeFile(walls, baseBlocks, obstacles, robotPositions)
 
     #Print to indicate the program completed properly
     print("Generation Successful")
