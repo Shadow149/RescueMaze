@@ -1,0 +1,5 @@
+DEF OBSTACLEGROUP Group {{
+    children [
+{0}
+    ]
+}}
