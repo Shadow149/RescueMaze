@@ -4,7 +4,7 @@
 Changelog:
  - Only get points if you have a human loaded and enter a base
  - Robots can only pick up one human at a time
- - Robot must have stopped for 2 seconds to deposit
+ - Robot must have stopped for 2 seconds to deposit and pick up human
 """
 
 from controller import Supervisor
@@ -122,7 +122,7 @@ class base ():
             if pos[2] >= self.min[1] and pos[2] <= self.max[1]:
                 #It is in this base
                 return True
-		
+        
         #It is not in this base
         return False
 
@@ -139,16 +139,13 @@ humanNodes = humanGroup.getField("children")
 #Get number of humans in map
 numberOfHumans = humanNodes.getCount()
 
-def setHumanPositions():
+def getHumans():
     #Iterate for each human
     for i in range(numberOfHumans):
         #Get each human from children field in the human root node HUMANGROUP
         human = humanNodes.getMFNode(i)
         #Get human translation
         humanPos = human.getField("translation")
-        #Move humans to random positions in the building
-        #TODO Get information on where walls are so humans can't spawn in walls
-        humanPos.setSFVec3f([random.randint(-12,12),0.5,random.randint(-10,10)]) 
         #Create Human Object from human position
         humanObj = Human(humanPos.getSFVec3f(),i)
         humans.append(humanObj)
@@ -289,7 +286,7 @@ while simulationRunning:
         robot0.restartController()
         robot1.restartController()
         first = False
-	
+    
     r0 = False
     r1 = False
     #Test if the robots are in bases
@@ -321,7 +318,7 @@ while simulationRunning:
         if h.checkPosition(robot1Pos.getSFVec3f(),2):
             if not robot1Obj.hasHumanLoaded():
                 #if the robot has stopped for more than 2 seconds
-                if robot0Obj.timeStopped(robot0) >= 2:
+                if robot1Obj.timeStopped(robot0) >= 2:
                     print("Robot 1 is near a human")
                     robot1Obj.increaseScore(1)
                     robot1Obj.loadHuman()
@@ -378,19 +375,19 @@ while simulationRunning:
                 
     #If the running state changes
     if previousRunState != currentlyRunning:
-		#Update the value and print
+        #Update the value and print
         previousRunState = currentlyRunning
         print("Run State:", currentlyRunning)
     
     #Place humans randomly if game started
     if gameStarted and not humansLoaded:
         humansLoaded = True
-        setHumanPositions()
+        getHumans()
         
     
     #Get the message in from the robot window(if there is one)
     message = supervisor.wwiReceiveText()
-	
+    
     #If there is a message
     if message != "":
         #split into parts
