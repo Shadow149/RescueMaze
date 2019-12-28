@@ -16,8 +16,11 @@ import random
 #Create the instance of the supervisor class
 supervisor = Supervisor()
 
+#Get field to output information to
+outputField = supervisor.getFromDef("OBJECTPLACER").getField("customData")
+
 #Standard human radius
-humanRadius = 0.3
+humanRadius = 0.35
 
 
 def getAllWalls(numberWalls: int) -> list:
@@ -100,9 +103,9 @@ def generatePosition(radius: int, walls: list, humans: list, obstacles: list, ba
     '''Returns a random x and z position within the area, that is valid'''
     #Round the radius to 2dp
     radius = round(float(radius), 2)
-    #Get a random x and z position -12.5 <= x <= 12.5, -10 <= y <= 10 (with offset for radius)
-    randomX = random.randrange(-1250 + (radius * 100), 1250 - (radius * 100)) / 100.0
-    randomZ = random.randrange(-1000 + (radius * 100), 1000 - (radius * 100)) / 100.0
+    #Get a random x and z position -12.4 <= x <= 12.4, -9.9 <= y <= 9.9 (with offset for radius)
+    randomX = random.randrange(-1240 + (radius * 100), 1240 - (radius * 100)) / 100.0
+    randomZ = random.randrange(-990 + (radius * 100), 990 - (radius * 100)) / 100.0
     
     #Not yet ready to be added
     done = False
@@ -231,5 +234,6 @@ finalObstacles = setObstaclePositions(allObstacles, obstacleNodes, allWallBounds
 #Place all the humans
 finalHumans = setHumanPositions(numberOfHumans, humanNodes, allWallBounds, finalObstacles, allBases)
 
-
+#Send signal to say that items have been placed
+outputField.setSFString("done")
 

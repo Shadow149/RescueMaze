@@ -9,5 +9,5 @@ viewpointLocked: 0
 orthographicViewHeight: 1
 textFiles: 0 "worlds/newGeneratedWorld.wbt"
 robotWindow: robot
-renderingDevicePerspectives: robot0:camera;1;1;0;0
 renderingDevicePerspectives: robot1:camera;1;1;0;0
+renderingDevicePerspectives: robot0:camera;1;1;0;0

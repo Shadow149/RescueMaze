@@ -3,3 +3,9 @@ Robot {
   controller "supervisorTest2"
   window "simulationControl1"
 }
+
+DEF OBJECTPLACER Robot {
+  name "randomObjectSupervisor"
+  controller "randomPositionSupervisor"
+  supervisor TRUE
+}
