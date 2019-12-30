@@ -1,10 +1,11 @@
-"""Supervisor Controller Prototype v4
+"""Supervisor Controller Prototype v5
    Written by Robbie Goldman and Alfred Roberts
 
 Changelog:
  - Only get points if you have a human loaded and enter a base
  - Robots can only pick up one human at a time
  - Robot must have stopped for 2 seconds to deposit and pick up human
+ - Added check for message from position supervisor before taking human positions
 """
 
 from controller import Supervisor
@@ -21,6 +22,9 @@ robot1 = supervisor.getFromDef("ROBOT1")
 #Get the translation fields
 robot0Pos = robot0.getField("translation")
 robot1Pos = robot1.getField("translation")
+
+#Get the output from the object placement supervisor
+objectPlacementOutput = supervisor.getFromDef("OBJECTPLACER").getField("customData")
 
 #Maximum time for a match
 maxTime = 120
@@ -379,10 +383,14 @@ while simulationRunning:
         previousRunState = currentlyRunning
         print("Run State:", currentlyRunning)
     
-    #Place humans randomly if game started
+    #Get human positions if game started
     if gameStarted and not humansLoaded:
-        humansLoaded = True
-        getHumans()
+        #Waiting for the other supervisor to be ready
+        if objectPlacementOutput.getSFString() == "done":
+            getHumans()
+            humansLoaded = True
+            #Message to indicate that data has correctly been taken
+            objectPlacementOutput.setSFString("received")
         
     
     #Get the message in from the robot window(if there is one)

@@ -13,5 +13,5 @@
                 }}
             ]
             name "obstacle{0}"
-            boundingObject USE OBSTACLEBOX
+            boundingObject USE OBSTACLEBOX{0}
         }}
