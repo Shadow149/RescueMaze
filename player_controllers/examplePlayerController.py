@@ -2,6 +2,11 @@ from controller import Robot
 import time
 import math
 
+"""
+Example erebus robot controller
+Written by Alfred Roberts - 2020
+"""
+
 MOVE_FORWARD = "MOVE_FORWARD"
 MOVE_BACKWARDS = "MOVE_BACKWARDS"
 TURN_LEFT = "TURN_LEFT"
@@ -28,7 +33,7 @@ class Player (Robot):
         self.distanceSensors = []
         self.leftSensors = []
         self.rightSensors = []
-        self.frontSensor = None
+        self.frontSensors = []
         
         self.speeds = [0.0,0.0]
         
@@ -52,8 +57,11 @@ class Player (Robot):
         
         #config sensors
         
-        self.frontSensor = self.getDistanceSensor('so4')
-        self.frontSensor.enable(self.timeStep)
+        self.frontSensors.append(self.getDistanceSensor('so3'))
+        self.frontSensors[0].enable(self.timeStep)
+        
+        self.frontSensors.append(self.getDistanceSensor('so4'))
+        self.frontSensors[1].enable(self.timeStep)
 
         for i in range(3):
             sensor = self.getDistanceSensor('so'+str(i))
@@ -191,15 +199,11 @@ class Player (Robot):
         #Set mode to forward incase nothing else passes in the function
         self.mode = MOVE_FORWARD
         
-        #If no human is loaded and not collecting or depositing
-        if not self.humanLoaded and not self.collecting and not self.depositing:
-            #Move to human
-            self.moveToHuman()
         #If a human is loaded and not collecting or depositing
-        elif self.humanLoaded and not self.collecting and not self.depositing:
+        if self.humanLoaded and not self.collecting and not self.depositing:
             #Move to base
             self.moveToBase()
-        
+            
         #for all sensors (greater value means obstical is closer)
         for i in range(3):
             #For sensors of the left
@@ -208,9 +212,18 @@ class Player (Robot):
             #For sensors of the right
             elif self.rightSensors[2-i].getValue() > 900:
                 self.mode = TURN_LEFT
-        #For front sensor
-        if self.frontSensor.getValue() > 900:
-            self.mode = MOVE_BACKWARDS
+                
+        for i in range(2):
+            #For front two sensors
+            if self.frontSensors[i].getValue() > 900:
+                self.mode = MOVE_BACKWARDS
+        
+        #If no human is loaded and not collecting or depositing
+        if not self.humanLoaded and not self.collecting and not self.depositing:
+            #Move to human
+            self.moveToHuman()
+        
+        
         
         #Get base and human objects
         bases = self.getBaseObjects()
@@ -273,7 +286,7 @@ class Player (Robot):
     def run(self):
         while True:             
             self.update()
-
+            print(self.mode)
             # Send actuators commands according to the mode
             if self.mode == MOVE_FORWARD:
                 self.speeds[0] = 1 * self.maxSpeed
@@ -285,12 +298,12 @@ class Player (Robot):
                 #set left wheel speed
                 self.speeds[0] = 0.6 * self.maxSpeed
                 #set right wheel speed
-                self.speeds[1] = 0.2 * self.maxSpeed
+                self.speeds[1] = -0.2 * self.maxSpeed
             elif self.mode == TURN_LEFT:
                 #set left wheel speed
-                self.speeds[0] = 0.6 * self.maxSpeed
+                self.speeds[0] = -0.2 * self.maxSpeed
                 #set right wheel speed
-                self.speeds[1] = 0.5 * self.maxSpeed
+                self.speeds[1] = 0.6 * self.maxSpeed
                 
             elif self.mode == TURN_RIGHT_OBJECT:
                 #set left wheel speed
@@ -307,11 +320,11 @@ class Player (Robot):
             elif self.mode == STOP:
                 if self.speeds[0] > 0:
                     self.speeds[0] -= 1
-                else:
+                if self.speeds[0] < 0:
                     self.speeds[0] = 0
                 if self.speeds[1] > 0:
                     self.speeds[1] -= 1
-                else:
+                if self.speeds[0] < 0:
                     self.speeds[1] = 0
                 
                 
