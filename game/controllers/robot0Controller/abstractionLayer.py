@@ -1,34 +1,69 @@
-def move_forward(*args, speed: float = 10.0) -> None:
+def getCamera(robot, timeStep : int = 32) -> object:
+    '''
+    Get camera object/node, enable it and return to allow for use.
+    '''
+    camera = robot.getCamera('camera')
+    
+    camera.enable(timeStep)
+    camera.recognitionEnable(timeStep)
+    
+    return camera
+
+def getWheels(robot) -> list:
+    '''
+    Gets wheel motors from input robot node
+    
+    Args:
+        robot : robot class being used. Created with controller.Robot()
+    '''
+    wheels = []
+    
+    wheels.append(robot.getMotor('left wheel'))
+    wheels.append(robot.getMotor('right wheel'))
+    
+    return wheels
+
+def move_forward(robot, speed: float = 10.0) -> None:
     '''
     Moves robot forwards at a constant velocity.  
     
     Args:
-        *args : Used for inputting robot wheels. 
+        robot : robot class being used. Created with controller.Robot()
         speed (float) : The arg is used for setting speed for both wheels.  
     '''
-    args[0].setVelocity(speed)
-    args[1].setVelocity(speed)
+    wheels = getWheels(robot)
     
-def set_wheels(leftWheelVelocity: float, rightWheelVelocity: float, *args) -> None:
+    wheels[0].setPosition(float("inf"))
+    wheels[1].setPosition(float("inf"))
+    
+    wheels[0].setVelocity(speed)
+    wheels[1].setVelocity(speed)
+    
+def set_wheels(robot, leftWheelVelocity: float, rightWheelVelocity: float) -> None:
     '''
     Moves robot using input velocities which will move each wheel accordingly.  
     NOTE: Wheel velocities must be less than max velocity set by robot (<10 by default)
     
     Args:
+        robot : robot class being used. Created with controller.Robot()
         leftWheelVelocity (int) : Used for inputting robot wheels. 
         rightWheelVelocity (int) : Used for inputting robot wheels. 
-        *args : Used for inputting robot wheels. In the form leftWheel,rightWheel
     '''    
-    args[0].setVelocity(leftWheelVelocity)
-    args[1].setVelocity(rightWheelVelocity)
+    wheels = getWheels(robot)
+    
+    wheels[0].setPosition(float("inf"))
+    wheels[1].setPosition(float("inf"))
+    
+    wheels[0].setVelocity(leftWheelVelocity)
+    wheels[1].setVelocity(rightWheelVelocity)
  
 def action(robot, startTime: float, duration: float = 3.0, function = None, *args, **kwargs) -> bool:
-    #TODO considor using a class so it can store startTime without the user having to.
+    #TODO consider using a class so it can store startTime without the user having to.
     '''
     Will call an inputted function for the specified duration, assuming a start time the function was first called in inputted
     
     Args:
-        robot: robot class being used
+        robot : robot class being used. Created with controller.Robot()
         startTime (float) : The time the function was FIRST CALLED, NOTE: Use Robot.getTime() as using Time.time() will not give an accurate simulation time.  
         duration (float) : Specify the duration to perform the action.
         function (func) : Function that will be called after the specified duration.

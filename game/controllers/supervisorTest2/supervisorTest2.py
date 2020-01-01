@@ -322,7 +322,7 @@ while simulationRunning:
         if h.checkPosition(robot1Pos.getSFVec3f(),2):
             if not robot1Obj.hasHumanLoaded():
                 #if the robot has stopped for more than 2 seconds
-                if robot1Obj.timeStopped(robot0) >= 2:
+                if robot1Obj.timeStopped(robot1) >= 2:
                     print("Robot 1 is near a human")
                     robot1Obj.increaseScore(1)
                     robot1Obj.loadHuman()
