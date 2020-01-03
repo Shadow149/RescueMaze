@@ -286,7 +286,6 @@ class Player (Robot):
     def run(self):
         while True:             
             self.update()
-            print(self.mode)
             # Send actuators commands according to the mode
             if self.mode == MOVE_FORWARD:
                 self.speeds[0] = 1 * self.maxSpeed
