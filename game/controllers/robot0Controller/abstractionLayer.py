@@ -35,7 +35,7 @@ def move_forward(robot, speed: float = 10.0) -> None:
         robot : robot class being used. Created with controller.Robot()
         speed (float) : The arg is used for setting speed for both wheels.  
     '''
-    wheels = getWheels(robot)
+    wheels = get_wheels(robot)
     
     wheels[0].setPosition(float("inf"))
     wheels[1].setPosition(float("inf"))
@@ -53,7 +53,7 @@ def set_wheels(robot, leftWheelVelocity: float, rightWheelVelocity: float) -> No
         leftWheelVelocity (int) : Used for inputting robot wheels. 
         rightWheelVelocity (int) : Used for inputting robot wheels. 
     '''    
-    wheels = getWheels(robot)
+    wheels = get_wheels(robot)
     
     wheels[0].setPosition(float("inf"))
     wheels[1].setPosition(float("inf"))
