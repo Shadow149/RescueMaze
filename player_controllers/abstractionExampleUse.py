@@ -9,7 +9,7 @@ timeStep = 32
 #get distance sensors
 sensors = get_distance_sensors(myRobot, timeStep)
 #get camera node
-camera = getCamera(myRobot)
+camera = get_camera(myRobot)
 
 collecting = False
 startTime = 99999999999
