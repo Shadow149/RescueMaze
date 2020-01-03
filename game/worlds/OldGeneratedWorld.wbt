@@ -1432,7 +1432,7 @@ DEF HUMANGROUP Group {
   ]
 }
 Robot {
-  controller "supervisorTest2"
+  controller "MainSupervisor"
   supervisor TRUE
-  window "simulationControl1"
+  window "MainSupervisorWindow"
 }

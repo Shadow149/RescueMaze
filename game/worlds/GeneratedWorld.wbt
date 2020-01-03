@@ -1521,12 +1521,12 @@ DEF OBSTACLEGROUP Group {
 }
 Robot {
   supervisor TRUE
-  controller "supervisorTest2"
-  window "simulationControl1"
+  controller "MainSupervisor"
+  window "MainSupervisorWindow"
 }
 
 DEF OBJECTPLACER Robot {
-  name "randomObjectSupervisor"
-  controller "randomPositionSupervisor"
+  name "ObjectPlacementSupervisor"
+  controller "ObjectPlacementSupervisor"
   supervisor TRUE
 }
