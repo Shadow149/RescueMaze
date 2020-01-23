@@ -9,6 +9,13 @@ Changelog:
 //The total time at the start
 var maxTime = 120;
 
+var visable = false;
+
+var robot0Name = "Robot 0"
+var robot1Name = "Robot 1"
+
+var scores = []
+
 function receive (message){
 	//Receive message from the python supervisor
 	//Split on comma
@@ -85,12 +92,14 @@ function loadedController(id, name){
 	if (id == 0){
 		//Set name and toggle to unload button for robot 0
 		document.getElementById("robot0Name").innerHTML = name;
+		robot0Name = name;
 		document.getElementById("load0").style.display = "none";
 		document.getElementById("unload0").style.display = "inline-block";
 	}
 	if (id == 1){
 		//Set name and toggle to unload button for robot 1
 		document.getElementById("robot1Name").innerHTML = name;
+		robot1Name = name;
 		document.getElementById("load1").style.display = "none";
 		document.getElementById("unload1").style.display = "inline-block";
 	}
@@ -102,6 +111,7 @@ function unloadedController(id){
 		//Reset name and toggle to load button for robot 0
 		document.getElementById("robot0File").value = "";
 		document.getElementById("robot0Name").innerHTML = "None";
+		robot0Name = "Robot 0";
 		document.getElementById("unload0").style.display = "none";
 		document.getElementById("load0").style.display = "inline-block";
 	}
@@ -109,6 +119,7 @@ function unloadedController(id){
 		//Reset name and toggle to load button for robot 1
 		document.getElementById("robot1File").value = "";
 		document.getElementById("robot1Name").innerHTML = "None";
+		robot1Name = "Robot 1";
 		document.getElementById("unload1").style.display = "none";
 		document.getElementById("load1").style.display = "inline-block";
 	}
@@ -125,6 +136,9 @@ function update (data){
 	//Sets the scores and the timer
 	document.getElementById("score0").innerHTML = String(data[0]);
 	document.getElementById("score1").innerHTML = String(data[1]);
+
+	scores = [String(data[0]),String(data[1])]
+
 	document.getElementById("timer").innerHTML = calculateTimeRemaining(data[2]);
 }
 
@@ -214,6 +228,10 @@ function endGame(){
 	//Once the game is over turn off both the run and pause buttons
 	setEnableButton("runButton", false)
 	setEnableButton("pauseButton", false);
+
+	if (!visable){
+		show_winning_screen()
+	}
 }
 
 function unloadPressed(id){
@@ -296,4 +314,36 @@ function file1Opened(){
 		}
 		
 	}
+}
+
+function hide_winning_screen(){
+	//Disable winner screen
+	document.getElementById("winning-screen").style.display = "none";
+}
+
+function calculateWinner(teamScores,name0,name1){
+	//if scores are the same
+	if (teamScores[0] == teamScores[1]){
+		//Show draw text
+		document.getElementById("winning-team").innerHTML = "Draw!"
+	}else {
+		//Find index of highest scoring team
+		var highestScoreIndex = teamScores.indexOf(Math.max(teamScores));
+		if (highestScoreIndex == 0){
+			//Show robot 0 win text
+			document.getElementById("winning-team").innerHTML = name0 + " wins!"
+		} else {
+			//Show robot 1 win text
+			document.getElementById("winning-team").innerHTML = name1 + " wins!"
+		}
+	}
+
+
+}
+
+function show_winning_screen(){
+	calculateWinner(scores,robot0Name,robot1Name);
+	//Show winning screen
+  	document.getElementById("winning-screen").style.display = "inline-block";
+  	visable = true
 }

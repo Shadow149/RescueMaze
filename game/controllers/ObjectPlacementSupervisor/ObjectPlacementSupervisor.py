@@ -192,10 +192,23 @@ def setHumanPositions(numberHumans, humanNodes, walls, obstacles, bases: list) -
         human = humanNodes.getMFNode(i)
         #Get human translation
         humanPos = human.getField("translation")
+        #Get human size
+        humanSize = human.getField("scale")
         #Get random valid position
         x, z = generatePosition(humanRadius, walls, humans, obstacles, bases)
-        #Move humans to random positions in the building
-        humanPos.setSFVec3f([x,0.5,z])
+        #Generate adult or child
+        humanType = random.randint(0,1)
+
+        #Set human size
+        if humanType == 0:
+            humanSize.setSFVec3f([1,0.5,1])
+            #Move humans to random positions in the building (at 0.25 y as child is smaller)
+            humanPos.setSFVec3f([x,0.25,z])
+        else:
+            humanSize.setSFVec3f([1,1,1])
+            #Move humans to random positions in the building
+            humanPos.setSFVec3f([x,0.5,z])
+
         humans.append([x, z])
     
     #Returns the placed humans as: [xPosition, zPosition]

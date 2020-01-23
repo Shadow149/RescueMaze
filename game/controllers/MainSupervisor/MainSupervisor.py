@@ -1,11 +1,8 @@
-"""Supervisor Controller Prototype v5
+"""Supervisor Controller Prototype v6
    Written by Robbie Goldman and Alfred Roberts
 
 Changelog:
- - Only get points if you have a human loaded and enter a base
- - Robots can only pick up one human at a time
- - Robot must have stopped for 2 seconds to deposit and pick up human
- - Added check for message from position supervisor before taking human positions
+ - added children
 """
 
 from controller import Supervisor
@@ -35,6 +32,9 @@ class Robot:
         '''Initialises the in a base, has a human loaded and score values'''
         self.inBase = True
         self._humanLoaded = False
+
+        self.loadedHuman = None
+
         self._score = 0
     
         self._timeStopped = 0
@@ -74,11 +74,13 @@ class Robot:
     def hasHumanLoaded(self) -> bool:
         return self._humanLoaded
 
-    def loadHuman(self) -> None:
+    def loadHuman(self, humanClass) -> None:
         self._humanLoaded = True
+        self.loadedHuman = humanClass
         
     def unLoadHuman(self) -> None:
         self._humanLoaded = False
+        self.loadedHuman = None
         
     def increaseScore(self, score: int) -> None:
         #TODO add win condition
@@ -91,9 +93,24 @@ class Human:
     '''Human object holding the boundaries'''
     def __init__(self, pos: list, ap: int):
         '''Initialises the radius and position of the human'''
+        #TODO create weighting for generation
         self.position = pos
         self.arrayPosition = ap
-    
+        self.scoreWorth = self.getType()
+
+
+    def getType(self) -> int:
+        '''Set type of human (adult or child) through object size'''
+        #Get human from scene nodes
+        human = humanNodes.getMFNode(self.arrayPosition)
+        #Get human size
+        humanSize = human.getField("scale").getSFVec3f()
+
+        if humanSize[1] == 0.5:
+            return 2  
+        else:
+            return 1  
+
     def checkPosition(self, pos: list, min_dist: float) -> bool:
         '''Check if a position is near a human, based on the min_dist value'''
         #Get distance from the human to the passed position using manhattan distance for speed
@@ -280,10 +297,8 @@ supervisor.wwiSendText("startup")
 
 #For checking the first update with the game running
 first = True
-
 #Until the match ends (also while paused)
 while simulationRunning:
-    
     #The first frame of the game running only
     if first and currentlyRunning:
         #Restart both controllers
@@ -310,7 +325,7 @@ while simulationRunning:
                 if robot0Obj.timeStopped(robot0) >= 2:
                     print("Robot 0 is near a human")
                     robot0Obj.increaseScore(1)
-                    robot0Obj.loadHuman()
+                    robot0Obj.loadHuman(h)
                     
                     #send message to robot window saying human is loaded
                     supervisor.wwiSendText("humanLoaded0")
@@ -325,7 +340,7 @@ while simulationRunning:
                 if robot1Obj.timeStopped(robot1) >= 2:
                     print("Robot 1 is near a human")
                     robot1Obj.increaseScore(1)
-                    robot1Obj.loadHuman()
+                    robot1Obj.loadHuman(h)
                     
                     #send message to robot window saying human is loaded
                     supervisor.wwiSendText("humanLoaded1")
@@ -347,7 +362,7 @@ while simulationRunning:
             #if the robot has stopped for more than 2 seconds
             if robot0Obj.timeStopped(robot0) >= 2:
                 #if robot has a human loaded, gain a point
-                robot0Obj.increaseScore(1)
+                robot0Obj.increaseScore(robot0Obj.loadedHuman.scoreWorth)
                 robot0Obj.unLoadHuman()
                 
                 #send message to robot window saying human is unloaded
@@ -369,7 +384,7 @@ while simulationRunning:
             #if the robot has stopped for more than 2 seconds
             if robot1Obj.timeStopped(robot1) >= 2:
                 #if robot has a human loaded, gain a point
-                robot1Obj.increaseScore(1)
+                robot1Obj.increaseScore(robot0Obj.loadedHuman.scoreWorth)
                 robot1Obj.unLoadHuman()
                 
                 #send message to robot window saying human is unloaded
@@ -395,9 +410,10 @@ while simulationRunning:
     
     #Get the message in from the robot window(if there is one)
     message = supervisor.wwiReceiveText()
-    
     #If there is a message
     if message != "":
+        print("message recived")
+        print("Message:",message)
         #split into parts
         parts = message.split(",")
         #If there are parts
@@ -411,12 +427,15 @@ while simulationRunning:
                 #Pause the match
                 currentlyRunning = False
             if parts[0] == "reset":
+                print("Reset message Received")
                 #Reset both controller files
                 resetControllerFile(0)
                 resetControllerFile(1)
                 #Reset the simulation
                 supervisor.simulationReset()
                 simulationRunning = False
+
+
             if parts[0] == "robot0File":
                 #Load the robot 0 controller
                 if not gameStarted:
@@ -466,4 +485,3 @@ while simulationRunning:
         if step == -1:
             #Stop simulating
             simulationRunning = False
-
