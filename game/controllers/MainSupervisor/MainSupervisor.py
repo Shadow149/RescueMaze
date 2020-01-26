@@ -26,6 +26,9 @@ robot1Pos = robot1.getField("translation")
 #Get the output from the object placement supervisor
 objectPlacementOutput = supervisor.getFromDef("OBJECTPLACER").getField("customData")
 
+#Get this supervisor node - so that it can be rest when game restarts
+mainSupervisor = supervisor.getFromDef("MAINSUPERVISOR")
+
 #Maximum time for a match
 maxTime = 120
 
@@ -417,6 +420,8 @@ while simulationRunning:
                 #Reset the simulation
                 supervisor.simulationReset()
                 simulationRunning = False
+                #Restart this supervisor
+                mainSupervisor.restartController()
             if parts[0] == "robot0File":
                 #Load the robot 0 controller
                 if not gameStarted:
