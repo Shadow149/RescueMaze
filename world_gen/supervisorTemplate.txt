@@ -1,4 +1,4 @@
-Robot {
+DEF MAINSUPERVISOR Robot {
   supervisor TRUE
   controller "MainSupervisor"
   window "simulationControl1"
