@@ -14,7 +14,7 @@ var visable = false;
 var robot0Name = "Robot 0"
 var robot1Name = "Robot 1"
 
-var scores = []
+var scores = [0,0]
 
 function receive (message){
 	//Receive message from the python supervisor
@@ -68,6 +68,12 @@ function receive (message){
 				//Robot 1's human is unloaded
 				humanUnloadedColour(1);
 				break;
+			case "activityLoaded0":
+				activityLoadedColor(0,parts[1],parts[2],parts[3])
+				break;
+			case "activityUnloaded0":
+				activityUnloadedColour(0)
+				break;
 		}
 	}
 }
@@ -85,6 +91,13 @@ function humanUnloadedColour(id){
 	document.getElementById("human"+id+"b").style.fill = "black";
 	document.getElementById("human"+id+"a").style.stroke = "black";
 	document.getElementById("human"+id+"b").style.stroke = "black";
+}
+
+function activityLoadedColor(id,r,g,b){
+	document.getElementById("activity"+id).style.fill = "rgb("+(Number(r)*255).toString()+","+(Number(g)*255).toString()+", "+(Number(b)*255).toString()+")";
+}
+function activityUnloadedColour(id){
+	document.getElementById("activity"+id).style.fill = "black";
 }
 
 function loadedController(id, name){
@@ -137,7 +150,7 @@ function update (data){
 	document.getElementById("score0").innerHTML = String(data[0]);
 	document.getElementById("score1").innerHTML = String(data[1]);
 
-	scores = [String(data[0]),String(data[1])]
+	scores = [data[0],data[1]]
 
 	document.getElementById("timer").innerHTML = calculateTimeRemaining(data[2]);
 }
@@ -321,15 +334,15 @@ function hide_winning_screen(){
 	document.getElementById("winning-screen").style.display = "none";
 }
 
-function calculateWinner(teamScores,name0,name1){
+function calculateWinner(name0,name1){
 	//if scores are the same
-	if (teamScores[0] == teamScores[1]){
+	if (scores[0] == scores[1]){
 		//Show draw text
 		document.getElementById("winning-team").innerHTML = "Draw!"
 	}else {
 		//Find index of highest scoring team
-		var highestScoreIndex = teamScores.indexOf(Math.max(teamScores));
-		if (highestScoreIndex == 0){
+		
+		if (scores[0] > scores[1]){
 			//Show robot 0 win text
 			document.getElementById("winning-team").innerHTML = name0 + " wins!"
 		} else {
@@ -342,7 +355,7 @@ function calculateWinner(teamScores,name0,name1){
 }
 
 function show_winning_screen(){
-	calculateWinner(scores,robot0Name,robot1Name);
+	calculateWinner(robot0Name,robot1Name);
 	//Show winning screen
   	document.getElementById("winning-screen").style.display = "inline-block";
   	visable = true

@@ -2,8 +2,8 @@
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.999904339440331 0.012895767975643018 0.005001113547384512 0.7400648698256735
-  position 0.0797377570748452 26.58021196874523 32.6072172027324
+  orientation -0.998944056697124 0.04136958842720985 0.01998321152507861 0.9008282263625245
+  position 4.711389763213757 39.49960247900348 32.7967265868317
 }
 TexturedBackground {
 }
@@ -925,6 +925,16 @@ DEF ROBOT0 Pioneer3dx {
   name "robot0"
   controller "robot0Controller"
   extensionSlot [
+    Gyro {
+    }
+    Receiver {
+    }
+    Emitter {
+    }
+    LightSensor {
+    }
+    GPS {
+    }
     Camera {
       translation 0.04 0.24 0
       fieldOfView 0.9
@@ -950,6 +960,7 @@ DEF HUMANGROUP Group {
   children [
     Solid {
       translation 0 -1000 0
+      scale 0.5 0.5 0.5
       children [
         Shape {
           appearance Appearance {
@@ -996,6 +1007,7 @@ DEF HUMANGROUP Group {
     }
     Solid {
       translation 0 -1000 0
+      scale 0.5 0.5 0.5
       children [
         Shape {
           appearance Appearance {
@@ -1111,6 +1123,7 @@ DEF HUMANGROUP Group {
     }
     Solid {
       translation 0 -1000 0
+      scale 0.5 0.5 0.5
       children [
         Shape {
           appearance Appearance {
@@ -1134,6 +1147,7 @@ DEF HUMANGROUP Group {
     }
     Solid {
       translation 0 -1000 0
+      scale 0.5 0.5 0.5
       children [
         Shape {
           appearance Appearance {
@@ -1203,6 +1217,7 @@ DEF HUMANGROUP Group {
     }
     Solid {
       translation 0 -1000 0
+      scale 0.5 0.5 0.5
       children [
         Shape {
           appearance Appearance {
@@ -1226,6 +1241,7 @@ DEF HUMANGROUP Group {
     }
     Solid {
       translation 0 -1000 0
+      scale 0.5 0.5 0.5
       children [
         Shape {
           appearance Appearance {
@@ -1249,6 +1265,7 @@ DEF HUMANGROUP Group {
     }
     Solid {
       translation 0 -1000 0
+      scale 0.5 0.5 0.5
       children [
         Shape {
           appearance Appearance {
@@ -1524,5 +1541,44 @@ Robot {
 DEF OBJECTPLACER Robot {
   name "ObjectPlacementSupervisor"
   controller "ObjectPlacementSupervisor"
+  customData "received"
   supervisor TRUE
+}
+DEF ACT0MAT Solid {
+  translation 11.24347 0.055 8.669394
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 1 0 1
+        }
+      }
+      geometry DEF box Box {
+        size 1 0.005 1
+      }
+    }
+  ]
+  name "base1(1)"
+  recognitionColors [
+    0.3 0 1
+  ]
+}
+DEF ACT0 Solid {
+  translation 5.274985 0.295 4.5322189999999996
+  children [
+    Shape {
+      appearance Appearance {
+        material DEF ACT0MATERIAL Material {
+          diffuseColor 1 0 1
+        }
+      }
+      geometry DEF box Box {
+        size 0.5 0.5 0.5
+      }
+    }
+  ]
+  name "base1(2)"
+  recognitionColors [
+    0.3 0 1
+  ]
 }

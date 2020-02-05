@@ -122,6 +122,10 @@
 	position: absolute;
 	opacity: 0.9;
 	display: none;
+	animation-name: fade;
+	-webkit-animation-name: fade;
+	animation-duration: 1.5s;
+	-webkit-animation-duration: 1.5s;
 }
   
 #winning-team{
@@ -135,7 +139,16 @@
 	width: 100%; 
 } 
 
+.activity{
+	margin-left: 20px;
+}
+
+
 @keyframes fade {
+	0% {opacity: 0%;}
+	100% {opacity: 90%;}
+}
+@-webkit-keyframes fade {
 	0% {opacity: 0%;}
 	100% {opacity: 90%;}
 }

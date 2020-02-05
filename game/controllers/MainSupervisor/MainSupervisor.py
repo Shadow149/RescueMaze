@@ -32,8 +32,10 @@ class Robot:
         '''Initialises the in a base, has a human loaded and score values'''
         self.inBase = True
         self._humanLoaded = False
+        self._activityLoaded = False
 
         self.loadedHuman = None
+        self.loadedActivity = None
 
         self._score = 0
     
@@ -74,6 +76,17 @@ class Robot:
     def hasHumanLoaded(self) -> bool:
         return self._humanLoaded
 
+    def hasActivityLoaded(self) -> bool:
+        return self._activityLoaded
+
+    def loadActivity(self, activityClass) -> None:
+        self._activityLoaded = True
+        self.loadedActivity = activityClass
+
+    def unLoadActivity(self) -> None:
+        self._activityLoaded = False
+        self.loadedActivity = None
+
     def loadHuman(self, humanClass) -> None:
         self._humanLoaded = True
         self.loadedHuman = humanClass
@@ -89,12 +102,44 @@ class Robot:
     def getScore(self) -> None:
         return self._score
 
-class Human:
+class PickableObject:
+    '''Object used for abstraction of a pickup-able object/human'''
+    def __init__(self, pos: list):
+        '''Initialises the radius and position of the human'''
+        self.position = pos
+
+    def checkPosition(self, pos: list, min_dist: float) -> bool:
+        '''Check if a position is near an object, based on the min_dist value'''
+        #Get distance from the object to the passed position using manhattan distance for speed
+        #TODO Check if we want to use euclidian or manhattan distance -- currently manhattan
+        distance = abs(self.position[0] - pos[0]) + abs(self.position[2] - pos[2])
+        return distance < min_dist
+
+class ActivityBlock(PickableObject):
+    def __init__(self, pos:list, node, linkedObj):
+        super().__init__(pos)
+        self.node = node
+        self.linkedObj = linkedObj
+        self.colour = supervisor.getFromDef('ACT0MATERIAL').getField("diffuseColor").getSFColor()
+        self.completed = False
+    
+    def deposit(self):
+        self.setPosition([self.linkedObj.position[0],0.25,self.linkedObj.position[2]])
+        self.completed = True
+
+    def setPosition(self, position: list) -> None:
+        '''Set position of object in class and in scene'''
+        #Set human object's position and in the scene 
+        objPosition = self.node.getField("translation")
+        objPosition.setSFVec3f(position)
+        self.position = position
+
+class Human(PickableObject):
     '''Human object holding the boundaries'''
     def __init__(self, pos: list, ap: int):
         '''Initialises the radius and position of the human'''
         #TODO create weighting for generation
-        self.position = pos
+        super().__init__(pos)
         self.arrayPosition = ap
         self.scoreWorth = self.getType()
 
@@ -111,22 +156,14 @@ class Human:
         else:
             return 1  
 
-    def checkPosition(self, pos: list, min_dist: float) -> bool:
-        '''Check if a position is near a human, based on the min_dist value'''
-        #Get distance from the human to the passed position using manhattan distance for speed
-        #TODO Check if we want to use euclidian or manhattan distance -- currently manhattan
-        distance = abs(self.position[0] - pos[0]) + abs(self.position[2] - pos[2])
-        return distance < min_dist
-    
     def setPosition(self, position: list) -> None:
-        '''Set position of human in object and in scene'''
+        '''Set position of object in class and in scene'''
         #Get human from scene nodes
-        human = humanNodes.getMFNode(self.arrayPosition)
+        obj = humanNodes.getMFNode(self.arrayPosition)
         #Set human object's position and in the scene 
-        humanPos = human.getField("translation")
-        humanPos.setSFVec3f(position)
+        objPosition = obj.getField("translation")
+        objPosition.setSFVec3f(position)
         self.position = position
-        
 
 class base ():
     '''Base object holding the boundaries'''
@@ -159,6 +196,11 @@ humanGroup = supervisor.getFromDef('HUMANGROUP')
 humanNodes = humanGroup.getField("children")
 #Get number of humans in map
 numberOfHumans = humanNodes.getCount()
+
+activity0 = supervisor.getFromDef('ACT0')
+activity0_mat = supervisor.getFromDef('ACT0MAT')
+activity0_matobj = ActivityBlock(activity0_mat.getField("translation").getSFVec3f(),activity0_mat,None)
+activity0obj = ActivityBlock(activity0.getField("translation").getSFVec3f(),activity0,activity0_matobj)
 
 def getHumans():
     #Iterate for each human
@@ -314,9 +356,43 @@ while simulationRunning:
             r0 = True
         if b.checkPosition(robot1Pos.getSFVec3f()):
             r1 = True
-            
+
+    #TODO for robot 1
+    if activity0obj.checkPosition(robot0Pos.getSFVec3f(),1):
+        if not robot0Obj.hasActivityLoaded() and not activity0obj.completed:
+            #if the robot has stopped for more than 2 seconds
+            if robot0Obj.timeStopped(robot0) >= 2:
+                print("Robot 0 picked up an activity block.")
+                #robot0Obj.increaseScore(1)
+                robot0Obj.loadActivity(activity0obj)
+
+                activityColour = activity0obj.colour
+
+                #send message to robot window saying activity is loaded
+                supervisor.wwiSendText("activityLoaded0"+","+str(activityColour[0])+","+str(activityColour[1])+","+str(activityColour[2]))
+                                
+                #Move human to some position far away
+                newPosition = [0,-1000,0]
+                activity0obj.setPosition(newPosition)
+
+    if activity0_matobj.checkPosition(robot0Pos.getSFVec3f(),1):
+        if robot0Obj.hasActivityLoaded() and not activity0obj.completed:
+            #if the robot has stopped for more than 2 seconds
+            if robot0Obj.timeStopped(robot0) >= 2:
+                print("Robot 0 depositied activity.")
+                #robot0Obj.increaseScore(1)
+                robot0Obj.unLoadActivity()
+
+                #send message to robot window saying activity is unloaded
+                supervisor.wwiSendText("activityUnloaded0")
+                                
+                #Move human to some position far away
+                activity0obj.deposit()
+                robot0Obj.increaseScore(5)
+
     #Test if the robots are near a human
     #TODO finish full human pickup function -- Require stop
+    #TODO change if statements around for optimisation
     for i, h in enumerate(humans):
         #If within 0.5 metres of human
         if h.checkPosition(robot0Pos.getSFVec3f(),1):
