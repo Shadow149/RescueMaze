@@ -4,6 +4,9 @@
 Changelog:
  V2:
  - Added randomly sized cubes as obstacles
+ V3:
+ - Added GUI integraction
+ - Added child generation
 """
 
 import random
@@ -11,6 +14,7 @@ from PIL import Image
 import math
 import WorldCreator
 import os
+import GUI
 dirname = os.path.dirname(__file__)
 
 
@@ -130,7 +134,7 @@ def createEmptyWorld():
     return array
 
 
-def printWorld(array, string):
+def printWorld(array):
     '''Output the array as a map image file'''
     #Create a new image with the same dimensions as the array (in rgb mode with white background)
     img = Image.new("RGB", (len(array[0]), len(array)), "#FFFFFF")
@@ -149,7 +153,7 @@ def printWorld(array, string):
                 img.putpixel((i, j), (150, 150, 150))
     
     #Save the completed image to file
-    img.save(os.path.join(dirname, "map" + string + ".png"), "PNG")
+    img.save(os.path.join(dirname, "map.png"), "PNG")
 
 
 def splitNode(n, array):
@@ -361,7 +365,7 @@ def addDoors(rootNode, array):
     return array
 
 
-def generateWorld():
+def generateWorld(splits):
     '''Perform generation of a world array'''
     #Create the empty array
     array = createEmptyWorld()
@@ -369,7 +373,7 @@ def generateWorld():
     root = node(None, 0, len(array[0]) - 1, 0, len(array) - 1, array)
 
     #Perform binary split a number of times
-    for i in range(4):
+    for i in range(splits):
         #Split the lowest level of the array
         array = splitDepth(root, array)
     
@@ -558,14 +562,14 @@ def addBase(root, array, quadrants):
     return base, array, usedQuad
 
 
-def createBases(array, rootNode):
+def createBases(array, numberBases, rootNode):
     '''Add a set of bases to the world'''
     bases = []
     #All four quadrants (two binary choices)
     quads = [[0, 0], [0, 1], [1, 0], [1, 1]]
 
-    #Iterate for each base (3 times)
-    for i in range(0, 3):
+    #Iterate for each base (max 4)
+    for i in range(0, numberBases):
         #Add a base
         base, array, used = addBase(rootNode, array, quads)
         #If a valid quad was used
@@ -584,7 +588,7 @@ def addRobots(bases):
     robots = []
 
     #For each of the robots (2 robots)
-    for i in range(2):
+    for i in range(0, 2):
         #If there is a base free to add it to
         if i < len(bases):
             #Calculate the position of the centre of the base
@@ -651,28 +655,34 @@ def generateEdges(array):
     return positions
 
 def addObstacle():
-	height = float(random.randrange(50, 130)) / 100.0
-	width = float(random.randrange(30, 220)) / 100.0
-	depth = float(random.randrange(30, 220)) / 100.0
-	obstacle = [width, height, depth]
-	return obstacle
+    '''Generate random dimensions for an obstacle'''
+    height = float(random.randrange(50, 130)) / 100.0
+    width = float(random.randrange(30, 220)) / 100.0
+    depth = float(random.randrange(30, 220)) / 100.0
+    obstacle = [width, height, depth]
+    return obstacle
 	
 
-def generateObstacles():
-	obstacles = []
-	num = random.randrange(4, 8)
-	for i in range(num):
-		newObstacle = addObstacle()
-		obstacles.append(newObstacle)
-	
-	return obstacles
+def generateObstacles(numObstacles):
+    '''Generate a list of obstacles of length numObstacles'''
+    #List to hold obstacle dimensions
+    obstacles = []
+    #Iterate for each obstacle
+    for i in range(0, numObstacles):
+        #Create an obstacle and add it to the list
+        newObstacle = addObstacle()
+        obstacles.append(newObstacle)
 
-def mainGenerate():
-    '''Perform a full generation run, from array, png to world creation'''
+    #Return the list of dimensions
+    return obstacles
+
+
+def generatePlan (numSplits, numObstacles, numBases):
+    '''Perform a map generation up to png - does not update map file'''
     #Generate the world and tree
-    world, root = generateWorld()
+    world, root = generateWorld(numSplits)
     #Create the bases from the world and the tree
-    world, bases = createBases(world, root)
+    world, bases = createBases(world, numBases, root)
 
     #Create the robots from the bases
     robots = addRobots(bases)
@@ -682,11 +692,18 @@ def mainGenerate():
     robotPositions = convertRobotsToWorld(robots)
 	
     #Create a list of obstacles
-    obstacles = generateObstacles()
+    obstacles = generateObstacles(numObstacles)
 
     #Output the world as a picture
-    printWorld(world, "")
+    printWorld(world)
 
+    print("Generation Successful")
+
+    #Return generated parts
+    return world, root, robotPositions, obstacles, baseBlocks
+
+
+def generateWorldFile (world, root, baseBlocks, obstacles, robotPositons, numHumans, numChildren, window):
     #Generate the wall parts for the tree
     generateWallParts(root, world)
     #Generate the edges of the map to mark as used
@@ -694,11 +711,78 @@ def mainGenerate():
     #Calculate all the wall blocks for the tree (exclude used pixels)
     walls, used = createAllWallBlocks(root, used)
 
-    #Make a map from the walls
-    WorldCreator.makeFile(walls, baseBlocks, obstacles, robotPositions)
+    #Make a map from the walls and objects
+    WorldCreator.makeFile(walls, baseBlocks, obstacles, robotPositions, numHumans, numChildren, window)
 
-    #Print to indicate the program completed properly
-    print("Generation Successful")
 
-#Run the Generation
-mainGenerate()
+def checkNoNones (dataValues):
+    '''Check there are no None values in a list'''
+    #Iterate all items
+    for value in dataValues:
+        #If there is a none
+        if value == None:
+            return False
+    #Otherwise
+    return True
+
+#Generate an empty map (to be loaded to begin)
+printWorld(createEmptyWorld())
+
+#Create an instacnce of the user interface
+window = GUI.GenerateWindow()
+
+#The UI is currently in use
+guiActive = True
+
+#Set all generation parameters to Nones
+world = None
+root = None
+robotPositions = None
+obstacles = None
+baseBlocks = None
+humanNum = None
+childNum = None
+
+#Loop while the UI is active
+while guiActive:
+
+    #If a generation is being called for
+    if window.ready:
+        #Cannot save now
+        window.setSaveButton(False)
+        #Get generation values as follows:
+        #[[room splits], [humans, children], [obstacles], [bases]]
+        genValues = window.getValues()
+        #A generation has started (resets flag so generation is not called again)
+        window.generateStarted()
+        #Generate a plan with the values
+        world, root, robotPositions, obstacles, baseBlocks = generatePlan(genValues[0][0], genValues[2][0], genValues[3][0])
+        #Unpack the unused human values
+        humanNum, childNum = genValues[1][0], genValues[1][1]
+        #Update the UI image of the map
+        window.updateImage()
+        window.setGeneratedInformation("Adults: " + str(humanNum), "Children: " + str(childNum), str(len(baseBlocks)), str(len(obstacles)), "None")
+
+    #If a save file is being called for
+    if window.saving:
+        #Cannot save now
+        window.setSaveButton(False)
+        #Saving has begin (resets flag so save is not called twice)
+        window.saveStarted()
+        #If all values that are needed are not None
+        if checkNoNones([world, root, robotPositions, obstacles, baseBlocks, humanNum, childNum]):
+            #Generate and save a world
+            generateWorldFile(world, root, baseBlocks, obstacles, robotPositions, humanNum, childNum, window)
+
+    #Attempt update loops           
+    try:
+        #Toggle the save button to the correct state
+        window.setSaveButton(checkNoNones([world, root, robotPositions, obstacles, baseBlocks, humanNum, childNum]))
+        #Update loops for the UI - manually called to prevent blocking of this program
+        window.update_idletasks()
+        window.update()
+    #If an error occurred in the update (window closed)
+    except:
+        #Terminate the UI loop
+        guiActive = False
+

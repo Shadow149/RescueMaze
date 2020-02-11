@@ -5,6 +5,9 @@ Changelog:
  V2:
  - Added Group node for walls
  - Incorporated obstacles into file
+ V3:
+ - Allows user to select where they want the file to be saved
+ - Added children (human special type)
 """
 
 
@@ -43,7 +46,7 @@ def transformFromBounds(start, end):
     return pos, scale
 
 
-def createFileData (boxData, bases, obstacles, robots):
+def createFileData (boxData, bases, obstacles, robots, numHumans, numChildren):
     '''Create a file data string from the positions and scales'''
     #Open the file containing the standard header
     headerFile = open(os.path.join(dirname, "fileHeader.txt"), "r")
@@ -100,6 +103,20 @@ def createFileData (boxData, bases, obstacles, robots):
     humanPart = humanTemplate.read()
     #Close template file
     humanTemplate.close()
+
+    #Open the file containing the template for a human child group
+    humanChildGroupTemplate = open(os.path.join(dirname, "humanGroupTemplate.txt"), "r")
+    #Read template
+    humanChildGroupPart = humanChildGroupTemplate.read()
+    #Close template file
+    humanChildGroupTemplate.close()
+
+    #Open the file containing the template for a human child
+    humanChildTemplate = open(os.path.join(dirname, "humanTemplate.txt"), "r")
+    #Read template
+    humanChildPart = humanChildTemplate.read()
+    #Close template file
+    humanChildTemplate.close()
 	
     #Open the file containing the template for an obstacle group
     obstacleGroupTemplate = open(os.path.join(dirname, "obstacleGroupTemplate.txt"), "r")
@@ -160,22 +177,28 @@ def createFileData (boxData, bases, obstacles, robots):
         fileData = fileData + robotPart.format(robot[0], robot[1], str(i))
 
         i = i + 1
-
+    
     #String to contain all human objects
     humansAll = ""
 
-    #Number used to give a unique name to each human's solid
-    i = 0
-
-    #Iterate 20 times
-    for humanNum in range(0, 20):
+    #Iterate for each human
+    for humanNum in range(0, numHumans):
         #Add another human
         humansAll = humansAll + humanPart.format(humanNum)
-        #Increment name counter
-        i = i + 1
     
     #Insert humans into group and add to file
     fileData = fileData + humanGroupPart.format(humansAll)
+
+    #String to contain all human child objects
+    childrenAll = ""
+
+    #Iterate for each child
+    for childNum in range(0, numChildren):
+        #Add another human
+        childrenAll = childrenAll + humanChildPart.format(childNum)
+    
+    #Insert humans into group and add to file
+    fileData = fileData + humanChildGroupPart.format(childrenAll)
 	
     #String to contain all obstacle objects
     obstaclesAll = ""
@@ -199,13 +222,30 @@ def createFileData (boxData, bases, obstacles, robots):
     return fileData
 
 
-def makeFile(boxData, bases, obstacles, robots):
+def makeFile(boxData, bases, obstacles, robots, humans, children, uiWindow = None):
     '''Create and save the file for the information'''
     #Generate the file string for the map
-    data = createFileData(boxData, bases, obstacles, robots)
+    data = createFileData(boxData, bases, obstacles, robots, humans, children)
+    #The default file path
+    filePath = os.path.join(dirname, "generatedWorld.wbt")
+
+    #If there is a GUI window to use
+    if uiWindow != None:
+        #Get the path from the user
+        path = uiWindow.getPathSelection()
+        #Strip leading or trailing whitespace
+        path = path.strip()
+        #If there is a path
+        if path != "":
+            #If there isn't a .wbt extension on the file
+            if not path.endswith(".wbt"):
+                #Add the extension
+                path = path + ".wbt"
+            #Change the path to the one the user gave
+            filePath = path
 
     #Open the file to store the world in (cleared when opened)
-    worldFile = open(os.path.join(dirname, "generatedWorld.wbt"), "w")
+    worldFile = open(filePath, "w")
     #Write all the information to the file
     worldFile.write(data)
     #Close the file
