@@ -74,30 +74,70 @@ function receive (message){
 			case "activityUnloaded0":
 				activityUnloadedColour(0)
 				break;
+			case "historyUpdate":
+				let msg = message.split(":");
+				let history0 = msg[0].split(",").slice(1,msg[0].length-1)
+				let history1 = msg[1].split(",")
+				updateHistory(history0,history1)
+				break;
 		}
 	}
 }
 
 function humanLoadedColour(id){
 	// Changes svg human indicator to gold to indicate a human is loaded
-	document.getElementById("human"+id+"a").style.fill = "gold";
-	document.getElementById("human"+id+"b").style.fill = "gold";
-	document.getElementById("human"+id+"a").style.stroke = "gold";
-	document.getElementById("human"+id+"b").style.stroke = "gold";
+	//document.getElementById("human"+id+"a").style.fill = "gold";
+	//document.getElementById("human"+id+"b").style.fill = "gold";
+	document.getElementById("human"+id+"a").style.stroke = "#edae39";
+	document.getElementById("human"+id+"b").style.stroke = "#edae39";
 }
 function humanUnloadedColour(id){
 	// Changes svg human indicator to black to indicate a human is unloaded
-	document.getElementById("human"+id+"a").style.fill = "black";
-	document.getElementById("human"+id+"b").style.fill = "black";
+	//document.getElementById("human"+id+"a").style.fill = "black";
+	//document.getElementById("human"+id+"b").style.fill = "black";
 	document.getElementById("human"+id+"a").style.stroke = "black";
 	document.getElementById("human"+id+"b").style.stroke = "black";
 }
 
 function activityLoadedColor(id,r,g,b){
-	document.getElementById("activity"+id).style.fill = "rgb("+(Number(r)*255).toString()+","+(Number(g)*255).toString()+", "+(Number(b)*255).toString()+")";
+	document.getElementById("activity"+id).style.stroke = "rgb("+(Number(r)*255).toString()+","+(Number(g)*255).toString()+", "+(Number(b)*255).toString()+")";
 }
 function activityUnloadedColour(id){
-	document.getElementById("activity"+id).style.fill = "black";
+	document.getElementById("activity"+id).style.stroke = "black";
+}
+function updateHistory(history0,history1){
+	let text = ""
+
+	
+	let history0End = false;
+	let history1End = false;
+
+	let i = history0.length -1;
+	let j = history1.length -1;
+	
+
+	while(!history0End || !history1End){
+		text += "<tr id='historyrow'>";
+		console.log(history0)
+		console.log(history1 == "")
+		if(history0[i] != null){
+			text += "<td id='historyrowtext'>"+history0[i]+"</td>";
+			i--;
+		}else{
+			text += "<td id='historyrowtext'></td>"
+			history0End = true;
+		}
+		if(history1[j] != null){
+			text += "<td id='historyrowtext'>"+history1[j]+"</td>";
+			j--;
+		}else{
+			text += "<td id='historyrowtext'></td>"
+			history1End = true;
+		}
+		text += "</tr>";
+	}
+	console.log(text)
+	document.getElementById("history").innerHTML = text;
 }
 
 function loadedController(id, name){
@@ -141,6 +181,7 @@ function unloadedController(id){
 function startup (){
 	//Turn on the run button and reset button when the program has loaded
 	setEnableButton("runButton", true);
+	setEnableButton("pauseButton", false);
 	setEnableButton("resetButton", true);
 }
 

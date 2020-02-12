@@ -26,6 +26,15 @@ objectPlacementOutput = supervisor.getFromDef("OBJECTPLACER").getField("customDa
 #Maximum time for a match
 maxTime = 120
 
+class RobotHistory:
+    def __init__(self):
+        self.queue = []
+    def enqueue(self,data):
+        return self.queue.append(data)
+    def dequeue(self):
+        return self.queue.pop(0)
+    
+
 class Robot:
     '''Robot object to hold values whether its in a base or holding a human'''
     def __init__(self):
@@ -314,6 +323,9 @@ gameStarted = False
 robot0Obj = Robot()
 robot1Obj = Robot()
 
+robot0History = RobotHistory()
+robot1History = RobotHistory()
+
 #Both robots start in bases
 #robot0InBase = True
 #robot1InBase = True
@@ -363,6 +375,10 @@ while simulationRunning:
             #if the robot has stopped for more than 2 seconds
             if robot0Obj.timeStopped(robot0) >= 2:
                 print("Robot 0 picked up an activity block.")
+                
+                robot0History.enqueue("Picked up an activity block")
+                supervisor.wwiSendText("historyUpdate"+","+",".join(robot0History.queue)+":"+",".join(robot1History.queue))
+                
                 #robot0Obj.increaseScore(1)
                 robot0Obj.loadActivity(activity0obj)
 
@@ -380,6 +396,10 @@ while simulationRunning:
             #if the robot has stopped for more than 2 seconds
             if robot0Obj.timeStopped(robot0) >= 2:
                 print("Robot 0 depositied activity.")
+                
+                robot0History.enqueue("Depositied activity")
+                supervisor.wwiSendText("historyUpdate"+","+",".join(robot0History.queue)+":"+",".join(robot1History.queue))
+                
                 #robot0Obj.increaseScore(1)
                 robot0Obj.unLoadActivity()
 
@@ -406,6 +426,9 @@ while simulationRunning:
                     #send message to robot window saying human is loaded
                     supervisor.wwiSendText("humanLoaded0")
                     
+                    robot0History.enqueue("Picked up a human")
+                    supervisor.wwiSendText("historyUpdate"+","+",".join(robot0History.queue)+":"+",".join(robot1History.queue))
+                    
                     #Move human to some position far away
                     newPosition = [0,-1000,0]
                     h.setPosition(newPosition)
@@ -420,6 +443,9 @@ while simulationRunning:
                     
                     #send message to robot window saying human is loaded
                     supervisor.wwiSendText("humanLoaded1")
+                    
+                    robot1History.enqueue("Picked up a human")
+                    supervisor.wwiSendText("historyUpdate"+","+",".join(robot0History.queue)+":"+",".join(robot1History.queue))
                     
                     #Move human to some position far away
                     newPosition = [0,-1000,0]
@@ -444,6 +470,9 @@ while simulationRunning:
                 #send message to robot window saying human is unloaded
                 supervisor.wwiSendText("humanUnloaded0")
                 
+                robot0History.enqueue("Brought a human to safety")
+                supervisor.wwiSendText("historyUpdate"+","+",".join(robot0History.queue)+":"+",".join(robot1History.queue))
+                
                 print("Robot 0 brought a human to safety")
         
     
@@ -460,11 +489,14 @@ while simulationRunning:
             #if the robot has stopped for more than 2 seconds
             if robot1Obj.timeStopped(robot1) >= 2:
                 #if robot has a human loaded, gain a point
-                robot1Obj.increaseScore(robot0Obj.loadedHuman.scoreWorth)
+                robot1Obj.increaseScore(robot1Obj.loadedHuman.scoreWorth)
                 robot1Obj.unLoadHuman()
                 
                 #send message to robot window saying human is unloaded
                 supervisor.wwiSendText("humanUnloaded1")
+                
+                robot1History.enqueue("Brought a human to safety")
+                supervisor.wwiSendText("historyUpdate"+","+",".join(robot0History.queue)+":"+",".join(robot1History.queue))
                 
                 print("Robot 1 brought a human to safety")
                 
