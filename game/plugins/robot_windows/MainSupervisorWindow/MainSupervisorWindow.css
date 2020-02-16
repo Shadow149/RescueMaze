@@ -162,13 +162,50 @@ body{
   }
 
 #history{
-  padding: 7%;
+  padding-top: 7%;
+  width: 100%;
+  height: 300px;
+  table-layout: fixed;
+}
+
+#historyrow{
+  height: 50%;
 }
 
 #historyrowtext{
+  width: 50%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   text-align: center;
   width:50%;
-  height: 20px;
   font-size: 12px;
 }
 
+.outerDiv {
+  height: 100%;
+  white-space: normal;
+  overflow: auto;
+}
+
+.innerDiv {
+  height: 100%;
+  overflow: hidden;
+}
+
+#winning-screen{
+  display: none;
+  position: absolute;
+  background-color: black;
+  opacity: 0.9;
+  width:100%; 
+  height:100%;
+  z-index: 1;
+}
+
+#winning-team{
+  color: white;
+  text-align: center;
+  margin-top: 100%;
+  margin-bottom: 100%;
+}

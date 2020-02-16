@@ -74,6 +74,12 @@ function receive (message){
 			case "activityUnloaded0":
 				activityUnloadedColour(0)
 				break;
+			case "activityLoaded1":
+				activityLoadedColor(1,parts[1],parts[2],parts[3])
+				break;
+			case "activityUnloaded1":
+				activityUnloadedColour(1)
+				break;
 			case "historyUpdate":
 				let msg = message.split(":");
 				let history0 = msg[0].split(",").slice(1,msg[0].length-1)
@@ -121,17 +127,17 @@ function updateHistory(history0,history1){
 		console.log(history0)
 		console.log(history1 == "")
 		if(history0[i] != null){
-			text += "<td id='historyrowtext'>"+history0[i]+"</td>";
+			text += "<div class='outerDiv'><div class='innerDiv'><td id='historyrowtext'>"+history0[i]+"</td></div></div>";
 			i--;
 		}else{
-			text += "<td id='historyrowtext'></td>"
+			text += "<div class='outerDiv'><div class='innerDiv'><td id='historyrowtext'></td></div></div>"
 			history0End = true;
 		}
 		if(history1[j] != null){
-			text += "<td id='historyrowtext'>"+history1[j]+"</td>";
+			text += "<div class='outerDiv'><div class='innerDiv'><td id='historyrowtext'>"+history1[j]+"</td></div></div>";
 			j--;
 		}else{
-			text += "<td id='historyrowtext'></td>"
+			text += "<div class='outerDiv'><div class='innerDiv'><td id='historyrowtext'></td></div></div>"
 			history1End = true;
 		}
 		text += "</tr>";
@@ -392,12 +398,11 @@ function calculateWinner(name0,name1){
 		}
 	}
 
-
 }
 
 function show_winning_screen(){
 	calculateWinner(robot0Name,robot1Name);
 	//Show winning screen
   	document.getElementById("winning-screen").style.display = "inline-block";
-  	visable = true
+  	visable = true;
 }
