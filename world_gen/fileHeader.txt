@@ -14,6 +14,7 @@ DEF WALLGROUP Group {
     Transform {
       children [
         Solid {
+	  translation 0 -0.1 0
           children [
             Shape {
               appearance Appearance {
@@ -21,7 +22,7 @@ DEF WALLGROUP Group {
                 }
               }
               geometry DEF box Box {
-                size 25 0.1 20
+                size 25 0.3 20
               }
             }
           ]

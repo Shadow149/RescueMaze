@@ -2,7 +2,7 @@
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.999904339440331 0.012895767975643018 0.005001113547384512 0.7400648698256735
+  orientation -0.9999043393436948 0.012895774501650994 0.005001116040641551 0.740064875011294
   position 0.0797377570748452 26.58021196874523 32.6072172027324
 }
 TexturedBackground {
@@ -14,6 +14,7 @@ DEF WALLGROUP Group {
     Transform {
       children [
         Solid {
+	  translation 0 -0.1 0
           children [
             Shape {
               appearance Appearance {
@@ -21,7 +22,7 @@ DEF WALLGROUP Group {
                 }
               }
               geometry DEF box Box {
-                size 25 0.1 20
+                size 25 0.3 20
               }
             }
           ]
@@ -114,1413 +115,1312 @@ DEF WALLGROUP Group {
       ]
     }
     Transform {
-      children [
-        DEF WALL0 Solid {
-          translation 2.4500000000000006 0.75 -3.849999999999999
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
+        children [
+            DEF WALL0 Solid {
+            translation 0.8500000000000008 0.75 -5.1499999999999995
+            children [
+                Shape {
+                appearance Appearance {
+                    material Material {
+                    diffuseColor 0.32549 0.32549 0.32549
+                    }
                 }
-              }
-              geometry DEF WALLBOX0 Box {
-                size 0.1 1.5 12.1
-              }
+                geometry DEF WALLBOX0 Box {
+                    size 0.1 1.5 9.5
+                }
+                }
+            ]
+            name "internalWall0"
+            boundingObject USE WALLBOX0
             }
-          ]
-          name "internalWall0"
-          boundingObject USE WALLBOX0
-        }
-      ]
+        ]
     }
     Transform {
-      children [
-        DEF WALL1 Solid {
-          translation 2.4500000000000006 0.75 4.000000000000001
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
+        children [
+            DEF WALL1 Solid {
+            translation 0.8500000000000008 0.75 5.500000000000001
+            children [
+                Shape {
+                appearance Appearance {
+                    material Material {
+                    diffuseColor 0.32549 0.32549 0.32549
+                    }
                 }
-              }
-              geometry DEF WALLBOX1 Box {
-                size 0.1 1.5 0.6
-              }
+                geometry DEF WALLBOX1 Box {
+                    size 0.1 1.5 8.8
+                }
+                }
+            ]
+            name "internalWall1"
+            boundingObject USE WALLBOX1
             }
-          ]
-          name "internalWall1"
-          boundingObject USE WALLBOX1
-        }
-      ]
+        ]
     }
     Transform {
-      children [
-        DEF WALL2 Solid {
-          translation 2.4500000000000006 0.75 6.450000000000001
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
+        children [
+            DEF WALL2 Solid {
+            translation -11.45 0.75 -1.3499999999999992
+            children [
+                Shape {
+                appearance Appearance {
+                    material Material {
+                    diffuseColor 0.32549 0.32549 0.32549
+                    }
                 }
-              }
-              geometry DEF WALLBOX2 Box {
-                size 0.1 1.5 1.7
-              }
+                geometry DEF WALLBOX2 Box {
+                    size 1.9 1.5 0.1
+                }
+                }
+            ]
+            name "internalWall2"
+            boundingObject USE WALLBOX2
             }
-          ]
-          name "internalWall2"
-          boundingObject USE WALLBOX2
-        }
-      ]
+        ]
     }
     Transform {
-      children [
-        DEF WALL3 Solid {
-          translation 2.4500000000000006 0.75 9.350000000000001
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
+        children [
+            DEF WALL3 Solid {
+            translation -5.8999999999999995 0.75 -1.3499999999999992
+            children [
+                Shape {
+                appearance Appearance {
+                    material Material {
+                    diffuseColor 0.32549 0.32549 0.32549
+                    }
                 }
-              }
-              geometry DEF WALLBOX3 Box {
-                size 0.1 1.5 1.1
-              }
+                geometry DEF WALLBOX3 Box {
+                    size 6.2 1.5 0.1
+                }
+                }
+            ]
+            name "internalWall3"
+            boundingObject USE WALLBOX3
             }
-          ]
-          name "internalWall3"
-          boundingObject USE WALLBOX3
-        }
-      ]
+        ]
     }
     Transform {
-      children [
-        DEF WALL4 Solid {
-          translation -4.35 0.75 -9.299999999999999
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
+        children [
+            DEF WALL4 Solid {
+            translation -0.24999999999999928 0.75 -1.3499999999999992
+            children [
+                Shape {
+                appearance Appearance {
+                    material Material {
+                    diffuseColor 0.32549 0.32549 0.32549
+                    }
                 }
-              }
-              geometry DEF WALLBOX4 Box {
-                size 0.1 1.5 1.2
-              }
+                geometry DEF WALLBOX4 Box {
+                    size 2.1 1.5 0.1
+                }
+                }
+            ]
+            name "internalWall4"
+            boundingObject USE WALLBOX4
             }
-          ]
-          name "internalWall4"
-          boundingObject USE WALLBOX4
-        }
-      ]
+        ]
     }
     Transform {
-      children [
-        DEF WALL5 Solid {
-          translation -4.35 0.75 -4.249999999999999
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
+        children [
+            DEF WALL5 Solid {
+            translation -5.449999999999999 0.75 -9.149999999999999
+            children [
+                Shape {
+                appearance Appearance {
+                    material Material {
+                    diffuseColor 0.32549 0.32549 0.32549
+                    }
                 }
-              }
-              geometry DEF WALLBOX5 Box {
-                size 0.1 1.5 5.9
-              }
+                geometry DEF WALLBOX5 Box {
+                    size 0.1 1.5 1.5
+                }
+                }
+            ]
+            name "internalWall5"
+            boundingObject USE WALLBOX5
             }
-          ]
-          name "internalWall5"
-          boundingObject USE WALLBOX5
-        }
-      ]
+        ]
     }
     Transform {
-      children [
-        DEF WALL6 Solid {
-          translation -4.35 0.75 0.6500000000000007
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
+        children [
+            DEF WALL6 Solid {
+            translation -5.449999999999999 0.75 -4.1499999999999995
+            children [
+                Shape {
+                appearance Appearance {
+                    material Material {
+                    diffuseColor 0.32549 0.32549 0.32549
+                    }
                 }
-              }
-              geometry DEF WALLBOX6 Box {
-                size 0.1 1.5 1.1
-              }
+                geometry DEF WALLBOX6 Box {
+                    size 0.1 1.5 5.5
+                }
+                }
+            ]
+            name "internalWall6"
+            boundingObject USE WALLBOX6
             }
-          ]
-          name "internalWall6"
-          boundingObject USE WALLBOX6
-        }
-      ]
+        ]
     }
     Transform {
-      children [
-        DEF WALL7 Solid {
-          translation -4.35 0.75 6.300000000000001
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
+        children [
+            DEF WALL7 Solid {
+            translation -11.75 0.75 4.250000000000001
+            children [
+                Shape {
+                appearance Appearance {
+                    material Material {
+                    diffuseColor 0.32549 0.32549 0.32549
+                    }
                 }
-              }
-              geometry DEF WALLBOX7 Box {
-                size 0.1 1.5 7.2
-              }
+                geometry DEF WALLBOX7 Box {
+                    size 1.3 1.5 0.1
+                }
+                }
+            ]
+            name "internalWall7"
+            boundingObject USE WALLBOX7
             }
-          ]
-          name "internalWall7"
-          boundingObject USE WALLBOX7
-        }
-      ]
+        ]
     }
     Transform {
-      children [
-        DEF WALL8 Solid {
-          translation -10.299999999999999 0.75 0.2500000000000007
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
+        children [
+            DEF WALL8 Solid {
+            translation -4.3999999999999995 0.75 4.250000000000001
+            children [
+                Shape {
+                appearance Appearance {
+                    material Material {
+                    diffuseColor 0.32549 0.32549 0.32549
+                    }
                 }
-              }
-              geometry DEF WALLBOX8 Box {
-                size 4.2 1.5 0.1
-              }
+                geometry DEF WALLBOX8 Box {
+                    size 10.4 1.5 0.1
+                }
+                }
+            ]
+            name "internalWall8"
+            boundingObject USE WALLBOX8
             }
-          ]
-          name "internalWall8"
-          boundingObject USE WALLBOX8
-        }
-      ]
+        ]
     }
     Transform {
-      children [
-        DEF WALL9 Solid {
-          translation -5.549999999999999 0.75 0.2500000000000007
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
+        children [
+            DEF WALL9 Solid {
+            translation 2.5500000000000007 0.75 -1.4499999999999993
+            children [
+                Shape {
+                appearance Appearance {
+                    material Material {
+                    diffuseColor 0.32549 0.32549 0.32549
+                    }
                 }
-              }
-              geometry DEF WALLBOX9 Box {
-                size 2.3 1.5 0.1
-              }
+                geometry DEF WALLBOX9 Box {
+                    size 3.3 1.5 0.1
+                }
+                }
+            ]
+            name "internalWall9"
+            boundingObject USE WALLBOX9
             }
-          ]
-          name "internalWall9"
-          boundingObject USE WALLBOX9
-        }
-      ]
+        ]
     }
     Transform {
-      children [
-        DEF WALL10 Solid {
-          translation -10.149999999999999 0.75 -4.1499999999999995
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
+        children [
+            DEF WALL10 Solid {
+            translation 9.05 0.75 -1.4499999999999993
+            children [
+                Shape {
+                appearance Appearance {
+                    material Material {
+                    diffuseColor 0.32549 0.32549 0.32549
+                    }
                 }
-              }
-              geometry DEF WALLBOX10 Box {
-                size 4.5 1.5 0.1
-              }
+                geometry DEF WALLBOX10 Box {
+                    size 6.7 1.5 0.1
+                }
+                }
+            ]
+            name "internalWall10"
+            boundingObject USE WALLBOX10
             }
-          ]
-          name "internalWall10"
-          boundingObject USE WALLBOX10
-        }
-      ]
+        ]
     }
     Transform {
-      children [
-        DEF WALL11 Solid {
-          translation -5.3999999999999995 0.75 -4.1499999999999995
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
+        children [
+            DEF WALL11 Solid {
+            translation 7.950000000000001 0.75 -8.399999999999999
+            children [
+                Shape {
+                appearance Appearance {
+                    material Material {
+                    diffuseColor 0.32549 0.32549 0.32549
+                    }
                 }
-              }
-              geometry DEF WALLBOX11 Box {
-                size 2 1.5 0.1
-              }
+                geometry DEF WALLBOX11 Box {
+                    size 0.1 1.5 3.0
+                }
+                }
+            ]
+            name "internalWall11"
+            boundingObject USE WALLBOX11
             }
-          ]
-          name "internalWall11"
-          boundingObject USE WALLBOX11
-        }
-      ]
+        ]
     }
     Transform {
-      children [
-        DEF WALL12 Solid {
-          translation -9.299999999999999 0.75 3.650000000000001
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
+        children [
+            DEF WALL12 Solid {
+            translation 7.950000000000001 0.75 -3.4499999999999993
+            children [
+                Shape {
+                appearance Appearance {
+                    material Material {
+                    diffuseColor 0.32549 0.32549 0.32549
+                    }
                 }
-              }
-              geometry DEF WALLBOX12 Box {
-                size 6.2 1.5 0.1
-              }
+                geometry DEF WALLBOX12 Box {
+                    size 0.1 1.5 3.9
+                }
+                }
+            ]
+            name "internalWall12"
+            boundingObject USE WALLBOX12
             }
-          ]
-          name "internalWall12"
-          boundingObject USE WALLBOX12
-        }
-      ]
+        ]
     }
     Transform {
-      children [
-        DEF WALL13 Solid {
-          translation -4.549999999999999 0.75 3.650000000000001
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
+        children [
+            DEF WALL13 Solid {
+            translation 7.750000000000001 0.75 2.250000000000001
+            children [
+                Shape {
+                appearance Appearance {
+                    material Material {
+                    diffuseColor 0.32549 0.32549 0.32549
+                    }
                 }
-              }
-              geometry DEF WALLBOX13 Box {
-                size 0.3 1.5 0.1
-              }
+                geometry DEF WALLBOX13 Box {
+                    size 0.1 1.5 7.3
+                }
+                }
+            ]
+            name "internalWall13"
+            boundingObject USE WALLBOX13
             }
-          ]
-          name "internalWall13"
-          boundingObject USE WALLBOX13
-        }
-      ]
+        ]
     }
     Transform {
-      children [
-        DEF WALL14 Solid {
-          translation -2.3999999999999995 0.75 -1.4499999999999993
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
+        children [
+            DEF WALL14 Solid {
+            translation 7.750000000000001 0.75 8.65
+            children [
+                Shape {
+                appearance Appearance {
+                    material Material {
+                    diffuseColor 0.32549 0.32549 0.32549
+                    }
                 }
-              }
-              geometry DEF WALLBOX14 Box {
-                size 3.8 1.5 0.1
-              }
-            }
-          ]
-          name "internalWall14"
-          boundingObject USE WALLBOX14
-        }
-      ]
-    }
-    Transform {
-      children [
-        DEF WALL15 Solid {
-          translation 1.7000000000000006 0.75 -1.4499999999999993
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
+                geometry DEF WALLBOX14 Box {
+                    size 0.1 1.5 2.5
                 }
-              }
-              geometry DEF WALLBOX15 Box {
-                size 1.4 1.5 0.1
-              }
-            }
-          ]
-          name "internalWall15"
-          boundingObject USE WALLBOX15
-        }
-      ]
-    }
-    Transform {
-      children [
-        DEF WALL16 Solid {
-          translation -0.1999999999999993 0.75 -6.949999999999999
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
                 }
-              }
-              geometry DEF WALLBOX16 Box {
-                size 5.2 1.5 0.1
-              }
+            ]
+            name "internalWall14"
+            boundingObject USE WALLBOX14
             }
-          ]
-          name "internalWall16"
-          boundingObject USE WALLBOX16
-        }
-      ]
-    }
-    Transform {
-      children [
-        DEF WALL17 Solid {
-          translation -4.049999999999999 0.75 4.15
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
-                }
-              }
-              geometry DEF WALLBOX17 Box {
-                size 0.5 1.5 0.1
-              }
-            }
-          ]
-          name "internalWall17"
-          boundingObject USE WALLBOX17
-        }
-      ]
-    }
-    Transform {
-      children [
-        DEF WALL18 Solid {
-          translation 0.05000000000000071 0.75 4.15
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
-                }
-              }
-              geometry DEF WALLBOX18 Box {
-                size 4.7 1.5 0.1
-              }
-            }
-          ]
-          name "internalWall18"
-          boundingObject USE WALLBOX18
-        }
-      ]
-    }
-    Transform {
-      children [
-        DEF WALL19 Solid {
-          translation 3.3000000000000007 0.75 -1.7499999999999993
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
-                }
-              }
-              geometry DEF WALLBOX19 Box {
-                size 1.6 1.5 0.1
-              }
-            }
-          ]
-          name "internalWall19"
-          boundingObject USE WALLBOX19
-        }
-      ]
-    }
-    Transform {
-      children [
-        DEF WALL20 Solid {
-          translation 9 0.75 -1.7499999999999993
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
-                }
-              }
-              geometry DEF WALLBOX20 Box {
-                size 6.8 1.5 0.1
-              }
-            }
-          ]
-          name "internalWall20"
-          boundingObject USE WALLBOX20
-        }
-      ]
-    }
-    Transform {
-      children [
-        DEF WALL21 Solid {
-          translation 2.900000000000001 0.75 -4.6499999999999995
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
-                }
-              }
-              geometry DEF WALLBOX21 Box {
-                size 0.8 1.5 0.1
-              }
-            }
-          ]
-          name "internalWall21"
-          boundingObject USE WALLBOX21
-        }
-      ]
-    }
-    Transform {
-      children [
-        DEF WALL22 Solid {
-          translation 8.600000000000001 0.75 -4.6499999999999995
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
-                }
-              }
-              geometry DEF WALLBOX22 Box {
-                size 7.6 1.5 0.1
-              }
-            }
-          ]
-          name "internalWall22"
-          boundingObject USE WALLBOX22
-        }
-      ]
-    }
-    Transform {
-      children [
-        DEF WALL23 Solid {
-          translation 6.450000000000001 0.75 -8.2
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
-                }
-              }
-              geometry DEF WALLBOX23 Box {
-                size 0.1 1.5 3.4
-              }
-            }
-          ]
-          name "internalWall23"
-          boundingObject USE WALLBOX23
-        }
-      ]
-    }
-    Transform {
-      children [
-        DEF WALL24 Solid {
-          translation 6.450000000000001 0.75 -4.85
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
-                }
-              }
-              geometry DEF WALLBOX24 Box {
-                size 0.1 1.5 0.3
-              }
-            }
-          ]
-          name "internalWall24"
-          boundingObject USE WALLBOX24
-        }
-      ]
-    }
-    Transform {
-      children [
-        DEF WALL25 Solid {
-          translation 8.350000000000001 0.75 -4.35
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
-                }
-              }
-              geometry DEF WALLBOX25 Box {
-                size 0.1 1.5 0.5
-              }
-            }
-          ]
-          name "internalWall25"
-          boundingObject USE WALLBOX25
-        }
-      ]
-    }
-    Transform {
-      children [
-        DEF WALL26 Solid {
-          translation 8.350000000000001 0.75 -2.1999999999999993
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
-                }
-              }
-              geometry DEF WALLBOX26 Box {
-                size 0.1 1.5 0.8
-              }
-            }
-          ]
-          name "internalWall26"
-          boundingObject USE WALLBOX26
-        }
-      ]
-    }
-    Transform {
-      children [
-        DEF WALL27 Solid {
-          translation 3.9500000000000006 0.75 5.750000000000001
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
-                }
-              }
-              geometry DEF WALLBOX27 Box {
-                size 2.9 1.5 0.1
-              }
-            }
-          ]
-          name "internalWall27"
-          boundingObject USE WALLBOX27
-        }
-      ]
-    }
-    Transform {
-      children [
-        DEF WALL28 Solid {
-          translation 8.65 0.75 5.750000000000001
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
-                }
-              }
-              geometry DEF WALLBOX28 Box {
-                size 3.5 1.5 0.1
-              }
-            }
-          ]
-          name "internalWall28"
-          boundingObject USE WALLBOX28
-        }
-      ]
-    }
-    Transform {
-      children [
-        DEF WALL29 Solid {
-          translation 12.15 0.75 5.750000000000001
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
-                }
-              }
-              geometry DEF WALLBOX29 Box {
-                size 0.5 1.5 0.1
-              }
-            }
-          ]
-          name "internalWall29"
-          boundingObject USE WALLBOX29
-        }
-      ]
-    }
-    Transform {
-      children [
-        DEF WALL30 Solid {
-          translation 6.450000000000001 0.75 1.9500000000000006
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
-                }
-              }
-              geometry DEF WALLBOX30 Box {
-                size 7.9 1.5 0.1
-              }
-            }
-          ]
-          name "internalWall30"
-          boundingObject USE WALLBOX30
-        }
-      ]
-    }
-    Transform {
-      children [
-        DEF WALL31 Solid {
-          translation 12.15 0.75 1.9500000000000006
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
-                }
-              }
-              geometry DEF WALLBOX31 Box {
-                size 0.5 1.5 0.1
-              }
-            }
-          ]
-          name "internalWall31"
-          boundingObject USE WALLBOX31
-        }
-      ]
-    }
-    Transform {
-      children [
-        DEF WALL32 Solid {
-          translation 8.950000000000001 0.75 5.8500000000000005
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
-                }
-              }
-              geometry DEF WALLBOX32 Box {
-                size 0.1 1.5 0.1
-              }
-            }
-          ]
-          name "internalWall32"
-          boundingObject USE WALLBOX32
-        }
-      ]
-    }
-    Transform {
-      children [
-        DEF WALL33 Solid {
-          translation 8.950000000000001 0.75 8.65
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.32549 0.32549 0.32549
-                }
-              }
-              geometry DEF WALLBOX33 Box {
-                size 0.1 1.5 2.5
-              }
-            }
-          ]
-          name "internalWall33"
-          boundingObject USE WALLBOX33
-        }
-      ]
-    }
-    Transform {
-      children [
-        Solid {
-          translation 8.55 0.055 3.8500000000000005
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.3 0 1
-                }
-              }
-              geometry DEF box Box {
-                size 2.1 0.005 2.1
-              }
-            }
-          ]
-          name "base0"
-          recognitionColors [
-            0.3 0 1
-          ]
-        }
-      ]
-    }
-    Transform {
-      children [
-        Solid {
-          translation 4.750000000000001 0.055 -6.85
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.3 0 1
-                }
-              }
-              geometry DEF box Box {
-                size 2.1 0.005 2.1
-              }
-            }
-          ]
-          name "base1"
-          recognitionColors [
-            0.3 0 1
-          ]
-        }
-      ]
-    }
-    Transform {
-      children [
-        Solid {
-          translation -1.0499999999999994 0.055 -8.45
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.3 0 1
-                }
-              }
-              geometry DEF box Box {
-                size 2.1 0.005 2.1
-              }
-            }
-          ]
-          name "base2"
-          recognitionColors [
-            0.3 0 1
-          ]
-        }
-      ]
-    }
-    Group {
-      children [
-        DEF base0Min Transform {
-          translation 7.500000000000001 0 2.8000000000000007
-        }
-        DEF base0Max Transform {
-          translation 9.600000000000001 0 4.9
-        }
-        DEF base1Min Transform {
-          translation 3.700000000000001 0 -7.8999999999999995
-        }
-        DEF base1Max Transform {
-          translation 5.800000000000001 0 -5.8
-        }
-        DEF base2Min Transform {
-          translation -2.0999999999999996 0 -9.5
-        }
-        DEF base2Max Transform {
-          translation 6.661338147750939e-16 0 -7.3999999999999995
-        }
-      ]
+        ]
     }
   ]
 }
+DEF BASEGROUP Group {
+    children [
+    Transform {
+        children [
+            Solid {
+            translation 9.4 0.055 5.200000000000001
+            children [
+                Shape {
+                appearance Appearance {
+                    material Material {
+                    diffuseColor 0.3 0 1
+                    }
+                }
+                geometry DEF box Box {
+                    size 1.6 0.005 1.6
+                }
+                }
+            ]
+            name "base0"
+			recognitionColors [
+        		0.3 0 1
+      		]
+            }
+        ]
+        }
+    Transform {
+        children [
+            Solid {
+            translation -4.8999999999999995 0.055 6.700000000000001
+            children [
+                Shape {
+                appearance Appearance {
+                    material Material {
+                    diffuseColor 0.3 0 1
+                    }
+                }
+                geometry DEF box Box {
+                    size 1.6 0.005 1.6
+                }
+                }
+            ]
+            name "base1"
+			recognitionColors [
+        		0.3 0 1
+      		]
+            }
+        ]
+        }
+    Transform {
+        children [
+            Solid {
+            translation -2.999999999999999 0.055 -6.799999999999999
+            children [
+                Shape {
+                appearance Appearance {
+                    material Material {
+                    diffuseColor 0.3 0 1
+                    }
+                }
+                geometry DEF box Box {
+                    size 1.6 0.005 1.6
+                }
+                }
+            ]
+            name "base2"
+			recognitionColors [
+        		0.3 0 1
+      		]
+            }
+        ]
+        }
+            DEF base0Min Transform {
+                translation 8.6 0 4.400000000000001
+            }
+            DEF base0Max Transform {
+                translation 10.200000000000001 0 6.000000000000001
+            }
+            DEF base1Min Transform {
+                translation -5.699999999999999 0 5.900000000000001
+            }
+            DEF base1Max Transform {
+                translation -4.1 0 7.500000000000001
+            }
+            DEF base2Min Transform {
+                translation -3.799999999999999 0 -7.599999999999999
+            }
+            DEF base2Max Transform {
+                translation -2.1999999999999993 0 -5.999999999999999
+            }
+
+    ]
+}
 DEF ROBOT0 Pioneer3dx {
-  translation 8.55 0.0975 3.8500000000000005
-  name "robot0"
   controller "robot0Controller"
+  translation 9.350000000000001 0.0975 5.15
+  name "robot0"
   extensionSlot [
     Camera {
       translation 0.04 0.24 0
       fieldOfView 0.9
       recognition Recognition {
-      }
+	  }
     }
   ]
 }
 DEF ROBOT1 Pioneer3dx {
-  translation 4.750000000000001 0.0975 -6.85
-  name "robot1"
   controller "robot1Controller"
+  translation -4.949999999999999 0.0975 6.65
+  name "robot1"
   extensionSlot [
     Camera {
       translation 0.04 0.24 0
       fieldOfView 0.9
       recognition Recognition {
-      }
+	  }
     }
   ]
 }
 DEF HUMANGROUP Group {
-  children [
-    Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            texture ImageTexture {
-              url [
-                "textures/texture_grid.png"
-              ]
-            }
-          }
-          geometry DEF CAPSULE Capsule {
-            height 0.5
-            radius 0.3
-          }
+    children [
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.5
+                    radius 0.3
+                    }
+                }
+            ]
+            name "human0"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
         }
-      ]
-      name "human0"
-      boundingObject USE CAPSULE
-      recognitionColors [
-        0 0 0
-      ]
-    }
-    Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            texture ImageTexture {
-              url [
-                "textures/texture_grid.png"
-              ]
-            }
-          }
-          geometry DEF CAPSULE Capsule {
-            height 0.5
-            radius 0.3
-          }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.5
+                    radius 0.3
+                    }
+                }
+            ]
+            name "human1"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
         }
-      ]
-      name "human1"
-      boundingObject USE CAPSULE
-      recognitionColors [
-        0 0 0
-      ]
-    }
-    Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            texture ImageTexture {
-              url [
-                "textures/texture_grid.png"
-              ]
-            }
-          }
-          geometry DEF CAPSULE Capsule {
-            height 0.5
-            radius 0.3
-          }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.5
+                    radius 0.3
+                    }
+                }
+            ]
+            name "human2"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
         }
-      ]
-      name "human2"
-      boundingObject USE CAPSULE
-      recognitionColors [
-        0 0 0
-      ]
-    }
-    Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            texture ImageTexture {
-              url [
-                "textures/texture_grid.png"
-              ]
-            }
-          }
-          geometry DEF CAPSULE Capsule {
-            height 0.5
-            radius 0.3
-          }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.5
+                    radius 0.3
+                    }
+                }
+            ]
+            name "human3"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
         }
-      ]
-      name "human3"
-      boundingObject USE CAPSULE
-      recognitionColors [
-        0 0 0
-      ]
-    }
-    Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            texture ImageTexture {
-              url [
-                "textures/texture_grid.png"
-              ]
-            }
-          }
-          geometry DEF CAPSULE Capsule {
-            height 0.5
-            radius 0.3
-          }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.5
+                    radius 0.3
+                    }
+                }
+            ]
+            name "human4"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
         }
-      ]
-      name "human4"
-      boundingObject USE CAPSULE
-      recognitionColors [
-        0 0 0
-      ]
-    }
-    Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            texture ImageTexture {
-              url [
-                "textures/texture_grid.png"
-              ]
-            }
-          }
-          geometry DEF CAPSULE Capsule {
-            height 0.5
-            radius 0.3
-          }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.5
+                    radius 0.3
+                    }
+                }
+            ]
+            name "human5"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
         }
-      ]
-      name "human5"
-      boundingObject USE CAPSULE
-      recognitionColors [
-        0 0 0
-      ]
-    }
-    Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            texture ImageTexture {
-              url [
-                "textures/texture_grid.png"
-              ]
-            }
-          }
-          geometry DEF CAPSULE Capsule {
-            height 0.5
-            radius 0.3
-          }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.5
+                    radius 0.3
+                    }
+                }
+            ]
+            name "human6"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
         }
-      ]
-      name "human6"
-      boundingObject USE CAPSULE
-      recognitionColors [
-        0 0 0
-      ]
-    }
-    Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            texture ImageTexture {
-              url [
-                "textures/texture_grid.png"
-              ]
-            }
-          }
-          geometry DEF CAPSULE Capsule {
-            height 0.5
-            radius 0.3
-          }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.5
+                    radius 0.3
+                    }
+                }
+            ]
+            name "human7"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
         }
-      ]
-      name "human7"
-      boundingObject USE CAPSULE
-      recognitionColors [
-        0 0 0
-      ]
-    }
-    Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            texture ImageTexture {
-              url [
-                "textures/texture_grid.png"
-              ]
-            }
-          }
-          geometry DEF CAPSULE Capsule {
-            height 0.5
-            radius 0.3
-          }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.5
+                    radius 0.3
+                    }
+                }
+            ]
+            name "human8"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
         }
-      ]
-      name "human8"
-      boundingObject USE CAPSULE
-      recognitionColors [
-        0 0 0
-      ]
-    }
-    Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            texture ImageTexture {
-              url [
-                "textures/texture_grid.png"
-              ]
-            }
-          }
-          geometry DEF CAPSULE Capsule {
-            height 0.5
-            radius 0.3
-          }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.5
+                    radius 0.3
+                    }
+                }
+            ]
+            name "human9"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
         }
-      ]
-      name "human9"
-      boundingObject USE CAPSULE
-      recognitionColors [
-        0 0 0
-      ]
-    }
-    Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            texture ImageTexture {
-              url [
-                "textures/texture_grid.png"
-              ]
-            }
-          }
-          geometry DEF CAPSULE Capsule {
-            height 0.5
-            radius 0.3
-          }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.5
+                    radius 0.3
+                    }
+                }
+            ]
+            name "human10"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
         }
-      ]
-      name "human10"
-      boundingObject USE CAPSULE
-      recognitionColors [
-        0 0 0
-      ]
-    }
-    Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            texture ImageTexture {
-              url [
-                "textures/texture_grid.png"
-              ]
-            }
-          }
-          geometry DEF CAPSULE Capsule {
-            height 0.5
-            radius 0.3
-          }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.5
+                    radius 0.3
+                    }
+                }
+            ]
+            name "human11"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
         }
-      ]
-      name "human11"
-      boundingObject USE CAPSULE
-      recognitionColors [
-        0 0 0
-      ]
-    }
-    Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            texture ImageTexture {
-              url [
-                "textures/texture_grid.png"
-              ]
-            }
-          }
-          geometry DEF CAPSULE Capsule {
-            height 0.5
-            radius 0.3
-          }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.5
+                    radius 0.3
+                    }
+                }
+            ]
+            name "human12"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
         }
-      ]
-      name "human12"
-      boundingObject USE CAPSULE
-      recognitionColors [
-        0 0 0
-      ]
-    }
-    Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            texture ImageTexture {
-              url [
-                "textures/texture_grid.png"
-              ]
-            }
-          }
-          geometry DEF CAPSULE Capsule {
-            height 0.5
-            radius 0.3
-          }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.5
+                    radius 0.3
+                    }
+                }
+            ]
+            name "human13"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
         }
-      ]
-      name "human13"
-      boundingObject USE CAPSULE
-      recognitionColors [
-        0 0 0
-      ]
-    }
-    Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            texture ImageTexture {
-              url [
-                "textures/texture_grid.png"
-              ]
-            }
-          }
-          geometry DEF CAPSULE Capsule {
-            height 0.5
-            radius 0.3
-          }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.5
+                    radius 0.3
+                    }
+                }
+            ]
+            name "human14"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
         }
-      ]
-      name "human14"
-      boundingObject USE CAPSULE
-      recognitionColors [
-        0 0 0
-      ]
-    }
-    Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            texture ImageTexture {
-              url [
-                "textures/texture_grid.png"
-              ]
-            }
-          }
-          geometry DEF CAPSULE Capsule {
-            height 0.5
-            radius 0.3
-          }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.5
+                    radius 0.3
+                    }
+                }
+            ]
+            name "human15"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
         }
-      ]
-      name "human15"
-      boundingObject USE CAPSULE
-      recognitionColors [
-        0 0 0
-      ]
-    }
-    Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            texture ImageTexture {
-              url [
-                "textures/texture_grid.png"
-              ]
-            }
-          }
-          geometry DEF CAPSULE Capsule {
-            height 0.5
-            radius 0.3
-          }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.5
+                    radius 0.3
+                    }
+                }
+            ]
+            name "human16"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
         }
-      ]
-      name "human16"
-      boundingObject USE CAPSULE
-      recognitionColors [
-        0 0 0
-      ]
-    }
-    Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            texture ImageTexture {
-              url [
-                "textures/texture_grid.png"
-              ]
-            }
-          }
-          geometry DEF CAPSULE Capsule {
-            height 0.5
-            radius 0.3
-          }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.5
+                    radius 0.3
+                    }
+                }
+            ]
+            name "human17"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
         }
-      ]
-      name "human17"
-      boundingObject USE CAPSULE
-      recognitionColors [
-        0 0 0
-      ]
-    }
-    Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            texture ImageTexture {
-              url [
-                "textures/texture_grid.png"
-              ]
-            }
-          }
-          geometry DEF CAPSULE Capsule {
-            height 0.5
-            radius 0.3
-          }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.5
+                    radius 0.3
+                    }
+                }
+            ]
+            name "human18"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
         }
-      ]
-      name "human18"
-      boundingObject USE CAPSULE
-      recognitionColors [
-        0 0 0
-      ]
-    }
-    Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            texture ImageTexture {
-              url [
-                "textures/texture_grid.png"
-              ]
-            }
-          }
-          geometry DEF CAPSULE Capsule {
-            height 0.5
-            radius 0.3
-          }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.5
+                    radius 0.3
+                    }
+                }
+            ]
+            name "human19"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
         }
-      ]
-      name "human19"
-      boundingObject USE CAPSULE
-      recognitionColors [
-        0 0 0
-      ]
-    }
-  ]
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.3
+                    radius 0.2
+                    }
+                }
+            ]
+            name "humanChild20"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
+        }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.3
+                    radius 0.2
+                    }
+                }
+            ]
+            name "humanChild21"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
+        }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.3
+                    radius 0.2
+                    }
+                }
+            ]
+            name "humanChild22"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
+        }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.3
+                    radius 0.2
+                    }
+                }
+            ]
+            name "humanChild23"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
+        }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.3
+                    radius 0.2
+                    }
+                }
+            ]
+            name "humanChild24"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
+        }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.3
+                    radius 0.2
+                    }
+                }
+            ]
+            name "humanChild25"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
+        }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.3
+                    radius 0.2
+                    }
+                }
+            ]
+            name "humanChild26"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
+        }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.3
+                    radius 0.2
+                    }
+                }
+            ]
+            name "humanChild27"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
+        }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.3
+                    radius 0.2
+                    }
+                }
+            ]
+            name "humanChild28"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
+        }
+        Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+                    texture ImageTexture {
+                        url [
+                        "textures/texture_grid.png"
+                        ]
+                    }
+                    }
+                    geometry DEF CAPSULE Capsule {
+                    height 0.3
+                    radius 0.2
+                    }
+                }
+            ]
+            name "humanChild29"
+            boundingObject USE CAPSULE
+            recognitionColors [
+        		0 0 0
+      		]
+        }
+
+    ]
 }
 DEF OBSTACLEGROUP Group {
-  children [
-    DEF OBSTACLE0 Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0.45 0.45 0.45
-            }
-          }
-          geometry DEF OBSTACLEBOX0 Box {
-            size 1.81 0.91 0.94
-          }
+    children [
+		DEF OBSTACLE0 Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+						material Material {
+						diffuseColor 0.45 0.45 0.45
+						}
+                    }
+                    geometry DEF OBSTACLEBOX0 Box {
+						size 1.72 0.79 1.12
+                    }
+                }
+            ]
+            name "obstacle0"
+            boundingObject USE OBSTACLEBOX0
         }
-      ]
-      name "obstacle0"
-      boundingObject USE OBSTACLEBOX0
-    }
-    DEF OBSTACLE1 Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0.45 0.45 0.45
-            }
-          }
-          geometry DEF OBSTACLEBOX1 Box {
-            size 2.07 0.84 0.79
-          }
+		DEF OBSTACLE1 Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+						material Material {
+						diffuseColor 0.3 0.3 0.3
+						}
+                    }
+                    geometry DEF OBSTACLEBOX1 Box {
+						size 0.37 1.25 1.66
+                    }
+                }
+            ]
+            name "obstacle1"
+            boundingObject USE OBSTACLEBOX1
+	    physics NULL
+	    
         }
-      ]
-      name "obstacle1"
-      boundingObject USE OBSTACLEBOX1
-    }
-    DEF OBSTACLE2 Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0.45 0.45 0.45
-            }
-          }
-          geometry DEF OBSTACLEBOX2 Box {
-            size 0.67 0.55 2.18
-          }
-        }
-      ]
-      name "obstacle2"
-      boundingObject USE OBSTACLEBOX2
-    }
-    DEF OBSTACLE3 Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0.45 0.45 0.45
-            }
-          }
-          geometry DEF OBSTACLEBOX3 Box {
-            size 1.78 0.58 1.77
-          }
-        }
-      ]
-      name "obstacle3"
-      boundingObject USE OBSTACLEBOX3
-    }
-    DEF OBSTACLE4 Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0.45 0.45 0.45
-            }
-          }
-          geometry DEF OBSTACLEBOX4 Box {
-            size 1.68 0.81 0.67
-          }
-        }
-      ]
-      name "obstacle4"
-      boundingObject USE OBSTACLEBOX4
-    }
-    DEF OBSTACLE5 Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0.45 0.45 0.45
-            }
-          }
-          geometry DEF OBSTACLEBOX5 Box {
-            size 1.24 0.91 1.66
-          }
-        }
-      ]
-      name "obstacle5"
-      boundingObject USE OBSTACLEBOX5
-    }
-  ]
+
+    ]
+}
+DEF ACTOBJECTSGROUP Group {
+    children [
+	DEF ACT0 Solid {
+	  translation 0 -1000 0
+	  children [
+	    Shape {
+	      appearance Appearance {
+	        material DEF ACT0MATERIAL Material {
+	          diffuseColor 1 0 1
+	        }
+	      }
+	      geometry DEF ACTIVITYBOX0 Box {
+	        size 0.5 0.5 0.5
+	      }
+	    }
+	  ]
+	  name "activityBox0"
+	  boundingObject USE ACTIVITYBOX0
+	  recognitionColors [
+	    1 0 1
+	  ]
+	}
+	DEF ACT1 Solid {
+	  translation 0 -1000 0
+	  children [
+	    Shape {
+	      appearance Appearance {
+	        material DEF ACT1MATERIAL Material {
+	          diffuseColor 0 1 1
+	        }
+	      }
+	      geometry DEF ACTIVITYBOX1 Box {
+	        size 0.5 0.5 0.5
+	      }
+	    }
+	  ]
+	  name "activityBox1"
+	  boundingObject USE ACTIVITYBOX1
+	  recognitionColors [
+	    0 1 1
+	  ]
+	}
+	DEF ACT2 Solid {
+	  translation 0 -1000 0
+	  children [
+	    Shape {
+	      appearance Appearance {
+	        material DEF ACT2MATERIAL Material {
+	          diffuseColor 1 1 0
+	        }
+	      }
+	      geometry DEF ACTIVITYBOX2 Box {
+	        size 0.5 0.5 0.5
+	      }
+	    }
+	  ]
+	  name "activityBox2"
+	  boundingObject USE ACTIVITYBOX2
+	  recognitionColors [
+	    1 1 0
+	  ]
+	}
+
+    ]
+}
+DEF ACTMATGROUP Group {
+    children [
+	DEF ACT0MAT Solid {
+	  translation 0 -1000 0
+	  children [
+	    Shape {
+	      appearance Appearance {
+        	material Material {
+	          diffuseColor 0.5 0.0 0.5
+	        }
+	      }
+	      geometry DEF ACTIVITYPAD0 Box {
+        size 1 0.005 1
+	      }
+	    }
+	  ]
+	  name "activityMat0"
+	  boundingObject USE ACTIVITYPAD0
+	  recognitionColors [
+	    0.5 0.0 0.5
+	  ]
+	}
+	DEF ACT1MAT Solid {
+	  translation 0 -1000 0
+	  children [
+	    Shape {
+	      appearance Appearance {
+        	material Material {
+	          diffuseColor 0.0 0.5 0.5
+	        }
+	      }
+	      geometry DEF ACTIVITYPAD1 Box {
+        size 1 0.005 1
+	      }
+	    }
+	  ]
+	  name "activityMat1"
+	  boundingObject USE ACTIVITYPAD1
+	  recognitionColors [
+	    0.0 0.5 0.5
+	  ]
+	}
+	DEF ACT2MAT Solid {
+	  translation 0 -1000 0
+	  children [
+	    Shape {
+	      appearance Appearance {
+        	material Material {
+	          diffuseColor 0.5 0.5 0.0
+	        }
+	      }
+	      geometry DEF ACTIVITYPAD2 Box {
+        size 1 0.005 1
+	      }
+	    }
+	  ]
+	  name "activityMat2"
+	  boundingObject USE ACTIVITYPAD2
+	  recognitionColors [
+	    0.5 0.5 0.0
+	  ]
+	}
+
+    ]
 }
 DEF MAINSUPERVISOR Robot {
-  controller "MainSupervisor"
   supervisor TRUE
+  controller "MainSupervisor"
   window "MainSupervisorWindow"
 }
+
 DEF OBJECTPLACER Robot {
   name "ObjectPlacementSupervisor"
   controller "ObjectPlacementSupervisor"

@@ -1,4 +1,4 @@
-"""Map Generation Main Script v2
+"""Map Generation Main Script v4
    Written by Robbie Goldman and Alfred Roberts
 
 Changelog:
@@ -7,6 +7,9 @@ Changelog:
  V3:
  - Added GUI integraction
  - Added child generation
+ V4:
+ - Added activity generation
+ - Resized bases
 """
 
 import random
@@ -539,7 +542,7 @@ def addBase(root, array, quadrants):
             yPos = random.randint(yMin + yThird, yMax - yThird)
 
             #Create the base array
-            base = [[xPos, yPos], [xPos + 20, yPos + 20]]
+            base = [[xPos, yPos], [xPos + 15, yPos + 15]]
 
             #Set which quadrant was used
             usedQuad = quadrants[rQuad]
@@ -654,30 +657,36 @@ def generateEdges(array):
     #Return the generated list
     return positions
 
-def addObstacle():
+def addObstacle(dynamic):
     '''Generate random dimensions for an obstacle'''
     height = float(random.randrange(50, 130)) / 100.0
     width = float(random.randrange(30, 220)) / 100.0
     depth = float(random.randrange(30, 220)) / 100.0
-    obstacle = [width, height, depth]
+    obstacle = [width, height, depth, dynamic]
     return obstacle
 	
 
-def generateObstacles(numObstacles):
+def generateObstacles(numObstaclesStatic, numObstaclesDynamic):
     '''Generate a list of obstacles of length numObstacles'''
     #List to hold obstacle dimensions
     obstacles = []
-    #Iterate for each obstacle
-    for i in range(0, numObstacles):
+    #Iterate for each static obstacle
+    for i in range(0, numObstaclesStatic):
         #Create an obstacle and add it to the list
-        newObstacle = addObstacle()
+        newObstacle = addObstacle(False)
+        obstacles.append(newObstacle)
+
+    #Iterate for each static obstacle
+    for i in range(0, numObstaclesDynamic):
+        #Create an obstacle and add it to the list
+        newObstacle = addObstacle(True)
         obstacles.append(newObstacle)
 
     #Return the list of dimensions
     return obstacles
 
 
-def generatePlan (numSplits, numObstacles, numBases):
+def generatePlan (numSplits, numObstaclesStatic, numObstaclesDynamic, numBases):
     '''Perform a map generation up to png - does not update map file'''
     #Generate the world and tree
     world, root = generateWorld(numSplits)
@@ -692,7 +701,7 @@ def generatePlan (numSplits, numObstacles, numBases):
     robotPositions = convertRobotsToWorld(robots)
 	
     #Create a list of obstacles
-    obstacles = generateObstacles(numObstacles)
+    obstacles = generateObstacles(numObstaclesStatic, numObstaclesDynamic)
 
     #Output the world as a picture
     printWorld(world)
@@ -703,7 +712,7 @@ def generatePlan (numSplits, numObstacles, numBases):
     return world, root, robotPositions, obstacles, baseBlocks
 
 
-def generateWorldFile (world, root, baseBlocks, obstacles, robotPositons, numHumans, numChildren, window):
+def generateWorldFile (world, root, baseBlocks, obstacles, robotPositons, numHumans, numChildren, activities, window):
     #Generate the wall parts for the tree
     generateWallParts(root, world)
     #Generate the edges of the map to mark as used
@@ -712,7 +721,7 @@ def generateWorldFile (world, root, baseBlocks, obstacles, robotPositons, numHum
     walls, used = createAllWallBlocks(root, used)
 
     #Make a map from the walls and objects
-    WorldCreator.makeFile(walls, baseBlocks, obstacles, robotPositions, numHumans, numChildren, window)
+    WorldCreator.makeFile(walls, baseBlocks, obstacles, robotPositions, numHumans, numChildren, activities, window)
 
 
 def checkNoNones (dataValues):
@@ -742,6 +751,9 @@ obstacles = None
 baseBlocks = None
 humanNum = None
 childNum = None
+activities = None
+
+activityNumbers = []
 
 #Loop while the UI is active
 while guiActive:
@@ -751,17 +763,38 @@ while guiActive:
         #Cannot save now
         window.setSaveButton(False)
         #Get generation values as follows:
-        #[[room splits], [humans, children], [obstacles], [bases]]
+        #[[room splits], [humans, children], [obstaclesStatic, obstaclesDynamic], [bases] [activityTypes]]
         genValues = window.getValues()
         #A generation has started (resets flag so generation is not called again)
         window.generateStarted()
         #Generate a plan with the values
-        world, root, robotPositions, obstacles, baseBlocks = generatePlan(genValues[0][0], genValues[2][0], genValues[3][0])
+        world, root, robotPositions, obstacles, baseBlocks = generatePlan(genValues[0][0], genValues[2][0], genValues[2][1], genValues[3][0])
         #Unpack the unused human values
         humanNum, childNum = genValues[1][0], genValues[1][1]
+        #Unpack the used obstacle counts
+        obsStaticNum, obsDynamicNum = genValues[2][0], genValues[2][1]
+        #Unpack the activity list
+        activities = genValues[4]
         #Update the UI image of the map
         window.updateImage()
-        window.setGeneratedInformation("Adults: " + str(humanNum), "Children: " + str(childNum), str(len(baseBlocks)), str(len(obstacles)), "None")
+
+        #List of activities to be added to the world
+        activityNumbers = []
+        #Message to indicate which activities will be added
+        activityList = "None"
+
+        #If there are activities
+        if len(activities) > 0:
+            #Reset message
+            activityList = ""
+            #Iterate through the activities
+            for activity in activities:
+                #Add number to list and name to message
+                activityNumbers.append(activity[0])
+                activityList = activityList + "\n" + activity[1]
+
+        #Update the output fields of the window
+        window.setGeneratedInformation("Adults: " + str(humanNum), "Children: " + str(childNum), str(len(baseBlocks)), "Static: " + str(obsStaticNum), "Dynamic: " + str(obsDynamicNum), activityList)
 
     #If a save file is being called for
     if window.saving:
@@ -770,9 +803,9 @@ while guiActive:
         #Saving has begin (resets flag so save is not called twice)
         window.saveStarted()
         #If all values that are needed are not None
-        if checkNoNones([world, root, robotPositions, obstacles, baseBlocks, humanNum, childNum]):
+        if checkNoNones([world, root, robotPositions, obstacles, baseBlocks, humanNum, childNum, activities]):
             #Generate and save a world
-            generateWorldFile(world, root, baseBlocks, obstacles, robotPositions, humanNum, childNum, window)
+            generateWorldFile(world, root, baseBlocks, obstacles, robotPositions, humanNum, childNum, activityNumbers,  window)
 
     #Attempt update loops           
     try:

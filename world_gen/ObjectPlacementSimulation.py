@@ -1,4 +1,4 @@
-"""Object Placing Supervisor Prototype v2
+"""Object Placing Simulation V1
    Written by Robbie Goldman and Alfred Roberts
 
 Features:
@@ -6,24 +6,17 @@ Features:
  - Will not intersect walls or other objects
  - Will not be within 4 units of bases
 
+ - This is a modification of the placement script used to show how a map could be placed
+
 Changelog:
- V2:
- - Bases now retrieved from their own group
- - Dynamic obstacles
- - Activity placement
+ - 
 """
 
-from controller import Supervisor
 import random
-
-#Create the instance of the supervisor class
-supervisor = Supervisor()
-
-#Get field to output information to
-outputField = supervisor.getFromDef("OBJECTPLACER").getField("customData")
 
 #Standard human radius
 humanRadius = 0.35
+childRadius = 0.25
 
 
 def getAllWalls(numberWalls: int) -> list:
@@ -64,13 +57,13 @@ def getAllObstacles(numberObstacles: int) -> list:
     return obstacles
     
     
-def getAllBases(numberBases, baseNodes) -> list:
+def getAllBases() -> list:
     '''Returns a list of all the bases as a centre position'''
     #List to contain all the bases
     bases = []
     
     #Iterate for the bases
-    for i in range(0, numberBases):
+    for i in range(0, 3):
         #Get the minimum and maximum position vectors
         minBase = supervisor.getFromDef("base" + str(i) + "Min").getField("translation").getSFVec3f()
         maxBase = supervisor.getFromDef("base" + str(i) + "Max").getField("translation").getSFVec3f()
@@ -80,29 +73,7 @@ def getAllBases(numberBases, baseNodes) -> list:
         bases.append(base)
     
     return bases
-
-
-def getAllActivities(numActivityBoxes: int, numActivityPads: int) -> list:
-    '''Returns a list containing all the boxes and all the pads and a list containing all the scales'''
-    #Lists to contain all boxes and pads
-    activityObjects = []
-    activitySizes = []
-
-    #Iterate for box IDs
-    for boxNum in range(0, numActivityBoxes):
-        #Add the box to the list
-        activityObjects.append(supervisor.getFromDef("ACT" + str(boxNum)))
-        activitySizes.append(supervisor.getFromDef("ACTIVITYBOX" + str(boxNum)).getField("size").getSFVec3f())
-
-    #Iterate for pad IDs
-    for padNum in range(0, numActivityPads):
-        #Add the pad to the list
-        activityObjects.append(supervisor.getFromDef("ACT" + str(padNum) + "MAT"))
-        activitySizes.append(supervisor.getFromDef("ACTIVITYPAD" + str(padNum)).getField("size").getSFVec3f())
         
-    #Return the full object list and size list
-    return activityObjects, activitySizes
-    
 
 def convertWallsToBoundaries(walls: list) -> list:
     '''Takes in list of walls as positions and scales then returns minimum and maximum wall positions'''
@@ -115,10 +86,10 @@ def convertWallsToBoundaries(walls: list) -> list:
         position = wall[0]
         scale = wall[1]
         #Calculate the minimum and maximum
-        min = [position[0] - (float(scale[0]) / 2.0), position[1] - (float(scale[1]) / 2.0), position[2] - (float(scale[2]) / 2.0)]
-        max = [position[0] + (float(scale[0]) / 2.0), position[1] + (float(scale[1]) / 2.0), position[2] + (float(scale[2]) / 2.0)]
+        minP = [position[0] - (float(scale[0]) / 2.0), position[1] - (float(scale[1]) / 2.0), position[2] - (float(scale[2]) / 2.0)]
+        maxP = [position[0] + (float(scale[0]) / 2.0), position[1] + (float(scale[1]) / 2.0), position[2] + (float(scale[2]) / 2.0)]
         #Create the boundary list and append to the full list
-        wallBound = [min, max]
+        wallBound = [minP, maxP]
         wallBounds.append(wallBound)
     
     return wallBounds
@@ -188,7 +159,7 @@ def generatePosition(radius: int, walls: list, humans: list, obstacles: list, ba
 
 def setObstaclePositions(obstaclesList: list, obstacleNodes: list, walls: list, bases: list) -> list:
     '''Place the obstacles in generated positions and return the placed obstacles'''
-    #List to contain all obstacles
+    #List to contain all humans
     obstacles = []
     #Iterate for each obstacle
     for i in range(len(obstaclesList)):
@@ -198,7 +169,7 @@ def setObstaclePositions(obstaclesList: list, obstacleNodes: list, walls: list, 
         obstaclePos = obstacle.getField("translation")
         #Get random valid position
         x, z = generatePosition(max(obstaclesList[i][0], obstaclesList[i][2]), walls, [], obstacles, bases)
-        y = (obstaclesList[i][1] / 2.0) + 0.05
+        y = obstaclesList[i][1] / 2.0
         #Move humans to random positions in the building
         obstaclePos.setSFVec3f([x,y,z])
         obstacles.append([x, y, z, obstaclesList[i]])
@@ -207,29 +178,7 @@ def setObstaclePositions(obstaclesList: list, obstacleNodes: list, walls: list, 
     return obstacles
 
 
-def setActivityPositions(activityItemList: list, activitySizeList: list, walls: list, bases: list, obstacles: list):
-    '''Place the activities in generated positions and return the placed items position and scale'''
-    #List to contain all activities
-    activityItems = []
-    #List position of current object
-    itemId = 0
-    #Iterate for each obstacle
-    for item in activityItemList:
-        #Get obstacle translation
-        itemPosition = item.getField("translation")
-        itemScale = activitySizeList[itemId]
-        #Get random valid position
-        x, z = generatePosition(max(itemScale[0], itemScale[2]), walls, [], obstacles + activityItems, bases)
-        y = (itemScale[1] / 2.0) + 0.05
-        #Move activity element to random position in the building
-        itemPosition.setSFVec3f([x,y,z])
-        activityItems.append([x, y, z, itemScale])
-        itemId = itemId + 1
-    
-    #Formatted as: [xPos, yPos, zPos, [xScale, yScale, zScale]]
-    return activityItems
-
-def setHumanPositions(numberHumans: int, humanNodes: list, walls: list, obstacles: list, bases: list) -> list:
+def setHumanPositions(numberHumans, humanNodes, walls, obstacles, bases: list) -> list:
     '''Place the humans in generated positions and return the placed humans'''
     #List to contain all humans
     humans = []
@@ -237,55 +186,17 @@ def setHumanPositions(numberHumans: int, humanNodes: list, walls: list, obstacle
     for i in range(numberHumans):
         #Get each human from children field in the human root node HUMANGROUP
         human = humanNodes.getMFNode(i)
-        #Get human translation and radius
+        #Get human translation
         humanPos = human.getField("translation")
-        humanRad = human.getField("boundingObject").getSFNode().getField("radius").getSFFloat() + 0.5
-        humanY = human.getField("boundingObject").getSFNode().getField("height").getSFFloat()
         #Get random valid position
-        x, z = generatePosition(humanRad, walls, humans, obstacles, bases)
+        x, z = generatePosition(humanRadius, walls, humans, obstacles, bases)
         #Move humans to random positions in the building
-        humanPos.setSFVec3f([x,humanY,z])
+        humanPos.setSFVec3f([x,0.5,z])
         humans.append([x, z])
     
     #Returns the placed humans as: [xPosition, zPosition]
     return humans
 
-
-#Get group node containing humans 
-humanGroup = supervisor.getFromDef('HUMANGROUP')
-humanNodes = humanGroup.getField("children")
-#Get number of humans in map
-numberOfHumans = humanNodes.getCount()
-
-#Get group node containing bases
-baseGroup = supervisor.getFromDef("BASEGROUP")
-baseNodes = baseGroup.getField("children")
-#Get number of bases in map (divide by three as there is a min and max node for each too)
-numberOfBases = int(baseNodes.getCount() / 3)
-
-#Get group node containing obstacles 
-obstacleGroup = supervisor.getFromDef('OBSTACLEGROUP')
-obstacleNodes = obstacleGroup.getField("children")
-#Get number of obstacles in map
-numberOfObstacles = obstacleNodes.getCount()
-
-#Get group node containing walls 
-wallGroup = supervisor.getFromDef('WALLGROUP')
-wallNodes = wallGroup.getField("children")
-#Get number of walls in map
-numberOfWalls = wallNodes.getCount() - 5
-
-#Get group node containing activity boxes
-activityBoxGroup = supervisor.getFromDef("ACTOBJECTSGROUP")
-activityBoxNodes = activityBoxGroup.getField("children")
-#Get number of activity boxes in map
-numberOfActivityBoxes = activityBoxNodes.getCount()
-
-#Get group node containing activity pads
-activityPadGroup = supervisor.getFromDef("ACTMATGROUP")
-activityPadNodes = activityPadGroup.getField("children")
-#Get number of activity boxes in map
-numberOfActivityPads = activityPadNodes.getCount()
 
 #Get all the walls
 allWallBlocks = getAllWalls(numberOfWalls)
@@ -293,17 +204,13 @@ allWallBlocks = getAllWalls(numberOfWalls)
 allWallBounds = convertWallsToBoundaries(allWallBlocks)
 #Get all the obstacles
 allObstacles = getAllObstacles(numberOfObstacles)
-#Get all the activity items
-allActivityItems, allActivitySizes = getAllActivities(numberOfActivityBoxes, numberOfActivityPads)
-#Get all the base positions
-allBases = getAllBases(numberOfBases, baseNodes)
+#Geta ll the base positions
+allBases = getAllBases()
 
 #Place all the obstacles
 finalObstacles = setObstaclePositions(allObstacles, obstacleNodes, allWallBounds, allBases)
-#Place all the activities
-finalActivities = setActivityPositions(allActivityItems, allActivitySizes, allWallBounds, allBases, finalObstacles)
 #Place all the humans
-finalHumans = setHumanPositions(numberOfHumans, humanNodes, allWallBounds, finalObstacles + finalActivities, allBases)
+finalHumans = setHumanPositions(numberOfHumans, humanNodes, allWallBounds, finalObstacles, allBases)
 
 #Send signal to say that items have been placed
 outputField.setSFString("done")

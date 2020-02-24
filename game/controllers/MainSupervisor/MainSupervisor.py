@@ -1,4 +1,4 @@
-"""Supervisor Controller Prototype v5
+"""Supervisor Controller Prototype v6
    Written by Robbie Goldman and Alfred Roberts
 
 Changelog:
@@ -6,6 +6,7 @@ Changelog:
  - Robots can only pick up one human at a time
  - Robot must have stopped for 2 seconds to deposit and pick up human
  - Added check for message from position supervisor before taking human positions
+ - Added restart to object placement controller to allow obstacles to be placed on reset
 """
 
 from controller import Supervisor
@@ -25,6 +26,8 @@ robot1Pos = robot1.getField("translation")
 
 #Get the output from the object placement supervisor
 objectPlacementOutput = supervisor.getFromDef("OBJECTPLACER").getField("customData")
+#Restart object placement supervisor (so that when reset it runs again)
+supervisor.getFromDef("OBJECTPLACER").restartController()
 
 #Get this supervisor node - so that it can be rest when game restarts
 mainSupervisor = supervisor.getFromDef("MAINSUPERVISOR")
