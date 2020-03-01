@@ -26,8 +26,11 @@ robot1Pos = robot1.getField("translation")
 
 #Get the output from the object placement supervisor
 objectPlacementOutput = supervisor.getFromDef("OBJECTPLACER").getField("customData")
+#Send message to object placement to indicate that it should do a generation
+objectPlacementOutput.setSFString("startGen")
 #Restart object placement supervisor (so that when reset it runs again)
 supervisor.getFromDef("OBJECTPLACER").restartController()
+
 
 #Get this supervisor node - so that it can be rest when game restarts
 mainSupervisor = supervisor.getFromDef("MAINSUPERVISOR")

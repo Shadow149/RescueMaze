@@ -1,4 +1,4 @@
-"""Object Placing Supervisor Prototype v2
+"""Object Placing Supervisor Prototype v3
    Written by Robbie Goldman and Alfred Roberts
 
 Features:
@@ -11,6 +11,8 @@ Changelog:
  - Bases now retrieved from their own group
  - Dynamic obstacles
  - Activity placement
+ V3:
+ - Waits for main supervisor to call for generation first (prevents double)
 """
 
 from controller import Supervisor
@@ -250,61 +252,69 @@ def setHumanPositions(numberHumans: int, humanNodes: list, walls: list, obstacle
     #Returns the placed humans as: [xPosition, zPosition]
     return humans
 
+def performGeneration ():
+    '''Generate a position for all the objects and place them in the world'''
+    #Get group node containing humans 
+    humanGroup = supervisor.getFromDef('HUMANGROUP')
+    humanNodes = humanGroup.getField("children")
+    #Get number of humans in map
+    numberOfHumans = humanNodes.getCount()
 
-#Get group node containing humans 
-humanGroup = supervisor.getFromDef('HUMANGROUP')
-humanNodes = humanGroup.getField("children")
-#Get number of humans in map
-numberOfHumans = humanNodes.getCount()
+    #Get group node containing bases
+    baseGroup = supervisor.getFromDef("BASEGROUP")
+    baseNodes = baseGroup.getField("children")
+    #Get number of bases in map (divide by three as there is a min and max node for each too)
+    numberOfBases = int(baseNodes.getCount() / 3)
 
-#Get group node containing bases
-baseGroup = supervisor.getFromDef("BASEGROUP")
-baseNodes = baseGroup.getField("children")
-#Get number of bases in map (divide by three as there is a min and max node for each too)
-numberOfBases = int(baseNodes.getCount() / 3)
+    #Get group node containing obstacles 
+    obstacleGroup = supervisor.getFromDef('OBSTACLEGROUP')
+    obstacleNodes = obstacleGroup.getField("children")
+    #Get number of obstacles in map
+    numberOfObstacles = obstacleNodes.getCount()
 
-#Get group node containing obstacles 
-obstacleGroup = supervisor.getFromDef('OBSTACLEGROUP')
-obstacleNodes = obstacleGroup.getField("children")
-#Get number of obstacles in map
-numberOfObstacles = obstacleNodes.getCount()
+    #Get group node containing walls 
+    wallGroup = supervisor.getFromDef('WALLGROUP')
+    wallNodes = wallGroup.getField("children")
+    #Get number of walls in map
+    numberOfWalls = wallNodes.getCount() - 5
 
-#Get group node containing walls 
-wallGroup = supervisor.getFromDef('WALLGROUP')
-wallNodes = wallGroup.getField("children")
-#Get number of walls in map
-numberOfWalls = wallNodes.getCount() - 5
+    #Get group node containing activity boxes
+    activityBoxGroup = supervisor.getFromDef("ACTOBJECTSGROUP")
+    activityBoxNodes = activityBoxGroup.getField("children")
+    #Get number of activity boxes in map
+    numberOfActivityBoxes = activityBoxNodes.getCount()
 
-#Get group node containing activity boxes
-activityBoxGroup = supervisor.getFromDef("ACTOBJECTSGROUP")
-activityBoxNodes = activityBoxGroup.getField("children")
-#Get number of activity boxes in map
-numberOfActivityBoxes = activityBoxNodes.getCount()
+    #Get group node containing activity pads
+    activityPadGroup = supervisor.getFromDef("ACTMATGROUP")
+    activityPadNodes = activityPadGroup.getField("children")
+    #Get number of activity boxes in map
+    numberOfActivityPads = activityPadNodes.getCount()
 
-#Get group node containing activity pads
-activityPadGroup = supervisor.getFromDef("ACTMATGROUP")
-activityPadNodes = activityPadGroup.getField("children")
-#Get number of activity boxes in map
-numberOfActivityPads = activityPadNodes.getCount()
+    #Get all the walls
+    allWallBlocks = getAllWalls(numberOfWalls)
+    #Convert all the walls to boundaries
+    allWallBounds = convertWallsToBoundaries(allWallBlocks)
+    #Get all the obstacles
+    allObstacles = getAllObstacles(numberOfObstacles)
+    #Get all the activity items
+    allActivityItems, allActivitySizes = getAllActivities(numberOfActivityBoxes, numberOfActivityPads)
+    #Get all the base positions
+    allBases = getAllBases(numberOfBases, baseNodes)
 
-#Get all the walls
-allWallBlocks = getAllWalls(numberOfWalls)
-#Convert all the walls to boundaries
-allWallBounds = convertWallsToBoundaries(allWallBlocks)
-#Get all the obstacles
-allObstacles = getAllObstacles(numberOfObstacles)
-#Get all the activity items
-allActivityItems, allActivitySizes = getAllActivities(numberOfActivityBoxes, numberOfActivityPads)
-#Get all the base positions
-allBases = getAllBases(numberOfBases, baseNodes)
+    #Place all the obstacles
+    finalObstacles = setObstaclePositions(allObstacles, obstacleNodes, allWallBounds, allBases)
+    #Place all the activities
+    finalActivities = setActivityPositions(allActivityItems, allActivitySizes, allWallBounds, allBases, finalObstacles)
+    #Place all the humans
+    finalHumans = setHumanPositions(numberOfHumans, humanNodes, allWallBounds, finalObstacles + finalActivities, allBases)
 
-#Place all the obstacles
-finalObstacles = setObstaclePositions(allObstacles, obstacleNodes, allWallBounds, allBases)
-#Place all the activities
-finalActivities = setActivityPositions(allActivityItems, allActivitySizes, allWallBounds, allBases, finalObstacles)
-#Place all the humans
-finalHumans = setHumanPositions(numberOfHumans, humanNodes, allWallBounds, finalObstacles + finalActivities, allBases)
+    #Send signal to say that items have been placed
+    outputField.setSFString("done")
 
-#Send signal to say that items have been placed
-outputField.setSFString("done")
 
+#Check if a generation is being called
+if outputField.getSFString() == "startGen":
+    #Generate positions
+    performGeneration()
+    #Generation done - terminates loop and script
+    notGenerated = False

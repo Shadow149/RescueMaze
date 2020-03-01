@@ -14,6 +14,9 @@
             ]
             name "obstacle{0}"
             boundingObject USE OBSTACLEBOX{0}
-	    physics NULL
+            physics Physics {{
+                density -1
+                mass 50
+            }}
 	    
         }}
