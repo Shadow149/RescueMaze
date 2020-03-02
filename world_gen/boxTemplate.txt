@@ -1,6 +1,6 @@
     Transform {{
         children [
-            Solid {{
+            DEF WALL{5} Solid {{
             translation {0} 0.75 {1}
             children [
                 Shape {{
@@ -9,13 +9,13 @@
                     diffuseColor 0.32549 0.32549 0.32549
                     }}
                 }}
-                geometry DEF box Box {{
+                geometry DEF WALLBOX{5} Box {{
                     size {2} 1.5 {3}
                 }}
                 }}
             ]
             name "{4}"
-            boundingObject USE box
+            boundingObject USE WALLBOX{5}
             }}
         ]
     }}

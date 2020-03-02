@@ -1,7 +1,15 @@
+"""Map Generation Main Script v2
+   Written by Robbie Goldman and Alfred Roberts
+
+Changelog:
+ V2:
+ - Added randomly sized cubes as obstacles
+"""
+
 import random
 from PIL import Image
 import math
-import mapMake
+import WorldCreator
 import os
 dirname = os.path.dirname(__file__)
 
@@ -438,7 +446,7 @@ def createAllWallBlocks(rootNode, usedPos):
 
             if len(part) > 0:
                 #Convert the wall to position and scale then append to the data list
-                wallData.append(mapMake.transformFromBounds(part[0], part[-1]))
+                wallData.append(WorldCreator.transformFromBounds(part[0], part[-1]))
 
             #Add all the parts used to the list of used parts
             for bit in part:
@@ -596,7 +604,7 @@ def createBaseBlocks(bases):
     #Iterate for the bases
     for base in bases:
         #Convert the base positions to world space
-        b = mapMake.transformFromBounds(base[0], base[1])
+        b = WorldCreator.transformFromBounds(base[0], base[1])
         #Add to list of created bases
         newBases.append(b)
     
@@ -611,7 +619,7 @@ def convertRobotsToWorld(robots):
     #Iterate for the robots
     for robot in robots:
         #Convert the robot position to world space ([0] is because position only is needed, not scale)
-        r = mapMake.transformFromBounds(robot, robot)[0]
+        r = WorldCreator.transformFromBounds(robot, robot)[0]
         #Add to list of robot world positions
         newRobots.append(r)
 
@@ -642,6 +650,22 @@ def generateEdges(array):
     #Return the generated list
     return positions
 
+def addObstacle():
+	height = float(random.randrange(50, 130)) / 100.0
+	width = float(random.randrange(30, 220)) / 100.0
+	depth = float(random.randrange(30, 220)) / 100.0
+	obstacle = [width, height, depth]
+	return obstacle
+	
+
+def generateObstacles():
+	obstacles = []
+	num = random.randrange(4, 8)
+	for i in range(num):
+		newObstacle = addObstacle()
+		obstacles.append(newObstacle)
+	
+	return obstacles
 
 def mainGenerate():
     '''Perform a full generation run, from array, png to world creation'''
@@ -656,6 +680,9 @@ def mainGenerate():
     baseBlocks = createBaseBlocks(bases)
     #Convert the robot positions to world space
     robotPositions = convertRobotsToWorld(robots)
+	
+    #Create a list of obstacles
+    obstacles = generateObstacles()
 
     #Output the world as a picture
     printWorld(world, "")
@@ -668,7 +695,7 @@ def mainGenerate():
     walls, used = createAllWallBlocks(root, used)
 
     #Make a map from the walls
-    mapMake.makeFile(walls, baseBlocks, robotPositions)
+    WorldCreator.makeFile(walls, baseBlocks, obstacles, robotPositions)
 
     #Print to indicate the program completed properly
     print("Generation Successful")

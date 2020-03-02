@@ -83,17 +83,14 @@ while robot.step(timestep) != -1:
             human_pos = [999,999,999]
             human_image_pos = [999,999,999]
     except:
-        if not depositFound:
-            deposit_pos = [999,999,999]
-            deposit_image_pos = [999,999,999]
-        if not humanFound:
-            human_pos = [999,999,999]
-            human_image_pos = [999,999,999]
+        pass
     
     if humanLoaded and not collecting:
         if abs(deposit_pos[0]) < 0.5 and abs(deposit_pos[1]) < 0.5 and abs(deposit_pos[2]) < 0.5:
             humanLoaded = False
             print("deposited")
+            left_wheel.setVelocity(0 * MAX_SPEED)
+            right_wheel.setVelocity(0 * MAX_SPEED)
 
     
     if (abs(human_pos[0]) < 0.5 and abs(human_pos[1]) < 0.5 and abs(human_pos[2]) < 0.5 and not humanLoaded and not collecting):
@@ -124,7 +121,6 @@ while robot.step(timestep) != -1:
                 right_wheel.setVelocity(1 * MAX_SPEED)
                 
         elif humanLoaded and deposit_image_pos[0] != 999:
-            
             if deposit_image_pos[0] > width / 2:
                 left_wheel.setVelocity(1 * MAX_SPEED)
                 right_wheel.setVelocity(0.8 * MAX_SPEED)
