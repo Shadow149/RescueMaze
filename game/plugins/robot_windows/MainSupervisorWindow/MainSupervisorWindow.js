@@ -264,7 +264,7 @@ function resetPressed(){
 
 function openLoadController(robotNumber){
 	//When a load button is pressed - opens the file explorer window
-	document.getElementById("robot" + String(robotNumber) + "File").click();
+	document.getElementById("robot" + robotNumber + "File").click();
 }
 
 function setEnableButton(name, state){
@@ -297,23 +297,19 @@ function endGame(){
 function unloadPressed(id){
 	//Unload button pressed
 	//Send the signal for an unload for the correct robot
-	if (id == 0){
-		window.robotWindow.send("robot0Unload");
-	}
-	if (id == 1){
-		window.robotWindow.send("robot1Unload");
-	}
+	window.robotWindow.send("robot"+id+"Unload");
 }
 
-function file0Opened(){
+
+function fileOpened(id){
 	//When file 0 value is changed
 	//Get the files
-	var files = document.getElementById("robot0File").files;
+	var files = document.getElementById("robot"+id+"File").files;
 	
 	//If there are files
 	if (files.length > 0){
 		//Get the first file only
-		var file = files.item(0);
+		var file = files[0];
 		//Split at the .
 		var nameParts = file.name.split(".");
 		
@@ -328,7 +324,7 @@ function file0Opened(){
 				reader.onload = (function(reader){
 					return function(){
 						//Send the signal to the supervisor with the data from the file
-						window.robotWindow.send("robot0File," + reader.result);
+						window.robotWindow.send("robot"+id+"File," + reader.result);
 					}
 				})(reader);
 				
@@ -340,36 +336,6 @@ function file0Opened(){
 			}
 		}else{
 			//Tell the user to select a python file
-			alert("Please select a python file.");
-		}
-		
-	}
-}
-
-function file1Opened(){
-	//The same as function above but for robot 1 (change to be one function with parameter for robot number)
-	var files = document.getElementById("robot1File").files;
-	
-	if (files.length > 0){
-		var file = files.item(0);
-		
-		var nameParts = file.name.split(".");
-		
-		if (nameParts.length > 1){
-			if(nameParts[nameParts.length - 1] == "py"){
-				var reader = new FileReader();
-		
-				reader.onload = (function(reader){
-					return function(){
-						window.robotWindow.send("robot1File," + reader.result);
-					}
-				})(reader);
-				
-				reader.readAsText(file);
-			}else{
-				alert("Please select a python file.");
-			}
-		}else{
 			alert("Please select a python file.");
 		}
 		

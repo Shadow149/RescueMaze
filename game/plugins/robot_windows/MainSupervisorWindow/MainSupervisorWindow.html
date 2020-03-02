@@ -8,14 +8,14 @@
 		<tr>
 		<th class="halfRow">Robot 0
 		<p id="robot0Name">None</p>
-		<input type="file" class="hidden" accept=".py" onchange="file0Opened()" id="robot0File" />
-		<button class="button buttonLoad" onclick="openLoadController(0)" style="display:inline-block;" id="load0">Load<br>Controller</button>
-		<button class="button buttonUnload" onclick="unloadPressed(0)" style="display:none;" id="unload0">Remove<br>Controller</button></th>
+		<input type="file" class="hidden" accept=".py" onchange="fileOpened('0')" id="robot0File" />
+		<button class="button buttonLoad" onclick="openLoadController('0')" style="display:inline-block;" id="load0">Load<br>Controller</button>
+		<button class="button buttonUnload" onclick="unloadPressed('0')" style="display:none;" id="unload0">Remove<br>Controller</button></th>
 		<th class="halfRow">Robot 1
 		<p id="robot1Name">None</p>
-		<input type="file" class="hidden" accept=".py" onchange="file1Opened()" id="robot1File" />
-		<button class="button buttonLoad" onclick="openLoadController(1)" style="display:inline-block;" id="load1">Load<br>Controller</button>
-		<button class="button buttonUnload" onclick="unloadPressed(1)" style="display:none;" id="unload1">Remove<br>Controller</button></th>
+		<input type="file" class="hidden" accept=".py" onchange="fileOpened('1')" id="robot1File" />
+		<button class="button buttonLoad" onclick="openLoadController('1')" style="display:inline-block;" id="load1">Load<br>Controller</button>
+		<button class="button buttonUnload" onclick="unloadPressed('1')" style="display:none;" id="unload1">Remove<br>Controller</button></th>
 		</tr>
 		</table>
 		<br>
