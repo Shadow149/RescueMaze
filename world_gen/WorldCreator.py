@@ -1,4 +1,4 @@
-"""Map Generation World File Creator v4
+"""Map Generation World File Creator v5
    Written by Robbie Goldman and Alfred Roberts
 
 Changelog:
@@ -10,6 +10,8 @@ Changelog:
  - Added children (human special type)
  V4:
  - Bases now generate into their own separate group
+ V5:
+ - Added boundary nodes for rooms
 """
 
 
@@ -51,7 +53,7 @@ def transformFromBounds(start, end):
     return pos, scale
 
 
-def createFileData (boxData, bases, obstacles, robots, numHumans, numChildren, activityList):
+def createFileData (boxData, bases, obstacles, robots, numHumans, numChildren, activityList, bounds):
     '''Create a file data string from the positions and scales'''
     #Open the file containing the standard header
     headerFile = open(os.path.join(dirname, "fileHeader.txt"), "r")
@@ -172,6 +174,27 @@ def createFileData (boxData, bases, obstacles, robots, numHumans, numChildren, a
     #Close template file
     activityPadTemplate.close()
 
+    #Open the file containing the template for the room boundary group
+    roomBoundaryGroupTemplate = open(os.path.join(dirname, "roomBoundsGroupTemplate.txt"), "r")
+    #Read template
+    roomGroupPart = roomBoundaryGroupTemplate.read()
+    #Close template file
+    roomBoundaryGroupTemplate.close()
+
+    #Open the file containing the template for a room boundary
+    roomBoundaryTemplate = open(os.path.join(dirname, "roomBoundsTemplate.txt"), "r")
+    #Read template
+    roomBoundaryPart = roomBoundaryTemplate.read()
+    #Close template file
+    roomBoundaryTemplate.close()
+
+    #Open the file containing the template for a room's boundary data
+    roomBoundaryDataTemplate = open(os.path.join(dirname, "roomBoundsDataTemplate.txt"), "r")
+    #Read template
+    roomBoundaryDataPart = roomBoundaryDataTemplate.read()
+    #Close template file
+    roomBoundaryDataTemplate.close()
+
     #Open the file containing the template for the supervisor
     supervisorTemplate = open(os.path.join(dirname, "supervisorTemplate.txt"), "r")
     #Read template
@@ -282,6 +305,22 @@ def createFileData (boxData, bases, obstacles, robots, numHumans, numChildren, a
     #Insert activity parts into groups and then into the file
     fileData = fileData + activityBoxGroup.format(activityBoxes)
     fileData = fileData + activityPadGroup.format(activityPads)
+
+    #Add bounds here
+    allRoomBoundaries = ""
+
+    #Id number for room
+    roomId = 0
+
+    #Iterate all rooms
+    for bound in bounds:
+        #Add the boundaries
+        allRoomBoundaries = allRoomBoundaries + roomBoundaryPart.format(roomBoundaryDataPart.format(bound[0][0], bound[0][1], bound[1][0], bound[1][1], roomId), roomId)
+        #Increment id counter
+        roomId = roomId + 1
+
+    #Insert boundary parts into group node and then into the file
+    fileData = fileData + roomGroupPart.format(allRoomBoundaries)
 	
     #Add a supervisor robot
     fileData = fileData + supervisorPart
@@ -290,10 +329,10 @@ def createFileData (boxData, bases, obstacles, robots, numHumans, numChildren, a
     return fileData
 
 
-def makeFile(boxData, bases, obstacles, robots, humans, children, activities, uiWindow = None):
+def makeFile(boxData, bases, obstacles, robots, humans, children, activities, bounds, uiWindow = None):
     '''Create and save the file for the information'''
     #Generate the file string for the map
-    data = createFileData(boxData, bases, obstacles, robots, humans, children, activities)
+    data = createFileData(boxData, bases, obstacles, robots, humans, children, activities, bounds)
     #The default file path
     filePath = os.path.join(dirname, "generatedWorld.wbt")
 

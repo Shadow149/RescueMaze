@@ -1,4 +1,4 @@
-"""Map Generation Main Script v4
+"""Map Generation Main Script v5
    Written by Robbie Goldman and Alfred Roberts
 
 Changelog:
@@ -10,6 +10,8 @@ Changelog:
  V4:
  - Added activity generation
  - Resized bases
+ V5:
+ - Added boundaries for rooms
 """
 
 import random
@@ -245,6 +247,39 @@ def splitDepth(rootNode, array):
     return array
 
 
+def getAllMaxMin(rootNode):
+    '''Get the min and max value for all the rooms'''
+    #List containing nodes to be checked
+    currentNodes = [rootNode]
+    #List of leaf nodes
+    finalNodes = []
+    #List to contain boundaries
+    nodeBounds = []
+
+    #As long as there are still nodes to check
+    while len(currentNodes) > 0:
+        #Get the next node
+        nextNode = currentNodes[0]
+        #If it has no children
+        if nextNode.left == None and nextNode.right == None:
+            #Add this node to the final list - it is a leaf
+            finalNodes.append(nextNode)
+        else:
+            #Add this nodes child nodes to be checked
+            currentNodes.append(nextNode.left)
+            currentNodes.append(nextNode.right)
+        #delete this node from the list to be checked
+        del currentNodes[0]
+    
+    #iterate through the final nodes
+    for node in finalNodes:
+        #Get the boundary shape
+        nodeBounds.append(node.shape)
+
+    #return the list of boundaries
+    return nodeBounds
+
+
 def openDoor (wall, array):
     '''Add a door randomly to a wall'''
     #If the wall is long enough to hold a full door
@@ -368,6 +403,29 @@ def addDoors(rootNode, array):
     return array
 
 
+def convertBoundsToWorld(originalBounds):
+    '''Takes the list of bounds in array space and converts to world space'''
+    #List to contain final boundary positions
+    finalBounds = []
+
+    #Iterate list of positions
+    for bound in originalBounds:
+        #Calculate minimum and maximum
+        minPos = WorldCreator.transformFromBounds(bound[0], bound[0])[0]
+        #Adjust for wall thickness
+        minPos[0] = minPos[0] + 0.075
+        minPos[1] = minPos[1] + 0.075
+        maxPos = WorldCreator.transformFromBounds(bound[1], bound[1])[0]
+        #Adjust for wall thickness
+        maxPos[0] = maxPos[0] - 0.075
+        maxPos[1] = maxPos[1] - 0.075
+        #Append data to final array
+        finalBounds.append([minPos, maxPos])
+
+    #Return world space bounds
+    return finalBounds
+
+
 def generateWorld(splits):
     '''Perform generation of a world array'''
     #Create the empty array
@@ -379,12 +437,15 @@ def generateWorld(splits):
     for i in range(splits):
         #Split the lowest level of the array
         array = splitDepth(root, array)
+
+    #Get all the room boundary positions
+    bounds = getAllMaxMin(root)
     
     #Add all the doors to the array
     array = addDoors(root, array)
     
     #Return the array and the root node
-    return array, root
+    return array, root, bounds
 
 
 def generateWallParts(rootNode, array):
@@ -689,7 +750,7 @@ def generateObstacles(numObstaclesStatic, numObstaclesDynamic):
 def generatePlan (numSplits, numObstaclesStatic, numObstaclesDynamic, numBases):
     '''Perform a map generation up to png - does not update map file'''
     #Generate the world and tree
-    world, root = generateWorld(numSplits)
+    world, root, bounds = generateWorld(numSplits)
     #Create the bases from the world and the tree
     world, bases = createBases(world, numBases, root)
 
@@ -709,10 +770,10 @@ def generatePlan (numSplits, numObstaclesStatic, numObstaclesDynamic, numBases):
     print("Generation Successful")
 
     #Return generated parts
-    return world, root, robotPositions, obstacles, baseBlocks
+    return world, root, robotPositions, obstacles, baseBlocks, bounds
 
 
-def generateWorldFile (world, root, baseBlocks, obstacles, robotPositons, numHumans, numChildren, activities, window):
+def generateWorldFile (world, root, baseBlocks, obstacles, robotPositons, numHumans, numChildren, activities, bounds, window):
     #Generate the wall parts for the tree
     generateWallParts(root, world)
     #Generate the edges of the map to mark as used
@@ -720,8 +781,11 @@ def generateWorldFile (world, root, baseBlocks, obstacles, robotPositons, numHum
     #Calculate all the wall blocks for the tree (exclude used pixels)
     walls, used = createAllWallBlocks(root, used)
 
+    #Convert the bounds positions to world space
+    bounds = convertBoundsToWorld(bounds)
+
     #Make a map from the walls and objects
-    WorldCreator.makeFile(walls, baseBlocks, obstacles, robotPositions, numHumans, numChildren, activities, window)
+    WorldCreator.makeFile(walls, baseBlocks, obstacles, robotPositions, numHumans, numChildren, activities, bounds, window)
 
 
 def checkNoNones (dataValues):
@@ -752,6 +816,7 @@ baseBlocks = None
 humanNum = None
 childNum = None
 activities = None
+bounds = None
 
 activityNumbers = []
 
@@ -768,7 +833,7 @@ while guiActive:
         #A generation has started (resets flag so generation is not called again)
         window.generateStarted()
         #Generate a plan with the values
-        world, root, robotPositions, obstacles, baseBlocks = generatePlan(genValues[0][0], genValues[2][0], genValues[2][1], genValues[3][0])
+        world, root, robotPositions, obstacles, baseBlocks, bounds = generatePlan(genValues[0][0], genValues[2][0], genValues[2][1], genValues[3][0])
         #Unpack the unused human values
         humanNum, childNum = genValues[1][0], genValues[1][1]
         #Unpack the used obstacle counts
@@ -803,14 +868,14 @@ while guiActive:
         #Saving has begin (resets flag so save is not called twice)
         window.saveStarted()
         #If all values that are needed are not None
-        if checkNoNones([world, root, robotPositions, obstacles, baseBlocks, humanNum, childNum, activities]):
+        if checkNoNones([world, root, robotPositions, obstacles, baseBlocks, humanNum, childNum, activities, bounds]):
             #Generate and save a world
-            generateWorldFile(world, root, baseBlocks, obstacles, robotPositions, humanNum, childNum, activityNumbers,  window)
+            generateWorldFile(world, root, baseBlocks, obstacles, robotPositions, humanNum, childNum, activityNumbers, bounds, window)
 
     #Attempt update loops           
     try:
         #Toggle the save button to the correct state
-        window.setSaveButton(checkNoNones([world, root, robotPositions, obstacles, baseBlocks, humanNum, childNum]))
+        window.setSaveButton(checkNoNones([world, root, robotPositions, obstacles, baseBlocks, humanNum, childNum, bounds]))
         #Update loops for the UI - manually called to prevent blocking of this program
         window.update_idletasks()
         window.update()

@@ -217,8 +217,9 @@ class GenerateWindow(tk.Tk):
 
         #List of default difficulty values
         #TODO - update and do not have hard coded values here
-        self.difficulties = [[[2], [25, 15], [0, 0], [2]], [[3], [20, 10], [1, 1], [3]], [[4], [16, 4], [3, 1], [3]], [[4], [13, 5], [4, 2], [3]], [[5], [10, 3], [5, 3], [2]]]
-
+        #self.difficulties = [[[2], [25, 15], [0, 0], [2]], [[3], [20, 10], [1, 1], [3]], [[4], [16, 4], [3, 1], [3]], [[4], [13, 5], [4, 2], [3]], [[5], [10, 3], [5, 3], [2]]]
+        self.difficulties = [[[2], [25, 15], [0, 0], [2]], [[3], [20, 10], [2, 0], [3]], [[4], [16, 4], [4, 0], [3]], [[4], [13, 5], [6, 0], [3]], [[5], [10, 3], [8, 0], [2]]]
+        
         #Not ready for generation
         self.ready = False
         #Not currently saving
