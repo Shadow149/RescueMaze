@@ -1,4 +1,4 @@
-"""Relocate Position Calculator Prototype v1
+"""Relocate Position Calculator Prototype v2
    Written by Robbie Goldman
 
 Features:
@@ -6,6 +6,9 @@ Features:
  - Will not be in the room the robot is currently in
  - Will not be in the same room as the other robot
  - Will not be inside any of the other map features (walls, obstacles, activities, bases)
+
+Changelog:
+ - Fixed rounding issue with boundaries
 
 To use:
  import RelocateCalculator
@@ -220,15 +223,15 @@ def generatePosition(radius: int, rooms: list, blockedRooms: list, usedSpaces: l
         roomMin = [selectedRoom[0][0], selectedRoom[0][1]]
         roomMax = [selectedRoom[1][0], selectedRoom[1][1]]
 
-        #Multiply the minimum and maximum by 100 and make them integers (to allow for ranges)
-        roomMin[0] = int(roomMin[0] * 100)
-        roomMin[1] = int(roomMin[1] * 100)
-        roomMax[0] = int(roomMax[0] * 100)
-        roomMax[1] = int(roomMax[1] * 100)
+        #Calculate size boundaries
+        xMin = int((roomMin[0] * 100) + (radius * 100))
+        xMax = int((roomMax[0] * 100) - (radius * 100))
+        zMin = int((roomMin[1] * 100) + (radius * 100))
+        zMax = int((roomMax[1] * 100) - (radius * 100))
         
         #Get a random x and z position between min and max (with offset for radius)
-        randomX = random.randrange(roomMin[0] + (radius * 100), roomMax[0] - (radius * 100)) / 100.0
-        randomZ = random.randrange(roomMin[1] + (radius * 100), roomMax[1] - (radius * 100)) / 100.0
+        randomX = random.randrange(xMin, xMax) / 100.0
+        randomZ = random.randrange(zMin, zMax) / 100.0
         
         #Iterate through the placed items
         for item in usedSpaces:

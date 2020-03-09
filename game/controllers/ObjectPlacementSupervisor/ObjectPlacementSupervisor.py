@@ -1,4 +1,4 @@
-"""Object Placing Supervisor Prototype v3
+"""Object Placing Supervisor Prototype v4
    Written by Robbie Goldman and Alfred Roberts
 
 Features:
@@ -13,6 +13,8 @@ Changelog:
  - Activity placement
  V3:
  - Waits for main supervisor to call for generation first (prevents double)
+ V4:
+ - Overhauled to not use walls but rooms instead (will not work with old world files)
 """
 
 from controller import Supervisor
@@ -142,7 +144,7 @@ def generatePosition(radius: int, rooms: list, blockedRooms: list, usedSpaces: l
         if index not in blockedRooms:
             validRoomIds.append(index)
 
-    selectedRoom = -1
+    selectedRoomId = -1
     
     #Not yet ready to be added
     done = False
@@ -157,22 +159,17 @@ def generatePosition(radius: int, rooms: list, blockedRooms: list, usedSpaces: l
 
         done = True
 
-        selectedRoom = rooms[validRoomIds[random.randrange(0, len(validRoomIds))]]
+        selectedRoomId = validRoomIds[random.randrange(0, len(validRoomIds))]
+        selectedRoom = rooms[selectedRoomId]
 
         roomMin = [selectedRoom[0][0], selectedRoom[0][1]]
         roomMax = [selectedRoom[1][0], selectedRoom[1][1]]
 
-        #Multiply the minimum and maximum by 100 and make them integers (to allow for ranges)
-        roomMin[0] = int(roomMin[0] * 100)
-        roomMin[1] = int(roomMin[1] * 100)
-        roomMax[0] = int(roomMax[0] * 100)
-        roomMax[1] = int(roomMax[1] * 100)
-
         #Calculate size boundaries
-        xMin = roomMin[0] + (int(radius) * 100)
-        xMax = roomMax[0] - (int(radius) * 100)
-        zMin = roomMin[1] + (int(radius) * 100)
-        zMax = roomMax[1] - (int(radius) * 100)
+        xMin = int((roomMin[0] * 100) + (radius * 100))
+        xMax = int((roomMax[0] * 100) - (radius * 100))
+        zMin = int((roomMin[1] * 100) + (radius * 100))
+        zMax = int((roomMax[1] * 100) - (radius * 100))
 
         #If the object is too big for the room
         if xMin >= xMax or zMin >= zMax:
@@ -193,7 +190,7 @@ def generatePosition(radius: int, rooms: list, blockedRooms: list, usedSpaces: l
                 done = False
     
     #Returns the correct coordinates
-    return randomX, randomZ, selectedRoom
+    return randomX, randomZ, selectedRoomId
     
 
 def setObstaclePositions(obstaclesList: list, obstacleNodes: list, rooms: list, blockedRooms: list) -> list:
@@ -241,7 +238,8 @@ def setActivityPositions(activityItemList: list, activitySizeList: list, activit
             disallowedRooms.append(room)
         #Add a room to not allowed if used by another part of the activity
         if len(roomsUsed) > activityAssoc[itemId]:
-            disallowedRooms.append(activityAssoc[itemId])
+            disallowedRooms.append(roomsUsed[activityAssoc[itemId]])
+        print(disallowedRooms)
         #Get random valid position
         x, z, roomNum = generatePosition(radius, rooms, unusableRooms + disallowedRooms, unusablePlaces + activityItems)
         y = (itemScale[1] / 2.0) + 0.05
