@@ -12,6 +12,8 @@ Changelog:
  - Bases now generate into their own separate group
  V5:
  - Added boundary nodes for rooms
+ V6:
+ - Added position nodes for doors
 """
 
 
@@ -53,7 +55,7 @@ def transformFromBounds(start, end):
     return pos, scale
 
 
-def createFileData (boxData, bases, obstacles, robots, numHumans, numChildren, activityList, bounds):
+def createFileData (boxData, bases, obstacles, robots, numHumans, numChildren, activityList, bounds, doors):
     '''Create a file data string from the positions and scales'''
     #Open the file containing the standard header
     headerFile = open(os.path.join(dirname, "fileHeader.txt"), "r")
@@ -195,6 +197,20 @@ def createFileData (boxData, bases, obstacles, robots, numHumans, numChildren, a
     #Close template file
     roomBoundaryDataTemplate.close()
 
+    #Open the file containing the template for a door group
+    doorGroupTemplate = open(os.path.join(dirname, "doorGroupTemplate.txt"), "r")
+    #Read template
+    doorGroupPart = doorGroupTemplate.read()
+    #Close template file
+    doorGroupTemplate.close()
+
+    #Open the file containing the template for a door node
+    doorTemplate = open(os.path.join(dirname, "doorTemplate.txt"), "r")
+    #Read template
+    doorPart = doorTemplate.read()
+    #Close template file
+    doorTemplate.close()
+    
     #Open the file containing the template for the supervisor
     supervisorTemplate = open(os.path.join(dirname, "supervisorTemplate.txt"), "r")
     #Read template
@@ -306,7 +322,7 @@ def createFileData (boxData, bases, obstacles, robots, numHumans, numChildren, a
     fileData = fileData + activityBoxGroup.format(activityBoxes)
     fileData = fileData + activityPadGroup.format(activityPads)
 
-    #Add bounds here
+    #String containing all boundary node information
     allRoomBoundaries = ""
 
     #Id number for room
@@ -321,7 +337,23 @@ def createFileData (boxData, bases, obstacles, robots, numHumans, numChildren, a
 
     #Insert boundary parts into group node and then into the file
     fileData = fileData + roomGroupPart.format(allRoomBoundaries)
-	
+
+    #String containing all door node information
+    allDoors = ""
+
+    #Id number for door
+    doorId = 0
+    
+    #Iterate all doors
+    for door in doors:
+        #Add the door
+        allDoors = allDoors + doorPart.format(doorId, door[0][0], door[0][1], door[1][0], door[1][1])
+        #Increment id counter
+        doorId = doorId + 1
+
+    #Insert the door nodes into the group then insert into the file
+    fileData = fileData + doorGroupPart.format(allDoors)
+    
     #Add a supervisor robot
     fileData = fileData + supervisorPart
 
@@ -329,10 +361,10 @@ def createFileData (boxData, bases, obstacles, robots, numHumans, numChildren, a
     return fileData
 
 
-def makeFile(boxData, bases, obstacles, robots, humans, children, activities, bounds, uiWindow = None):
+def makeFile(boxData, bases, obstacles, robots, humans, children, activities, bounds, doors, uiWindow = None):
     '''Create and save the file for the information'''
     #Generate the file string for the map
-    data = createFileData(boxData, bases, obstacles, robots, humans, children, activities, bounds)
+    data = createFileData(boxData, bases, obstacles, robots, humans, children, activities, bounds, doors)
     #The default file path
     filePath = os.path.join(dirname, "generatedWorld.wbt")
 

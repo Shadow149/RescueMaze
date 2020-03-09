@@ -14,6 +14,9 @@
             ]
             name "obstacle{0}"
             boundingObject USE OBSTACLEBOX{0}
+	    recognitionColors [
+			0.3 0.3 0.3
+		]
             physics Physics {{
                 density -1
                 mass 50

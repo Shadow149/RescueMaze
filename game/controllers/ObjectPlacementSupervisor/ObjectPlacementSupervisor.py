@@ -1,4 +1,4 @@
-"""Object Placing Supervisor Prototype v4
+"""Object Placing Supervisor Prototype v5
    Written by Robbie Goldman and Alfred Roberts
 
 Features:
@@ -15,6 +15,8 @@ Changelog:
  - Waits for main supervisor to call for generation first (prevents double)
  V4:
  - Overhauled to not use walls but rooms instead (will not work with old world files)
+ V5:
+ - Added identification of adjacent rooms (connected by doors) for future use and relocation
 """
 
 from controller import Supervisor
@@ -47,6 +49,53 @@ def getAllRooms (numberRooms: int) -> list:
     return rooms
 
 
+def getAllAdjacency (roomList: list) -> list:
+    '''Returns a 2d array containing boolean values for if those two rooms are connected by a door and not the same'''
+    #Empty adjacency array
+    adj = []
+    #Iterate for rooms
+    for roomNumber in range(0, len(roomList)):
+        #Empty row
+        row = []
+        #Iterate for rooms
+        for item in range(0, len(roomList)):
+            #Add room data
+            row.append(False)
+        #Add the row to the array
+        adj.append(row)
+
+    #Get group node containing doors
+    doorGroup = supervisor.getFromDef("DOORGROUP")
+    doorNodes = doorGroup.getField("children")
+    #Get number of doors
+    numberOfDoors = doorNodes.getCount()
+
+    #Iterate through the doors
+    for doorId in range(0, numberOfDoors):
+        #Get the door node
+        door = doorNodes.getMFNode(doorId)
+        #List of rooms it connects
+        roomIds = []
+        #Get the children nodes (room data nodes)
+        roomData = door.getField("children")
+        #Count the number of room data nodes
+        numberOfRooms = roomData.getCount()
+        #Iterate for room data nodes
+        for room in range(0, numberOfRooms):
+            #Get the node
+            roomTransform = roomData.getMFNode(room)
+            #Retrieve the x translation as an integer (room id)
+            roomIds.append(int(roomTransform.getField("translation").getSFVec3f()[0]))
+
+        #If there are at least 2 rooms
+        if len(roomIds) > 1:
+            #Set the adjacency for the 2 rooms to true
+            adj[roomIds[0]][roomIds[1]] = True
+            adj[roomIds[1]][roomIds[0]] = True
+
+    #Return the completed adjacency array
+    return adj
+        
 def determineRoom(roomList: list, objectPosition: list) -> int:
     '''Determine the room index that a position in inside of'''
     #Id to determine which room is being looked at
@@ -239,7 +288,6 @@ def setActivityPositions(activityItemList: list, activitySizeList: list, activit
         #Add a room to not allowed if used by another part of the activity
         if len(roomsUsed) > activityAssoc[itemId]:
             disallowedRooms.append(roomsUsed[activityAssoc[itemId]])
-        print(disallowedRooms)
         #Get random valid position
         x, z, roomNum = generatePosition(radius, rooms, unusableRooms + disallowedRooms, unusablePlaces + activityItems)
         y = (itemScale[1] / 2.0) + 0.05
@@ -263,7 +311,7 @@ def setHumanPositions(numberHumans: int, humanNodes: list, rooms: list, unusable
         human = humanNodes.getMFNode(i)
         #Get human translation and radius
         humanPos = human.getField("translation")
-        humanRad = human.getField("boundingObject").getSFNode().getField("radius").getSFFloat() + 0.7
+        humanRad = human.getField("boundingObject").getSFNode().getField("radius").getSFFloat() + 0.5
         humanY = human.getField("boundingObject").getSFNode().getField("height").getSFFloat()
         #Get random valid position
         x, z, roomNum = generatePosition(humanRad, rooms, unusableRooms, unusableSpaces + humans)
@@ -350,8 +398,7 @@ def performGeneration ():
     finalHumans = setHumanPositions(numberOfHumans, humanNodes, allRooms, unusableRooms, unusablePlaces)
     #Add humans to the unusables list
     unusablePlaces = unusablePlaces + finalHumans
-    
-    
+
     #Send signal to say that items have been placed
     outputField.setSFString("done")
 

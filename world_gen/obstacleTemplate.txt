@@ -14,4 +14,7 @@
             ]
             name "obstacle{0}"
             boundingObject USE OBSTACLEBOX{0}
+	    recognitionColors [
+			0.45 0.45 0.45
+		]
         }}

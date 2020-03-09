@@ -10,5 +10,5 @@ viewpointLocked: 0
 orthographicViewHeight: 1
 textFiles: -1
 robotWindow: robot
-renderingDevicePerspectives: robot0:camera;1;2.34375;0;0
 renderingDevicePerspectives: robot1:camera;1;2.34375;0.868398;0
+renderingDevicePerspectives: robot0:camera;1;2.34375;0;0

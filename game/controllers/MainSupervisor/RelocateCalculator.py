@@ -6,13 +6,16 @@ Features:
  - Will not be in the room the robot is currently in
  - Will not be in the same room as the other robot
  - Will not be inside any of the other map features (walls, obstacles, activities, bases)
-
+ - Will be in an adjacent room (connected by a door) when possible
 Changelog:
+ V2:
  - Fixed rounding issue with boundaries
+ - Added adjacent room calculations
 
 To use:
  import RelocateCalculator
- [xPos, zPos] = RelocateCalculator(supervisor)
+ #robotId is 0 or 1 depending on which robot is being relocated
+ [xPos, zPos] = RelocateCalculator(supervisor, robotId)
 """
 
 import random
@@ -64,6 +67,54 @@ def determineRoom(roomList: list, objectPosition: list) -> int:
 
     #It was not found so return -1
     return -1
+
+
+def getAllAdjacency (roomList: list) -> list:
+    '''Returns a 2d array containing boolean values for if those two rooms are connected by a door and not the same'''
+    #Empty adjacency array
+    adj = []
+    #Iterate for rooms
+    for roomNumber in range(0, len(roomList)):
+        #Empty row
+        row = []
+        #Iterate for rooms
+        for item in range(0, len(roomList)):
+            #Add room data
+            row.append(False)
+        #Add the row to the array
+        adj.append(row)
+
+    #Get group node containing doors
+    doorGroup = supervisor.getFromDef("DOORGROUP")
+    doorNodes = doorGroup.getField("children")
+    #Get number of doors
+    numberOfDoors = doorNodes.getCount()
+
+    #Iterate through the doors
+    for doorId in range(0, numberOfDoors):
+        #Get the door node
+        door = doorNodes.getMFNode(doorId)
+        #List of rooms it connects
+        roomIds = []
+        #Get the children nodes (room data nodes)
+        roomData = door.getField("children")
+        #Count the number of room data nodes
+        numberOfRooms = roomData.getCount()
+        #Iterate for room data nodes
+        for room in range(0, numberOfRooms):
+            #Get the node
+            roomTransform = roomData.getMFNode(room)
+            #Retrieve the x translation as an integer (room id)
+            roomIds.append(int(roomTransform.getField("translation").getSFVec3f()[0]))
+
+        #If there are at least 2 rooms
+        if len(roomIds) > 1:
+            #Set the adjacency for the 2 rooms to true
+            adj[roomIds[0]][roomIds[1]] = True
+            adj[roomIds[1]][roomIds[0]] = True
+
+    #Return the completed adjacency array
+    return adj
 
 
 def getAllObstacles(supervisor) -> list:
@@ -246,10 +297,12 @@ def generatePosition(radius: int, rooms: list, blockedRooms: list, usedSpaces: l
     return randomX, randomZ, selectedRoom
 
 
-def generateRelocatePosition(supervisor) -> list:
+def generateRelocatePosition(supervisor, robotId = -1) -> list:
     '''Generate a random position to relocate a robot to'''
     #Get all the room data
     rooms = getAllRooms(supervisor)
+    #Get the array of adjacent rooms
+    adjacency = getAllAdjacency(rooms)
     #Get all the obstacles in the rooms
     unusable = getAllObstacles(supervisor)
     unusable = unusable + getAllActivities(supervisor)
@@ -268,5 +321,34 @@ def generateRelocatePosition(supervisor) -> list:
             #Add to the unusable list
             unusableRooms.append(roomId)
 
-    x, z, roomId = generatePosition(1, rooms, unusableRooms, unusable)
-    return [x, z]
+    reserveUnusable = []
+
+    for room in unusableRooms:
+        reserveUnusable.append(room)
+
+    #If the robot id is set and within the number of robots
+    if robotId < len(robotPos):
+        #Get the current room of the robot being relocated
+        currentRoom = determineRoom(rooms, robotPos[robotId])
+        #If the current room is a valid room
+        if currentRoom < len(adjacency) and currentRoom > -1:
+            #Iterate through the rooms
+            for roomId in range(0, len(adjacency[currentRoom])):
+                #If the rooms are not adjacent
+                if not adjacency[currentRoom][roomId]:
+                    #That room cannot be used
+                    #Prevent duplicates
+                    if roomId not in unusableRooms:
+                        unusableRooms.append(roomId)
+
+    #If there is an adjacent room that can be used
+    if(len(unusableRooms) < len(rooms)):
+        #Generate a random position in an adjacent room to place the robot into
+        x, z, roomId = generatePosition(1, rooms, unusableRooms, unusable)
+        #Return the position as x, z coordinates
+        return [x, z]
+    else:
+        #Generate a random position to place the robot into
+        x, z, roomId = generatePosition(1, rooms, reserveUnusable, unusable)
+        #Return the position as x, z coordinates
+        return [x, z]

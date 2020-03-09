@@ -1,4 +1,4 @@
-"""Map Generation Main Script v5
+"""Map Generation Main Script v6
    Written by Robbie Goldman and Alfred Roberts
 
 Changelog:
@@ -12,6 +12,8 @@ Changelog:
  - Resized bases
  V5:
  - Added boundaries for rooms
+ V6:
+ - Added door calculations (position and connected rooms)
 """
 
 import random
@@ -282,10 +284,15 @@ def getAllMaxMin(rootNode):
 
 def openDoor (wall, array):
     '''Add a door randomly to a wall'''
+    #Door information (centre position and direction 0 is up/down 1 is left/right)
+    doorCentre = [None, None]
+    doorDir = 0
     #If the wall is long enough to hold a full door
     if len(wall) > 16:
         #Generate random position
         r = random.randint(1, len(wall) - 16)
+        #Add door middle to information
+        doorCentre = [wall[r + 7][0], wall[r + 7][1]]
         #Iterate down door
         for i in range(0, 15):
             #Check the position is valid
@@ -294,19 +301,29 @@ def openDoor (wall, array):
                 array[wall[i + r][1]][wall[i + r][0]] = " "
     else:
         #If the wall is too short for a full addDoors
-        #Iterate across all cenral wall pieces
+        #Add door middle to information
+        doorCentre = [wall[1 + (len(wall) // 2)][0], wall[1 + (len(wall) // 2)][1]]
+        #Iterate across all central wall pieces
         for i in range(1, len(wall) - 1):
             #Remove the wall
             array[wall[i][1]][wall[i][0]] = " "
+
+    #Calculate the door's orientation (bases on the two end points
+    #If the y positions are different
+    if wall[0][1] != wall[len(wall) - 1][1]:
+        #It is a left/right door
+        doorDir = 1
     
     #Return the updated array
-    return array
+    return array, [doorCentre, doorDir]
 
 
 def addDoorToWall(wall, unusable, array):
     '''Add the doors to a given wall'''
     #List of all wall parts
     wallParts = []
+    #List to contain added doors
+    doorsList = []
     #The part of the wall currently being processed
     currentPart = []
     #Iterate through the wall
@@ -345,14 +362,16 @@ def addDoorToWall(wall, unusable, array):
         #Pick a random part
         w1 = random.randint(0, len(largeParts) - 1)
         #Open a door in that wall part
-        array = openDoor(largeParts[w1], array)
+        array, newDoor = openDoor(largeParts[w1], array)
+        doorsList.append(newDoor)
 
         #Iterate for large wall parts
         for i in range(len(largeParts)):
             #33% chance to add a door to a part (not the intial one again)
             if random.randint(0, 2) == 0 and i != w1:
                 #Open a door in that wall part
-                array = openDoor(largeParts[i], array)
+                array, newDoor = openDoor(largeParts[i], array)
+                doorsList.append(newDoor)
     else:
         #No large parts
         #No wall has been selected yet
@@ -369,10 +388,11 @@ def addDoorToWall(wall, unusable, array):
         #If a part was selected
         if selected != -1:
             #Open a door in that wall part
-            array = openDoor(wallParts[selected], array)
+            array, newDoor = openDoor(wallParts[selected], array)
+            doorsList.append(newDoor)
     
-    #Return the updated array
-    return array
+    #Return the updated array and all the doors
+    return array, doorsList
 
 
 def addDoors(rootNode, array):
@@ -380,14 +400,19 @@ def addDoors(rootNode, array):
     #Get the children of the node
     children = rootNode.getChildren()
 
+    #List to contain all added doors
+    allDoors = []
+
     #If there is a left child
     if children[0] != None:
         #Add doors to left child and all its children
-        array = addDoors(children[0], array)
+        array, newDoors = addDoors(children[0], array)
+        allDoors = allDoors + newDoors
     #If there is a right child
     if children[1] != None:
         #Add doors to right child and all its children
-        array = addDoors(children[1], array)
+        array, newDoors = addDoors(children[1], array)
+        allDoors = allDoors + newDoors
 
     #Get the wall for this node
     wall = rootNode.getWall()
@@ -397,10 +422,11 @@ def addDoors(rootNode, array):
     #If there is a wall (not leaf node)
     if wall != None:
         #Add doors to the wall of that node
-        array = addDoorToWall(wall, unusable, array)
+        array, addedDoors = addDoorToWall(wall, unusable, array)
+        allDoors = allDoors + addedDoors
 
     #Return the updated array
-    return array
+    return array, allDoors
 
 
 def convertBoundsToWorld(originalBounds):
@@ -426,6 +452,51 @@ def convertBoundsToWorld(originalBounds):
     return finalBounds
 
 
+def determineRoomIndex(position, bounds):
+    '''Checks all the boundaries to determine which room a position is in'''
+    #Id of current room
+    boundId = 0
+    #Iterate room boundaries
+    for bound in bounds:
+        #If it is between the xMin and xMax
+        if bound[0][0] <= position[0] and bound[1][0] >= position[0]:
+            #If it is between the yMin and yMax
+            if bound[0][1] <= position[1] and bound[1][1] >= position[1]:
+                #It is within this room
+                return boundId
+
+        #Increment room id counter
+        boundId = boundId + 1
+
+    #Not found in any of the rooms
+    return -1
+
+def convertDoorsToWorld(doors, bounds):
+    '''Convert door positions and directions from array space to world space and determine room connections'''
+    #List to contain final door data
+    finalDoors = []
+
+    #Adjustments to enter rooms [[vert+, vert-] , [horiz+, horiz-]]
+    additions = [[[0, 0.085], [0, -0.085]], [[0.085, 0], [-0.085, 0]]]
+
+    #Iterate through the doors
+    for door in doors:
+        #If the door exists
+        if door[0][0] != None and door[0][1] != None:
+            #Get the position of the centre of the door
+            doorPos = WorldCreator.transformFromBounds(door[0], door[0])[0]
+            #Get the positions to check for the rooms
+            room1Pos = [doorPos[0] + additions[door[1]][0][0], doorPos[1] + additions[door[1]][0][1]]
+            room2Pos = [doorPos[0] + additions[door[1]][1][0], doorPos[1] + additions[door[1]][1][1]]
+            #Determine which room each position is in
+            room1Id = determineRoomIndex(room1Pos, bounds)
+            room2Id = determineRoomIndex(room2Pos, bounds)
+            #Add the door to the list [[x, y], [room1, room2]]
+            finalDoors.append([doorPos, [room1Id, room2Id]])
+
+    #Return the completed list of doors
+    return finalDoors
+
 def generateWorld(splits):
     '''Perform generation of a world array'''
     #Create the empty array
@@ -442,10 +513,10 @@ def generateWorld(splits):
     bounds = getAllMaxMin(root)
     
     #Add all the doors to the array
-    array = addDoors(root, array)
+    array, allDoors = addDoors(root, array)
     
-    #Return the array and the root node
-    return array, root, bounds
+    #Return the array, root node, room boundaries and doors
+    return array, root, bounds, allDoors
 
 
 def generateWallParts(rootNode, array):
@@ -750,7 +821,7 @@ def generateObstacles(numObstaclesStatic, numObstaclesDynamic):
 def generatePlan (numSplits, numObstaclesStatic, numObstaclesDynamic, numBases):
     '''Perform a map generation up to png - does not update map file'''
     #Generate the world and tree
-    world, root, bounds = generateWorld(numSplits)
+    world, root, bounds, doors = generateWorld(numSplits)
     #Create the bases from the world and the tree
     world, bases = createBases(world, numBases, root)
 
@@ -770,10 +841,10 @@ def generatePlan (numSplits, numObstaclesStatic, numObstaclesDynamic, numBases):
     print("Generation Successful")
 
     #Return generated parts
-    return world, root, robotPositions, obstacles, baseBlocks, bounds
+    return world, root, robotPositions, obstacles, baseBlocks, bounds, doors
 
 
-def generateWorldFile (world, root, baseBlocks, obstacles, robotPositons, numHumans, numChildren, activities, bounds, window):
+def generateWorldFile (world, root, baseBlocks, obstacles, robotPositons, numHumans, numChildren, activities, bounds, doors, window):
     #Generate the wall parts for the tree
     generateWallParts(root, world)
     #Generate the edges of the map to mark as used
@@ -784,8 +855,10 @@ def generateWorldFile (world, root, baseBlocks, obstacles, robotPositons, numHum
     #Convert the bounds positions to world space
     bounds = convertBoundsToWorld(bounds)
 
+    doors = convertDoorsToWorld(doors, bounds)
+
     #Make a map from the walls and objects
-    WorldCreator.makeFile(walls, baseBlocks, obstacles, robotPositions, numHumans, numChildren, activities, bounds, window)
+    WorldCreator.makeFile(walls, baseBlocks, obstacles, robotPositions, numHumans, numChildren, activities, bounds, doors, window)
 
 
 def checkNoNones (dataValues):
@@ -817,6 +890,7 @@ humanNum = None
 childNum = None
 activities = None
 bounds = None
+doors = None
 
 activityNumbers = []
 
@@ -833,7 +907,7 @@ while guiActive:
         #A generation has started (resets flag so generation is not called again)
         window.generateStarted()
         #Generate a plan with the values
-        world, root, robotPositions, obstacles, baseBlocks, bounds = generatePlan(genValues[0][0], genValues[2][0], genValues[2][1], genValues[3][0])
+        world, root, robotPositions, obstacles, baseBlocks, bounds, doors = generatePlan(genValues[0][0], genValues[2][0], genValues[2][1], genValues[3][0])
         #Unpack the unused human values
         humanNum, childNum = genValues[1][0], genValues[1][1]
         #Unpack the used obstacle counts
@@ -868,9 +942,9 @@ while guiActive:
         #Saving has begin (resets flag so save is not called twice)
         window.saveStarted()
         #If all values that are needed are not None
-        if checkNoNones([world, root, robotPositions, obstacles, baseBlocks, humanNum, childNum, activities, bounds]):
+        if checkNoNones([world, root, robotPositions, obstacles, baseBlocks, humanNum, childNum, activities, bounds, doors]):
             #Generate and save a world
-            generateWorldFile(world, root, baseBlocks, obstacles, robotPositions, humanNum, childNum, activityNumbers, bounds, window)
+            generateWorldFile(world, root, baseBlocks, obstacles, robotPositions, humanNum, childNum, activityNumbers, bounds, doors, window)
 
     #Attempt update loops           
     try:
