@@ -318,6 +318,7 @@ def setHumanPositions(numberHumans: int, humanNodes: list, rooms: list, unusable
         #Move humans to random positions in the building
         humanPos.setSFVec3f([x,humanY,z])
         humans.append([[x, z], humanRad])
+
     
     #Returns the placed humans as: [[xPosition, zPosition], radius]
     return humans

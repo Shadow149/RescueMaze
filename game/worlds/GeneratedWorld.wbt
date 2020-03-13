@@ -1041,11 +1041,67 @@ DEF ROBOT0 Pioneer3dx {
   translation -3.249999999999999 0.0975 -6.049999999999999
   name "robot0"
   extensionSlot [
+    Gyro {
+    }
+    Receiver {
+    }
+    Emitter {
+    }
+    LightSensor {
+    }
+    GPS {
+    }
     Camera {
       translation 0.04 0.24 0
       fieldOfView 0.9
       recognition Recognition {
 	  }
+    }
+  ]
+}
+DEF ACTIVITYOBJECTS Group {
+  children [
+    DEF ACT0 Solid {
+      translation 5.14419 0.25 4.02641
+      children [
+        Shape {
+          appearance Appearance {
+            material DEF ACT0MATERIAL Material {
+              diffuseColor 1 0 1
+            }
+          }
+          geometry DEF box Box {
+            size 0.5 0.5 0.5
+          }
+        }
+      ]
+      name "base1(2)"
+      recognitionColors [
+        0.3 0 1
+      ]
+    }
+  ]
+}
+DEF ACTIVITYMATS Group {
+  children [
+    DEF ACT0MAT Solid {
+      translation 11.24347 0.055 8.669394
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 1 0 1
+            }
+          }
+          geometry DEF box Box {
+            size 1 0.005 1
+          }
+        }
+      ]
+      name "base1(1)"
+      recognitionColors [
+        0.3 0 1
+      ]
     }
   ]
 }
@@ -2146,5 +2202,6 @@ DEF MAINSUPERVISOR Robot {
 DEF OBJECTPLACER Robot {
   name "ObjectPlacementSupervisor"
   controller "ObjectPlacementSupervisor"
+  customData "received"
   supervisor TRUE
 }
