@@ -1,0 +1,20 @@
+	DEF ACT{0}MAT Solid {{
+	  translation 0 -1000 0
+	  children [
+	    Shape {{
+	      appearance Appearance {{
+        	material Material {{
+	          diffuseColor {1} {2} {3}
+	        }}
+	      }}
+	      geometry DEF ACTIVITYPAD{0} Box {{
+        size 1 0.005 1
+	      }}
+	    }}
+	  ]
+	  name "activityMat{0}"
+	  boundingObject USE ACTIVITYPAD{0}
+	  recognitionColors [
+	    {4} {5} {6}
+	  ]
+	}}

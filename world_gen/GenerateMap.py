@@ -1,9 +1,19 @@
-"""Map Generation Main Script v2
+"""Map Generation Main Script v6
    Written by Robbie Goldman and Alfred Roberts
 
 Changelog:
  V2:
  - Added randomly sized cubes as obstacles
+ V3:
+ - Added GUI integraction
+ - Added child generation
+ V4:
+ - Added activity generation
+ - Resized bases
+ V5:
+ - Added boundaries for rooms
+ V6:
+ - Added door calculations (position and connected rooms)
 """
 
 import random
@@ -11,6 +21,7 @@ from PIL import Image
 import math
 import WorldCreator
 import os
+import GUI
 dirname = os.path.dirname(__file__)
 
 
@@ -130,7 +141,7 @@ def createEmptyWorld():
     return array
 
 
-def printWorld(array, string):
+def printWorld(array):
     '''Output the array as a map image file'''
     #Create a new image with the same dimensions as the array (in rgb mode with white background)
     img = Image.new("RGB", (len(array[0]), len(array)), "#FFFFFF")
@@ -149,7 +160,7 @@ def printWorld(array, string):
                 img.putpixel((i, j), (150, 150, 150))
     
     #Save the completed image to file
-    img.save(os.path.join(dirname, "map" + string + ".png"), "PNG")
+    img.save(os.path.join(dirname, "map.png"), "PNG")
 
 
 def splitNode(n, array):
@@ -238,12 +249,50 @@ def splitDepth(rootNode, array):
     return array
 
 
+def getAllMaxMin(rootNode):
+    '''Get the min and max value for all the rooms'''
+    #List containing nodes to be checked
+    currentNodes = [rootNode]
+    #List of leaf nodes
+    finalNodes = []
+    #List to contain boundaries
+    nodeBounds = []
+
+    #As long as there are still nodes to check
+    while len(currentNodes) > 0:
+        #Get the next node
+        nextNode = currentNodes[0]
+        #If it has no children
+        if nextNode.left == None and nextNode.right == None:
+            #Add this node to the final list - it is a leaf
+            finalNodes.append(nextNode)
+        else:
+            #Add this nodes child nodes to be checked
+            currentNodes.append(nextNode.left)
+            currentNodes.append(nextNode.right)
+        #delete this node from the list to be checked
+        del currentNodes[0]
+    
+    #iterate through the final nodes
+    for node in finalNodes:
+        #Get the boundary shape
+        nodeBounds.append(node.shape)
+
+    #return the list of boundaries
+    return nodeBounds
+
+
 def openDoor (wall, array):
     '''Add a door randomly to a wall'''
+    #Door information (centre position and direction 0 is up/down 1 is left/right)
+    doorCentre = [None, None]
+    doorDir = 0
     #If the wall is long enough to hold a full door
     if len(wall) > 16:
         #Generate random position
         r = random.randint(1, len(wall) - 16)
+        #Add door middle to information
+        doorCentre = [wall[r + 7][0], wall[r + 7][1]]
         #Iterate down door
         for i in range(0, 15):
             #Check the position is valid
@@ -252,19 +301,29 @@ def openDoor (wall, array):
                 array[wall[i + r][1]][wall[i + r][0]] = " "
     else:
         #If the wall is too short for a full addDoors
-        #Iterate across all cenral wall pieces
+        #Add door middle to information
+        doorCentre = [wall[1 + (len(wall) // 2)][0], wall[1 + (len(wall) // 2)][1]]
+        #Iterate across all central wall pieces
         for i in range(1, len(wall) - 1):
             #Remove the wall
             array[wall[i][1]][wall[i][0]] = " "
+
+    #Calculate the door's orientation (bases on the two end points
+    #If the y positions are different
+    if wall[0][1] != wall[len(wall) - 1][1]:
+        #It is a left/right door
+        doorDir = 1
     
     #Return the updated array
-    return array
+    return array, [doorCentre, doorDir]
 
 
 def addDoorToWall(wall, unusable, array):
     '''Add the doors to a given wall'''
     #List of all wall parts
     wallParts = []
+    #List to contain added doors
+    doorsList = []
     #The part of the wall currently being processed
     currentPart = []
     #Iterate through the wall
@@ -303,14 +362,16 @@ def addDoorToWall(wall, unusable, array):
         #Pick a random part
         w1 = random.randint(0, len(largeParts) - 1)
         #Open a door in that wall part
-        array = openDoor(largeParts[w1], array)
+        array, newDoor = openDoor(largeParts[w1], array)
+        doorsList.append(newDoor)
 
         #Iterate for large wall parts
         for i in range(len(largeParts)):
             #33% chance to add a door to a part (not the intial one again)
             if random.randint(0, 2) == 0 and i != w1:
                 #Open a door in that wall part
-                array = openDoor(largeParts[i], array)
+                array, newDoor = openDoor(largeParts[i], array)
+                doorsList.append(newDoor)
     else:
         #No large parts
         #No wall has been selected yet
@@ -327,10 +388,11 @@ def addDoorToWall(wall, unusable, array):
         #If a part was selected
         if selected != -1:
             #Open a door in that wall part
-            array = openDoor(wallParts[selected], array)
+            array, newDoor = openDoor(wallParts[selected], array)
+            doorsList.append(newDoor)
     
-    #Return the updated array
-    return array
+    #Return the updated array and all the doors
+    return array, doorsList
 
 
 def addDoors(rootNode, array):
@@ -338,14 +400,19 @@ def addDoors(rootNode, array):
     #Get the children of the node
     children = rootNode.getChildren()
 
+    #List to contain all added doors
+    allDoors = []
+
     #If there is a left child
     if children[0] != None:
         #Add doors to left child and all its children
-        array = addDoors(children[0], array)
+        array, newDoors = addDoors(children[0], array)
+        allDoors = allDoors + newDoors
     #If there is a right child
     if children[1] != None:
         #Add doors to right child and all its children
-        array = addDoors(children[1], array)
+        array, newDoors = addDoors(children[1], array)
+        allDoors = allDoors + newDoors
 
     #Get the wall for this node
     wall = rootNode.getWall()
@@ -355,13 +422,82 @@ def addDoors(rootNode, array):
     #If there is a wall (not leaf node)
     if wall != None:
         #Add doors to the wall of that node
-        array = addDoorToWall(wall, unusable, array)
+        array, addedDoors = addDoorToWall(wall, unusable, array)
+        allDoors = allDoors + addedDoors
 
     #Return the updated array
-    return array
+    return array, allDoors
 
 
-def generateWorld():
+def convertBoundsToWorld(originalBounds):
+    '''Takes the list of bounds in array space and converts to world space'''
+    #List to contain final boundary positions
+    finalBounds = []
+
+    #Iterate list of positions
+    for bound in originalBounds:
+        #Calculate minimum and maximum
+        minPos = WorldCreator.transformFromBounds(bound[0], bound[0])[0]
+        #Adjust for wall thickness
+        minPos[0] = minPos[0] + 0.075
+        minPos[1] = minPos[1] + 0.075
+        maxPos = WorldCreator.transformFromBounds(bound[1], bound[1])[0]
+        #Adjust for wall thickness
+        maxPos[0] = maxPos[0] - 0.075
+        maxPos[1] = maxPos[1] - 0.075
+        #Append data to final array
+        finalBounds.append([minPos, maxPos])
+
+    #Return world space bounds
+    return finalBounds
+
+
+def determineRoomIndex(position, bounds):
+    '''Checks all the boundaries to determine which room a position is in'''
+    #Id of current room
+    boundId = 0
+    #Iterate room boundaries
+    for bound in bounds:
+        #If it is between the xMin and xMax
+        if bound[0][0] <= position[0] and bound[1][0] >= position[0]:
+            #If it is between the yMin and yMax
+            if bound[0][1] <= position[1] and bound[1][1] >= position[1]:
+                #It is within this room
+                return boundId
+
+        #Increment room id counter
+        boundId = boundId + 1
+
+    #Not found in any of the rooms
+    return -1
+
+def convertDoorsToWorld(doors, bounds):
+    '''Convert door positions and directions from array space to world space and determine room connections'''
+    #List to contain final door data
+    finalDoors = []
+
+    #Adjustments to enter rooms [[vert+, vert-] , [horiz+, horiz-]]
+    additions = [[[0, 0.085], [0, -0.085]], [[0.085, 0], [-0.085, 0]]]
+
+    #Iterate through the doors
+    for door in doors:
+        #If the door exists
+        if door[0][0] != None and door[0][1] != None:
+            #Get the position of the centre of the door
+            doorPos = WorldCreator.transformFromBounds(door[0], door[0])[0]
+            #Get the positions to check for the rooms
+            room1Pos = [doorPos[0] + additions[door[1]][0][0], doorPos[1] + additions[door[1]][0][1]]
+            room2Pos = [doorPos[0] + additions[door[1]][1][0], doorPos[1] + additions[door[1]][1][1]]
+            #Determine which room each position is in
+            room1Id = determineRoomIndex(room1Pos, bounds)
+            room2Id = determineRoomIndex(room2Pos, bounds)
+            #Add the door to the list [[x, y], [room1, room2]]
+            finalDoors.append([doorPos, [room1Id, room2Id]])
+
+    #Return the completed list of doors
+    return finalDoors
+
+def generateWorld(splits):
     '''Perform generation of a world array'''
     #Create the empty array
     array = createEmptyWorld()
@@ -369,15 +505,18 @@ def generateWorld():
     root = node(None, 0, len(array[0]) - 1, 0, len(array) - 1, array)
 
     #Perform binary split a number of times
-    for i in range(4):
+    for i in range(splits):
         #Split the lowest level of the array
         array = splitDepth(root, array)
+
+    #Get all the room boundary positions
+    bounds = getAllMaxMin(root)
     
     #Add all the doors to the array
-    array = addDoors(root, array)
+    array, allDoors = addDoors(root, array)
     
-    #Return the array and the root node
-    return array, root
+    #Return the array, root node, room boundaries and doors
+    return array, root, bounds, allDoors
 
 
 def generateWallParts(rootNode, array):
@@ -535,7 +674,7 @@ def addBase(root, array, quadrants):
             yPos = random.randint(yMin + yThird, yMax - yThird)
 
             #Create the base array
-            base = [[xPos, yPos], [xPos + 20, yPos + 20]]
+            base = [[xPos, yPos], [xPos + 15, yPos + 15]]
 
             #Set which quadrant was used
             usedQuad = quadrants[rQuad]
@@ -558,14 +697,14 @@ def addBase(root, array, quadrants):
     return base, array, usedQuad
 
 
-def createBases(array, rootNode):
+def createBases(array, numberBases, rootNode):
     '''Add a set of bases to the world'''
     bases = []
     #All four quadrants (two binary choices)
     quads = [[0, 0], [0, 1], [1, 0], [1, 1]]
 
-    #Iterate for each base (3 times)
-    for i in range(0, 3):
+    #Iterate for each base (max 4)
+    for i in range(0, numberBases):
         #Add a base
         base, array, used = addBase(rootNode, array, quads)
         #If a valid quad was used
@@ -584,7 +723,7 @@ def addRobots(bases):
     robots = []
 
     #For each of the robots (2 robots)
-    for i in range(2):
+    for i in range(0, 2):
         #If there is a base free to add it to
         if i < len(bases):
             #Calculate the position of the centre of the base
@@ -650,29 +789,41 @@ def generateEdges(array):
     #Return the generated list
     return positions
 
-def addObstacle():
-	height = float(random.randrange(50, 130)) / 100.0
-	width = float(random.randrange(30, 220)) / 100.0
-	depth = float(random.randrange(30, 220)) / 100.0
-	obstacle = [width, height, depth]
-	return obstacle
+def addObstacle(dynamic):
+    '''Generate random dimensions for an obstacle'''
+    height = float(random.randrange(50, 130)) / 100.0
+    width = float(random.randrange(30, 220)) / 100.0
+    depth = float(random.randrange(30, 220)) / 100.0
+    obstacle = [width, height, depth, dynamic]
+    return obstacle
 	
 
-def generateObstacles():
-	obstacles = []
-	num = random.randrange(4, 8)
-	for i in range(num):
-		newObstacle = addObstacle()
-		obstacles.append(newObstacle)
-	
-	return obstacles
+def generateObstacles(numObstaclesStatic, numObstaclesDynamic):
+    '''Generate a list of obstacles of length numObstacles'''
+    #List to hold obstacle dimensions
+    obstacles = []
+    #Iterate for each static obstacle
+    for i in range(0, numObstaclesStatic):
+        #Create an obstacle and add it to the list
+        newObstacle = addObstacle(False)
+        obstacles.append(newObstacle)
 
-def mainGenerate():
-    '''Perform a full generation run, from array, png to world creation'''
+    #Iterate for each static obstacle
+    for i in range(0, numObstaclesDynamic):
+        #Create an obstacle and add it to the list
+        newObstacle = addObstacle(True)
+        obstacles.append(newObstacle)
+
+    #Return the list of dimensions
+    return obstacles
+
+
+def generatePlan (numSplits, numObstaclesStatic, numObstaclesDynamic, numBases):
+    '''Perform a map generation up to png - does not update map file'''
     #Generate the world and tree
-    world, root = generateWorld()
+    world, root, bounds, doors = generateWorld(numSplits)
     #Create the bases from the world and the tree
-    world, bases = createBases(world, root)
+    world, bases = createBases(world, numBases, root)
 
     #Create the robots from the bases
     robots = addRobots(bases)
@@ -682,11 +833,18 @@ def mainGenerate():
     robotPositions = convertRobotsToWorld(robots)
 	
     #Create a list of obstacles
-    obstacles = generateObstacles()
+    obstacles = generateObstacles(numObstaclesStatic, numObstaclesDynamic)
 
     #Output the world as a picture
-    printWorld(world, "")
+    printWorld(world)
 
+    print("Generation Successful")
+
+    #Return generated parts
+    return world, root, robotPositions, obstacles, baseBlocks, bounds, doors
+
+
+def generateWorldFile (world, root, baseBlocks, obstacles, robotPositons, numHumans, numChildren, activities, bounds, doors, window):
     #Generate the wall parts for the tree
     generateWallParts(root, world)
     #Generate the edges of the map to mark as used
@@ -694,11 +852,109 @@ def mainGenerate():
     #Calculate all the wall blocks for the tree (exclude used pixels)
     walls, used = createAllWallBlocks(root, used)
 
-    #Make a map from the walls
-    WorldCreator.makeFile(walls, baseBlocks, obstacles, robotPositions)
+    #Convert the bounds positions to world space
+    bounds = convertBoundsToWorld(bounds)
 
-    #Print to indicate the program completed properly
-    print("Generation Successful")
+    doors = convertDoorsToWorld(doors, bounds)
 
-#Run the Generation
-mainGenerate()
+    #Make a map from the walls and objects
+    WorldCreator.makeFile(walls, baseBlocks, obstacles, robotPositions, numHumans, numChildren, activities, bounds, doors, window)
+
+
+def checkNoNones (dataValues):
+    '''Check there are no None values in a list'''
+    #Iterate all items
+    for value in dataValues:
+        #If there is a none
+        if value == None:
+            return False
+    #Otherwise
+    return True
+
+#Generate an empty map (to be loaded to begin)
+printWorld(createEmptyWorld())
+
+#Create an instacnce of the user interface
+window = GUI.GenerateWindow()
+
+#The UI is currently in use
+guiActive = True
+
+#Set all generation parameters to Nones
+world = None
+root = None
+robotPositions = None
+obstacles = None
+baseBlocks = None
+humanNum = None
+childNum = None
+activities = None
+bounds = None
+doors = None
+
+activityNumbers = []
+
+#Loop while the UI is active
+while guiActive:
+
+    #If a generation is being called for
+    if window.ready:
+        #Cannot save now
+        window.setSaveButton(False)
+        #Get generation values as follows:
+        #[[room splits], [humans, children], [obstaclesStatic, obstaclesDynamic], [bases] [activityTypes]]
+        genValues = window.getValues()
+        #A generation has started (resets flag so generation is not called again)
+        window.generateStarted()
+        #Generate a plan with the values
+        world, root, robotPositions, obstacles, baseBlocks, bounds, doors = generatePlan(genValues[0][0], genValues[2][0], genValues[2][1], genValues[3][0])
+        #Unpack the unused human values
+        humanNum, childNum = genValues[1][0], genValues[1][1]
+        #Unpack the used obstacle counts
+        obsStaticNum, obsDynamicNum = genValues[2][0], genValues[2][1]
+        #Unpack the activity list
+        activities = genValues[4]
+        #Update the UI image of the map
+        window.updateImage()
+
+        #List of activities to be added to the world
+        activityNumbers = []
+        #Message to indicate which activities will be added
+        activityList = "None"
+
+        #If there are activities
+        if len(activities) > 0:
+            #Reset message
+            activityList = ""
+            #Iterate through the activities
+            for activity in activities:
+                #Add number to list and name to message
+                activityNumbers.append(activity[0])
+                activityList = activityList + "\n" + activity[1]
+
+        #Update the output fields of the window
+        window.setGeneratedInformation("Adults: " + str(humanNum), "Children: " + str(childNum), str(len(baseBlocks)), "Static: " + str(obsStaticNum), "Dynamic: " + str(obsDynamicNum), activityList)
+
+    #If a save file is being called for
+    if window.saving:
+        #Cannot save now
+        window.setSaveButton(False)
+        #Saving has begin (resets flag so save is not called twice)
+        window.saveStarted()
+        #If all values that are needed are not None
+        if checkNoNones([world, root, robotPositions, obstacles, baseBlocks, humanNum, childNum, activities, bounds, doors]):
+            #Generate and save a world
+            generateWorldFile(world, root, baseBlocks, obstacles, robotPositions, humanNum, childNum, activityNumbers, bounds, doors, window)
+
+    #Attempt update loops           
+    try:
+        #Toggle the save button to the correct state
+        window.setSaveButton(checkNoNones([world, root, robotPositions, obstacles, baseBlocks, humanNum, childNum, bounds]))
+        #Update loops for the UI - manually called to prevent blocking of this program
+        window.update_idletasks()
+        window.update()
+    #If an error occurred in the update (window closed)
+    except:
+        #Terminate the UI loop
+        guiActive = False
+

@@ -2,12 +2,39 @@
    Written by Robbie Goldman and Alfred Roberts
 
 Changelog:
+ - Only get points if you have a human loaded and enter a base
+ - Robots can only pick up one human at a time
+ - Robot must have stopped for 2 seconds to deposit and pick up human
+ - Added check for message from position supervisor before taking human positions
+ - Added restart to object placement controller to allow obstacles to be placed on reset
  - added children
 """
 
 from controller import Supervisor
 import os
 import random
+
+#Create the instance of the supervisor class
+supervisor = Supervisor()
+
+#Get the robot nodes by their DEF names
+robot0 = supervisor.getFromDef("ROBOT0")
+robot1 = supervisor.getFromDef("ROBOT1")
+
+#Get the translation fields
+robot0Pos = robot0.getField("translation")
+robot1Pos = robot1.getField("translation")
+
+#Get the output from the object placement supervisor
+objectPlacementOutput = supervisor.getFromDef("OBJECTPLACER").getField("customData")
+#Send message to object placement to indicate that it should do a generation
+objectPlacementOutput.setSFString("startGen")
+#Restart object placement supervisor (so that when reset it runs again)
+supervisor.getFromDef("OBJECTPLACER").restartController()
+
+
+#Get this supervisor node - so that it can be rest when game restarts
+mainSupervisor = supervisor.getFromDef("MAINSUPERVISOR")
 
 #Maximum time for a match
 maxTime = 120
@@ -618,7 +645,8 @@ while simulationRunning:
                 #Reset the simulation
                 supervisor.simulationReset()
                 simulationRunning = False
-
+                #Restart this supervisor
+                mainSupervisor.restartController()
 
             if parts[0] == "robot0File":
                 #Load the robot 0 controller

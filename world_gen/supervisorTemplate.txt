@@ -1,7 +1,7 @@
-Robot {
+DEF MAINSUPERVISOR Robot {
   supervisor TRUE
   controller "MainSupervisor"
-  window "simulationControl1"
+  window "MainSupervisorWindow"
 }
 
 DEF OBJECTPLACER Robot {

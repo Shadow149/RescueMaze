@@ -4,7 +4,7 @@
                 Shape {{
                     appearance Appearance {{
 						material Material {{
-						diffuseColor 0.45 0.45 0.45
+						diffuseColor 0.3 0.3 0.3
 						}}
                     }}
                     geometry DEF OBSTACLEBOX{0} Box {{
@@ -15,6 +15,11 @@
             name "obstacle{0}"
             boundingObject USE OBSTACLEBOX{0}
 	    recognitionColors [
-			0.45 0.45 0.45
+			0.3 0.3 0.3
 		]
+            physics Physics {{
+                density -1
+                mass 50
+            }}
+	    
         }}
