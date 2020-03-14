@@ -129,7 +129,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL0 Solid {
-            translation 2.650000000000001 0.75 -9.399999999999999
+            translation -11.299999999999999 0.75 0.9500000000000007
             children [
                 Shape {
                 appearance Appearance {
@@ -138,7 +138,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX0 Box {
-                    size 0.1 1.5 1.0
+                    size 2.2 1.5 0.1
                 }
                 }
             ]
@@ -153,7 +153,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL1 Solid {
-            translation 2.650000000000001 0.75 -4.6499999999999995
+            translation -0.5499999999999993 0.75 0.9500000000000007
             children [
                 Shape {
                 appearance Appearance {
@@ -162,7 +162,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX1 Box {
-                    size 0.1 1.5 5.5
+                    size 16.3 1.5 0.1
                 }
                 }
             ]
@@ -177,7 +177,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL2 Solid {
-            translation 2.650000000000001 0.75 4.65
+            translation 10.75 0.75 0.9500000000000007
             children [
                 Shape {
                 appearance Appearance {
@@ -186,7 +186,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX2 Box {
-                    size 0.1 1.5 10.5
+                    size 3.3 1.5 0.1
                 }
                 }
             ]
@@ -201,7 +201,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL3 Solid {
-            translation -11.799999999999999 0.75 -2.0499999999999994
+            translation -1.0499999999999994 0.75 -9.1
             children [
                 Shape {
                 appearance Appearance {
@@ -210,7 +210,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX3 Box {
-                    size 1.2 1.5 0.1
+                    size 0.1 1.5 1.6
                 }
                 }
             ]
@@ -225,7 +225,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL4 Solid {
-            translation -4.6 0.75 -2.0499999999999994
+            translation -1.0499999999999994 0.75 -2.9499999999999993
             children [
                 Shape {
                 appearance Appearance {
@@ -234,7 +234,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX4 Box {
-                    size 10.2 1.5 0.1
+                    size 0.1 1.5 7.7
                 }
                 }
             ]
@@ -249,7 +249,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL5 Solid {
-            translation 2.3000000000000007 0.75 -2.0499999999999994
+            translation -4.949999999999999 0.75 -9.049999999999999
             children [
                 Shape {
                 appearance Appearance {
@@ -258,7 +258,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX5 Box {
-                    size 0.6 1.5 0.1
+                    size 0.1 1.5 1.7
                 }
                 }
             ]
@@ -273,7 +273,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL6 Solid {
-            translation -4.449999999999999 0.75 -6.999999999999999
+            translation -4.949999999999999 0.75 -6.299999999999999
             children [
                 Shape {
                 appearance Appearance {
@@ -282,7 +282,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX6 Box {
-                    size 0.1 1.5 5.8
+                    size 0.1 1.5 0.8
                 }
                 }
             ]
@@ -297,7 +297,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL7 Solid {
-            translation -4.449999999999999 0.75 -2.349999999999999
+            translation -4.949999999999999 0.75 -1.8499999999999992
             children [
                 Shape {
                 appearance Appearance {
@@ -306,7 +306,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX7 Box {
-                    size 0.1 1.5 0.5
+                    size 0.1 1.5 5.5
                 }
                 }
             ]
@@ -321,7 +321,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL8 Solid {
-            translation -10.2 0.75 -6.6499999999999995
+            translation -11.649999999999999 0.75 -6.049999999999999
             children [
                 Shape {
                 appearance Appearance {
@@ -330,7 +330,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX8 Box {
-                    size 4.4 1.5 0.1
+                    size 1.5 1.5 0.1
                 }
                 }
             ]
@@ -345,7 +345,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL9 Solid {
-            translation -5.499999999999999 0.75 -6.6499999999999995
+            translation -7.199999999999999 0.75 -6.049999999999999
             children [
                 Shape {
                 appearance Appearance {
@@ -354,7 +354,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX9 Box {
-                    size 2.0 1.5 0.1
+                    size 4.4 1.5 0.1
                 }
                 }
             ]
@@ -369,7 +369,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL10 Solid {
-            translation -1.2499999999999993 0.75 -8.899999999999999
+            translation -4.249999999999999 0.75 -4.449999999999999
             children [
                 Shape {
                 appearance Appearance {
@@ -378,7 +378,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX10 Box {
-                    size 0.1 1.5 2.0
+                    size 1.3 1.5 0.1
                 }
                 }
             ]
@@ -393,7 +393,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL11 Solid {
-            translation -1.2499999999999993 0.75 -4.249999999999999
+            translation -1.5999999999999992 0.75 -4.449999999999999
             children [
                 Shape {
                 appearance Appearance {
@@ -402,7 +402,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX11 Box {
-                    size 0.1 1.5 4.3
+                    size 1.0 1.5 0.1
                 }
                 }
             ]
@@ -417,7 +417,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL12 Solid {
-            translation -8.45 0.75 3.0500000000000007
+            translation -0.1499999999999993 0.75 -3.349999999999999
             children [
                 Shape {
                 appearance Appearance {
@@ -426,7 +426,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX12 Box {
-                    size 7.9 1.5 0.1
+                    size 1.7 1.5 0.1
                 }
                 }
             ]
@@ -441,7 +441,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL13 Solid {
-            translation -0.1999999999999993 0.75 3.0500000000000007
+            translation 3.8500000000000005 0.75 -3.349999999999999
             children [
                 Shape {
                 appearance Appearance {
@@ -450,7 +450,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX13 Box {
-                    size 5.6 1.5 0.1
+                    size 3.3 1.5 0.1
                 }
                 }
             ]
@@ -465,7 +465,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL14 Solid {
-            translation -5.949999999999999 0.75 -1.1999999999999993
+            translation 8.55 0.75 -3.349999999999999
             children [
                 Shape {
                 appearance Appearance {
@@ -474,7 +474,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX14 Box {
-                    size 0.1 1.5 1.6
+                    size 3.1 1.5 0.1
                 }
                 }
             ]
@@ -489,7 +489,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL15 Solid {
-            translation -5.949999999999999 0.75 2.0500000000000007
+            translation 12.0 0.75 -3.349999999999999
             children [
                 Shape {
                 appearance Appearance {
@@ -498,7 +498,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX15 Box {
-                    size 0.1 1.5 1.9
+                    size 0.8 1.5 0.1
                 }
                 }
             ]
@@ -513,7 +513,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL16 Solid {
-            translation -4.949999999999999 0.75 3.3500000000000005
+            translation 4.8500000000000005 0.75 -9.649999999999999
             children [
                 Shape {
                 appearance Appearance {
@@ -537,7 +537,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL17 Solid {
-            translation -4.949999999999999 0.75 7.500000000000001
+            translation 4.8500000000000005 0.75 -5.6499999999999995
             children [
                 Shape {
                 appearance Appearance {
@@ -546,7 +546,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX17 Box {
-                    size 0.1 1.5 4.8
+                    size 0.1 1.5 4.5
                 }
                 }
             ]
@@ -561,7 +561,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL18 Solid {
-            translation 3.5500000000000007 0.75 -0.4499999999999993
+            translation 7.15 0.75 -2.5499999999999994
             children [
                 Shape {
                 appearance Appearance {
@@ -570,7 +570,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX18 Box {
-                    size 1.7 1.5 0.1
+                    size 0.1 1.5 1.5
                 }
                 }
             ]
@@ -585,7 +585,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL19 Solid {
-            translation 7.9 0.75 -0.4499999999999993
+            translation 7.15 0.75 0.3000000000000007
             children [
                 Shape {
                 appearance Appearance {
@@ -594,7 +594,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX19 Box {
-                    size 4.0 1.5 0.1
+                    size 0.1 1.5 1.2
                 }
                 }
             ]
@@ -609,7 +609,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL20 Solid {
-            translation 11.9 0.75 -0.4499999999999993
+            translation -1.0499999999999994 0.75 2.8000000000000007
             children [
                 Shape {
                 appearance Appearance {
@@ -618,7 +618,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX20 Box {
-                    size 1.0 1.5 0.1
+                    size 0.1 1.5 3.6
                 }
                 }
             ]
@@ -633,7 +633,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL21 Solid {
-            translation 6.500000000000001 0.75 -5.049999999999999
+            translation -1.0499999999999994 0.75 8.0
             children [
                 Shape {
                 appearance Appearance {
@@ -642,7 +642,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX21 Box {
-                    size 7.6 1.5 0.1
+                    size 0.1 1.5 3.8
                 }
                 }
             ]
@@ -657,7 +657,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL22 Solid {
-            translation 12.100000000000001 0.75 -5.049999999999999
+            translation -7.85 0.75 1.1000000000000008
             children [
                 Shape {
                 appearance Appearance {
@@ -666,7 +666,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX22 Box {
-                    size 0.6 1.5 0.1
+                    size 0.1 1.5 0.2
                 }
                 }
             ]
@@ -681,7 +681,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL23 Solid {
-            translation 8.850000000000001 0.75 -9.7
+            translation -7.85 0.75 6.300000000000001
             children [
                 Shape {
                 appearance Appearance {
@@ -690,7 +690,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX23 Box {
-                    size 0.1 1.5 0.4
+                    size 0.1 1.5 7.2
                 }
                 }
             ]
@@ -705,7 +705,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL24 Solid {
-            translation 8.850000000000001 0.75 -6.549999999999999
+            translation -11.799999999999999 0.75 5.950000000000001
             children [
                 Shape {
                 appearance Appearance {
@@ -714,7 +714,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX24 Box {
-                    size 0.1 1.5 2.9
+                    size 1.2 1.5 0.1
                 }
                 }
             ]
@@ -729,7 +729,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL25 Solid {
-            translation 7.550000000000001 0.75 -4.6
+            translation -8.799999999999999 0.75 5.950000000000001
             children [
                 Shape {
                 appearance Appearance {
@@ -738,7 +738,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX25 Box {
-                    size 0.1 1.5 0.8
+                    size 1.8 1.5 0.1
                 }
                 }
             ]
@@ -753,7 +753,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL26 Solid {
-            translation 7.550000000000001 0.75 -1.5999999999999992
+            translation -6.549999999999999 0.75 4.450000000000001
             children [
                 Shape {
                 appearance Appearance {
@@ -762,7 +762,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX26 Box {
-                    size 0.1 1.5 2.2
+                    size 2.5 1.5 0.1
                 }
                 }
             ]
@@ -777,7 +777,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL27 Solid {
-            translation 4.15 0.75 5.65
+            translation -2.4499999999999993 0.75 4.450000000000001
             children [
                 Shape {
                 appearance Appearance {
@@ -786,7 +786,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX27 Box {
-                    size 2.9 1.5 0.1
+                    size 2.7 1.5 0.1
                 }
                 }
             ]
@@ -801,7 +801,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL28 Solid {
-            translation 8.200000000000001 0.75 5.65
+            translation 0.05000000000000071 0.75 4.450000000000001
             children [
                 Shape {
                 appearance Appearance {
@@ -810,7 +810,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX28 Box {
-                    size 2.2 1.5 0.1
+                    size 2.1 1.5 0.1
                 }
                 }
             ]
@@ -825,7 +825,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL29 Solid {
-            translation 11.600000000000001 0.75 5.65
+            translation 7.500000000000001 0.75 4.450000000000001
             children [
                 Shape {
                 appearance Appearance {
@@ -834,7 +834,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX29 Box {
-                    size 1.6 1.5 0.1
+                    size 9.8 1.5 0.1
                 }
                 }
             ]
@@ -849,7 +849,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL30 Solid {
-            translation 8.75 0.75 0.3500000000000007
+            translation 7.250000000000001 0.75 1.3000000000000007
             children [
                 Shape {
                 appearance Appearance {
@@ -858,7 +858,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX30 Box {
-                    size 0.1 1.5 1.5
+                    size 0.1 1.5 0.6
                 }
                 }
             ]
@@ -873,7 +873,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL31 Solid {
-            translation 8.75 0.75 4.1000000000000005
+            translation 7.250000000000001 0.75 3.750000000000001
             children [
                 Shape {
                 appearance Appearance {
@@ -882,7 +882,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX31 Box {
-                    size 0.1 1.5 3.0
+                    size 0.1 1.5 1.3
                 }
                 }
             ]
@@ -897,7 +897,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL32 Solid {
-            translation 8.55 0.75 6.3500000000000005
+            translation 6.250000000000001 0.75 6.250000000000001
             children [
                 Shape {
                 appearance Appearance {
@@ -906,7 +906,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX32 Box {
-                    size 0.1 1.5 1.3
+                    size 0.1 1.5 3.5
                 }
                 }
             ]
@@ -921,7 +921,7 @@ DEF WALLGROUP Group {
     Transform {
         children [
             DEF WALL33 Solid {
-            translation 8.55 0.75 9.200000000000001
+            translation 6.250000000000001 0.75 9.700000000000001
             children [
                 Shape {
                 appearance Appearance {
@@ -930,7 +930,7 @@ DEF WALLGROUP Group {
                     }
                 }
                 geometry DEF WALLBOX33 Box {
-                    size 0.1 1.5 1.4
+                    size 0.1 1.5 0.4
                 }
                 }
             ]
@@ -949,7 +949,7 @@ DEF BASEGROUP Group {
     Transform {
         children [
             Solid {
-            translation -3.1999999999999993 0.055 -5.999999999999999
+            translation -10.6 0.055 8.0
             children [
                 Shape {
                 appearance Appearance {
@@ -972,7 +972,7 @@ DEF BASEGROUP Group {
     Transform {
         children [
             Solid {
-            translation 10.0 0.055 7.800000000000001
+            translation -9.6 0.055 -2.499999999999999
             children [
                 Shape {
                 appearance Appearance {
@@ -995,7 +995,7 @@ DEF BASEGROUP Group {
     Transform {
         children [
             Solid {
-            translation 5.800000000000001 0.055 -7.6
+            translation 8.4 0.055 6.9
             children [
                 Shape {
                 appearance Appearance {
@@ -1016,29 +1016,29 @@ DEF BASEGROUP Group {
         ]
         }
             DEF base0Min Transform {
-                translation -3.999999999999999 0 -6.799999999999999
+                translation -11.4 0 7.2
             }
             DEF base0Max Transform {
-                translation -2.3999999999999995 0 -5.199999999999999
+                translation -9.799999999999999 0 8.8
             }
             DEF base1Min Transform {
-                translation 9.2 0 7.000000000000001
+                translation -10.4 0 -3.299999999999999
             }
             DEF base1Max Transform {
-                translation 10.8 0 8.600000000000001
+                translation -8.799999999999999 0 -1.699999999999999
             }
             DEF base2Min Transform {
-                translation 5.000000000000001 0 -8.4
+                translation 7.6000000000000005 0 6.1000000000000005
             }
             DEF base2Max Transform {
-                translation 6.6000000000000005 0 -6.8
+                translation 9.200000000000001 0 7.7
             }
 
     ]
 }
 DEF ROBOT0 Pioneer3dx {
   controller "robot0Controller"
-  translation -3.249999999999999 0.0975 -6.049999999999999
+  translation -10.649999999999999 0.0975 7.950000000000001
   name "robot0"
   extensionSlot [
     Gyro {
@@ -1055,66 +1055,30 @@ DEF ROBOT0 Pioneer3dx {
       translation 0.04 0.24 0
       fieldOfView 0.9
       recognition Recognition {
-	  }
-    }
-  ]
-}
-DEF ACTIVITYOBJECTS Group {
-  children [
-    DEF ACT0 Solid {
-      translation 5.14419 0.25 4.02641
-      children [
-        Shape {
-          appearance Appearance {
-            material DEF ACT0MATERIAL Material {
-              diffuseColor 1 0 1
-            }
-          }
-          geometry DEF box Box {
-            size 0.5 0.5 0.5
-          }
-        }
-      ]
-      name "base1(2)"
-      recognitionColors [
-        0.3 0 1
-      ]
-    }
-  ]
-}
-DEF ACTIVITYMATS Group {
-  children [
-    DEF ACT0MAT Solid {
-      translation 11.24347 0.055 8.669394
-      children [
-        Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 1 0 1
-            }
-          }
-          geometry DEF box Box {
-            size 1 0.005 1
-          }
-        }
-      ]
-      name "base1(1)"
-      recognitionColors [
-        0.3 0 1
-      ]
+	    }
     }
   ]
 }
 DEF ROBOT1 Pioneer3dx {
   controller "robot1Controller"
-  translation 9.950000000000001 0.0975 7.750000000000001
+  translation -9.649999999999999 0.0975 -2.5499999999999994
   name "robot1"
   extensionSlot [
+    Gyro {
+    }
+    Receiver {
+    }
+    Emitter {
+    }
+    LightSensor {
+    }
+    GPS {
+    }
     Camera {
       translation 0.04 0.24 0
       fieldOfView 0.9
       recognition Recognition {
-	  }
+	    }
     }
   ]
 }
@@ -1595,7 +1559,7 @@ DEF OBSTACLEGROUP Group {
 						}
                     }
                     geometry DEF OBSTACLEBOX0 Box {
-						size 0.83 0.79 1.1
+						size 2.16 1.27 1.31
                     }
                 }
             ]
@@ -1615,7 +1579,7 @@ DEF OBSTACLEGROUP Group {
 						}
                     }
                     geometry DEF OBSTACLEBOX1 Box {
-						size 0.67 0.96 0.42
+						size 0.4 1.24 2.11
                     }
                 }
             ]
@@ -1635,7 +1599,7 @@ DEF OBSTACLEGROUP Group {
 						}
                     }
                     geometry DEF OBSTACLEBOX2 Box {
-						size 1.02 1.09 1.77
+						size 0.6 0.96 0.32
                     }
                 }
             ]
@@ -1655,7 +1619,7 @@ DEF OBSTACLEGROUP Group {
 						}
                     }
                     geometry DEF OBSTACLEBOX3 Box {
-						size 1.61 0.76 1.15
+						size 1.68 0.9 0.59
                     }
                 }
             ]
@@ -1740,7 +1704,7 @@ DEF ACTMATGROUP Group {
 	  children [
 	    Shape {
 	      appearance Appearance {
-        	material Material {
+        	material DEF PAD0MATERIAL Material {
 	          diffuseColor 0.5 0.0 0.5
 	        }
 	      }
@@ -1760,7 +1724,7 @@ DEF ACTMATGROUP Group {
 	  children [
 	    Shape {
 	      appearance Appearance {
-        	material Material {
+        	material DEF PAD1MATERIAL Material {
 	          diffuseColor 0.0 0.5 0.5
 	        }
 	      }
@@ -1780,7 +1744,7 @@ DEF ACTMATGROUP Group {
 	  children [
 	    Shape {
 	      appearance Appearance {
-        	material Material {
+        	material DEF PAD2MATERIAL Material {
 	          diffuseColor 0.5 0.5 0.0
 	        }
 	      }
@@ -1806,7 +1770,7 @@ DEF ROOM0BOUNDS Group {
                 translation -12.375 0 -9.875
             }
             DEF room0Max Transform {
-                translation -4.5249999999999995 0 -6.725
+                translation -5.0249999999999995 0 -6.124999999999999
             }
 
     ]
@@ -1814,10 +1778,10 @@ DEF ROOM0BOUNDS Group {
 DEF ROOM1BOUNDS Group {
     children [
             DEF room1Min Transform {
-                translation -12.375 0 -6.574999999999999
+                translation -12.375 0 -5.974999999999999
             }
             DEF room1Max Transform {
-                translation -4.5249999999999995 0 -2.1249999999999996
+                translation -5.0249999999999995 0 0.8750000000000008
             }
 
     ]
@@ -1825,10 +1789,10 @@ DEF ROOM1BOUNDS Group {
 DEF ROOM2BOUNDS Group {
     children [
             DEF room2Min Transform {
-                translation -4.374999999999999 0 -9.875
+                translation -4.874999999999999 0 -9.875
             }
             DEF room2Max Transform {
-                translation -1.3249999999999993 0 -2.1249999999999996
+                translation -1.1249999999999993 0 -4.5249999999999995
             }
 
     ]
@@ -1836,10 +1800,10 @@ DEF ROOM2BOUNDS Group {
 DEF ROOM3BOUNDS Group {
     children [
             DEF room3Min Transform {
-                translation -1.1749999999999994 0 -9.875
+                translation -4.874999999999999 0 -4.374999999999999
             }
             DEF room3Max Transform {
-                translation 2.5750000000000006 0 -2.1249999999999996
+                translation -1.1249999999999993 0 0.8750000000000008
             }
 
     ]
@@ -1847,10 +1811,10 @@ DEF ROOM3BOUNDS Group {
 DEF ROOM4BOUNDS Group {
     children [
             DEF room4Min Transform {
-                translation -12.375 0 -1.9749999999999994
+                translation -0.9749999999999994 0 -9.875
             }
             DEF room4Max Transform {
-                translation -6.0249999999999995 0 2.9750000000000005
+                translation 4.775 0 -3.4249999999999994
             }
 
     ]
@@ -1858,10 +1822,10 @@ DEF ROOM4BOUNDS Group {
 DEF ROOM5BOUNDS Group {
     children [
             DEF room5Min Transform {
-                translation -5.874999999999999 0 -1.9749999999999994
+                translation 4.925000000000001 0 -9.875
             }
             DEF room5Max Transform {
-                translation 2.5750000000000006 0 2.9750000000000005
+                translation 12.375000000000002 0 -3.4249999999999994
             }
 
     ]
@@ -1869,10 +1833,10 @@ DEF ROOM5BOUNDS Group {
 DEF ROOM6BOUNDS Group {
     children [
             DEF room6Min Transform {
-                translation -12.375 0 3.125000000000001
+                translation -0.9749999999999994 0 -3.274999999999999
             }
             DEF room6Max Transform {
-                translation -5.0249999999999995 0 9.875000000000002
+                translation 7.075 0 0.8750000000000008
             }
 
     ]
@@ -1880,10 +1844,10 @@ DEF ROOM6BOUNDS Group {
 DEF ROOM7BOUNDS Group {
     children [
             DEF room7Min Transform {
-                translation -4.874999999999999 0 3.125000000000001
+                translation 7.2250000000000005 0 -3.274999999999999
             }
             DEF room7Max Transform {
-                translation 2.5750000000000006 0 9.875000000000002
+                translation 12.375000000000002 0 0.8750000000000008
             }
 
     ]
@@ -1891,10 +1855,10 @@ DEF ROOM7BOUNDS Group {
 DEF ROOM8BOUNDS Group {
     children [
             DEF room8Min Transform {
-                translation 2.725000000000001 0 -9.875
+                translation -12.375 0 1.0250000000000008
             }
             DEF room8Max Transform {
-                translation 8.775000000000002 0 -5.124999999999999
+                translation -7.925 0 5.875000000000001
             }
 
     ]
@@ -1902,10 +1866,10 @@ DEF ROOM8BOUNDS Group {
 DEF ROOM9BOUNDS Group {
     children [
             DEF room9Min Transform {
-                translation 8.925 0 -9.875
+                translation -12.375 0 6.025000000000001
             }
             DEF room9Max Transform {
-                translation 12.375000000000002 0 -5.124999999999999
+                translation -7.925 0 9.875000000000002
             }
 
     ]
@@ -1913,10 +1877,10 @@ DEF ROOM9BOUNDS Group {
 DEF ROOM10BOUNDS Group {
     children [
             DEF room10Min Transform {
-                translation 2.725000000000001 0 -4.974999999999999
+                translation -7.7749999999999995 0 1.0250000000000008
             }
             DEF room10Max Transform {
-                translation 7.4750000000000005 0 -0.5249999999999992
+                translation -1.1249999999999993 0 4.375000000000001
             }
 
     ]
@@ -1924,10 +1888,10 @@ DEF ROOM10BOUNDS Group {
 DEF ROOM11BOUNDS Group {
     children [
             DEF room11Min Transform {
-                translation 7.625000000000001 0 -4.974999999999999
+                translation -7.7749999999999995 0 4.525000000000001
             }
             DEF room11Max Transform {
-                translation 12.375000000000002 0 -0.5249999999999992
+                translation -1.1249999999999993 0 9.875000000000002
             }
 
     ]
@@ -1935,10 +1899,10 @@ DEF ROOM11BOUNDS Group {
 DEF ROOM12BOUNDS Group {
     children [
             DEF room12Min Transform {
-                translation 2.725000000000001 0 -0.3749999999999993
+                translation -0.9749999999999994 0 1.0250000000000008
             }
             DEF room12Max Transform {
-                translation 8.675 0 5.575
+                translation 7.175000000000001 0 4.375000000000001
             }
 
     ]
@@ -1946,10 +1910,10 @@ DEF ROOM12BOUNDS Group {
 DEF ROOM13BOUNDS Group {
     children [
             DEF room13Min Transform {
-                translation 8.825 0 -0.3749999999999993
+                translation 7.325000000000001 0 1.0250000000000008
             }
             DEF room13Max Transform {
-                translation 12.375000000000002 0 5.575
+                translation 12.375000000000002 0 4.375000000000001
             }
 
     ]
@@ -1957,10 +1921,10 @@ DEF ROOM13BOUNDS Group {
 DEF ROOM14BOUNDS Group {
     children [
             DEF room14Min Transform {
-                translation 2.725000000000001 0 5.7250000000000005
+                translation -0.9749999999999994 0 4.525000000000001
             }
             DEF room14Max Transform {
-                translation 8.475000000000001 0 9.875000000000002
+                translation 6.175000000000001 0 9.875000000000002
             }
 
     ]
@@ -1968,7 +1932,7 @@ DEF ROOM14BOUNDS Group {
 DEF ROOM15BOUNDS Group {
     children [
             DEF room15Min Transform {
-                translation 8.625 0 5.7250000000000005
+                translation 6.325000000000001 0 4.525000000000001
             }
             DEF room15Max Transform {
                 translation 12.375000000000002 0 9.875000000000002
@@ -1982,7 +1946,7 @@ DEF ROOM15BOUNDS Group {
 DEF DOORGROUP Group {
     children [
 	DEF Door0 Transform {
-            translation -7.249999999999999 0 -6.6499999999999995
+            translation -10.149999999999999 0 -6.049999999999999
             children [
                 Transform {
                     translation 1 0 0
@@ -1993,7 +1957,7 @@ DEF DOORGROUP Group {
             ]
         }
 	DEF Door1 Transform {
-            translation -1.2499999999999993 0 -7.1499999999999995
+            translation -2.849999999999999 0 -4.449999999999999
             children [
                 Transform {
                     translation 3 0 0
@@ -2004,7 +1968,18 @@ DEF DOORGROUP Group {
             ]
         }
 	DEF Door2 Transform {
-            translation -4.449999999999999 0 -3.349999999999999
+            translation -4.949999999999999 0 -7.449999999999999
+            children [
+                Transform {
+                    translation 2 0 0
+                }
+		Transform {
+                    translation 0 0 0
+                }
+            ]
+        }
+	DEF Door3 Transform {
+            translation -4.949999999999999 0 -5.1499999999999995
             children [
                 Transform {
                     translation 2 0 0
@@ -2014,8 +1989,8 @@ DEF DOORGROUP Group {
                 }
             ]
         }
-	DEF Door3 Transform {
-            translation -5.949999999999999 0 0.3500000000000007
+	DEF Door4 Transform {
+            translation 4.8500000000000005 0 -8.649999999999999
             children [
                 Transform {
                     translation 5 0 0
@@ -2025,8 +2000,8 @@ DEF DOORGROUP Group {
                 }
             ]
         }
-	DEF Door4 Transform {
-            translation -4.949999999999999 0 4.3500000000000005
+	DEF Door5 Transform {
+            translation 7.15 0 -1.0499999999999994
             children [
                 Transform {
                     translation 7 0 0
@@ -2036,8 +2011,30 @@ DEF DOORGROUP Group {
                 }
             ]
         }
-	DEF Door5 Transform {
-            translation -3.749999999999999 0 3.0500000000000007
+	DEF Door6 Transform {
+            translation 6.250000000000001 0 -3.349999999999999
+            children [
+                Transform {
+                    translation 6 0 0
+                }
+		Transform {
+                    translation 5 0 0
+                }
+            ]
+        }
+	DEF Door7 Transform {
+            translation 1.4500000000000006 0 -3.349999999999999
+            children [
+                Transform {
+                    translation 6 0 0
+                }
+		Transform {
+                    translation 4 0 0
+                }
+            ]
+        }
+	DEF Door8 Transform {
+            translation 10.850000000000001 0 -3.349999999999999
             children [
                 Transform {
                     translation 7 0 0
@@ -2047,30 +2044,19 @@ DEF DOORGROUP Group {
                 }
             ]
         }
-	DEF Door6 Transform {
-            translation 1.2500000000000007 0 -2.0499999999999994
-            children [
-                Transform {
-                    translation 5 0 0
-                }
-		Transform {
-                    translation 3 0 0
-                }
-            ]
-        }
-	DEF Door7 Transform {
-            translation -10.45 0 -2.0499999999999994
+	DEF Door9 Transform {
+            translation -1.0499999999999994 0 -7.549999999999999
             children [
                 Transform {
                     translation 4 0 0
                 }
 		Transform {
-                    translation 1 0 0
+                    translation 2 0 0
                 }
             ]
         }
-	DEF Door8 Transform {
-            translation 8.850000000000001 0 -8.75
+	DEF Door10 Transform {
+            translation -10.45 0 5.950000000000001
             children [
                 Transform {
                     translation 9 0 0
@@ -2080,8 +2066,8 @@ DEF DOORGROUP Group {
                 }
             ]
         }
-	DEF Door9 Transform {
-            translation 7.550000000000001 0 -3.4499999999999993
+	DEF Door11 Transform {
+            translation -4.549999999999999 0 4.450000000000001
             children [
                 Transform {
                     translation 11 0 0
@@ -2091,44 +2077,22 @@ DEF DOORGROUP Group {
                 }
             ]
         }
-	DEF Door10 Transform {
-            translation 11.05 0 -5.049999999999999
-            children [
-                Transform {
-                    translation 11 0 0
-                }
-		Transform {
-                    translation 9 0 0
-                }
-            ]
-        }
-	DEF Door11 Transform {
-            translation 8.75 0 1.8500000000000008
-            children [
-                Transform {
-                    translation 13 0 0
-                }
-		Transform {
-                    translation 12 0 0
-                }
-            ]
-        }
 	DEF Door12 Transform {
-            translation 8.55 0 7.750000000000001
+            translation -7.85 0 1.9500000000000006
             children [
                 Transform {
-                    translation 15 0 0
+                    translation 10 0 0
                 }
 		Transform {
-                    translation 14 0 0
+                    translation 8 0 0
                 }
             ]
         }
 	DEF Door13 Transform {
-            translation 6.3500000000000005 0 5.65
+            translation 7.250000000000001 0 2.3500000000000005
             children [
                 Transform {
-                    translation 14 0 0
+                    translation 13 0 0
                 }
 		Transform {
                     translation 12 0 0
@@ -2136,57 +2100,57 @@ DEF DOORGROUP Group {
             ]
         }
 	DEF Door14 Transform {
-            translation 10.05 0 5.65
+            translation 6.250000000000001 0 8.75
             children [
                 Transform {
                     translation 15 0 0
                 }
 		Transform {
-                    translation 13 0 0
+                    translation 14 0 0
                 }
             ]
         }
 	DEF Door15 Transform {
-            translation 10.65 0 -0.4499999999999993
+            translation 1.8500000000000008 0 4.450000000000001
             children [
                 Transform {
-                    translation 13 0 0
+                    translation 14 0 0
+                }
+		Transform {
+                    translation 12 0 0
+                }
+            ]
+        }
+	DEF Door16 Transform {
+            translation -1.0499999999999994 0 5.3500000000000005
+            children [
+                Transform {
+                    translation 14 0 0
                 }
 		Transform {
                     translation 11 0 0
                 }
             ]
         }
-	DEF Door16 Transform {
-            translation 5.15 0 -0.4499999999999993
-            children [
-                Transform {
-                    translation 12 0 0
-                }
-		Transform {
-                    translation 10 0 0
-                }
-            ]
-        }
 	DEF Door17 Transform {
-            translation 2.650000000000001 0 -1.1499999999999992
+            translation 8.350000000000001 0 0.9500000000000007
             children [
                 Transform {
-                    translation 10 0 0
+                    translation 13 0 0
                 }
 		Transform {
-                    translation 5 0 0
+                    translation 7 0 0
                 }
             ]
         }
 	DEF Door18 Transform {
-            translation 2.650000000000001 0 -8.149999999999999
+            translation -9.45 0 0.9500000000000007
             children [
                 Transform {
                     translation 8 0 0
                 }
 		Transform {
-                    translation 3 0 0
+                    translation 1 0 0
                 }
             ]
         }
@@ -2202,6 +2166,5 @@ DEF MAINSUPERVISOR Robot {
 DEF OBJECTPLACER Robot {
   name "ObjectPlacementSupervisor"
   controller "ObjectPlacementSupervisor"
-  customData "received"
   supervisor TRUE
 }

@@ -202,7 +202,7 @@ def getAllActivities(supervisor) -> list:
     #Iterate for pad IDs
     for padNum in range(0, numberOfActivityPads):
         #Get the pad and the bounding object
-        padObject = activityPadNodes.getMFNode(boxNum)
+        padObject = activityPadNodes.getMFNode(padNum)
         padPos = padObject.getField("translation").getSFVec3f()
         padBounds = padObject.getField("boundingObject").getSFNode()
         padScale = padBounds.getField("size").getSFVec3f()
@@ -251,6 +251,8 @@ def generatePosition(radius: int, rooms: list, blockedRooms: list, usedSpaces: l
     #Round the radius to 2dp
     radius = round(float(radius), 2)
 
+    totalTries = 0
+
     #List to contain rooms that may be generated
     validRoomIds = []
     #Iterate through all the rooms
@@ -264,34 +266,46 @@ def generatePosition(radius: int, rooms: list, blockedRooms: list, usedSpaces: l
     #Not yet ready to be added
     done = False
 
+    randomX = 0
+    randomZ = 0
+
     #Repeat until a valid position is found (need to limit max objects to make sure this ends
     while not done:
 
-        done = True
+        randomRoomId = random.randrange(0, len(validRoomIds))
+        selectedRoom = rooms[validRoomIds[randomRoomId]]
 
-        selectedRoom = rooms[validRoomIds[random.randrange(0, len(validRoomIds))]]
+        attempts = 0
 
-        roomMin = [selectedRoom[0][0], selectedRoom[0][1]]
-        roomMax = [selectedRoom[1][0], selectedRoom[1][1]]
+        #Try 5 times with the room before selecting another (improves randomness in room selection when cluttered rooms are present)
+        while attempts < 5 and not done:
 
-        #Calculate size boundaries
-        xMin = int((roomMin[0] * 100) + (radius * 100))
-        xMax = int((roomMax[0] * 100) - (radius * 100))
-        zMin = int((roomMin[1] * 100) + (radius * 100))
-        zMax = int((roomMax[1] * 100) - (radius * 100))
+            done = True
+
+            attempts = attempts + 1
+            totalTries = totalTries + 1
         
-        #Get a random x and z position between min and max (with offset for radius)
-        randomX = random.randrange(xMin, xMax) / 100.0
-        randomZ = random.randrange(zMin, zMax) / 100.0
-        
-        #Iterate through the placed items
-        for item in usedSpaces:
-            #Get the distance to the item
-            distance = (((randomX - item[0][0]) ** 2) + ((randomZ - item[0][1]) ** 2)) ** 0.5
-            #If the distance is less than the two radii added together
-            if distance <= radius + item[1]:
-                #It intersects a placed object and cannot be placed here
-                done = False
+            roomMin = [selectedRoom[0][0], selectedRoom[0][1]]
+            roomMax = [selectedRoom[1][0], selectedRoom[1][1]]
+
+            #Calculate size boundaries
+            xMin = int((roomMin[0] * 100) + (radius * 100))
+            xMax = int((roomMax[0] * 100) - (radius * 100))
+            zMin = int((roomMin[1] * 100) + (radius * 100))
+            zMax = int((roomMax[1] * 100) - (radius * 100))
+            
+            #Get a random x and z position between min and max (with offset for radius)
+            randomX = random.randrange(xMin, xMax) / 100.0
+            randomZ = random.randrange(zMin, zMax) / 100.0
+            
+            #Iterate through the placed items
+            for item in usedSpaces:
+                #Get the distance to the item
+                distance = (((randomX - item[0][0]) ** 2) + ((randomZ - item[0][1]) ** 2)) ** 0.5
+                #If the distance is less than the two radii added together
+                if distance <= radius + item[1]:
+                    #It intersects a placed object and cannot be placed here
+                    done = False
     
     #Returns the correct coordinates
     return randomX, randomZ, selectedRoom
@@ -315,7 +329,7 @@ def generateRelocatePosition(supervisor, robotId = -1) -> list:
     #Iterate robots
     for pos in robotPos:
         #Get the id of the position
-        roomId = determineRoom(rooms, pos)
+        roomId = determineRoom(rooms, [pos[0], pos[2]])
         #If it is a room
         if roomId != -1:
             #Add to the unusable list
@@ -329,7 +343,7 @@ def generateRelocatePosition(supervisor, robotId = -1) -> list:
     #If the robot id is set and within the number of robots
     if robotId < len(robotPos):
         #Get the current room of the robot being relocated
-        currentRoom = determineRoom(rooms, robotPos[robotId])
+        currentRoom = determineRoom(rooms, [robotPos[robotId][0], robotPos[robotId][2]])
         #If the current room is a valid room
         if currentRoom < len(adjacency) and currentRoom > -1:
             #Iterate through the rooms
@@ -344,11 +358,11 @@ def generateRelocatePosition(supervisor, robotId = -1) -> list:
     #If there is an adjacent room that can be used
     if(len(unusableRooms) < len(rooms)):
         #Generate a random position in an adjacent room to place the robot into
-        x, z, roomId = generatePosition(1, rooms, unusableRooms, unusable)
+        x, z, roomId = generatePosition(0.3, rooms, unusableRooms, unusable)
         #Return the position as x, z coordinates
         return [x, z]
     else:
         #Generate a random position to place the robot into
-        x, z, roomId = generatePosition(1, rooms, reserveUnusable, unusable)
+        x, z, roomId = generatePosition(0.3, rooms, reserveUnusable, unusable)
         #Return the position as x, z coordinates
         return [x, z]
