@@ -69,7 +69,7 @@ def determineRoom(roomList: list, objectPosition: list) -> int:
     return -1
 
 
-def getAllAdjacency (roomList: list) -> list:
+def getAllAdjacency (supervisor, roomList: list) -> list:
     '''Returns a 2d array containing boolean values for if those two rooms are connected by a door and not the same'''
     #Empty adjacency array
     adj = []
@@ -302,7 +302,7 @@ def generateRelocatePosition(supervisor, robotId = -1) -> list:
     #Get all the room data
     rooms = getAllRooms(supervisor)
     #Get the array of adjacent rooms
-    adjacency = getAllAdjacency(rooms)
+    adjacency = getAllAdjacency(supervisor, rooms)
     #Get all the obstacles in the rooms
     unusable = getAllObstacles(supervisor)
     unusable = unusable + getAllActivities(supervisor)

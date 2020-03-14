@@ -7,6 +7,8 @@ Example erebus robot controller
 Written by Alfred Roberts - 2020
 """
 
+#RobotName:Aura
+
 MOVE_FORWARD = "MOVE_FORWARD"
 MOVE_BACKWARDS = "MOVE_BACKWARDS"
 TURN_LEFT = "TURN_LEFT"
@@ -122,6 +124,27 @@ class Player (Robot):
         
         return humans
     
+    def getWallObjects(self) -> list:
+        '''Get human objects from detected objects'''
+        objects = self.getDetectedObjects()
+        
+        walls = []
+        
+        #for all objects in detected objects
+        for item in objects:
+            #if its the colour of the wall recongition colour
+            if item.get_colors() == [0.325,0.325,0.325]:
+                #get its position relative to robot
+                wall_pos = item.get_position()
+                #get its position in the image
+                wall_image_pos = item.get_position_on_image()
+                #get its size in the image in pixels
+                wall_image_size = item.get_size_on_image()
+                #append to array as [relative [x,y,z] position, position on camera view, size on camera]
+                walls.append([wall_pos,wall_image_pos, wall_image_size])
+        
+        return walls
+
     def nearObject(self, objPos: list) -> bool:
         '''Return true if relative object is < 0.5 metres away'''
         #TODO make 0.5 a constant that can change
@@ -191,13 +214,44 @@ class Player (Robot):
                 # Base on the left
                 self.mode = TURN_LEFT_OBJECT
                     
+    def moveToDoorWay(self) -> None:
+        '''Get movement mode to move robot towards human using human position on image'''
         
+        #Get human objects
+        walls = self.getWallObjects()
+        #Get camera width
+        width = self.camera.getWidth()
+        
+        center = width / 2
+        
+        if len(walls) > 1:
+            
+            wall1 = max(walls, key=lambda item: item[2])
+            walls.remove(wall1)
+            wall2 = max(walls, key=lambda item: item[2])
+            
+            print(wall1)
+            print(wall2)
+
+            doorWayCenter = (wall1[1][0] + wall2[1][0]) / 2
+            
+            #Find the difference in x values between centre of camera and human image position
+            dx = center - doorWayCenter
+            
+            if dx < 0:
+                # Human on the right
+                self.mode = TURN_RIGHT_OBJECT
+            else:
+                # Human on the left
+                self.mode = TURN_LEFT_OBJECT
     
     def update(self):
         '''Update robot movement mode'''
         
         #Set mode to forward incase nothing else passes in the function
         self.mode = MOVE_FORWARD
+
+        self.moveToDoorWay()
         
         #If a human is loaded and not collecting or depositing
         if self.humanLoaded and not self.collecting and not self.depositing:

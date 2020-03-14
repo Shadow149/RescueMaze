@@ -209,3 +209,17 @@ body{
   margin-top: 100%;
   margin-bottom: 100%;
 }
+
+.buttonRelocate{
+  cursor: pointer;
+  font-family: OpenSansBold;
+  text-transform: uppercase;
+  line-height: 1.5;
+  font-size: 13px;
+  padding: 10px 15px;
+  border: 5px solid;
+  border-color: rgb(83, 105, 186);
+  border-radius: 0px;
+  color: rgb(83, 105, 186);
+  background: #eeeeee;
+}

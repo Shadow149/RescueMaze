@@ -372,3 +372,7 @@ function show_winning_screen(){
   	document.getElementById("winning-screen").style.display = "inline-block";
   	visable = true;
 }
+
+function relocate(id){
+	window.robotWindow.send("relocate,"+id.toString());
+}

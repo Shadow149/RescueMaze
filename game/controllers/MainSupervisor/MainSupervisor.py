@@ -13,6 +13,7 @@ Changelog:
 from controller import Supervisor
 import os
 import random
+from RelocateCalculator import generateRelocatePosition
 
 #Create the instance of the supervisor class
 supervisor = Supervisor()
@@ -140,12 +141,15 @@ class PickableObject:
         return distance < min_dist
 
 class ActivityBlock(PickableObject):
-    def __init__(self, pos:list, node, linkedObj):
+    def __init__(self, pos:list, node, linkedObj, number:int):
         super().__init__(pos)
         self.node = node
         self.linkedObj = linkedObj
-        self.colour = supervisor.getFromDef('ACT0MATERIAL').getField("diffuseColor").getSFColor()
+        self.colour = supervisor.getFromDef('ACT'+str(number)+'MATERIAL').getField("diffuseColor").getSFColor()
         self.completed = False
+
+    def __repr__(self):
+        return f'{self.colour}'
     
     def deposit(self):
         self.setPosition([self.linkedObj.position[0],0.25,self.linkedObj.position[2]])
@@ -157,6 +161,16 @@ class ActivityBlock(PickableObject):
         objPosition = self.node.getField("translation")
         objPosition.setSFVec3f(position)
         self.position = position
+
+class ActivityMat(PickableObject):
+    def __init__(self, pos:list, node,number):
+        super().__init__(pos)
+        self.node = node
+        self.colour = supervisor.getFromDef('PAD'+str(number)+'MATERIAL').getField("diffuseColor").getSFColor()
+
+    def __repr__(self):
+        return f'{self.colour}'
+
 
 class Human(PickableObject):
     '''Human object holding the boundaries'''
@@ -213,8 +227,10 @@ def getPath(number: int) -> str:
     #The current path to this python file
     filePath = os.path.dirname(os.path.abspath(__file__))
     
+    filePath = filePath.replace('\\','/')
+
     #Split into parts on \
-    pathParts = filePath.split("\\")
+    pathParts = filePath.split("/")
     
     filePath = ""
     #Add all parts back together
@@ -296,11 +312,17 @@ def getHumans():
         humanObj = Human(humanPos.getSFVec3f(),i)
         humans.append(humanObj)
 
+def relocate(num):
+    print(num)
+    position = generateRelocatePosition(supervisor,int(num))
+    if int(num) == 0:
+        robot0Pos.setSFVec3f([position[0],0,position[1]])
+    elif int(num) == 1:
+        robot1Pos.setSFVec3f([position[0],0,position[1]])
 
 
 
-#Create the instance of the supervisor class
-supervisor = Supervisor()
+
 
 #Get the robot nodes by their DEF names
 robot0 = supervisor.getFromDef("ROBOT0")
@@ -331,10 +353,10 @@ activities = []
 
 def getActivities():
     
-    activityObjectsGroup = supervisor.getFromDef('ACTIVITYOBJECTS')
+    activityObjectsGroup = supervisor.getFromDef('ACTOBJECTSGROUP')
     activityObjectsNodes = activityObjectsGroup.getField('children')
     
-    activityMatsGroup = supervisor.getFromDef('ACTIVITYMATS')
+    activityMatsGroup = supervisor.getFromDef('ACTMATGROUP')
     activityMatsNodes = activityMatsGroup.getField('children')
     
     #TODO check if activity objects count == activity mats count
@@ -343,10 +365,11 @@ def getActivities():
         activityObject = activityObjectsNodes.getMFNode(i)
         activityMat = activityMatsNodes.getMFNode(i)
         
-        activityMatObj = ActivityBlock(activityMat.getField("translation").getSFVec3f(),activityMat,None)
-        activityObj = ActivityBlock(activityObject.getField("translation").getSFVec3f(),activityObject,activityMatObj)
+        activityMatObj = ActivityMat(activityMat.getField("translation").getSFVec3f(),activityMat,i)
+        activityObj = ActivityBlock(activityObject.getField("translation").getSFVec3f(),activityObject,activityMatObj,i)
         
         activities.append([activityObj,activityMatObj])
+        print(activities)
         
 
 # activity0 = supervisor.getFromDef('ACT0')
@@ -440,6 +463,7 @@ while simulationRunning:
                     robot0Obj.loadActivity(activity[0])
 
                     activityColour = activity[0].colour
+                    print(activityColour)
 
                     #send message to robot window saying activity is loaded
                     supervisor.wwiSendText("activityLoaded0"+","+str(activityColour[0])+","+str(activityColour[1])+","+str(activityColour[2]))
@@ -449,7 +473,7 @@ while simulationRunning:
                     activity[0].setPosition(newPosition)
 
         if activity[1].checkPosition(robot0Pos.getSFVec3f(),1):
-            if robot0Obj.hasActivityLoaded() and not activity[0].completed:
+            if robot0Obj.hasActivityLoaded() and not activity[0].completed and robot0Obj.loadedActivity.linkedObj == activity[1]:
                 #if the robot has stopped for more than 2 seconds
                 if robot0Obj.timeStopped(robot0) >= 2:
                     print("Robot 0 depositied activity.")
@@ -489,7 +513,7 @@ while simulationRunning:
                     activity[0].setPosition(newPosition)
 
         if activity[1].checkPosition(robot1Pos.getSFVec3f(),1):
-            if robot1Obj.hasActivityLoaded() and not activity[0].completed:
+            if robot1Obj.hasActivityLoaded() and not activity[0].completed and robot1Obj.loadedActivity.linkedObj == activity[1]:
                 #if the robot has stopped for more than 2 seconds
                 if robot1Obj.timeStopped(robot1) >= 2:
                     print("Robot 0 depositied activity.")
@@ -674,6 +698,11 @@ while simulationRunning:
                 #Unload the robot 1 controller
                 if not gameStarted:
                     resetController(1)
+            if parts[0] == 'relocate':
+                data = message.split(",", 1)
+                if len(data) > 1:
+                    relocate(data[1])
+                pass
     
     #Send the update information to the robot window
     supervisor.wwiSendText("update," + str(robot0Obj.getScore()) + "," + str(robot1Obj.getScore()) + "," + str(timeElapsed))
