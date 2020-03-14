@@ -133,7 +133,7 @@ class Player (Robot):
         #for all objects in detected objects
         for item in objects:
             #if its the colour of the wall recongition colour
-            if item.get_colors() == [0.325,0.325,0.325]:
+            if item.get_colors() == [0.33,0.33,0.33]:
                 #get its position relative to robot
                 wall_pos = item.get_position()
                 #get its position in the image
