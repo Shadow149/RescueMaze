@@ -284,6 +284,8 @@ def assignController(num: int, name: str) -> None:
     '''Send message to robot window to say that controller has loaded and with what name'''
     if name == None:
         name = "None"
+    else:
+        name = name[:-1]
     if num == 0:
         supervisor.wwiSendText("loaded0," + name)
     if num == 1:
