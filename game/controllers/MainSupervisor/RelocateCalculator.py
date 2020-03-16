@@ -1,4 +1,4 @@
-"""Relocate Position Calculator Prototype v2
+"""Relocate Position Calculator Prototype v3
    Written by Robbie Goldman
 
 Features:
@@ -11,6 +11,8 @@ Changelog:
  V2:
  - Fixed rounding issue with boundaries
  - Added adjacent room calculations
+ V3:
+ - Corrected radius calculation
 
 To use:
  import RelocateCalculator
@@ -137,7 +139,7 @@ def getAllObstacles(supervisor) -> list:
         #Get the obstacles scale
         scale = obstacleBoxObj.getField("size").getSFVec3f()
         #Get the obstacles radius
-        radius = ((scale[0] ** 2) + (scale[2] ** 2)) ** 0.5
+        radius = (((scale[0] * 0.50) ** 2) + ((scale[2] * 0.50) ** 2)) ** 0.5
         #Get the obstacles position
         obstaclePos = obstacleObj.getField("translation").getSFVec3f()
         #Add to list of obstacles
@@ -195,7 +197,7 @@ def getAllActivities(supervisor) -> list:
         boxBounds = boxObject.getField("boundingObject").getSFNode()
         boxScale = boxBounds.getField("size").getSFVec3f()
         #Calculate the radius
-        radius = ((boxScale[0] ** 2) + (boxScale[2] ** 2)) ** 0.5
+        radius = (((boxScale[0] * 0.50) ** 2) + ((boxScale[2] * 0.50) ** 2)) ** 0.5
         #Add the box to the list
         activities.append([[boxPos[0], boxPos[2]], radius])
         
@@ -207,7 +209,7 @@ def getAllActivities(supervisor) -> list:
         padBounds = padObject.getField("boundingObject").getSFNode()
         padScale = padBounds.getField("size").getSFVec3f()
         #Calculate the radius
-        radius = ((padScale[0] ** 2) + (padScale[2] ** 2)) ** 0.5
+        radius = (((padScale[0] * 0.50) ** 2) + ((padScale[2] * 0.50) ** 2)) ** 0.5
         #Add the box to the list
         activities.append([[padPos[0], padPos[2]], radius])
         

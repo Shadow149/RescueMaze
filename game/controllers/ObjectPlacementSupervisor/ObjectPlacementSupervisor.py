@@ -1,4 +1,4 @@
-"""Object Placing Supervisor Prototype v6
+"""Object Placing Supervisor Prototype v7
    Written by Robbie Goldman and Alfred Roberts
 
 Features:
@@ -20,6 +20,8 @@ Changelog:
  V6
  - Added reject counter to prevent crashing when placement isn't possible
  - Activities placed before obstacles
+ V7
+ - Adjusted radius calculations so they are the correct size not double
 """
 
 from controller import Supervisor
@@ -266,7 +268,7 @@ def setObstaclePositions(obstaclesList: list, obstacleNodes: list, rooms: list, 
         #Get obstacle translation
         obstaclePos = obstacle.getField("translation")
         #Calculate the radius
-        radius = ((obstaclesList[i][0] ** 2) + (obstaclesList[i][2] ** 2)) ** 0.50
+        radius = (((obstaclesList[i][0] * 0.50) ** 2) + ((obstaclesList[i][2] * 0.50) ** 2)) ** 0.50
         #Get random valid position
         x, z, roomNum = generatePosition(radius, rooms, blockedRooms, obstacles)
         #If a place was found for the obstacle
@@ -294,7 +296,7 @@ def setActivityPositions(activityItemList: list, activitySizeList: list, activit
         itemPosition = item.getField("translation")
         itemScale = activitySizeList[itemId]
         #Determine the radius of the object
-        radius = ((itemScale[0] ** 2) + (itemScale[2] ** 2)) ** 0.50
+        radius = (((itemScale[0] * 0.50) ** 2) + ((itemScale[2] * 0.50) ** 2)) ** 0.50
         #List to contain rooms that cannot be used
         disallowedRooms = []
         #Copy all default data
@@ -416,6 +418,7 @@ def performGeneration ():
     finalHumans = setHumanPositions(numberOfHumans, humanNodes, allRooms, unusableRooms, unusablePlaces)
     #Add humans to the unusables list
     unusablePlaces = unusablePlaces + finalHumans
+    print(unusablePlaces)
 
     #Send signal to say that items have been placed
     outputField.setSFString("done")
