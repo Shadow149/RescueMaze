@@ -382,7 +382,10 @@ def getActivities():
 
 #Iterate for each base
 #TODO get number of bases, wont work with new generation
-for i in range(0, 3):
+
+numberOfBases = int(supervisor.getFromDef('BASEGROUP').getField('children').getCount() / 3)
+
+for i in range(0, numberOfBases):
     #Get the base minimum node and translation
     baseMin = supervisor.getFromDef("base" + str(i) + "Min")
     minPos = baseMin.getField("translation")
