@@ -1,4 +1,4 @@
-"""Object Placing Supervisor Prototype v5
+"""Object Placing Supervisor Prototype v6
    Written by Robbie Goldman and Alfred Roberts
 
 Features:
@@ -17,6 +17,9 @@ Changelog:
  - Overhauled to not use walls but rooms instead (will not work with old world files)
  V5:
  - Added identification of adjacent rooms (connected by doors) for future use and relocation
+ V6
+ - Added reject counter to prevent crashing when placement isn't possible
+ - Activities placed before obstacles
 """
 
 from controller import Supervisor
@@ -180,7 +183,7 @@ def getAllActivities(numActivityBoxes: int, numActivityPads: int) -> list:
     return activityObjects, activitySizes, associations
     
     
-def generatePosition(radius: int, rooms: list, blockedRooms: list, usedSpaces: list):
+def generatePosition(radius: int, rooms: list, blockedRooms: list, usedSpaces: list, forced = False):
     '''Returns a random x and z position within the area, that is valid'''
     #Round the radius to 2dp
     radius = round(float(radius), 2)
@@ -202,9 +205,11 @@ def generatePosition(radius: int, rooms: list, blockedRooms: list, usedSpaces: l
     randomX = 0
     randomZ = 0
 
-    #Repeat until a valid position is found (need to limit max objects to make sure this ends)
-    '''TODO: Add reject counter to skip adding object if it cannot find a location (if needed)'''
-    while not done:
+    #Limited number of attempts
+    attempts = 100
+
+    #Repeat until a valid position is found (or attempts exhausted (unless overridden))
+    while not done and (attempts > 0 or forced):
 
         done = True
 
@@ -237,9 +242,17 @@ def generatePosition(radius: int, rooms: list, blockedRooms: list, usedSpaces: l
             if distance <= radius + item[1]:
                 #It intersects a placed object and cannot be placed here
                 done = False
-    
-    #Returns the correct coordinates
-    return randomX, randomZ, selectedRoomId
+
+        #One more attempt has been used
+        attempts = attempts - 1
+
+    #If a position was selected
+    if done:
+        #Returns the correct coordinates
+        return randomX, randomZ, selectedRoomId
+    else:
+        #If no valid place was found after all attempts
+        return None, None, -1
     
 
 def setObstaclePositions(obstaclesList: list, obstacleNodes: list, rooms: list, blockedRooms: list) -> list:
@@ -256,10 +269,12 @@ def setObstaclePositions(obstaclesList: list, obstacleNodes: list, rooms: list, 
         radius = ((obstaclesList[i][0] ** 2) + (obstaclesList[i][2] ** 2)) ** 0.50
         #Get random valid position
         x, z, roomNum = generatePosition(radius, rooms, blockedRooms, obstacles)
-        y = (obstaclesList[i][1] / 2.0) + 0.05
-        #Move obstacle to random position in the building
-        obstaclePos.setSFVec3f([x,y,z])
-        obstacles.append([[x, z], radius])
+        #If a place was found for the obstacle
+        if x != None and z != None and roomNum > -1:
+            y = (obstaclesList[i][1] / 2.0) + 0.05
+            #Move obstacle to random position in the building
+            obstaclePos.setSFVec3f([x,y,z])
+            obstacles.append([[x, z], radius])
     
     #Formatted as: [[xPos, zPos], radius]
     return obstacles
@@ -289,7 +304,7 @@ def setActivityPositions(activityItemList: list, activitySizeList: list, activit
         if len(roomsUsed) > activityAssoc[itemId]:
             disallowedRooms.append(roomsUsed[activityAssoc[itemId]])
         #Get random valid position
-        x, z, roomNum = generatePosition(radius, rooms, unusableRooms + disallowedRooms, unusablePlaces + activityItems)
+        x, z, roomNum = generatePosition(radius, rooms, unusableRooms + disallowedRooms, unusablePlaces + activityItems, True)
         y = (itemScale[1] / 2.0) + 0.05
         #Add the room number to the list of used rooms
         roomsUsed.append(roomNum)
@@ -315,9 +330,11 @@ def setHumanPositions(numberHumans: int, humanNodes: list, rooms: list, unusable
         humanY = human.getField("boundingObject").getSFNode().getField("height").getSFFloat()
         #Get random valid position
         x, z, roomNum = generatePosition(humanRad, rooms, unusableRooms, unusableSpaces + humans)
-        #Move humans to random positions in the building
-        humanPos.setSFVec3f([x,humanY,z])
-        humans.append([[x, z], humanRad])
+        #Only if a valid position was found
+        if x != None and z != None and roomNum > -1:
+            #Move humans to random positions in the building
+            humanPos.setSFVec3f([x,humanY,z])
+            humans.append([[x, z], humanRad])
 
     
     #Returns the placed humans as: [[xPosition, zPosition], radius]
@@ -384,16 +401,16 @@ def performGeneration ():
             unusableRooms.append(index)
 
     unusablePlaces = []
-    
-    #Place all the obstacles
-    finalObstacles = setObstaclePositions(allObstacles, obstacleNodes, allRooms, unusableRooms)
-    #Add obstacles to the unusables list
-    unusablePlaces = unusablePlaces + finalObstacles
 
     #Place all the activities
     finalActivities = setActivityPositions(allActivityItems, allActivitySizes, activityAssoc, allRooms, unusableRooms, unusablePlaces)
     #Add activities to the unusables list
     unusablePlaces = unusablePlaces + finalActivities
+    
+    #Place all the obstacles
+    finalObstacles = setObstaclePositions(allObstacles, obstacleNodes, allRooms, unusableRooms)
+    #Add obstacles to the unusables list
+    unusablePlaces = unusablePlaces + finalObstacles
     
     #Place all the humans
     finalHumans = setHumanPositions(numberOfHumans, humanNodes, allRooms, unusableRooms, unusablePlaces)
