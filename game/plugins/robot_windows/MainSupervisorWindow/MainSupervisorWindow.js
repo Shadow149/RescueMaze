@@ -124,8 +124,6 @@ function updateHistory(history0,history1){
 
 	while(!history0End || !history1End){
 		text += "<tr id='historyrow'>";
-		console.log(history0)
-		console.log(history1 == "")
 		if(history0[i] != null){
 			text += "<div class='outerDiv'><div class='innerDiv'><td id='historyrowtext'>"+history0[i]+"</td></div></div>";
 			i--;
@@ -142,7 +140,6 @@ function updateHistory(history0,history1){
 		}
 		text += "</tr>";
 	}
-	console.log(text)
 	document.getElementById("history").innerHTML = text;
 }
 

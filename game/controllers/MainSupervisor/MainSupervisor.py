@@ -147,12 +147,14 @@ class ActivityBlock(PickableObject):
         self.linkedObj = linkedObj
         self.colour = supervisor.getFromDef('ACT'+str(number)+'MATERIAL').getField("diffuseColor").getSFColor()
         self.completed = False
+        self.radius = supervisor.getFromDef('ACTIVITYBOX'+str(number)).getField('size').getSFVec3f()[0] * 1.5
+
 
     def __repr__(self):
         return f'{self.colour}'
     
     def deposit(self):
-        self.setPosition([self.linkedObj.position[0],0.25,self.linkedObj.position[2]])
+        self.setPosition([self.linkedObj.position[0],0.45,self.linkedObj.position[2]])
         self.completed = True
 
     def setPosition(self, position: list) -> None:
@@ -167,6 +169,7 @@ class ActivityMat(PickableObject):
         super().__init__(pos)
         self.node = node
         self.colour = supervisor.getFromDef('PAD'+str(number)+'MATERIAL').getField("diffuseColor").getSFColor()
+        self.radius = supervisor.getFromDef('ACTIVITYPAD'+str(number)).getField('size').getSFVec3f()[0] / 2
 
     def __repr__(self):
         return f'{self.colour}'
@@ -180,6 +183,8 @@ class Human(PickableObject):
         super().__init__(pos)
         self.arrayPosition = ap
         self.scoreWorth = self.getType()
+        self.radius = supervisor.getFromDef('CAPSULE').getField('radius').getSFFloat() * 2.25
+
 
 
     def getType(self) -> int:
@@ -455,7 +460,7 @@ while simulationRunning:
 
     #TODO for robot 1
     for i, activity in enumerate(activities):
-        if activity[0].checkPosition(robot0Pos.getSFVec3f(),1):
+        if activity[0].checkPosition(robot0Pos.getSFVec3f(),activity[0].radius):
             if not robot0Obj.hasActivityLoaded() and not activity[0].completed:
                 #if the robot has stopped for more than 2 seconds
                 if robot0Obj.timeStopped(robot0) >= 2:
@@ -477,7 +482,7 @@ while simulationRunning:
                     newPosition = [0,-1000,0]
                     activity[0].setPosition(newPosition)
 
-        if activity[1].checkPosition(robot0Pos.getSFVec3f(),1):
+        if activity[1].checkPosition(robot0Pos.getSFVec3f(),activity[1].radius):
             if robot0Obj.hasActivityLoaded() and not activity[0].completed and robot0Obj.loadedActivity.linkedObj == activity[1]:
                 #if the robot has stopped for more than 2 seconds
                 if robot0Obj.timeStopped(robot0) >= 2:
@@ -496,7 +501,7 @@ while simulationRunning:
                     activity[0].deposit()
                     robot0Obj.increaseScore(5)
         
-        if activity[0].checkPosition(robot1Pos.getSFVec3f(),1):
+        if activity[0].checkPosition(robot1Pos.getSFVec3f(),activity[0].radius):
             if not robot1Obj.hasActivityLoaded() and not activity[0].completed:
                 #if the robot has stopped for more than 2 seconds
                 if robot1Obj.timeStopped(robot1) >= 2:
@@ -517,7 +522,7 @@ while simulationRunning:
                     newPosition = [0,-1000,0]
                     activity[0].setPosition(newPosition)
 
-        if activity[1].checkPosition(robot1Pos.getSFVec3f(),1):
+        if activity[1].checkPosition(robot1Pos.getSFVec3f(),activity[1].radius):
             if robot1Obj.hasActivityLoaded() and not activity[0].completed and robot1Obj.loadedActivity.linkedObj == activity[1]:
                 #if the robot has stopped for more than 2 seconds
                 if robot1Obj.timeStopped(robot1) >= 2:
@@ -541,7 +546,7 @@ while simulationRunning:
     #TODO change if statements around for optimisation
     for i, h in enumerate(humans):
         #If within 0.5 metres of human
-        if h.checkPosition(robot0Pos.getSFVec3f(),1):
+        if h.checkPosition(robot0Pos.getSFVec3f(),h.radius):
             if not robot0Obj.hasHumanLoaded():
                 #if the robot has stopped for more than 2 seconds
                 if robot0Obj.timeStopped(robot0) >= 2:
@@ -559,7 +564,7 @@ while simulationRunning:
                     newPosition = [0,-1000,0]
                     h.setPosition(newPosition)
                     
-        if h.checkPosition(robot1Pos.getSFVec3f(),1):
+        if h.checkPosition(robot1Pos.getSFVec3f(),h.radius):
             if not robot1Obj.hasHumanLoaded():
                 #if the robot has stopped for more than 2 seconds
                 if robot1Obj.timeStopped(robot1) >= 2:
@@ -652,8 +657,6 @@ while simulationRunning:
     message = supervisor.wwiReceiveText()
     #If there is a message
     if message != "":
-        print("message recived")
-        print("Message:",message)
         #split into parts
         parts = message.split(",")
         #If there are parts
