@@ -16,6 +16,9 @@
             ]
             name "{4}"
             boundingObject USE WALLBOX{5}
+	    recognitionColors [
+			0.33 0.33 0.33
+		]
             }}
         ]
     }}

@@ -1,16 +1,28 @@
-"""Map Generation World File Creator v2
+"""Map Generation World File Creator v5
    Written by Robbie Goldman and Alfred Roberts
 
 Changelog:
  V2:
  - Added Group node for walls
  - Incorporated obstacles into file
+ V3:
+ - Allows user to select where they want the file to be saved
+ - Added children (human special type)
+ V4:
+ - Bases now generate into their own separate group
+ V5:
+ - Added boundary nodes for rooms
+ V6:
+ - Added position nodes for doors
 """
 
 
 from decimal import Decimal
 import os
 dirname = os.path.dirname(__file__)
+
+#List of activity colours (could be generated in future)
+activityColours = [[1, 0, 1], [0, 1, 1], [1, 1, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1]]
 
 #The string to add to the end of the file to finish it
 fileFooter = "  ]\n}\n"
@@ -43,7 +55,7 @@ def transformFromBounds(start, end):
     return pos, scale
 
 
-def createFileData (boxData, bases, obstacles, robots):
+def createFileData (boxData, bases, obstacles, robots, numHumans, numChildren, activityList, bounds, doors):
     '''Create a file data string from the positions and scales'''
     #Open the file containing the standard header
     headerFile = open(os.path.join(dirname, "fileHeader.txt"), "r")
@@ -58,6 +70,13 @@ def createFileData (boxData, bases, obstacles, robots):
     boxPart = boxTemplate.read()
     #Close template file
     boxTemplate.close()
+
+    #Open the file containing the template for a base group
+    baseGroupTemplate = open(os.path.join(dirname, "baseGroupTemplate.txt"), "r")
+    #Read template
+    baseGroupPart = baseGroupTemplate.read()
+    #Close template file
+    baseGroupTemplate.close()
 
     #Open the file containing the template for a base
     baseTemplate = open(os.path.join(dirname, "baseTemplate.txt"), "r")
@@ -100,6 +119,13 @@ def createFileData (boxData, bases, obstacles, robots):
     humanPart = humanTemplate.read()
     #Close template file
     humanTemplate.close()
+
+    #Open the file containing the template for a human child
+    humanChildTemplate = open(os.path.join(dirname, "humanChildTemplate.txt"), "r")
+    #Read template
+    humanChildPart = humanChildTemplate.read()
+    #Close template file
+    humanChildTemplate.close()
 	
     #Open the file containing the template for an obstacle group
     obstacleGroupTemplate = open(os.path.join(dirname, "obstacleGroupTemplate.txt"), "r")
@@ -115,6 +141,76 @@ def createFileData (boxData, bases, obstacles, robots):
     #Close template file
     obstacleTemplate.close()
 
+    #Open the file containing the template for a dynamic obstacle
+    obstacleTemplateDynamic = open(os.path.join(dirname, "obstacleTemplateDynamic.txt"), "r")
+    #Read template
+    obstaclePartDynamic = obstacleTemplateDynamic.read()
+    #Close template file
+    obstacleTemplateDynamic.close()
+
+    #Open the file containing the template for an activity box group
+    activityBoxGroupTemplate = open(os.path.join(dirname, "activityBoxGroupTemplate.txt"), "r")
+    #Read template
+    activityBoxGroup = activityBoxGroupTemplate.read()
+    #Close template file
+    activityBoxGroupTemplate.close()
+
+    #Open the file containing the template for an activity pad group
+    activityPadGroupTemplate = open(os.path.join(dirname, "activityPadGroupTemplate.txt"), "r")
+    #Read template
+    activityPadGroup = activityPadGroupTemplate.read()
+    #Close template file
+    activityPadGroupTemplate.close()
+
+    #Open the file containing the template for an activity box 
+    activityBoxTemplate = open(os.path.join(dirname, "activityBoxTemplate.txt"), "r")
+    #Read template
+    activityBox = activityBoxTemplate.read()
+    #Close template file
+    activityBoxTemplate.close()
+
+    #Open the file containing the template for an activity pad 
+    activityPadTemplate = open(os.path.join(dirname, "activityPadTemplate.txt"), "r")
+    #Read template
+    activityPad = activityPadTemplate.read()
+    #Close template file
+    activityPadTemplate.close()
+
+    #Open the file containing the template for the room boundary group
+    roomBoundaryGroupTemplate = open(os.path.join(dirname, "roomBoundsGroupTemplate.txt"), "r")
+    #Read template
+    roomGroupPart = roomBoundaryGroupTemplate.read()
+    #Close template file
+    roomBoundaryGroupTemplate.close()
+
+    #Open the file containing the template for a room boundary
+    roomBoundaryTemplate = open(os.path.join(dirname, "roomBoundsTemplate.txt"), "r")
+    #Read template
+    roomBoundaryPart = roomBoundaryTemplate.read()
+    #Close template file
+    roomBoundaryTemplate.close()
+
+    #Open the file containing the template for a room's boundary data
+    roomBoundaryDataTemplate = open(os.path.join(dirname, "roomBoundsDataTemplate.txt"), "r")
+    #Read template
+    roomBoundaryDataPart = roomBoundaryDataTemplate.read()
+    #Close template file
+    roomBoundaryDataTemplate.close()
+
+    #Open the file containing the template for a door group
+    doorGroupTemplate = open(os.path.join(dirname, "doorGroupTemplate.txt"), "r")
+    #Read template
+    doorGroupPart = doorGroupTemplate.read()
+    #Close template file
+    doorGroupTemplate.close()
+
+    #Open the file containing the template for a door node
+    doorTemplate = open(os.path.join(dirname, "doorTemplate.txt"), "r")
+    #Read template
+    doorPart = doorTemplate.read()
+    #Close template file
+    doorTemplate.close()
+    
     #Open the file containing the template for the supervisor
     supervisorTemplate = open(os.path.join(dirname, "supervisorTemplate.txt"), "r")
     #Read template
@@ -135,44 +231,50 @@ def createFileData (boxData, bases, obstacles, robots):
         #Increment solid name counter
         i = i + 1
 
+    #Add the footer onto the file data
+    fileData = fileData + fileFooter
+
     baseBoundsAll = ""
+    basesAll = ""
     #Number used to give a unique name to the solid
     i = 0
     #Iterate for each of the bases
     for base in bases:
         #Add a copy of the templace for the base to the file, with position, scale data and a name inserted
-        fileData = fileData + basePart.format(base[0][0], base[0][1], base[1][0], base[1][1], "base" + str(i))
+        basesAll = basesAll + basePart.format(base[0][0], base[0][1], base[1][0], base[1][1], "base" + str(i))
         #Add a copy of the base bounds to the bounds list
         baseBoundsAll = baseBoundsAll + baseBoundPart.format(base[0][0] - (base[1][0] / 2), base[0][1] - (base[1][1] / 2), base[0][0] + (base[1][0] / 2), base[0][1] + (base[1][1] / 2), str(i))
         #Increment solid name counter
         i = i + 1
 
-    fileData = fileData + groupPart.format(baseBoundsAll)
-
-    #Add the footer onto the file data
-    fileData = fileData + fileFooter
+    fileData = fileData + baseGroupPart.format(basesAll + baseBoundsAll)    
 
     #Number used to give a unique name to the solid
     i = 0
-
+    #Iterate through the robots
     for robot in robots:
-
+        #Add a robot to the file
         fileData = fileData + robotPart.format(robot[0], robot[1], str(i))
-
+        #Increment counter
         i = i + 1
-
+    
     #String to contain all human objects
     humansAll = ""
 
-    #Number used to give a unique name to each human's solid
-    i = 0
+    #Number to give a unique name to each human
+    humanIdNum = 0
 
-    #Iterate 20 times
-    for humanNum in range(0, 20):
+    #Iterate for each adult human
+    for humanNum in range(0, numHumans):
         #Add another human
-        humansAll = humansAll + humanPart.format(humanNum)
-        #Increment name counter
-        i = i + 1
+        humansAll = humansAll + humanPart.format(humanIdNum)
+        humanIdNum = humanIdNum + 1
+
+    #Iterate for each child human
+    for childNum in range(0, numChildren):
+        #Add another human
+        humansAll = humansAll + humanChildPart.format(humanIdNum)
+        humanIdNum = humanIdNum + 1
     
     #Insert humans into group and add to file
     fileData = fileData + humanGroupPart.format(humansAll)
@@ -185,13 +287,73 @@ def createFileData (boxData, bases, obstacles, robots):
 	
     for obstacle in obstacles:
         #Add the obstacle with unique identifiers and scale values
-        obstaclesAll = obstaclesAll + obstaclePart.format(i, obstacle[0], obstacle[1], obstacle[2])
+        #If it is a static obstacle
+        if obstacle[3] == False:
+            #Add static obstacle
+            obstaclesAll = obstaclesAll + obstaclePart.format(i, obstacle[0], obstacle[1], obstacle[2])
+        else:
+            #Add dynamic obstacle
+            obstaclesAll = obstaclesAll + obstaclePartDynamic.format(i, obstacle[0], obstacle[1], obstacle[2])
         #Increment name counter
         i = i + 1
 	
     #Insert obstacles into group and add to file
     fileData = fileData + obstacleGroupPart.format(obstaclesAll)
-	
+
+    #Strings to hold all the data for the boxes and pads
+    activityBoxes = ""
+    activityPads = ""
+
+    #Current activity id used to give unique name and colour
+    activityId = 0
+
+    #Iterate all activities
+    for activity in activityList:
+        #If it is a deposit activity
+        if activity == 1:
+            #Add a box and a pad of the correct colour
+            activityBoxes = activityBoxes + activityBox.format(activityId, activityColours[activityId][0], activityColours[activityId][1], activityColours[activityId][2], activityColours[activityId][0], activityColours[activityId][1], activityColours[activityId][2])
+            activityPads = activityPads + activityPad.format(activityId, activityColours[activityId][0] / 2, activityColours[activityId][1] / 2, activityColours[activityId][2] / 2, activityColours[activityId][0] / 2, activityColours[activityId][1] / 2, activityColours[activityId][2] / 2)
+        #Other activities will go here
+        #Increment id counter
+        activityId = activityId + 1
+
+    #Insert activity parts into groups and then into the file
+    fileData = fileData + activityBoxGroup.format(activityBoxes)
+    fileData = fileData + activityPadGroup.format(activityPads)
+
+    #String containing all boundary node information
+    allRoomBoundaries = ""
+
+    #Id number for room
+    roomId = 0
+
+    #Iterate all rooms
+    for bound in bounds:
+        #Add the boundaries
+        allRoomBoundaries = allRoomBoundaries + roomBoundaryPart.format(roomBoundaryDataPart.format(bound[0][0], bound[0][1], bound[1][0], bound[1][1], roomId), roomId)
+        #Increment id counter
+        roomId = roomId + 1
+
+    #Insert boundary parts into group node and then into the file
+    fileData = fileData + roomGroupPart.format(allRoomBoundaries)
+
+    #String containing all door node information
+    allDoors = ""
+
+    #Id number for door
+    doorId = 0
+    
+    #Iterate all doors
+    for door in doors:
+        #Add the door
+        allDoors = allDoors + doorPart.format(doorId, door[0][0], door[0][1], door[1][0], door[1][1])
+        #Increment id counter
+        doorId = doorId + 1
+
+    #Insert the door nodes into the group then insert into the file
+    fileData = fileData + doorGroupPart.format(allDoors)
+    
     #Add a supervisor robot
     fileData = fileData + supervisorPart
 
@@ -199,13 +361,30 @@ def createFileData (boxData, bases, obstacles, robots):
     return fileData
 
 
-def makeFile(boxData, bases, obstacles, robots):
+def makeFile(boxData, bases, obstacles, robots, humans, children, activities, bounds, doors, uiWindow = None):
     '''Create and save the file for the information'''
     #Generate the file string for the map
-    data = createFileData(boxData, bases, obstacles, robots)
+    data = createFileData(boxData, bases, obstacles, robots, humans, children, activities, bounds, doors)
+    #The default file path
+    filePath = os.path.join(dirname, "generatedWorld.wbt")
+
+    #If there is a GUI window to use
+    if uiWindow != None:
+        #Get the path from the user
+        path = uiWindow.getPathSelection()
+        #Strip leading or trailing whitespace
+        path = path.strip()
+        #If there is a path
+        if path != "":
+            #If there isn't a .wbt extension on the file
+            if not path.endswith(".wbt"):
+                #Add the extension
+                path = path + ".wbt"
+            #Change the path to the one the user gave
+            filePath = path
 
     #Open the file to store the world in (cleared when opened)
-    worldFile = open(os.path.join(dirname, "generatedWorld.wbt"), "w")
+    worldFile = open(filePath, "w")
     #Write all the information to the file
     worldFile.write(data)
     #Close the file

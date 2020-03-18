@@ -3,11 +3,21 @@ DEF ROBOT{2} Pioneer3dx {{
   translation {0} 0.0975 {1}
   name "robot{2}"
   extensionSlot [
+    Gyro {{
+    }}
+    Receiver {{
+    }}
+    Emitter {{
+    }}
+    LightSensor {{
+    }}
+    GPS {{
+    }}
     Camera {{
       translation 0.04 0.24 0
       fieldOfView 0.9
       recognition Recognition {{
-	  }}
+	    }}
     }}
   ]
 }}
