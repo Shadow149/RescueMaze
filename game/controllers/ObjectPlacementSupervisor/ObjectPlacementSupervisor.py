@@ -257,7 +257,7 @@ def generatePosition(radius: int, rooms: list, blockedRooms: list, usedSpaces: l
         return None, None, -1
     
 
-def setObstaclePositions(obstaclesList: list, obstacleNodes: list, rooms: list, blockedRooms: list) -> list:
+def setObstaclePositions(obstaclesList: list, obstacleNodes: list, rooms: list, blockedRooms: list, unusablePlaces: list) -> list:
     '''Place the obstacles in generated positions and return the placed obstacles'''
     #List to contain all obstacles
     obstacles = []
@@ -270,7 +270,7 @@ def setObstaclePositions(obstaclesList: list, obstacleNodes: list, rooms: list, 
         #Calculate the radius
         radius = (((obstaclesList[i][0] * 0.50) ** 2) + ((obstaclesList[i][2] * 0.50) ** 2)) ** 0.50
         #Get random valid position
-        x, z, roomNum = generatePosition(radius, rooms, blockedRooms, obstacles)
+        x, z, roomNum = generatePosition(radius, rooms, blockedRooms, obstacles + unusablePlaces)
         #If a place was found for the obstacle
         if x != None and z != None and roomNum > -1:
             y = (obstaclesList[i][1] / 2.0) + 0.05
@@ -410,7 +410,7 @@ def performGeneration ():
     unusablePlaces = unusablePlaces + finalActivities
     
     #Place all the obstacles
-    finalObstacles = setObstaclePositions(allObstacles, obstacleNodes, allRooms, unusableRooms)
+    finalObstacles = setObstaclePositions(allObstacles, obstacleNodes, allRooms, unusableRooms, unusablePlaces)
     #Add obstacles to the unusables list
     unusablePlaces = unusablePlaces + finalObstacles
     
