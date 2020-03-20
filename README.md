@@ -3,7 +3,7 @@ Erebus is a rescue simulation competition environment designed for semi-experien
 
 <p align="center"><img src="/docs/images/environment.JPG" width="500"><p/>
 
-## [Changelog]('/../changelog.md')
+## [Changelog](/../changelog.md)
 
 ## Getting started
 [Installation](https://github.com/Shadow149/Erebus/wiki/Installation)  
