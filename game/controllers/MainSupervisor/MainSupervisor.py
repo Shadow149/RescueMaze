@@ -38,7 +38,7 @@ supervisor.getFromDef("OBJECTPLACER").restartController()
 mainSupervisor = supervisor.getFromDef("MAINSUPERVISOR")
 
 #Maximum time for a match
-maxTime = 120
+maxTime = 8 * 60
 
 class RobotHistory:
     def __init__(self):

@@ -7,7 +7,7 @@ Changelog:
 
 
 //The total time at the start
-var maxTime = 120;
+var maxTime = 8 * 60;
 
 var visable = false;
 
