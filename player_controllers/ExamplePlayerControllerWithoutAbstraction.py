@@ -5,6 +5,8 @@ import math
 """
 Example erebus robot controller
 Written by Alfred Roberts - 2020
+
+PLEASE NOTE THIS IS A WIP AND CURRENTLY ISN'T FULLY FINISHED AND DOESN'T WORK PROPERLY
 """
 
 #RobotName:Aura
