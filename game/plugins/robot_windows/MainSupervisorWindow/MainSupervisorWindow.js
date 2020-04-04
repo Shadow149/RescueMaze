@@ -7,7 +7,14 @@ Changelog:
 
 
 //The total time at the start
-var maxTime = 120;
+var maxTime = 8 * 60;
+
+var visable = false;
+
+var robot0Name = "Robot 0"
+var robot1Name = "Robot 1"
+
+var scores = [0,0]
 
 function receive (message){
 	//Receive message from the python supervisor
@@ -61,23 +68,79 @@ function receive (message){
 				//Robot 1's human is unloaded
 				humanUnloadedColour(1);
 				break;
+			case "activityLoaded0":
+				activityLoadedColor(0,parts[1],parts[2],parts[3])
+				break;
+			case "activityUnloaded0":
+				activityUnloadedColour(0)
+				break;
+			case "activityLoaded1":
+				activityLoadedColor(1,parts[1],parts[2],parts[3])
+				break;
+			case "activityUnloaded1":
+				activityUnloadedColour(1)
+				break;
+			case "historyUpdate":
+				let msg = message.split(":");
+				let history0 = msg[0].split(",").slice(1,msg[0].length-1)
+				let history1 = msg[1].split(",")
+				updateHistory(history0,history1)
+				break;
 		}
 	}
 }
 
 function humanLoadedColour(id){
 	// Changes svg human indicator to gold to indicate a human is loaded
-	document.getElementById("human"+id+"a").style.fill = "gold";
-	document.getElementById("human"+id+"b").style.fill = "gold";
-	document.getElementById("human"+id+"a").style.stroke = "gold";
-	document.getElementById("human"+id+"b").style.stroke = "gold";
+	//document.getElementById("human"+id+"a").style.fill = "gold";
+	//document.getElementById("human"+id+"b").style.fill = "gold";
+	document.getElementById("human"+id+"a").style.stroke = "#edae39";
+	document.getElementById("human"+id+"b").style.stroke = "#edae39";
 }
 function humanUnloadedColour(id){
 	// Changes svg human indicator to black to indicate a human is unloaded
-	document.getElementById("human"+id+"a").style.fill = "black";
-	document.getElementById("human"+id+"b").style.fill = "black";
+	//document.getElementById("human"+id+"a").style.fill = "black";
+	//document.getElementById("human"+id+"b").style.fill = "black";
 	document.getElementById("human"+id+"a").style.stroke = "black";
 	document.getElementById("human"+id+"b").style.stroke = "black";
+}
+
+function activityLoadedColor(id,r,g,b){
+	document.getElementById("activity"+id).style.stroke = "rgb("+(Number(r)*255).toString()+","+(Number(g)*255).toString()+", "+(Number(b)*255).toString()+")";
+}
+function activityUnloadedColour(id){
+	document.getElementById("activity"+id).style.stroke = "black";
+}
+function updateHistory(history0,history1){
+	let text = ""
+
+	
+	let history0End = false;
+	let history1End = false;
+
+	let i = history0.length -1;
+	let j = history1.length -1;
+	
+
+	while(!history0End || !history1End){
+		text += "<tr id='historyrow'>";
+		if(history0[i] != null){
+			text += "<div class='outerDiv'><div class='innerDiv'><td id='historyrowtext'>"+history0[i]+"</td></div></div>";
+			i--;
+		}else{
+			text += "<div class='outerDiv'><div class='innerDiv'><td id='historyrowtext'></td></div></div>"
+			history0End = true;
+		}
+		if(history1[j] != null){
+			text += "<div class='outerDiv'><div class='innerDiv'><td id='historyrowtext'>"+history1[j]+"</td></div></div>";
+			j--;
+		}else{
+			text += "<div class='outerDiv'><div class='innerDiv'><td id='historyrowtext'></td></div></div>"
+			history1End = true;
+		}
+		text += "</tr>";
+	}
+	document.getElementById("history").innerHTML = text;
 }
 
 function loadedController(id, name){
@@ -85,12 +148,14 @@ function loadedController(id, name){
 	if (id == 0){
 		//Set name and toggle to unload button for robot 0
 		document.getElementById("robot0Name").innerHTML = name;
+		robot0Name = name;
 		document.getElementById("load0").style.display = "none";
 		document.getElementById("unload0").style.display = "inline-block";
 	}
 	if (id == 1){
 		//Set name and toggle to unload button for robot 1
 		document.getElementById("robot1Name").innerHTML = name;
+		robot1Name = name;
 		document.getElementById("load1").style.display = "none";
 		document.getElementById("unload1").style.display = "inline-block";
 	}
@@ -102,6 +167,7 @@ function unloadedController(id){
 		//Reset name and toggle to load button for robot 0
 		document.getElementById("robot0File").value = "";
 		document.getElementById("robot0Name").innerHTML = "None";
+		robot0Name = "Robot 0";
 		document.getElementById("unload0").style.display = "none";
 		document.getElementById("load0").style.display = "inline-block";
 	}
@@ -109,6 +175,7 @@ function unloadedController(id){
 		//Reset name and toggle to load button for robot 1
 		document.getElementById("robot1File").value = "";
 		document.getElementById("robot1Name").innerHTML = "None";
+		robot1Name = "Robot 1";
 		document.getElementById("unload1").style.display = "none";
 		document.getElementById("load1").style.display = "inline-block";
 	}
@@ -117,6 +184,7 @@ function unloadedController(id){
 function startup (){
 	//Turn on the run button and reset button when the program has loaded
 	setEnableButton("runButton", true);
+	setEnableButton("pauseButton", false);
 	setEnableButton("resetButton", true);
 }
 
@@ -125,6 +193,9 @@ function update (data){
 	//Sets the scores and the timer
 	document.getElementById("score0").innerHTML = String(data[0]);
 	document.getElementById("score1").innerHTML = String(data[1]);
+
+	scores = [data[0],data[1]]
+
 	document.getElementById("timer").innerHTML = calculateTimeRemaining(data[2]);
 }
 
@@ -190,7 +261,7 @@ function resetPressed(){
 
 function openLoadController(robotNumber){
 	//When a load button is pressed - opens the file explorer window
-	document.getElementById("robot" + String(robotNumber) + "File").click();
+	document.getElementById("robot" + robotNumber + "File").click();
 }
 
 function setEnableButton(name, state){
@@ -214,28 +285,28 @@ function endGame(){
 	//Once the game is over turn off both the run and pause buttons
 	setEnableButton("runButton", false)
 	setEnableButton("pauseButton", false);
+
+	if (!visable){
+		show_winning_screen()
+	}
 }
 
 function unloadPressed(id){
 	//Unload button pressed
 	//Send the signal for an unload for the correct robot
-	if (id == 0){
-		window.robotWindow.send("robot0Unload");
-	}
-	if (id == 1){
-		window.robotWindow.send("robot1Unload");
-	}
+	window.robotWindow.send("robot"+id+"Unload");
 }
 
-function file0Opened(){
+
+function fileOpened(id){
 	//When file 0 value is changed
 	//Get the files
-	var files = document.getElementById("robot0File").files;
+	var files = document.getElementById("robot"+id+"File").files;
 	
 	//If there are files
 	if (files.length > 0){
 		//Get the first file only
-		var file = files.item(0);
+		var file = files[0];
 		//Split at the .
 		var nameParts = file.name.split(".");
 		
@@ -250,7 +321,7 @@ function file0Opened(){
 				reader.onload = (function(reader){
 					return function(){
 						//Send the signal to the supervisor with the data from the file
-						window.robotWindow.send("robot0File," + reader.result);
+						window.robotWindow.send("robot"+id+"File," + reader.result);
 					}
 				})(reader);
 				
@@ -268,32 +339,37 @@ function file0Opened(){
 	}
 }
 
-function file1Opened(){
-	//The same as function above but for robot 1 (change to be one function with parameter for robot number)
-	var files = document.getElementById("robot1File").files;
-	
-	if (files.length > 0){
-		var file = files.item(0);
+function hide_winning_screen(){
+	//Disable winner screen
+	document.getElementById("winning-screen").style.display = "none";
+}
+
+function calculateWinner(name0,name1){
+	//if scores are the same
+	if (scores[0] == scores[1]){
+		//Show draw text
+		document.getElementById("winning-team").innerHTML = "Draw!"
+	}else {
+		//Find index of highest scoring team
 		
-		var nameParts = file.name.split(".");
-		
-		if (nameParts.length > 1){
-			if(nameParts[nameParts.length - 1] == "py"){
-				var reader = new FileReader();
-		
-				reader.onload = (function(reader){
-					return function(){
-						window.robotWindow.send("robot1File," + reader.result);
-					}
-				})(reader);
-				
-				reader.readAsText(file);
-			}else{
-				alert("Please select a python file.");
-			}
-		}else{
-			alert("Please select a python file.");
+		if (scores[0] > scores[1]){
+			//Show robot 0 win text
+			document.getElementById("winning-team").innerHTML = name0 + " wins!"
+		} else {
+			//Show robot 1 win text
+			document.getElementById("winning-team").innerHTML = name1 + " wins!"
 		}
-		
 	}
+
+}
+
+function show_winning_screen(){
+	calculateWinner(robot0Name,robot1Name);
+	//Show winning screen
+  	document.getElementById("winning-screen").style.display = "inline-block";
+  	visable = true;
+}
+
+function relocate(id){
+	window.robotWindow.send("relocate,"+id.toString());
 }

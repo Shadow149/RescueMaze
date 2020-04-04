@@ -1,4 +1,4 @@
-"""Object Placing Supervisor Prototype v1
+"""Object Placing Supervisor Prototype v7
    Written by Robbie Goldman and Alfred Roberts
 
 Features:
@@ -7,7 +7,21 @@ Features:
  - Will not be within 4 units of bases
 
 Changelog:
- - 
+ V2:
+ - Bases now retrieved from their own group
+ - Dynamic obstacles
+ - Activity placement
+ V3:
+ - Waits for main supervisor to call for generation first (prevents double)
+ V4:
+ - Overhauled to not use walls but rooms instead (will not work with old world files)
+ V5:
+ - Added identification of adjacent rooms (connected by doors) for future use and relocation
+ V6
+ - Added reject counter to prevent crashing when placement isn't possible
+ - Activities placed before obstacles
+ V7
+ - Adjusted radius calculations so they are the correct size not double
 """
 
 from controller import Supervisor
@@ -19,30 +33,96 @@ supervisor = Supervisor()
 #Get field to output information to
 outputField = supervisor.getFromDef("OBJECTPLACER").getField("customData")
 
-#Standard human radius
-humanRadius = 0.35
+
+def getAllRooms (numberRooms: int) -> list:
+    '''Retrieve all the boundaries for the rooms and return the list of minimum and maximum positions'''
+    #List to contain all the room boundaries
+    rooms = []
+
+    #Iterate for rooms
+    for roomNumber in range(0, numberRooms):
+        #Get max and min nodes
+        minNode = supervisor.getFromDef("room" + str(roomNumber) + "Min")
+        maxNode = supervisor.getFromDef("room" + str(roomNumber) + "Max")
+        #Get the positions from the nodes
+        minPos = minNode.getField("translation").getSFVec3f()
+        maxPos = maxNode.getField("translation").getSFVec3f()
+        #Append the max and min positions to the room data
+        rooms.append([[minPos[0], minPos[2]], [maxPos[0], maxPos[2]]])
+
+    #Return the list of the rooms
+    return rooms
 
 
-def getAllWalls(numberWalls: int) -> list:
-    '''Returns a 3D list of each wall, containing a x,y,z position and x,y,z scale'''
-    #List to contain all the walls
-    walls = []
-    
-    #Iterate for each of the walls
-    for wallNumber in range(0, numberWalls):
-        #Get the wall's position from the wall solid object
-        wallObj = supervisor.getFromDef("WALL" + str(wallNumber))
-        position = wallObj.getField("translation").getSFVec3f()
-        #Get the wall's scale from the geometry
-        wallBoxObj = supervisor.getFromDef("WALLBOX" + str(wallNumber))
-        scale = wallBoxObj.getField("size").getSFVec3f()
-        #Create the wall 2D list
-        wall = [position, scale]
-        #Add to complete wall list
-        walls.append(wall)
-    
-    return walls
-    
+def getAllAdjacency (roomList: list) -> list:
+    '''Returns a 2d array containing boolean values for if those two rooms are connected by a door and not the same'''
+    #Empty adjacency array
+    adj = []
+    #Iterate for rooms
+    for roomNumber in range(0, len(roomList)):
+        #Empty row
+        row = []
+        #Iterate for rooms
+        for item in range(0, len(roomList)):
+            #Add room data
+            row.append(False)
+        #Add the row to the array
+        adj.append(row)
+
+    #Get group node containing doors
+    doorGroup = supervisor.getFromDef("DOORGROUP")
+    doorNodes = doorGroup.getField("children")
+    #Get number of doors
+    numberOfDoors = doorNodes.getCount()
+
+    #Iterate through the doors
+    for doorId in range(0, numberOfDoors):
+        #Get the door node
+        door = doorNodes.getMFNode(doorId)
+        #List of rooms it connects
+        roomIds = []
+        #Get the children nodes (room data nodes)
+        roomData = door.getField("children")
+        #Count the number of room data nodes
+        numberOfRooms = roomData.getCount()
+        #Iterate for room data nodes
+        for room in range(0, numberOfRooms):
+            #Get the node
+            roomTransform = roomData.getMFNode(room)
+            #Retrieve the x translation as an integer (room id)
+            roomIds.append(int(roomTransform.getField("translation").getSFVec3f()[0]))
+
+        #If there are at least 2 rooms
+        if len(roomIds) > 1:
+            #Set the adjacency for the 2 rooms to true
+            adj[roomIds[0]][roomIds[1]] = True
+            adj[roomIds[1]][roomIds[0]] = True
+
+    #Return the completed adjacency array
+    return adj
+        
+def determineRoom(roomList: list, objectPosition: list) -> int:
+    '''Determine the room index that a position in inside of'''
+    #Id to determine which room is being looked at
+    roomId = 0
+
+    #Iterate through the rooms
+    for room in roomList:
+        #Get the maximum and minimum position
+        minPos = room[0]
+        maxPos = room[1]
+        #If it is between the x positions of the boundaries
+        if minPos[0] <= objectPosition[0] and maxPos[0] >= objectPosition[0]:
+            #If it is between the y positions of the boundaries
+            if minPos[1] <= objectPosition[1] and maxPos[1] >= objectPosition[1]:
+                #This is the room it is in
+                return roomId
+        #Increment room counter
+        roomId = roomId + 1
+
+    #It was not found so return -1
+    return -1
+
     
 def getAllObstacles(numberObstacles: int) -> list:
     '''Returns a list of all the obstacles in the world, each obstacle is a 1D array of it's x y and z scale'''
@@ -61,13 +141,13 @@ def getAllObstacles(numberObstacles: int) -> list:
     return obstacles
     
     
-def getAllBases() -> list:
+def getAllBases(numberBases, baseNodes) -> list:
     '''Returns a list of all the bases as a centre position'''
     #List to contain all the bases
     bases = []
     
     #Iterate for the bases
-    for i in range(0, 3):
+    for i in range(0, numberBases):
         #Get the minimum and maximum position vectors
         minBase = supervisor.getFromDef("base" + str(i) + "Min").getField("translation").getSFVec3f()
         maxBase = supervisor.getFromDef("base" + str(i) + "Max").getField("translation").getSFVec3f()
@@ -77,93 +157,109 @@ def getAllBases() -> list:
         bases.append(base)
     
     return bases
-        
 
-def convertWallsToBoundaries(walls: list) -> list:
-    '''Takes in list of walls as positions and scales then returns minimum and maximum wall positions'''
-    #List of wall min and max positions
-    wallBounds = []
+
+def getAllActivities(numActivityBoxes: int, numActivityPads: int) -> list:
+    '''Returns a list containing all the boxes and all the pads and a list containing all the scales'''
+    #Lists to contain all boxes and pads
+    activityObjects = []
+    activitySizes = []
+    #Which box is connected to which pad
+    associations = []
+
+    #Iterate for box IDs
+    for boxNum in range(0, numActivityBoxes):
+        #Add the box to the list
+        activityObjects.append(supervisor.getFromDef("ACT" + str(boxNum)))
+        activitySizes.append(supervisor.getFromDef("ACTIVITYBOX" + str(boxNum)).getField("size").getSFVec3f())
+        associations.append(boxNum)
+        
+    #Iterate for pad IDs
+    for padNum in range(0, numActivityPads):
+        #Add the pad to the list
+        activityObjects.append(supervisor.getFromDef("ACT" + str(padNum) + "MAT"))
+        activitySizes.append(supervisor.getFromDef("ACTIVITYPAD" + str(padNum)).getField("size").getSFVec3f())
+        associations.append(padNum)
+        
+    #Return the full object list and size list
+    return activityObjects, activitySizes, associations
     
-    #Iterate for the walls
-    for wall in walls:
-        #Get the position and scale
-        position = wall[0]
-        scale = wall[1]
-        #Calculate the minimum and maximum
-        min = [position[0] - (float(scale[0]) / 2.0), position[1] - (float(scale[1]) / 2.0), position[2] - (float(scale[2]) / 2.0)]
-        max = [position[0] + (float(scale[0]) / 2.0), position[1] + (float(scale[1]) / 2.0), position[2] + (float(scale[2]) / 2.0)]
-        #Create the boundary list and append to the full list
-        wallBound = [min, max]
-        wallBounds.append(wallBound)
     
-    return wallBounds
-    
-    
-def generatePosition(radius: int, walls: list, humans: list, obstacles: list, bases: list):
+def generatePosition(radius: int, rooms: list, blockedRooms: list, usedSpaces: list, forced = False):
     '''Returns a random x and z position within the area, that is valid'''
     #Round the radius to 2dp
     radius = round(float(radius), 2)
-    #Get a random x and z position -12.4 <= x <= 12.4, -9.9 <= y <= 9.9 (with offset for radius)
-    randomX = random.randrange(-1240 + (radius * 100), 1240 - (radius * 100)) / 100.0
-    randomZ = random.randrange(-990 + (radius * 100), 990 - (radius * 100)) / 100.0
+
+    #List to contain rooms that may be generated
+    validRoomIds = []
+    #Iterate through all the rooms
+    for index in range(0, len(rooms)):
+        #If the room is allowed then add it to the list
+        if index not in blockedRooms:
+            validRoomIds.append(index)
+
+    selectedRoomId = -1
     
     #Not yet ready to be added
     done = False
-    
-    #Repeat until a valid position is found (need to limit max objects to make sure this ends)
-    '''TODO: Add reject counter to skip adding object if it cannot find a location (if needed)'''
-    while not done:
+
+    #Initial values
+    randomX = 0
+    randomZ = 0
+
+    #Limited number of attempts
+    attempts = 100
+
+    #Repeat until a valid position is found (or attempts exhausted (unless overridden))
+    while not done and (attempts > 0 or forced):
+
         done = True
-        #Iterate through the walls
-        for wall in walls:
-            #If the left side and right side of the object are not both the same side of the wall
-            if not ((randomX + radius < wall[0][0] and randomX - radius < wall[0][0]) or (randomX + radius > wall[1][0] and randomX - radius > wall[1][0])):
-                #If the top side and bottom side of the object are not both the same side of the wall
-                if not ((randomZ + radius < wall[0][2] and randomZ - radius < wall[0][2]) or (randomZ + radius > wall[1][2] and randomZ - radius > wall[1][2])):
-                    #It intersects a wall and cannot be placed here
-                    done = False
+
+        selectedRoomId = validRoomIds[random.randrange(0, len(validRoomIds))]
+        selectedRoom = rooms[selectedRoomId]
+
+        roomMin = [selectedRoom[0][0], selectedRoom[0][1]]
+        roomMax = [selectedRoom[1][0], selectedRoom[1][1]]
+
+        #Calculate size boundaries
+        xMin = int((roomMin[0] * 100) + (radius * 100))
+        xMax = int((roomMax[0] * 100) - (radius * 100))
+        zMin = int((roomMin[1] * 100) + (radius * 100))
+        zMax = int((roomMax[1] * 100) - (radius * 100))
+
+        #If the object is too big for the room
+        if xMin >= xMax or zMin >= zMax:
+            #Cannot be placed here
+            done = False
+        else:
+            #Get a random x and z position between min and max (with offset for radius)
+            randomX = random.randrange(xMin, xMax) / 100.0
+            randomZ = random.randrange(zMin, zMax) / 100.0
         
-        #Iterate through the humans
-        for human in humans:
-            #Get the distance to the human
-            distance = (((randomX - human[0]) ** 2) + ((randomZ - human[1]) ** 2)) ** (1/2)
+        #Iterate through the placed items
+        for item in usedSpaces:
+            #Get the distance to the item
+            distance = (((randomX - item[0][0]) ** 2) + ((randomZ - item[0][1]) ** 2)) ** 0.5
             #If the distance is less than the two radii added together
-            if distance <= radius + humanRadius:
-                #It intersects a human and cannot be placed here
+            if distance <= radius + item[1]:
+                #It intersects a placed object and cannot be placed here
                 done = False
-        
-        #Iterate through the obstacles
-        for obstacle in obstacles:
-            #Find maximum and minimum positions of obstacle
-            obstacleMax = [obstacle[0] + (obstacle[3][0] / 2.0), obstacle[2] + (obstacle[3][2] / 2.0)]
-            obstacleMin = [obstacle[0] - (obstacle[3][0] / 2.0), obstacle[2] - (obstacle[3][2] / 2.0)]
-            #If the left side and right side of the object are not both the same side of the obstacle
-            if not ((randomX + radius < obstacleMin[0] and randomX - radius < obstacleMin[0]) or (randomX + radius > obstacleMax[0] and randomX - radius > obstacleMax[0])):
-                #If the top side and bottom side of the object are not both the same side of the obstacle
-                if not ((randomZ + radius < obstacleMin[1] and randomZ - radius < obstacleMin[1]) or (randomZ + radius > obstacleMax[1] and randomZ - radius > obstacleMax[1])):
-                    #It intersects an obstacle and cannot be placed here
-                    done = False
-        
-        #Iterarte through the bases
-        for base in bases:
-            #If the distance to the base is less than 4
-            if (((base[0] - randomX) ** 2) + ((base[1] - randomZ) ** 2)) ** (1/2) <= 4:
-                #It is within the base exclusion zone and cannot be placed here
-                done = False
-        
-        #If it cannot be placed at this point
-        if not done:
-            #Generate a new point for the next pass
-            randomX = random.randrange(-1250 + (radius * 100), 1250 - (radius * 100)) / 100.0
-            randomZ = random.randrange(-1000 + (radius * 100), 1000 - (radius * 100)) / 100.0
-    
-    #Returns the correct coordinates
-    return randomX, randomZ
+
+        #One more attempt has been used
+        attempts = attempts - 1
+
+    #If a position was selected
+    if done:
+        #Returns the correct coordinates
+        return randomX, randomZ, selectedRoomId
+    else:
+        #If no valid place was found after all attempts
+        return None, None, -1
     
 
-def setObstaclePositions(obstaclesList: list, obstacleNodes: list, walls: list, bases: list) -> list:
+def setObstaclePositions(obstaclesList: list, obstacleNodes: list, rooms: list, blockedRooms: list, unusablePlaces: list) -> list:
     '''Place the obstacles in generated positions and return the placed obstacles'''
-    #List to contain all humans
+    #List to contain all obstacles
     obstacles = []
     #Iterate for each obstacle
     for i in range(len(obstaclesList)):
@@ -171,18 +267,58 @@ def setObstaclePositions(obstaclesList: list, obstacleNodes: list, walls: list, 
         obstacle = obstacleNodes.getMFNode(i)
         #Get obstacle translation
         obstaclePos = obstacle.getField("translation")
+        #Calculate the radius
+        radius = (((obstaclesList[i][0] * 0.50) ** 2) + ((obstaclesList[i][2] * 0.50) ** 2)) ** 0.50
         #Get random valid position
-        x, z = generatePosition(max(obstaclesList[i][0], obstaclesList[i][2]), walls, [], obstacles, bases)
-        y = obstaclesList[i][1] / 2.0
-        #Move humans to random positions in the building
-        obstaclePos.setSFVec3f([x,y,z])
-        obstacles.append([x, y, z, obstaclesList[i]])
+        x, z, roomNum = generatePosition(radius, rooms, blockedRooms, obstacles + unusablePlaces)
+        #If a place was found for the obstacle
+        if x != None and z != None and roomNum > -1:
+            y = (obstaclesList[i][1] / 2.0) + 0.05
+            #Move obstacle to random position in the building
+            obstaclePos.setSFVec3f([x,y,z])
+            obstacles.append([[x, z], radius])
     
-    #Formatted as: [xPos, yPos, zPos, [xScale, yScale, zScale]]
+    #Formatted as: [[xPos, zPos], radius]
     return obstacles
 
 
-def setHumanPositions(numberHumans, humanNodes, walls, obstacles, bases: list) -> list:
+def setActivityPositions(activityItemList: list, activitySizeList: list, activityAssoc: list, rooms: list, unusableRooms: list, unusablePlaces: list) -> list:
+    '''Place the activities in generated positions and return the placed items position and scale'''
+    #List to contain all activities
+    activityItems = []
+    #List to contain which room activity parts are in
+    roomsUsed = []
+    #List position of current object
+    itemId = 0
+    #Iterate for each obstacle
+    for item in activityItemList:
+        #Get obstacle translation
+        itemPosition = item.getField("translation")
+        itemScale = activitySizeList[itemId]
+        #Determine the radius of the object
+        radius = (((itemScale[0] * 0.50) ** 2) + ((itemScale[2] * 0.50) ** 2)) ** 0.50
+        #List to contain rooms that cannot be used
+        disallowedRooms = []
+        #Copy all default data
+        for room in unusableRooms:
+            disallowedRooms.append(room)
+        #Add a room to not allowed if used by another part of the activity
+        if len(roomsUsed) > activityAssoc[itemId]:
+            disallowedRooms.append(roomsUsed[activityAssoc[itemId]])
+        #Get random valid position
+        x, z, roomNum = generatePosition(radius, rooms, unusableRooms + disallowedRooms, unusablePlaces + activityItems, True)
+        y = (itemScale[1] / 2.0) + 0.05
+        #Add the room number to the list of used rooms
+        roomsUsed.append(roomNum)
+        #Move activity element to random position in the building
+        itemPosition.setSFVec3f([x,y,z])
+        activityItems.append([[x, z], radius])
+        itemId = itemId + 1
+    
+    #Formatted as: [[xPos, zPos], radius]
+    return activityItems
+
+def setHumanPositions(numberHumans: int, humanNodes: list, rooms: list, unusableRooms: list, unusableSpaces: list) -> list:
     '''Place the humans in generated positions and return the placed humans'''
     #List to contain all humans
     humans = []
@@ -190,50 +326,107 @@ def setHumanPositions(numberHumans, humanNodes, walls, obstacles, bases: list) -
     for i in range(numberHumans):
         #Get each human from children field in the human root node HUMANGROUP
         human = humanNodes.getMFNode(i)
-        #Get human translation
+        #Get human translation and radius
         humanPos = human.getField("translation")
+        humanRad = human.getField("boundingObject").getSFNode().getField("radius").getSFFloat() + 0.5
+        humanY = human.getField("boundingObject").getSFNode().getField("height").getSFFloat()
         #Get random valid position
-        x, z = generatePosition(humanRadius, walls, humans, obstacles, bases)
-        #Move humans to random positions in the building
-        humanPos.setSFVec3f([x,0.5,z])
-        humans.append([x, z])
+        x, z, roomNum = generatePosition(humanRad, rooms, unusableRooms, unusableSpaces + humans)
+        #Only if a valid position was found
+        if x != None and z != None and roomNum > -1:
+            #Move humans to random positions in the building
+            humanPos.setSFVec3f([x,humanY,z])
+            humans.append([[x, z], humanRad])
+
     
-    #Returns the placed humans as: [xPosition, zPosition]
+    #Returns the placed humans as: [[xPosition, zPosition], radius]
     return humans
 
+def performGeneration ():
+    '''Generate a position for all the objects and place them in the world'''
+    
+    #Get group node containing room boundaries
+    roomGroup = supervisor.getFromDef("ROOMBOUNDS")
+    roomNodes = roomGroup.getField("children")
+    #Get number of rooms
+    numberOfRooms = roomNodes.getCount()
+    
+    #Get group node containing humans 
+    humanGroup = supervisor.getFromDef("HUMANGROUP")
+    humanNodes = humanGroup.getField("children")
+    #Get number of humans in map
+    numberOfHumans = humanNodes.getCount()
 
-#Get group node containing humans 
-humanGroup = supervisor.getFromDef('HUMANGROUP')
-humanNodes = humanGroup.getField("children")
-#Get number of humans in map
-numberOfHumans = humanNodes.getCount()
+    #Get group node containing bases
+    baseGroup = supervisor.getFromDef("BASEGROUP")
+    baseNodes = baseGroup.getField("children")
+    #Get number of bases in map (divide by three as there is a min and max node for each too)
+    numberOfBases = int(baseNodes.getCount() / 3)
 
-#Get group node containing obstacles 
-obstacleGroup = supervisor.getFromDef('OBSTACLEGROUP')
-obstacleNodes = obstacleGroup.getField("children")
-#Get number of obstacles in map
-numberOfObstacles = obstacleNodes.getCount()
+    #Get group node containing obstacles 
+    obstacleGroup = supervisor.getFromDef("OBSTACLEGROUP")
+    obstacleNodes = obstacleGroup.getField("children")
+    #Get number of obstacles in map
+    numberOfObstacles = obstacleNodes.getCount()
 
-#Get group node containing walls 
-wallGroup = supervisor.getFromDef('WALLGROUP')
-wallNodes = wallGroup.getField("children")
-#Get number of walls in map
-numberOfWalls = wallNodes.getCount() - 9
+    #Get group node containing activity boxes
+    activityBoxGroup = supervisor.getFromDef("ACTOBJECTSGROUP")
+    activityBoxNodes = activityBoxGroup.getField("children")
+    #Get number of activity boxes in map
+    numberOfActivityBoxes = activityBoxNodes.getCount()
 
-#Get all the walls
-allWallBlocks = getAllWalls(numberOfWalls)
-#Convert all the walls to boundaries
-allWallBounds = convertWallsToBoundaries(allWallBlocks)
-#Get all the obstacles
-allObstacles = getAllObstacles(numberOfObstacles)
-#Geta ll the base positions
-allBases = getAllBases()
+    #Get group node containing activity pads
+    activityPadGroup = supervisor.getFromDef("ACTMATGROUP")
+    activityPadNodes = activityPadGroup.getField("children")
+    #Get number of activity boxes in map
+    numberOfActivityPads = activityPadNodes.getCount()
 
-#Place all the obstacles
-finalObstacles = setObstaclePositions(allObstacles, obstacleNodes, allWallBounds, allBases)
-#Place all the humans
-finalHumans = setHumanPositions(numberOfHumans, humanNodes, allWallBounds, finalObstacles, allBases)
+    #Get all the room boundaries
+    allRooms = getAllRooms(numberOfRooms)
+    #Get all the obstacles
+    allObstacles = getAllObstacles(numberOfObstacles)
+    #Get all the activity items
+    allActivityItems, allActivitySizes, activityAssoc = getAllActivities(numberOfActivityBoxes, numberOfActivityPads)
+    #Get all the base positions
+    allBases = getAllBases(numberOfBases, baseNodes)
+    
+    #List of all rooms that cannot be used (the ones containing bases at the time of writing)
+    unusableRooms = []
 
-#Send signal to say that items have been placed
-outputField.setSFString("done")
+    #Iterate the bases
+    for base in allBases:
+        #Which room index that base is in
+        index = determineRoom(allRooms, base)
+        #If a room was found
+        if index != -1:
+            #Add that index to the list of unusable rooms
+            unusableRooms.append(index)
 
+    unusablePlaces = []
+
+    #Place all the activities
+    finalActivities = setActivityPositions(allActivityItems, allActivitySizes, activityAssoc, allRooms, unusableRooms, unusablePlaces)
+    #Add activities to the unusables list
+    unusablePlaces = unusablePlaces + finalActivities
+    
+    #Place all the obstacles
+    finalObstacles = setObstaclePositions(allObstacles, obstacleNodes, allRooms, unusableRooms, unusablePlaces)
+    #Add obstacles to the unusables list
+    unusablePlaces = unusablePlaces + finalObstacles
+    
+    #Place all the humans
+    finalHumans = setHumanPositions(numberOfHumans, humanNodes, allRooms, unusableRooms, unusablePlaces)
+    #Add humans to the unusables list
+    unusablePlaces = unusablePlaces + finalHumans
+    print(unusablePlaces)
+
+    #Send signal to say that items have been placed
+    outputField.setSFString("done")
+
+
+#Check if a generation is being called
+if outputField.getSFString() == "startGen":
+    #Generate positions
+    performGeneration()
+    #Generation done - terminates loop and script
+    notGenerated = False

@@ -1,0 +1,5 @@
+DEF HUMANCHILDGROUP Group {{
+    children [
+{0}
+    ]
+}}
