@@ -1,5 +1,5 @@
 # RescueMaze
-Erebus is a rescue simulation competition environment designed for semi-experienced to highly experienced programmers. 
+RescueMaze is a rescue simulation competition environment designed for semi-experienced to highly experienced programmers. 
 
 <p align="center"><img src="/docs/images/environment.JPG" width="500"><p/>
 
