@@ -3,8 +3,6 @@ Erebus is a rescue simulation competition environment designed for semi-experien
 
 <p align="center"><img src="/docs/images/environment.JPG" width="500"><p/>
 
-## [Changelog](https://github.com/Shadow149/RescueMaze/blob/Aura/changelog.md)
-
 ## Getting started
 [Installation](https://github.com/Shadow149/RescueMaze/wiki/Installation)  
 
