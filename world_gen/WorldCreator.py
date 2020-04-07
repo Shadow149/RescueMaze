@@ -1,7 +1,8 @@
-"""Map Generation World File Creator v5
+"""Map Generation World File Creator Type 2 v1
    Written by Robbie Goldman and Alfred Roberts
 
 Changelog:
+ Type 1
  V2:
  - Added Group node for walls
  - Incorporated obstacles into file
@@ -14,6 +15,9 @@ Changelog:
  - Added boundary nodes for rooms
  V6:
  - Added position nodes for doors
+ Type 2
+ V1:
+ - Overhauled to change from a floor and external walls into modular pieces
 """
 
 
@@ -23,9 +27,6 @@ dirname = os.path.dirname(__file__)
 
 #List of activity colours (could be generated in future)
 activityColours = [[1, 0, 1], [0, 1, 1], [1, 1, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1]]
-
-#The string to add to the end of the file to finish it
-fileFooter = "  ]\n}\n"
 
 
 def transformFromBounds(start, end):
@@ -55,7 +56,318 @@ def transformFromBounds(start, end):
     return pos, scale
 
 
-def createFileData (boxData, bases, obstacles, robots, numHumans, numChildren, activityList, bounds, doors):
+def checkForCorners(pos, walls):
+    '''Check if each of the corners is needed'''
+    #Surrounding tile directions
+    around = [[0, -1], [1, 0], [0, 1], [-1, 0]]
+    #Needed corners
+    corners = [False, False, False, False]
+
+    surroundingTiles = []
+
+    #For each surrounding card
+    for a in around:
+        #Get the position
+        xPos = pos[0] + a[0]
+        yPos = pos[1] + a[1]
+        #If it is a valid position
+        if xPos > -1 and xPos < len(walls[0]) and yPos > -1 and yPos < len(walls):
+            #Add the tile to the surrounding list
+            surroundingTiles.append(walls[yPos][xPos])
+        else:
+            #Otherwise add a null value
+            surroundingTiles.append([False, [False, False, False, False], False, False, False])
+
+    #If top right is needed
+    corners[0] = surroundingTiles[0][1][1] and surroundingTiles[1][1][0]
+    #If bottom right is needed
+    corners[1] = surroundingTiles[1][1][2] and surroundingTiles[2][1][1]
+    #If bottom left is needed
+    corners[2] = surroundingTiles[2][1][3] and surroundingTiles[3][1][2]
+    #If top left is needed
+    corners[3] = surroundingTiles[0][1][3] and surroundingTiles[3][1][0]
+
+    return corners
+
+def convertTileToTemplateIndex(pos, walls):
+    '''Convert a world position to a tile name and rotation'''
+    #Get the tile
+    tile = walls[pos[1]][pos[0]]
+    #Get the needed corners
+    corners = checkForCorners(pos, walls)
+
+    #No tile present
+    if not tile[0]:
+        return "", 0
+
+    #All four walls
+    if tile[1][0] and tile[1][1] and tile[1][2] and tile[1][3]:
+        return "fourWalls", 0
+
+    #All except top wall
+    if not tile[1][0] and tile[1][1] and tile[1][2] and tile[1][3]:
+        return "threeWalls", 0
+
+    #All except right wall
+    if tile[1][0] and not tile[1][1] and tile[1][2] and tile[1][3]:
+        return "threeWalls", -1.5708
+
+    #All except bottom wall
+    if tile[1][0] and tile[1][1] and not tile[1][2] and tile[1][3]:
+        return "threeWalls", 3.14159
+
+    #All except right wall
+    if tile[1][0] and tile[1][1] and tile[1][2] and not tile[1][3]:
+        return "threeWalls", 1.5708
+
+    #L shaped walls bottom and left
+    if not tile[1][0] and not tile[1][1] and tile[1][2] and tile[1][3]:
+        #If pillar needed
+        if corners[0]:
+            return "twoWallsOnePillar", 0
+        else:
+            return "twoWallsRightAngle", 0
+
+    #L shaped walls top and left
+    if tile[1][0] and not tile[1][1] and not tile[1][2] and tile[1][3]:
+        #If pillar needed
+        if corners[1]:
+            return "twoWallsOnePillar", -1.5708
+        else:
+            return "twoWallsRightAngle", -1.5708
+
+    #L shaped walls top and right
+    if tile[1][0] and tile[1][1] and not tile[1][2] and not tile[1][3]:
+        #If pillar needed
+        if corners[2]:
+            return "twoWallsOnePillar", 3.14159
+        else:
+            return "twoWallsRightAngle", 3.14159
+
+    #L shaped walls bottom and right
+    if not tile[1][0] and tile[1][1] and tile[1][2] and not tile[1][3]:
+        #If pillar needed
+        if corners[3]:
+            return "twoWallsOnePillar", 1.5708
+        else:
+            return "twoWallsRightAngle", 1.5708
+
+    #Tunnel shaped walls top and bottom
+    if tile[1][0] and not tile[1][1] and tile[1][2] and not tile[1][3]:
+        return "twoWallsTunnel", 0
+
+    #Tunnel shaped walls left and right
+    if not tile[1][0] and tile[1][1] and not tile[1][2] and tile[1][3]:
+        return "twoWallsTunnel", 1.5708
+
+    #Top wall only 
+    if tile[1][0] and not tile[1][1] and not tile[1][2] and not tile[1][3]:
+        #No corners
+        if not corners[1] and not corners[2]:
+            return "oneWall", 0
+        else:
+            #Right corner
+            if corners[1] and not corners[2]:
+                return "oneWallOnePillarRight", 0
+            #Left corner
+            elif not corners[1] and corners[2]:
+                return "oneWallOnePillarLeft", 0
+            #Both corners
+            else:
+                return "oneWallTwoPillars", 0
+
+    #Right wall only 
+    if not tile[1][0] and tile[1][1] and not tile[1][2] and not tile[1][3]:
+        #No corners
+        if not corners[2] and not corners[3]:
+            return "oneWall", -1.5708
+        else:
+            #Right corner
+            if corners[2] and not corners[3]:
+                return "oneWallOnePillarRight", -1.5708
+            #Left corner
+            elif not corners[2] and corners[3]:
+                return "oneWallOnePillarLeft", -1.5708
+            #Both corners
+            else:
+                return "oneWallTwoPillars", -1.5708
+
+    #Bottom wall only 
+    if not tile[1][0] and not tile[1][1] and tile[1][2] and not tile[1][3]:
+        #No corners
+        if not corners[3] and not corners[0]:
+            return "oneWall", 3.14159
+        else:
+            #Right corner
+            if corners[3] and not corners[0]:
+                return "oneWallOnePillarRight", 3.14159
+            #Left corner
+            elif not corners[3] and corners[0]:
+                return "oneWallOnePillarLeft", 3.14159
+            #Both corners
+            else:
+                return "oneWallTwoPillars", 3.14159
+
+    #Left wall only 
+    if not tile[1][0] and not tile[1][1] and not tile[1][2] and tile[1][3]:
+        #No corners
+        if not corners[0] and not corners[1]:
+            return "oneWall", 1.5708
+        else:
+            #Right corner
+            if corners[0] and not corners[1]:
+                return "oneWallOnePillarRight", 1.5708
+            #Left corner
+            elif not corners[0] and corners[1]:
+                return "oneWallOnePillarLeft", 1.5708
+            #Both corners
+            else:
+                return "oneWallTwoPillars", 1.5708
+
+    #All four corners
+    if corners[0] and corners[1] and corners[2] and corners[3]:
+        return "fourPillars", 0
+
+    #Three corners no bottom right
+    if corners[0] and not corners[1] and corners[2] and corners[3]:
+        return "threePillars", 0
+
+    #Three corners no bottom left
+    if corners[0] and corners[1] and not corners[2] and corners[3]:
+        return "threePillars", -1.5708
+
+    #Three corners no top left
+    if corners[0] and corners[1] and corners[2] and not corners[3]:
+        return "threePillars", 3.14159
+
+    #Three corners no top right
+    if not corners[0] and corners[1] and corners[2] and corners[3]:
+        return "threePillars", 1.5708
+
+    #Two corners adjacent both top
+    if corners[0] and not corners[1] and not corners[2] and corners[3]:
+        return "twoPillarsHorizontal", 0
+
+    #Two corners adjacent both right
+    if corners[0] and corners[1] and not corners[2] and not corners[3]:
+        return "twoPillarsHorizontal", -1.5708
+
+    #Two corners adjacent both bottom
+    if not corners[0] and corners[1] and corners[2] and not corners[3]:
+        return "twoPillarsHorizontal", 3.14159
+
+    #Two corners adjacent both left
+    if not corners[0] and not corners[1] and corners[2] and corners[3]:
+        return "twoPillarsHorizontal", 1.5708
+
+    #Two corners diagonal top left and bottom right
+    if not corners[0] and corners[1] and not corners[2] and corners[3]:
+        return "twoPillarsDiagonal", 0
+
+    #Two corners diagonal top right and bottom left
+    if corners[0] and not corners[1] and corners[2] and not corners[3]:
+        return "twoPillarsDiagonal", 1.5708
+
+    #One corner top left
+    if not corners[0] and not corners[1] and not corners[2] and corners[3]:
+        return "onePillar", 0
+
+    #One corner top right
+    if corners[0] and not corners[1] and not corners[2] and not corners[3]:
+        return "onePillar", -1.5708
+
+    #One corner bottom right
+    if not corners[0] and corners[1] and not corners[2] and not corners[3]:
+        return "onePillar", 3.14159
+
+    #One corner bottom left
+    if not corners[0] and not corners[1] and corners[2] and not corners[3]:
+        return "onePillar", 1.5708
+
+    return "zeroWalls", 0
+
+
+def convertTileToExternalWallIndex (pos, walls):
+    '''Convert tile position to external wall name and rotation'''
+    #Get the tile at the position
+    thisWall = walls[pos[1]][pos[0]]
+
+    #If there is no tile here there is no need for an external wall
+    if not thisWall[0]:
+        return "", 0
+
+    #Surrounding tiles
+    around = [[0, -1], [1, 0], [0, 1], [-1, 0]]
+    otherTiles = [False, False, False, False]
+
+    d = 0
+    
+    for a in around:
+        #Get the tiles position
+        xPos = pos[0] + a[0]
+        yPos = pos[1] + a[1]
+        #If it is a valid positon
+        if xPos > -1 and xPos < len(walls[0]) and yPos > -1 and yPos < len(walls):
+            #Add the tiles present data
+            otherTiles[d] = walls[yPos][xPos][0]
+        else:
+            #No tile present
+            otherTiles[d] = False
+        #Add one to direction counter
+        d = d + 1
+
+    #Top wall only
+    if not otherTiles[0] and otherTiles[1] and otherTiles[2] and otherTiles[3]:
+        return "externalWallSingle", 0
+
+    #Right wall only
+    if otherTiles[0] and not otherTiles[1] and otherTiles[2] and otherTiles[3]:
+        return "externalWallSingle", -1.5708
+
+    #Bottom wall only
+    if otherTiles[0] and otherTiles[1] and not otherTiles[2] and otherTiles[3]:
+        return "externalWallSingle", 3.14159
+
+    #Left wall only
+    if otherTiles[0] and otherTiles[1] and otherTiles[2] and not otherTiles[3]:
+        return "externalWallSingle", 1.5708
+
+    #Top and Left walls only
+    if not otherTiles[0] and otherTiles[1] and otherTiles[2] and not otherTiles[3]:
+        return "externalWallCorner", 0
+
+    #Top and Right walls only
+    if not otherTiles[0] and not otherTiles[1] and otherTiles[2] and otherTiles[3]:
+        return "externalWallCorner", -1.5708
+
+    #Bottom and Right walls only
+    if otherTiles[0] and not otherTiles[1] and not otherTiles[2] and otherTiles[3]:
+        return "externalWallCorner", 3.14159
+
+    #Bottom and Left walls only
+    if otherTiles[0] and otherTiles[1] and not otherTiles[2] and not otherTiles[3]:
+        return "externalWallCorner", 1.5708
+
+    #Three walls Bottom missing
+    if not otherTiles[0] and not otherTiles[1] and otherTiles[2] and not otherTiles[3]:
+        return "externalWallHoop", 0
+
+    #Three walls Left missing
+    if not otherTiles[0] and not otherTiles[1] and not otherTiles[2] and otherTiles[3]:
+        return "externalWallHoop", -1.5708
+
+    #Three walls Top missing
+    if otherTiles[0] and not otherTiles[1] and not otherTiles[2] and not otherTiles[3]:
+        return "externalWallHoop", 3.14159
+
+    #Three walls Right missing
+    if not otherTiles[0] and otherTiles[1] and not otherTiles[2] and not otherTiles[3]:
+        return "externalWallHoop", 1.5708
+    
+    return "", 0
+
+
+def createFileData (walls, obstacles, numThermal, numVisual):
     '''Create a file data string from the positions and scales'''
     #Open the file containing the standard header
     headerFile = open(os.path.join(dirname, "fileHeader.txt"), "r")
@@ -64,41 +376,6 @@ def createFileData (boxData, bases, obstacles, robots, numHumans, numChildren, a
     #Close header file
     headerFile.close()
 
-    #Open the file containing the template for a block
-    boxTemplate = open(os.path.join(dirname, "boxTemplate.txt"), "r")
-    #Read template
-    boxPart = boxTemplate.read()
-    #Close template file
-    boxTemplate.close()
-
-    #Open the file containing the template for a base group
-    baseGroupTemplate = open(os.path.join(dirname, "baseGroupTemplate.txt"), "r")
-    #Read template
-    baseGroupPart = baseGroupTemplate.read()
-    #Close template file
-    baseGroupTemplate.close()
-
-    #Open the file containing the template for a base
-    baseTemplate = open(os.path.join(dirname, "baseTemplate.txt"), "r")
-    #Read template
-    basePart = baseTemplate.read()
-    #Close template file
-    baseTemplate.close()
-
-    #Open the file containing the template for a set of base boundaries
-    baseBoundTemplate = open(os.path.join(dirname, "baseBoundsTemplate.txt"), "r")
-    #Read template
-    baseBoundPart = baseBoundTemplate.read()
-    #Close template file
-    baseBoundTemplate.close()
-
-    #Open the file containing the template for a robot
-    robotTemplate = open(os.path.join(dirname, "robotTemplate.txt"), "r")
-    #Read template
-    robotPart = robotTemplate.read()
-    #Close template file
-    robotTemplate.close()
-
     #Open the file containing the template for a group
     groupTemplate = open(os.path.join(dirname, "groupTemplate.txt"), "r")
     #Read template
@@ -106,110 +383,57 @@ def createFileData (boxData, bases, obstacles, robots, numHumans, numChildren, a
     #Close template file
     groupTemplate.close()
 
-    #Open the file containing the template for a human group
-    humanGroupTemplate = open(os.path.join(dirname, "humanGroupTemplate.txt"), "r")
-    #Read template
-    humanGroupPart = humanGroupTemplate.read()
-    #Close template file
-    humanGroupTemplate.close()
+    #All the map tiles templates
+    tileTypes = ["fourWalls", "threeWalls", "twoWallsRightAngle", "twoWallsTunnel", "oneWall", "zeroWalls", "twoWallsOnePillar", "oneWallOnePillarLeft", "oneWallOnePillarRight", "oneWallTwoPillars", "fourPillars", "threePillars", "twoPillarsHorizontal", "twoPillarsDiagonal", "onePillar"]
+    tileTemplates = []
+    #Iterate through the tiles
+    for name in tileTypes:
+        #Construct the path
+        path = os.path.join(dirname, "blockTemplates")
+        path = os.path.join(path, "{0}.txt".format(name))
+        #Open the file
+        tileTemp = open(path, "r")
+        #Add the template to the list
+        tileTemplates.append(tileTemp.read())
+        #Close the file
+        tileTemp.close()
 
-    #Open the file containing the template for a human
-    humanTemplate = open(os.path.join(dirname, "humanTemplate.txt"), "r")
-    #Read template
-    humanPart = humanTemplate.read()
-    #Close template file
-    humanTemplate.close()
+    #All the exterior wall templates
+    externalTileTypes = ["externalWallSingle", "externalWallCorner", "externalWallHoop"]
+    externalTileTemplates = []
+    #Iterate through the tiles
+    for name in externalTileTypes:
+        #Construct the path
+        path = os.path.join(dirname, "blockTemplates")
+        path = os.path.join(path, "{0}.txt".format(name))
+        #Open the file
+        tileTemp = open(path, "r")
+        #Add the template to the list
+        externalTileTemplates.append(tileTemp.read())
+        #Close the file
+        tileTemp.close()
 
-    #Open the file containing the template for a human child
-    humanChildTemplate = open(os.path.join(dirname, "humanChildTemplate.txt"), "r")
-    #Read template
-    humanChildPart = humanChildTemplate.read()
-    #Close template file
-    humanChildTemplate.close()
-	
-    #Open the file containing the template for an obstacle group
-    obstacleGroupTemplate = open(os.path.join(dirname, "obstacleGroupTemplate.txt"), "r")
-    #Read template
-    obstacleGroupPart = obstacleGroupTemplate.read()
-    #Close template file
-    obstacleGroupTemplate.close()
-	
-    #Open the file containing the template for an obstacle
-    obstacleTemplate = open(os.path.join(dirname, "obstacleTemplate.txt"), "r")
-    #Read template
-    obstaclePart = obstacleTemplate.read()
-    #Close template file
-    obstacleTemplate.close()
+    #All extra tile parts
+    extraTileTypes = ["checkpoint", "trap", "goal"]
+    extraTileTemplates = []
+    #Iterate through the parts
+    for name in extraTileTypes:
+        #Construct the path
+        path = os.path.join(dirname, "blockTemplates")
+        path = os.path.join(path, "{0}.txt".format(name))
+        #Open the file
+        tileTemp = open(path, "r")
+        #Add the template to the list
+        extraTileTemplates.append(tileTemp.read())
+        #Close the file
+        tileTemp.close()
 
-    #Open the file containing the template for a dynamic obstacle
-    obstacleTemplateDynamic = open(os.path.join(dirname, "obstacleTemplateDynamic.txt"), "r")
+    #Open the file containing the template for a group
+    boundsTemplate = open(os.path.join(os.path.join(dirname, "blockTemplates"), "bounds.txt"), "r")
     #Read template
-    obstaclePartDynamic = obstacleTemplateDynamic.read()
+    boundsPart = boundsTemplate.read()
     #Close template file
-    obstacleTemplateDynamic.close()
-
-    #Open the file containing the template for an activity box group
-    activityBoxGroupTemplate = open(os.path.join(dirname, "activityBoxGroupTemplate.txt"), "r")
-    #Read template
-    activityBoxGroup = activityBoxGroupTemplate.read()
-    #Close template file
-    activityBoxGroupTemplate.close()
-
-    #Open the file containing the template for an activity pad group
-    activityPadGroupTemplate = open(os.path.join(dirname, "activityPadGroupTemplate.txt"), "r")
-    #Read template
-    activityPadGroup = activityPadGroupTemplate.read()
-    #Close template file
-    activityPadGroupTemplate.close()
-
-    #Open the file containing the template for an activity box 
-    activityBoxTemplate = open(os.path.join(dirname, "activityBoxTemplate.txt"), "r")
-    #Read template
-    activityBox = activityBoxTemplate.read()
-    #Close template file
-    activityBoxTemplate.close()
-
-    #Open the file containing the template for an activity pad 
-    activityPadTemplate = open(os.path.join(dirname, "activityPadTemplate.txt"), "r")
-    #Read template
-    activityPad = activityPadTemplate.read()
-    #Close template file
-    activityPadTemplate.close()
-
-    #Open the file containing the template for the room boundary group
-    roomBoundaryGroupTemplate = open(os.path.join(dirname, "roomBoundsGroupTemplate.txt"), "r")
-    #Read template
-    roomGroupPart = roomBoundaryGroupTemplate.read()
-    #Close template file
-    roomBoundaryGroupTemplate.close()
-
-    #Open the file containing the template for a room boundary
-    roomBoundaryTemplate = open(os.path.join(dirname, "roomBoundsTemplate.txt"), "r")
-    #Read template
-    roomBoundaryPart = roomBoundaryTemplate.read()
-    #Close template file
-    roomBoundaryTemplate.close()
-
-    #Open the file containing the template for a room's boundary data
-    roomBoundaryDataTemplate = open(os.path.join(dirname, "roomBoundsDataTemplate.txt"), "r")
-    #Read template
-    roomBoundaryDataPart = roomBoundaryDataTemplate.read()
-    #Close template file
-    roomBoundaryDataTemplate.close()
-
-    #Open the file containing the template for a door group
-    doorGroupTemplate = open(os.path.join(dirname, "doorGroupTemplate.txt"), "r")
-    #Read template
-    doorGroupPart = doorGroupTemplate.read()
-    #Close template file
-    doorGroupTemplate.close()
-
-    #Open the file containing the template for a door node
-    doorTemplate = open(os.path.join(dirname, "doorTemplate.txt"), "r")
-    #Read template
-    doorPart = doorTemplate.read()
-    #Close template file
-    doorTemplate.close()
+    boundsTemplate.close()
     
     #Open the file containing the template for the supervisor
     supervisorTemplate = open(os.path.join(dirname, "supervisorTemplate.txt"), "r")
@@ -222,149 +446,92 @@ def createFileData (boxData, bases, obstacles, robots, numHumans, numChildren, a
     #Create file data - initialy just the header
     fileData = fileHeader
 
-    #Number used to give a unique name to the solid
-    i = 0
-    #Iterate for each of the blocks
-    for box in boxData:
-        #Add a copy of the template to the end of the file with the position, scale data and name inserted
-        fileData = fileData + boxPart.format(box[0][0], box[0][1], box[1][0], box[1][1], "internalWall" + str(i), str(i))
-        #Increment solid name counter
-        i = i + 1
+    #Strings to hold the tile parts
+    allTiles = ""
+    allExternals = ""
+    allExtras = ""
+    #Strings to hold the boundaries for special tiles
+    allCheckpointBounds = ""
+    allTrapBounds = ""
+    allGoalBounds = ""
 
-    #Add the footer onto the file data
-    fileData = fileData + fileFooter
+    #Upper left corner to start placing tiles from
+    startX = -(len(walls[0]) * 0.3 / 2.0)
+    startZ = -(len(walls) * 0.3 / 2.0)
 
-    baseBoundsAll = ""
-    basesAll = ""
-    #Number used to give a unique name to the solid
-    i = 0
-    #Iterate for each of the bases
-    for base in bases:
-        #Add a copy of the templace for the base to the file, with position, scale data and a name inserted
-        basesAll = basesAll + basePart.format(base[0][0], base[0][1], base[1][0], base[1][1], "base" + str(i))
-        #Add a copy of the base bounds to the bounds list
-        baseBoundsAll = baseBoundsAll + baseBoundPart.format(base[0][0] - (base[1][0] / 2), base[0][1] - (base[1][1] / 2), base[0][0] + (base[1][0] / 2), base[0][1] + (base[1][1] / 2), str(i))
-        #Increment solid name counter
-        i = i + 1
+    #Id numbers used to give a unique but interable name to tile pieces
+    tileId = 0
+    checkId = 0
+    trapId = 0
+    goalId = 0
 
-    fileData = fileData + baseGroupPart.format(basesAll + baseBoundsAll)    
+    #Iterate through all the tiles
+    for x in range(0, len(walls[0])):
+        for z in range(0, len(walls)):
+            #Get the tile name and rotation for that position
+            tileName, rotation = convertTileToTemplateIndex([x, z], walls)
+            #If there is a tile needed to be placed
+            if tileName in tileTypes:
+                #Get the template index
+                templateIndex = tileTypes.index(tileName)
+                #Add the tile data to the string of tile data
+                allTiles = allTiles + tileTemplates[templateIndex].format(x * 0.3 + startX, z * 0.3 + startZ, rotation, tileId)
 
-    #Number used to give a unique name to the solid
-    i = 0
-    #Iterate through the robots
-    for robot in robots:
-        #Add a robot to the file
-        fileData = fileData + robotPart.format(robot[0], robot[1], str(i))
-        #Increment counter
-        i = i + 1
-    
-    #String to contain all human objects
-    humansAll = ""
+                #Get the external name and rotation
+                externalTileName, externalRotation = convertTileToExternalWallIndex([x, z], walls)
+                #If there is a wall needed
+                if externalTileName in externalTileTypes:
+                    #Get the template index
+                    templateIndex = externalTileTypes.index(externalTileName)
+                    #Add the external wall data to the string of external data
+                    allExternals = allExternals + externalTileTemplates[templateIndex].format(x * 0.3 + startX, z * 0.3 + startZ, externalRotation, tileId)
 
-    #Number to give a unique name to each human
-    humanIdNum = 0
+                #checkpoint
+                if walls[z][x][2]:
+                    #Add the checkpoint to the extra data
+                    allExtras = allExtras + extraTileTemplates[0].format(x * 0.3 + startX, z * 0.3 + startZ, 0, tileId)
+                    #Add bounds to the checkpoint boundaries
+                    allCheckpointBounds = allCheckpointBounds + boundsPart.format("checkpoint", checkId, (x * 0.3 + startX) - 0.15, (z * 0.3 + startZ) - 0.15, (x * 0.3 + startX) + 0.15, (z * 0.3 + startZ) + 0.15)
+                    #Increment id counter
+                    checkId = checkId + 1
+                    
+                #trap
+                if walls[z][x][3]:
+                    #Add the trap to the extra data
+                    allExtras = allExtras + extraTileTemplates[1].format(x * 0.3 + startX, z * 0.3 + startZ, 0, tileId)
+                    #Add bounds to the trap boundaries
+                    allTrapBounds = allTrapBounds + boundsPart.format("trap", trapId, (x * 0.3 + startX) - 0.15, (z * 0.3 + startZ) - 0.15, (x * 0.3 + startX) + 0.15, (z * 0.3 + startZ) + 0.15)
+                    #Increment id counter
+                    trapId = trapId + 1
+                    
+                #goal
+                if walls[z][x][4]:
+                    #Add the goal to the extra data
+                    allExtras = allExtras + extraTileTemplates[2].format(x * 0.3 + startX, z * 0.3 + startZ, 0, tileId)
+                    #Add bounds to the goal boundaries
+                    allGoalBounds = allGoalBounds + boundsPart.format("goal", goalId, (x * 0.3 + startX) - 0.15, (z * 0.3 + startZ) - 0.15, (x * 0.3 + startX) + 0.15, (z * 0.3 + startZ) + 0.15)
+                    #Increment id counter
+                    goalId = goalId + 1
 
-    #Iterate for each adult human
-    for humanNum in range(0, numHumans):
-        #Add another human
-        humansAll = humansAll + humanPart.format(humanIdNum)
-        humanIdNum = humanIdNum + 1
+            #Increment id counter
+            tileId = tileId + 1
 
-    #Iterate for each child human
-    for childNum in range(0, numChildren):
-        #Add another human
-        humansAll = humansAll + humanChildPart.format(humanIdNum)
-        humanIdNum = humanIdNum + 1
-    
-    #Insert humans into group and add to file
-    fileData = fileData + humanGroupPart.format(humansAll)
-	
-    #String to contain all obstacle objects
-    obstaclesAll = ""
-	
-    #Number used to give a unique name to each obstacle
-    i = 0
-	
-    for obstacle in obstacles:
-        #Add the obstacle with unique identifiers and scale values
-        #If it is a static obstacle
-        if obstacle[3] == False:
-            #Add static obstacle
-            obstaclesAll = obstaclesAll + obstaclePart.format(i, obstacle[0], obstacle[1], obstacle[2])
-        else:
-            #Add dynamic obstacle
-            obstaclesAll = obstaclesAll + obstaclePartDynamic.format(i, obstacle[0], obstacle[1], obstacle[2])
-        #Increment name counter
-        i = i + 1
-	
-    #Insert obstacles into group and add to file
-    fileData = fileData + obstacleGroupPart.format(obstaclesAll)
-
-    #Strings to hold all the data for the boxes and pads
-    activityBoxes = ""
-    activityPads = ""
-
-    #Current activity id used to give unique name and colour
-    activityId = 0
-
-    #Iterate all activities
-    for activity in activityList:
-        #If it is a deposit activity
-        if activity == 1:
-            #Add a box and a pad of the correct colour
-            activityBoxes = activityBoxes + activityBox.format(activityId, activityColours[activityId][0], activityColours[activityId][1], activityColours[activityId][2], activityColours[activityId][0], activityColours[activityId][1], activityColours[activityId][2])
-            activityPads = activityPads + activityPad.format(activityId, activityColours[activityId][0] / 2, activityColours[activityId][1] / 2, activityColours[activityId][2] / 2, activityColours[activityId][0] / 2, activityColours[activityId][1] / 2, activityColours[activityId][2] / 2)
-        #Other activities will go here
-        #Increment id counter
-        activityId = activityId + 1
-
-    #Insert activity parts into groups and then into the file
-    fileData = fileData + activityBoxGroup.format(activityBoxes)
-    fileData = fileData + activityPadGroup.format(activityPads)
-
-    #String containing all boundary node information
-    allRoomBoundaries = ""
-
-    #Id number for room
-    roomId = 0
-
-    #Iterate all rooms
-    for bound in bounds:
-        #Add the boundaries
-        allRoomBoundaries = allRoomBoundaries + roomBoundaryPart.format(roomBoundaryDataPart.format(bound[0][0], bound[0][1], bound[1][0], bound[1][1], roomId), roomId)
-        #Increment id counter
-        roomId = roomId + 1
-
-    #Insert boundary parts into group node and then into the file
-    fileData = fileData + roomGroupPart.format(allRoomBoundaries)
-
-    #String containing all door node information
-    allDoors = ""
-
-    #Id number for door
-    doorId = 0
-    
-    #Iterate all doors
-    for door in doors:
-        #Add the door
-        allDoors = allDoors + doorPart.format(doorId, door[0][0], door[0][1], door[1][0], door[1][1])
-        #Increment id counter
-        doorId = doorId + 1
-
-    #Insert the door nodes into the group then insert into the file
-    fileData = fileData + doorGroupPart.format(allDoors)
-    
-    #Add a supervisor robot
-    fileData = fileData + supervisorPart
+    #Add the data pieces to the file data
+    fileData = fileData + groupPart.format(allExternals, "EXTERNALWALLS")
+    fileData = fileData + groupPart.format(allTiles, "WALLTILES")
+    fileData = fileData + groupPart.format(allExtras, "SPECIALTILES")
+    fileData = fileData + groupPart.format(allCheckpointBounds, "checkpointBounds")
+    fileData = fileData + groupPart.format(allTrapBounds, "trapBounds")
+    fileData = fileData + groupPart.format(allGoalBounds, "goalBounds")
 
     #Return the file data as a string
     return fileData
 
 
-def makeFile(boxData, bases, obstacles, robots, humans, children, activities, bounds, doors, uiWindow = None):
+def makeFile(boxData, obstacles, thermal, visual, uiWindow = None):
     '''Create and save the file for the information'''
     #Generate the file string for the map
-    data = createFileData(boxData, bases, obstacles, robots, humans, children, activities, bounds, doors)
+    data = createFileData(boxData, obstacles, thermal, visual)
     #The default file path
     filePath = os.path.join(dirname, "generatedWorld.wbt")
 

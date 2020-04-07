@@ -1,5 +1,0 @@
-DEF ACTOBJECTSGROUP Group {{
-    children [
-{0}
-    ]
-}}

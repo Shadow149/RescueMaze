@@ -1,0 +1,24 @@
+DEF trap Transform {{
+      translation {0} 0 {1}
+      rotation 0 1 0 {2}
+      children [
+        Solid {{
+          translation 0 -0.075 0
+          children [
+            Shape {{
+              appearance Appearance {{
+                material Material {{
+                  diffuseColor 0 0 0
+                  emissiveColor 0.0235294 0.0235294 0.0235294
+                  shininess 0.8
+                }}
+              }}
+              geometry Box {{
+                size 0.3 0.001 0.3
+              }}
+            }}
+          ]
+          name "trapBlock{3}"
+        }}
+      ]
+    }}

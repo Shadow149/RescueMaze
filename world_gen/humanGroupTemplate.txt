@@ -1,5 +1,0 @@
-DEF HUMANGROUP Group {{
-    children [
-{0}
-    ]
-}}

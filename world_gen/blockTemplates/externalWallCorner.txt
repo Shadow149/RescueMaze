@@ -1,0 +1,36 @@
+DEF externalWallCorner Transform {{
+      translation {0} 0 {1}
+      rotation 0 1 0 {2}
+      children [
+        DEF BACKWALL Solid {{
+          translation 0 -0.01 -0.15625
+          children [
+            Shape {{
+              appearance DEF WALLAPPEARANCE Appearance {{
+                material Material {{
+                  diffuseColor 0.2 0.466667 0.521569
+                }}
+              }}
+              geometry DEF BACKWALLBOX Box {{
+                size 0.3 0.17 0.0125
+              }}
+            }}
+          ]
+          name "externalWall0,{3}"
+          boundingObject USE BACKWALLBOX
+        }}
+        DEF LEFTWALL Solid {{
+          translation -0.15625 -0.01 -0.00625
+          children [
+            Shape {{
+              appearance USE WALLAPPEARANCE
+              geometry DEF BACKWALLBOX Box {{
+                size 0.0125 0.17 0.3125
+              }}
+            }}
+          ]
+          name "externalWall1,{3}"
+          boundingObject USE BACKWALLBOX
+        }}
+      ]
+    }}

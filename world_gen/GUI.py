@@ -1,14 +1,15 @@
-"""Generation Graphical User Interface Script v2
+"""Generation Graphical User Interface Script Type 2 v1
    Written by Alfred Robers and Robbie Goldman
+   Based on Type 1 GUI but modified for maze 
 
 Changelog:
  V1:
- - Implemented interface allowing basic generation options
- - Graphical representation of map
- - Able to save maps
- V2:
- - Changed to generation of humans as adults and children
- - Added activity drop downs
+  - Modified to have sliders for:
+      - Room dimensions
+      - Thermal and visual humans
+      - Bulky obstacles and debris
+      - Checkpoints and traps
+  - Reduced output section to display only necessary info
 """
 
 import tkinter as tk
@@ -40,8 +41,8 @@ class GenerateWindow(tk.Tk):
         #Setup grid for holding output items
         self.outputFrame.grid_columnconfigure(0, minsize = 350)
         self.outputFrame.grid_rowconfigure(0, minsize = 30)
-        self.outputFrame.grid_rowconfigure(1, minsize = 120)
-        self.outputFrame.grid_rowconfigure(2, minsize = 350)
+        self.outputFrame.grid_rowconfigure(1, minsize = 340)
+        self.outputFrame.grid_rowconfigure(2, minsize = 216)
         self.outputFrame.grid_rowconfigure(3, minsize = 58)
         self.outputFrame.grid_rowconfigure(4, minsize = 58)
 
@@ -51,7 +52,7 @@ class GenerateWindow(tk.Tk):
 
         #Image representing the map
         imageData = ImageTk.PhotoImage(Image.open(os.path.join(dirname, "map.png")))
-        self.mapImage = tk.Label(self.outputFrame, image = imageData)
+        self.mapImage = tk.Label(self.outputFrame, image = imageData, width = 250, height = 250)
         self.mapImage.image = imageData
         self.mapImage.grid(row = 1, column = 0, sticky = (tk.N, tk.E, tk.S, tk.W))
 
@@ -62,11 +63,8 @@ class GenerateWindow(tk.Tk):
         #All columns and rows for values
         self.generatedNumbers.grid_columnconfigure(0, minsize = 100)
         self.generatedNumbers.grid_columnconfigure(1, minsize = 250)
-        self.generatedNumbers.grid_rowconfigure(0, minsize = 70)
-        self.generatedNumbers.grid_rowconfigure(1, minsize = 70)
-        self.generatedNumbers.grid_rowconfigure(2, minsize = 70)
-        self.generatedNumbers.grid_rowconfigure(3, minsize = 70)
-        self.generatedNumbers.grid_rowconfigure(4, minsize = 70)
+        self.generatedNumbers.grid_rowconfigure(0, minsize = 108)
+        self.generatedNumbers.grid_rowconfigure(1, minsize = 108)
 
         #Lists to hold the output headers and bodies
         self.outputHeaders = []
@@ -74,7 +72,7 @@ class GenerateWindow(tk.Tk):
         #Current index
         position = 0
         #Iterate different output headers
-        for header in ["Humans", "Bases", "Obstacles"]:
+        for header in ["Humans", "Obstacles"]:
             #Create header label and grid on the right
             label = tk.Label(self.generatedNumbers, text = header, relief = tk.SUNKEN)
             label.grid(row = position, column = 0, sticky = (tk.N, tk.E, tk.S, tk.W))
@@ -85,16 +83,6 @@ class GenerateWindow(tk.Tk):
             self.outputBodies.append(labelBody)
             #Increment position
             position = position + 1
-
-        #Label for activities (rowspan so it is different)    
-        #Header label
-        label = tk.Label(self.generatedNumbers, text = "Activities", relief = tk.SUNKEN)
-        label.grid(row = position, column = 0, rowspan = 2, sticky = (tk.N, tk.E, tk.S, tk.W))
-        self.outputHeaders.append(label)
-        #Body label
-        labelBody = tk.Label(self.generatedNumbers, text = "None", relief = tk.SUNKEN)
-        labelBody.grid(row = position, column = 1, rowspan = 2, sticky = (tk.N, tk.E, tk.S, tk.W))
-        self.outputBodies.append(labelBody)
 
         #Add generate and save buttons
         self.generateButton = tk.Button(self.outputFrame, text = "Generate Map", bg = "lightblue", command = self.generatePressed)
@@ -130,14 +118,14 @@ class GenerateWindow(tk.Tk):
         #Get the default colour (so tabs can be restored to this colour when not selected)
         self.defaultColour = self.advancedTab.cget("background")
 
-        #Create a frame for th inputs
+        #Create a frame for the inputs
         self.inputArea = tk.Frame(self.inputFrame,highlightbackground = "black", highlightthickness = 2)
         self.inputArea.grid(row = 1, column = 0, sticky = (tk.N, tk.E, tk.S, tk.W))
         self.inputArea.grid_rowconfigure(0, minsize = 670)
         self.inputArea.grid_columnconfigure(0, minsize = 550)
 
         #Create an advanced page
-        self.advancedSection = tk.Frame(self.inputArea, background = "red")
+        self.advancedSection = tk.Frame(self.inputArea)
         self.advancedSection.grid(row = 0, column = 0, sticky = (tk.N, tk.E, tk.S, tk.W))
         #Create a basic page (created second so it starts on top)
         self.basicSection = tk.Frame(self.inputArea)
@@ -152,18 +140,19 @@ class GenerateWindow(tk.Tk):
         self.basicSection.grid_columnconfigure(2, minsize = 50)
         self.basicSection.grid_rowconfigure(0, minsize=670)
 
-        #Add a slider to choose the difficulty
-        self.basicSlider = tk.Scale(self.basicSection, label="Difficulty:", font=self.inputFont, showvalue=0, from_=0, to=5, orient=tk.HORIZONTAL, length=250, command = self.moveBasicSlider)
-        self.basicSlider.grid(row = 0, column = 1)
-        #Initialize difficulty slider
-        self.moveBasicSlider(0)
+        #List of default difficulty values
+        self.difficulties = [[[5, 5], [4, 3], [0, 0], [2, 1]],
+                             [[6, 5], [6, 4], [1, 5], [2, 1]],
+                             [[7, 7], [7, 5], [2, 8], [2, 2]],
+                             [[9, 7], [8, 5], [2, 9], [3, 2]],
+                             [[11, 9], [9, 6], [3, 10], [3, 3]],
+                             [[15, 15], [12, 8], [4, 15], [4, 3]]]
 
         #Setup the grid for the advanced page
         self.advancedSection.grid_columnconfigure(0, minsize=275)
         self.advancedSection.grid_columnconfigure(1, minsize=275)
-        self.advancedSection.grid_rowconfigure(0, minsize=223)
-        self.advancedSection.grid_rowconfigure(1, minsize=223)
-        self.advancedSection.grid_rowconfigure(2, minsize=223)
+        self.advancedSection.grid_rowconfigure(0, minsize=336)
+        self.advancedSection.grid_rowconfigure(1, minsize=336)
 
         #add the frame for the room controls
         self.advRoom = tk.Frame(self.advancedSection, highlightbackground = "black", highlightthickness = 2)
@@ -174,51 +163,29 @@ class GenerateWindow(tk.Tk):
         #add the frame for the obstacle controls
         self.advObstacles = tk.Frame(self.advancedSection, highlightbackground = "black", highlightthickness = 2)
         self.advObstacles.grid(row = 1, column = 0, sticky = (tk.N, tk.E, tk.S, tk.W))
-        #add the frame for the activity controls
-        self.advActivities = tk.Frame(self.advancedSection, highlightbackground = "black", highlightthickness = 2)
-        self.advActivities.grid(row = 1, column = 1, rowspan = 2, sticky = (tk.N, tk.E, tk.S, tk.W))
-        #add the frame for the base controls
-        self.advBases = tk.Frame(self.advancedSection, highlightbackground = "black", highlightthickness = 2)
-        self.advBases.grid(row = 2, column = 0, sticky = (tk.N, tk.E, tk.S, tk.W))
+        #add the frame for the tile controls
+        self.advTiles = tk.Frame(self.advancedSection, highlightbackground = "black", highlightthickness = 2)
+        self.advTiles.grid(row = 1, column = 1, sticky = (tk.N, tk.E, tk.S, tk.W))
 
-        #Setup the rows in the activities section
-        for actRow in range(0, 6):
-            self.advActivities.grid_rowconfigure(actRow, weight = 1)
-        self.advActivities.grid_columnconfigure(0, weight = 1)
-
-        #List to hold: [activity input variable, OptionMenu]
-        self.activityInputs = []
-        #Headers for the activities
-        activityHeaders = ["Activity 1", "Activity 2", "Activity 3", "Activity 4", "Activity 5", "Activity 6"]
-        #Possible activities to choose
-        self.activityOptions = ["None", "Deposit"]
-
-        #ID of current activity
-        activityPos = 0
-
-        #Iterate for the headers
-        for headerText in activityHeaders:
-            #Add a drop down and add it to the list
-            self.activityInputs.append(self.createDropdown(self.advActivities, self.activityOptions, headerText, activityPos))
-            #Increment ID
-            activityPos = activityPos + 1
-
-        #Get the default trough colour (so it can be restored when a slider is enabled)
-        self.troughColourDefault = self.basicSlider.cget("troughcolor")
+        self.troughColourDefault = None
 
         #List of different slider inputs [booleanVar (enabled), slider, extraSlider]
         self.inputsArray = []
 
         #Add input sliders for rooms, humans, obstacles and bases
-        self.inputsArray.append(self.createSliderSection(self.advRoom, 2, 5, "Rooms", None, None, None, "Splits:"))
-        self.inputsArray.append(self.createSliderSection(self.advHumans, 0, 50, "Humans", "Children:", 0, 50, "Adults:"))
-        self.inputsArray.append(self.createSliderSection(self.advObstacles, 0, 10, "Obstacles", "Dynamic:", 0, 10, "Static:"))
-        self.inputsArray.append(self.createSliderSection(self.advBases, 2, 4, "Bases"))
+        self.inputsArray.append(self.createSliderSection(self.advRoom, 5, 15, "Rooms", "Vertical:", 5, 15, "Horizontal:"))
+        self.inputsArray.append(self.createSliderSection(self.advHumans, 0, 20, "Humans", "Visual:", 0, 20, "Thermal:"))
+        self.inputsArray.append(self.createSliderSection(self.advObstacles, 0, 10, "Obstacles", "Debris:", 0, 20, "Bulky:"))
+        self.inputsArray.append(self.createSliderSection(self.advTiles, 2, 4, "Tiles", "Traps:", 0, 4, "Checkpoints:"))
+        
+        #Add a slider to choose the difficulty
+        self.basicSlider = tk.Scale(self.basicSection, label="Difficulty:", font=self.inputFont, showvalue=0, from_=0, to=5, orient=tk.HORIZONTAL, length=250, command = self.moveBasicSlider)
+        self.basicSlider.grid(row = 0, column = 1)
+        #Initialize difficulty slider
+        self.moveBasicSlider(0)
 
-        #List of default difficulty values
-        #TODO - update and do not have hard coded values here
-        #self.difficulties = [[[3], [25, 15], [0, 0], [2]], [[3], [20, 10], [1, 1], [3]], [[4], [16, 4], [3, 1], [3]], [[4], [13, 5], [4, 2], [3]], [[5], [10, 3], [5, 3], [2]]]
-        self.difficulties = [[[3], [25, 15], [0, 0], [2]], [[3], [20, 10], [2, 0], [3]], [[4], [16, 4], [4, 0], [3]], [[4], [13, 5], [6, 0], [3]], [[5], [10, 3], [8, 0], [2]]]
+        #Get the default trough colour (so it can be restored when a slider is enabled)
+        self.troughColourDefault = self.basicSlider.cget("troughcolor")
         
         #Not ready for generation
         self.ready = False
@@ -228,7 +195,7 @@ class GenerateWindow(tk.Tk):
         self.changingDifficulty = False
 
         #Set the default difficulty
-        self.moveBasicSlider(1)
+        self.moveBasicSlider(0)
 
         #Set correct state of enabled sliders
         self.updateValues()
@@ -250,7 +217,7 @@ class GenerateWindow(tk.Tk):
         #Change the label of the slider
         self.basicSlider.configure(label = "Difficulty: " + diffs[int(value) + 1])
         #Change the position of the slider
-        self.setDifficulty(value)
+        self.setDifficulty(int(value) + 1)
 
         
     def basicTabPressed (self) -> None:
@@ -326,27 +293,6 @@ class GenerateWindow(tk.Tk):
         slider.grid(row = rowNum, column = 0)
         
         return slider
-
-
-    def createDropdown (self, parent, options: list, header: str, rowNum: int) -> list:
-        #Frame to hold the drop down
-        dropFrame = tk.Frame(parent)
-        dropFrame.grid(row = rowNum, column = 0, sticky = (tk.N, tk.E, tk.S, tk.W))
-        dropFrame.grid_columnconfigure(0, minsize = 80)
-        dropFrame.grid_columnconfigure(1, minsize = 195)
-        dropFrame.grid_rowconfigure(0, weight = 1)
-        #Label for the name of the drop down
-        nameLabel = tk.Label(dropFrame, text = header)
-        nameLabel.grid(row = 0, column = 0, sticky = (tk.N, tk.E, tk.S, tk.W))
-        #String variable to hold the selected value
-        dropVar = tk.StringVar(dropFrame)
-        #Option Menu - the drop down itself
-        dropInput = tk.OptionMenu(dropFrame, dropVar, *options)
-        dropInput.grid(row = 0, column = 1, sticky = (tk.N, tk.E, tk.S, tk.W))
-        #Set the default value
-        dropVar.set(options[0])
-        #Return the variable and the OptionMenu
-        return [dropVar, dropInput]
 
     
     def setDifficulty (self, difficultyValue: int) -> None:
@@ -442,21 +388,6 @@ class GenerateWindow(tk.Tk):
                         fieldValue.append(inputType[pos].get())
                 #Add all the fields values to the list of values
                 values.append(fieldValue)
-
-        #List to hold all the activity values
-        activityValues = []
-
-        #Iterate through the activity drop downs
-        for activity in self.activityInputs:
-            #Get the type of activity in the list
-            pos = self.activityOptions.index(activity[0].get())
-            #If it isn't 'None'
-            if pos > 0:
-                #Add the activity id and name to the list
-                activityValues.append([pos, self.activityOptions[pos]])
-        
-        #Add the activities to the list of values
-        values.append(activityValues)
         
         return values
 
@@ -495,10 +426,10 @@ class GenerateWindow(tk.Tk):
         return path
 
 
-    def setGeneratedInformation (self, adults: str, children: str, bases: str, obstaclesStatic: str, obstaclesDynamic: str, activities: str) -> None:
+    def setGeneratedInformation (self, thermal: str, visual: str, obstacles: str, debris: str) -> None:
         '''Update the generated numbers from the values given by the generation'''
         #Combine items in a list (so it can be iteratively added)
-        dataList = [[adults, children], [bases], [obstaclesStatic, obstaclesDynamic], [activities]]
+        dataList = [[thermal, visual], [obstacles, debris]]
         position = 0
         #Iterate across all output types
         while position < len(dataList) and position < len(self.outputBodies):

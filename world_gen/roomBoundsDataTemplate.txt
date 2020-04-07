@@ -1,6 +1,0 @@
-            DEF room{4}Min Transform {{
-                translation {0} 0 {1}
-            }}
-            DEF room{4}Max Transform {{
-                translation {2} 0 {3}
-            }}

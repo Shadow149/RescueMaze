@@ -1,0 +1,10 @@
+DEF boundary Group {{
+  children [
+    DEF {0}BoundsMin{1} Transform {{
+          translation {2} 0 {3}
+    }}
+    DEF checkpointBoundsMax0 Transform {{
+          translation {4} 0 {5}
+    }}
+  ]
+}}
