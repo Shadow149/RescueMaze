@@ -13,6 +13,7 @@ Changelog:
 from controller import Supervisor
 import os
 import random
+import struct
 from RelocateCalculator import generateRelocatePosition
 
 #Create the instance of the supervisor class
@@ -27,11 +28,11 @@ robot0Pos = robot0.getField("translation")
 robot1Pos = robot1.getField("translation")
 
 #Get the output from the object placement supervisor
-objectPlacementOutput = supervisor.getFromDef("OBJECTPLACER").getField("customData")
+#objectPlacementOutput = supervisor.getFromDef("OBJECTPLACER").getField("customData")
 #Send message to object placement to indicate that it should do a generation
-objectPlacementOutput.setSFString("startGen")
+#objectPlacementOutput.setSFString("startGen")
 #Restart object placement supervisor (so that when reset it runs again)
-supervisor.getFromDef("OBJECTPLACER").restartController()
+#supervisor.getFromDef("OBJECTPLACER").restartController()
 
 
 #Get this supervisor node - so that it can be rest when game restarts
@@ -40,15 +41,25 @@ mainSupervisor = supervisor.getFromDef("MAINSUPERVISOR")
 #Maximum time for a match
 maxTime = 8 * 60
 
-class RobotHistory:
+class Queue:
     def __init__(self):
         self.queue = []
+    def enqueue(self,data):
+        return self.queue.append(data)
+    def dequeue(self):
+        return self.queue.pop(0)
+    def peek(self):
+        return self.queue[0]
+    def is_empty(self):
+        return len(self.queue) == 0
+
+class RobotHistory(Queue):
+    def __init__(self):
+        super().__init__()
     def enqueue(self,data):
         if len(self.queue) > 8:
             self.dequeue()
         return self.queue.append(data)
-    def dequeue(self):
-        return self.queue.pop(0)
     
 class Robot:
     '''Robot object to hold values whether its in a base or holding a human'''
@@ -68,6 +79,12 @@ class Robot:
         self._timeStopped = 0
         self._stopped = False
         self._stoppedTime = None
+
+        self.messages = Queue()
+
+        self.lastVisitedCheckPointPosition = []
+
+        self.visitedCheckpoints = []
         
         
     @staticmethod
@@ -177,15 +194,29 @@ class ActivityMat(PickableObject):
 
 class Human(PickableObject):
     '''Human object holding the boundaries'''
-    def __init__(self, pos: list, ap: int):
+    def __init__(self, pos: list, ap: int, vtype: str, score: int):
         '''Initialises the radius and position of the human'''
-        #TODO create weighting for generation
         super().__init__(pos)
         self.arrayPosition = ap
-        self.scoreWorth = self.getType()
-        self.radius = supervisor.getFromDef('CAPSULE').getField('radius').getSFFloat() * 2.25
+        self.scoreWorth = score
+        self.radius = 0.15
+        self.victim_type = vtype
 
+        self.simple_victim_type = self.get_simple_victim_type()
 
+        self.identified = False
+
+    def identify(self):
+        supervisor.getFromDef('human'+str(self.arrayPosition)+'texture').getField('url').setMFString(0,'./textures/'+self.victim_type+'_found.png')
+        self.identified = True
+
+    def get_simple_victim_type(self):
+        if self.victim_type == 'victim_harmed':
+            return 'H'
+        elif self.victim_type == 'victim_unharmed':
+            return 'U'
+        elif self.victim_type == 'victim_stable':
+            return 'S'
 
     def getType(self) -> int:
         '''Set type of human (adult or child) through object size'''
@@ -208,23 +239,24 @@ class Human(PickableObject):
         objPosition.setSFVec3f(position)
         self.position = position
 
-class Base:
-    '''Base object holding the boundaries'''
-    def __init__(self, min: list, max: list):
-        '''Initialize the maximum and minimum corners for the base'''
+class Checkpoint:
+    '''Checkpoint object holding the boundaries'''
+    def __init__(self, min: list, max: list, center: list):
+        '''Initialize the maximum and minimum corners for the Checkpoint'''
         self.min = min
         self.max = max
+        self.center = center
     
     def checkPosition(self, pos: list) -> bool:
-        '''Check if a position is in this base'''
+        '''Check if a position is in this Checkpoint'''
         #If the x position is within the bounds
         if pos[0] >= self.min[0] and pos[0] <= self.max[0]:
             #if the z position is within the bounds
             if pos[2] >= self.min[1] and pos[2] <= self.max[1]:
-                #It is in this base
+                #It is in this Checkpoint
                 return True
         
-        #It is not in this base
+        #It is not in this Checkpoint
         return False
 
 def getPath(number: int) -> str:
@@ -309,23 +341,49 @@ def updateHistory():
     supervisor.wwiSendText("historyUpdate"+","+",".join(robot0Obj.history.queue)+":"+",".join(robot1Obj.history.queue))
 
 def getHumans():
+    print('yeet')
     #Iterate for each human
     for i in range(numberOfHumans):
         #Get each human from children field in the human root node HUMANGROUP
         human = humanNodes.getMFNode(i)
         #Get human translation
         humanPos = human.getField("translation")
+
+        victimDescription = supervisor.getFromDef('human'+str(i)+'solid').getField('description').getSFString()
+        textureType = victimDescription.split(',')[0]
+        scoreWorth = int(victimDescription.split(',')[1])
+        print(textureType)
+
+        print(humanPos.getSFVec3f())
         #Create Human Object from human position
-        humanObj = Human(humanPos.getSFVec3f(),i)
+        humanObj = Human(humanPos.getSFVec3f(),i,textureType,scoreWorth)
         humans.append(humanObj)
 
+def resetVictimsTextures():
+    #Iterate for each victim
+    for i in range(numberOfHumans):
+        print(i)
+        victimDescription = supervisor.getFromDef('human'+str(i)+'solid').getField('description').getSFString()
+        textureType = victimDescription.split(',')[0]
+        print(textureType)
+        supervisor.getFromDef('human'+str(i)+'texture').getField('url').setMFString(0,'./textures/'+textureType+'_not_found.png')
+
 def relocate(num):
-    print(num)
-    position = generateRelocatePosition(supervisor,int(num))
     if int(num) == 0:
-        robot0Pos.setSFVec3f([position[0],0,position[1]])
+        relocatePosition = robot0Obj.lastVisitedCheckPointPosition
+        print(relocatePosition)
+
+        if relocatePosition == []:
+            print('No checkpoint visited')
+        else:
+            robot0Pos.setSFVec3f([relocatePosition[0],-0.0751,relocatePosition[2]])
     elif int(num) == 1:
-        robot1Pos.setSFVec3f([position[0],0,position[1]])
+        relocatePosition = robot1Obj.lastVisitedCheckPointPosition
+
+        if relocatePosition == []:
+            print('No checkpoint visited')
+        else:
+            robot1Pos.setSFVec3f([relocatePosition[0],-0.0751,relocatePosition[2]])
 
 
 
@@ -340,10 +398,10 @@ robot0Pos = robot0.getField("translation")
 robot1Pos = robot1.getField("translation")
 
 #Get the output from the object placement supervisor
-objectPlacementOutput = supervisor.getFromDef("OBJECTPLACER").getField("customData")
+#objectPlacementOutput = supervisor.getFromDef("OBJECTPLACER").getField("customData")
 
 #Empty list to contain bases
-bases = []
+checkpoints = []
 
 #Global empty list to contain human objects
 humans = []
@@ -366,7 +424,6 @@ def getActivities():
     activityMatsGroup = supervisor.getFromDef('ACTMATGROUP')
     activityMatsNodes = activityMatsGroup.getField('children')
     
-    #TODO check if activity objects count == activity mats count
     for i in range(activityObjectsNodes.getCount()):
         
         activityObject = activityObjectsNodes.getMFNode(i)
@@ -385,24 +442,28 @@ def getActivities():
 # activity0obj = ActivityBlock(activity0.getField("translation").getSFVec3f(),activity0,activity0_matobj)
 
 
-#Iterate for each base
-#TODO get number of bases, wont work with new generation
+#Iterate for each checkpoint
+numberOfCheckpoints = int(supervisor.getFromDef('CHECKPOINTS').getField('children').getCount() / 3)
 
-numberOfBases = int(supervisor.getFromDef('BASEGROUP').getField('children').getCount() / 3)
-
-for i in range(0, numberOfBases):
-    #Get the base minimum node and translation
-    baseMin = supervisor.getFromDef("base" + str(i) + "Min")
-    minPos = baseMin.getField("translation")
+for i in range(0, numberOfCheckpoints):
+    #Get the checkpoint minimum node and translation
+    checkpointMin = supervisor.getFromDef("checkpoint" + str(i) + "min")
+    minPos = checkpointMin.getField("translation")
     #Get maximum node and translation
-    baseMax = supervisor.getFromDef("base" + str(i) + "Max")
-    maxPos = baseMax.getField("translation")
+    checkpointMax = supervisor.getFromDef("checkpoint" + str(i) + "max")
+    maxPos = checkpointMax.getField("translation")
     #Get the vector positons
     minPos = minPos.getSFVec3f()
     maxPos = maxPos.getSFVec3f()
-    #Create a base object using the min and max (x,z)
-    baseObj = Base([minPos[0], minPos[2]], [maxPos[0], maxPos[2]])
-    bases.append(baseObj)
+
+    checkpointCenter = supervisor.getFromDef('checkpoint'+str(i))
+    centerPos = checkpointCenter.getField("translation")
+
+    centerPos = centerPos.getSFVec3f()
+    #Create a checkpoint object using the min and max (x,z)
+    checkpointObj = Checkpoint([minPos[0], minPos[2]], [maxPos[0], maxPos[2]], centerPos)
+    checkpoints.append(checkpointObj)
+
 
 #Not currently running the match
 currentlyRunning = False
@@ -440,201 +501,128 @@ supervisor.wwiSendText("startup")
 
 #For checking the first update with the game running
 first = True
+
+receiver = supervisor.getReceiver('receiver')
+receiver.enable(32)
+
 #Until the match ends (also while paused)
 while simulationRunning:
+    
     #The first frame of the game running only
     if first and currentlyRunning:
         #Restart both controllers
         robot0.restartController()
         robot1.restartController()
         first = False
-    
+
     r0 = False
     r1 = False
     #Test if the robots are in bases
-    for b in bases:
-        if b.checkPosition(robot0Pos.getSFVec3f()):
+    for checkpoint in checkpoints:
+        if checkpoint.checkPosition(robot0Pos.getSFVec3f()):
             r0 = True
-        if b.checkPosition(robot1Pos.getSFVec3f()):
-            r1 = True
+            robot0Obj.lastVisitedCheckPointPosition = checkpoint.center
 
-    #TODO for robot 1
-    for i, activity in enumerate(activities):
-        if activity[0].checkPosition(robot0Pos.getSFVec3f(),activity[0].radius):
-            if not robot0Obj.hasActivityLoaded() and not activity[0].completed:
-                #if the robot has stopped for more than 2 seconds
-                if robot0Obj.timeStopped(robot0) >= 2:
-                    print("Robot 0 picked up an activity block.")
-                    
-                    robot0Obj.history.enqueue("Picked up an activity block")
-                    updateHistory()
-                    
-                    #robot0Obj.increaseScore(1)
-                    robot0Obj.loadActivity(activity[0])
+            alreadyVisited = False
 
-                    activityColour = activity[0].colour
-                    print(activityColour)
-
-                    #send message to robot window saying activity is loaded
-                    supervisor.wwiSendText("activityLoaded0"+","+str(activityColour[0])+","+str(activityColour[1])+","+str(activityColour[2]))
-                                    
-                    #Move human to some position far away
-                    newPosition = [0,-1000,0]
-                    activity[0].setPosition(newPosition)
-
-        if activity[1].checkPosition(robot0Pos.getSFVec3f(),activity[1].radius):
-            if robot0Obj.hasActivityLoaded() and not activity[0].completed and robot0Obj.loadedActivity.linkedObj == activity[1]:
-                #if the robot has stopped for more than 2 seconds
-                if robot0Obj.timeStopped(robot0) >= 2:
-                    print("Robot 0 depositied activity.")
-                    
-                    robot0Obj.history.enqueue("Depositied activity "+" +5")
-                    updateHistory()
-                    
-                    #robot0Obj.increaseScore(1)
-                    robot0Obj.unLoadActivity()
-
-                    #send message to robot window saying activity is unloaded
-                    supervisor.wwiSendText("activityUnloaded0")
-                                    
-                    #Move human to some position far away
-                    activity[0].deposit()
-                    robot0Obj.increaseScore(5)
-        
-        if activity[0].checkPosition(robot1Pos.getSFVec3f(),activity[0].radius):
-            if not robot1Obj.hasActivityLoaded() and not activity[0].completed:
-                #if the robot has stopped for more than 2 seconds
-                if robot1Obj.timeStopped(robot1) >= 2:
-                    print("Robot 0 picked up an activity block.")
-                    
-                    robot1Obj.history.enqueue("Picked up an activity block")
-                    updateHistory()
-                    
-                    #robot1Obj.increaseScore(1)
-                    robot1Obj.loadActivity(activity[0])
-
-                    activityColour = activity[0].colour
-
-                    #send message to robot window saying activity is loaded
-                    supervisor.wwiSendText("activityLoaded1"+","+str(activityColour[0])+","+str(activityColour[1])+","+str(activityColour[2]))
-                                    
-                    #Move human to some position far away
-                    newPosition = [0,-1000,0]
-                    activity[0].setPosition(newPosition)
-
-        if activity[1].checkPosition(robot1Pos.getSFVec3f(),activity[1].radius):
-            if robot1Obj.hasActivityLoaded() and not activity[0].completed and robot1Obj.loadedActivity.linkedObj == activity[1]:
-                #if the robot has stopped for more than 2 seconds
-                if robot1Obj.timeStopped(robot1) >= 2:
-                    print("Robot 0 depositied activity.")
-                    
-                    robot1Obj.history.enqueue("Depositied activity "+" +5")
-                    updateHistory()
-                    
-                    #robot1Obj.increaseScore(1)
-                    robot1Obj.unLoadActivity()
-
-                    #send message to robot window saying activity is unloaded
-                    supervisor.wwiSendText("activityUnloaded1")
-                                    
-                    #Move human to some position far away
-                    activity[0].deposit()
-                    robot1Obj.increaseScore(5)
-
-    #Test if the robots are near a human
-    #TODO finish full human pickup function -- Require stop
-    #TODO change if statements around for optimisation
-    for i, h in enumerate(humans):
-        #If within 0.5 metres of human
-        if h.checkPosition(robot0Pos.getSFVec3f(),h.radius):
-            if not robot0Obj.hasHumanLoaded():
-                #if the robot has stopped for more than 2 seconds
-                if robot0Obj.timeStopped(robot0) >= 2:
-                    print("Robot 0 picked up a human")
-                    robot0Obj.increaseScore(1)
-                    robot0Obj.loadHuman(h)
-                    
-                    #send message to robot window saying human is loaded
-                    supervisor.wwiSendText("humanLoaded0")
-                    
-                    robot0Obj.history.enqueue("Picked up a human "+" +1")
-                    updateHistory()
-                    
-                    #Move human to some position far away
-                    newPosition = [0,-1000,0]
-                    h.setPosition(newPosition)
-                    
-        if h.checkPosition(robot1Pos.getSFVec3f(),h.radius):
-            if not robot1Obj.hasHumanLoaded():
-                #if the robot has stopped for more than 2 seconds
-                if robot1Obj.timeStopped(robot1) >= 2:
-                    print("Robot 1 picked up a human")
-                    robot1Obj.increaseScore(1)
-                    robot1Obj.loadHuman(h)
-                    
-                    #send message to robot window saying human is loaded
-                    supervisor.wwiSendText("humanLoaded1")
-                    
-                    robot1Obj.history.enqueue("Picked up a human "+" +1")
-                    updateHistory()
-                    
-                    #Move human to some position far away
-                    newPosition = [0,-1000,0]
-                    h.setPosition(newPosition)
+            if len(robot0Obj.visitedCheckpoints) > 0:
+                for visitedCheckpoint in robot0Obj.visitedCheckpoints:
+                    if visitedCheckpoint == checkpoint.center:
+                        alreadyVisited = True
             
-    #Print when robot0 enters or exits a base
+            if not alreadyVisited:
+                robot0Obj.visitedCheckpoints.append(checkpoint.center)
+                robot0Obj.increaseScore(10)
+                robot0Obj.history.enqueue("Found checkpoint  +10")
+                updateHistory()
+
+
+        if checkpoint.checkPosition(robot1Pos.getSFVec3f()):
+            r1 = True
+            robot1Obj.lastVisitedCheckPointPosition = checkpoint.center
+
+            alreadyVisited = False
+
+            if len(robot1Obj.visitedCheckpoints) > 0:
+                for visitedCheckpoint in robot1Obj.visitedCheckpoints:
+                    if visitedCheckpoint == checkpoint.center:
+                        alreadyVisited = True
+            
+            if not alreadyVisited:
+                robot1Obj.visitedCheckpoints.append(checkpoint.center)
+                robot1Obj.increaseScore(10)
+                robot1Obj.history.enqueue("Found checkpoint  +10")
+                updateHistory()
+
+    #Print when robot0 enters or exits a checkpoint
     if robot0Obj.inBase != r0:
         robot0Obj.inBase = r0
         if robot0Obj.inBase:
-            print("Robot 0 entered a base")
+            print("Robot 0 entered a checkpoint")
         else:
-            print("Robot 0 exited a base")
+            print("Robot 0 exited a checkpoint")
 
-    if robot0Obj.inBase:
-        if robot0Obj.hasHumanLoaded():
-            #if the robot has stopped for more than 2 seconds
-            if robot0Obj.timeStopped(robot0) >= 2:
-                #if robot has a human loaded, gain a point
-                robot0Obj.increaseScore(robot0Obj.loadedHuman.scoreWorth)
-
-                robot0Obj.history.enqueue("Brought a human to safety  +"+str(robot0Obj.loadedHuman.scoreWorth))
-                updateHistory()
-
-                robot0Obj.unLoadHuman()
-                
-                #send message to robot window saying human is unloaded
-                supervisor.wwiSendText("humanUnloaded0")
-                
-                
-                print("Robot 0 brought a human to safety")
-        
-    
-    #Print when robot1 enters or exits a base
+    #Print when robot1 enters or exits a checkpoint
     if robot1Obj.inBase != r1:
         robot1Obj.inBase = r1
         if robot1Obj.inBase:
-            print("Robot 1 entered a base")
+            print("Robot 1 entered a checkpoint")
         else:
-            print("Robot 1 exited a base")
-            
-    if robot1Obj.inBase:
-        if robot1Obj.hasHumanLoaded():
-            #if the robot has stopped for more than 2 seconds
-            if robot1Obj.timeStopped(robot1) >= 2:
-                #if robot has a human loaded, gain a point
-                robot1Obj.increaseScore(robot1Obj.loadedHuman.scoreWorth)
+            print("Robot 1 exited a checkpoint")
+    
+    if receiver.getQueueLength() > 0:
+        receivedData = receiver.getData()
+        tup = struct.unpack('i i i c',receivedData)
 
-                robot1Obj.history.enqueue("Brought a human to safety  +"+str(robot1Obj.loadedHuman.scoreWorth))
-                #TODO make this a function
-                updateHistory()
+        robotNumber = tup[0]
+        x = tup[1]
+        z = tup[2]
 
-                robot1Obj.unLoadHuman()
-                
-                #send message to robot window saying human is unloaded
-                supervisor.wwiSendText("humanUnloaded1")
-                
-                
-                print("Robot 1 brought a human to safety")
+        estimated_victim_position = (x/100,0,z/100)
+
+        victimType = tup[3].decode("utf-8")
+
+        if robotNumber == 0:
+            print('message updated')
+            robot0Obj.messages.enqueue((estimated_victim_position,victimType))
+            print(robot0Obj.messages.queue)
+        else:
+            robot1Obj.messages.enqueue((estimated_victim_position,victimType))
+
+        receiver.nextPacket()
+
+    
+
+    #TODO NEED TO ADD LED FUNCTIONALITY
+    if robot0Obj.timeStopped(robot0) >= 5:
+
+        if not robot0Obj.messages.is_empty():
+
+            print('peek',robot0Obj.messages.peek())
+            r0_est_vic_pos = robot0Obj.messages.peek()[0]
+            r0_est_vic_type = robot0Obj.messages.peek()[1]
+
+            robot0Obj.messages.dequeue()
+
+            for i, h in enumerate(humans):
+                if not h.identified:
+                    if h.checkPosition(r0_est_vic_pos,0.15):
+
+                        print("Robot 0 Successful Victim Identification")
+
+                        pointsScored = h.scoreWorth
+
+                        if r0_est_vic_type.lower() == h.simple_victim_type.lower():
+                            robot0Obj.history.enqueue("Successful Vitim Type Correct  Bonus + 10")
+                            pointsScored += 10
+
+                        robot0Obj.history.enqueue("Successful Victim Identification "+" +"+str(h.scoreWorth))
+                        robot0Obj.increaseScore(pointsScored)
+                                        
+                        h.identify()
+                        updateHistory()
+
+    #TODO copy for robot 1 ^^^^^
                 
     #If the running state changes
     if previousRunState != currentlyRunning:
@@ -644,13 +632,9 @@ while simulationRunning:
     
     #Get human positions if game started
     if gameStarted and not humansLoaded:
-        #Waiting for the other supervisor to be ready
-        if objectPlacementOutput.getSFString() == "done":
-            getHumans()
-            getActivities()
-            humansLoaded = True
-            #Message to indicate that data has correctly been taken
-            objectPlacementOutput.setSFString("received")
+        
+        getHumans()
+        humansLoaded = True
         
     
     #Get the message in from the robot window(if there is one)
@@ -674,6 +658,7 @@ while simulationRunning:
                 #Reset both controller files
                 resetControllerFile(0)
                 resetControllerFile(1)
+                resetVictimsTextures()
                 #Reset the simulation
                 supervisor.simulationReset()
                 simulationRunning = False

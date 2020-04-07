@@ -54,8 +54,8 @@ class Player (Robot):
         self.camera.recognitionEnable(self.timeStep)
         
         #config wheels
-        self.wheels.append(self.getMotor("left wheel"))
-        self.wheels.append(self.getMotor("right wheel"))
+        self.wheels.append(self.getMotor("left wheel motor"))
+        self.wheels.append(self.getMotor("right wheel motor"))
         
         #move forever
         self.wheels[0].setPosition(float("inf"))
