@@ -2,8 +2,8 @@
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.0634155360178511 0.9374820041864544 0.3422074832877226 2.7975721547292345
-  position 0.8035399799182378 2.742114324126579 -3.514533995858666
+  orientation -0.12618208041856246 0.924875412830561 0.35872489922326656 2.51253963752262
+  position 1.1860814001954865 1.7289950514284058 -2.1736822526654587
 }
 TexturedBackground {
 }
@@ -2688,16 +2688,29 @@ DEF HUMANGROUP Group {
   ]
 }
 DEF ROBOT0 E-puck {
-  translation 0.292192 -0.075 -0.890515
-  rotation 0 1 0 -3.1415853071795863
+  translation 0.2921920000236199 -0.0750639048115891 -0.890515000000056
+  rotation 2.987846004015382e-06 0.9999999999955365 -5.931027511477663e-11 -3.141585310789689
   name "robot0"
   controller "robot0Controller"
   camera_width 64
   camera_height 64
+  turretSlot [
+    GPS {
+    }
+  ]
+  groundSensorsSlot [
+    Camera {
+      translation -0.02 0 0.0299998
+      rotation 0 1 0 -1.5707953071795862
+      name "colour_sensor"
+      width 1
+      height 1
+    }
+  ]
 }
 DEF ROBOT1 E-puck {
-  translation -0.91989 -0.075 0.874186
-  rotation 0 1 0 -3.1415853071795863
+  translation -0.9198899999763799 -0.07506390481158907 0.874185999999944
+  rotation 2.987846004467529e-06 0.9999999999955365 -5.931746475956824e-11 -3.141585310789683
   name "robot1"
   controller "robot1Controller"
 }

@@ -1,13 +1,5 @@
-"""Supervisor Controller Prototype v6
+"""Supervisor Controller Prototype v1
    Written by Robbie Goldman and Alfred Roberts
-
-Changelog:
- - Only get points if you have a human loaded and enter a base
- - Robots can only pick up one human at a time
- - Robot must have stopped for 2 seconds to deposit and pick up human
- - Added check for message from position supervisor before taking human positions
- - Added restart to object placement controller to allow obstacles to be placed on reset
- - added children
 """
 
 from controller import Supervisor
@@ -18,22 +10,6 @@ from RelocateCalculator import generateRelocatePosition
 
 #Create the instance of the supervisor class
 supervisor = Supervisor()
-
-#Get the robot nodes by their DEF names
-robot0 = supervisor.getFromDef("ROBOT0")
-robot1 = supervisor.getFromDef("ROBOT1")
-
-#Get the translation fields
-robot0Pos = robot0.getField("translation")
-robot1Pos = robot1.getField("translation")
-
-#Get the output from the object placement supervisor
-#objectPlacementOutput = supervisor.getFromDef("OBJECTPLACER").getField("customData")
-#Send message to object placement to indicate that it should do a generation
-#objectPlacementOutput.setSFString("startGen")
-#Restart object placement supervisor (so that when reset it runs again)
-#supervisor.getFromDef("OBJECTPLACER").restartController()
-
 
 #Get this supervisor node - so that it can be rest when game restarts
 mainSupervisor = supervisor.getFromDef("MAINSUPERVISOR")
@@ -63,16 +39,16 @@ class RobotHistory(Queue):
     
 class Robot:
     '''Robot object to hold values whether its in a base or holding a human'''
-    def __init__(self):
+    def __init__(self, node):
         '''Initialises the in a base, has a human loaded and score values'''
-        self.inBase = True
-        self._humanLoaded = False
-        self._activityLoaded = False
-        
-        self.history = RobotHistory()
 
-        self.loadedHuman = None
-        self.loadedActivity = None
+        self.wb_node = node
+
+        self.wb_translationField = self.wb_node.getField('translation')
+
+        self.inCheckpoint = True
+
+        self.history = RobotHistory()
 
         self._score = 0
     
@@ -85,16 +61,22 @@ class Robot:
         self.lastVisitedCheckPointPosition = []
 
         self.visitedCheckpoints = []
-        
-        
-    @staticmethod
-    def _isStopped(robotNode) -> bool:
-        vel: list = robotNode.getVelocity()
+    
+    @property
+    def position(self) -> list:
+        return self.wb_translationField.getSFVec3f()
+    
+    @position.setter
+    def position(self, pos: list) -> None:
+        self.wb_translationField.setSFVec3f(pos)
+
+    def _isStopped(self) -> bool:
+        vel = self.wb_node.getVelocity()
         robotStopped = abs(vel[0]) < 0.01 and abs(vel[1]) < 0.01 and abs(vel[2]) < 0.01
         return robotStopped
         
-    def timeStopped(self,robotNode) -> float:
-        self._stopped = Robot._isStopped(robotNode)
+    def timeStopped(self) -> float:
+        self._stopped = self._isStopped()
         
         #if it isn't stopped yet
         if self._stoppedTime == None:
@@ -114,29 +96,6 @@ class Robot:
                 self._timeStopped = 0
         
         return self._timeStopped
-            
-    
-    def hasHumanLoaded(self) -> bool:
-        return self._humanLoaded
-
-    def hasActivityLoaded(self) -> bool:
-        return self._activityLoaded
-
-    def loadActivity(self, activityClass) -> None:
-        self._activityLoaded = True
-        self.loadedActivity = activityClass
-
-    def unLoadActivity(self) -> None:
-        self._activityLoaded = False
-        self.loadedActivity = None
-
-    def loadHuman(self, humanClass) -> None:
-        self._humanLoaded = True
-        self.loadedHuman = humanClass
-        
-    def unLoadHuman(self) -> None:
-        self._humanLoaded = False
-        self.loadedHuman = None
         
     def increaseScore(self, score: int) -> None:
         self._score += score
@@ -144,59 +103,15 @@ class Robot:
     def getScore(self) -> None:
         return self._score
 
-class PickableObject:
-    '''Object used for abstraction of a pickup-able object/human'''
-    def __init__(self, pos: list):
-        '''Initialises the radius and position of the human'''
-        self.position = pos
-
-    def checkPosition(self, pos: list, min_dist: float) -> bool:
-        '''Check if a position is near an object, based on the min_dist value'''
-        #Get distance from the object to the passed position using manhattan distance for speed
-        #TODO Check if we want to use euclidian or manhattan distance -- currently manhattan
-        distance = abs(self.position[0] - pos[0]) + abs(self.position[2] - pos[2])
-        return distance < min_dist
-
-class ActivityBlock(PickableObject):
-    def __init__(self, pos:list, node, linkedObj, number:int):
-        super().__init__(pos)
-        self.node = node
-        self.linkedObj = linkedObj
-        self.colour = supervisor.getFromDef('ACT'+str(number)+'MATERIAL').getField("diffuseColor").getSFColor()
-        self.completed = False
-        self.radius = supervisor.getFromDef('ACTIVITYBOX'+str(number)).getField('size').getSFVec3f()[0] * 1.5
-
-
-    def __repr__(self):
-        return f'{self.colour}'
-    
-    def deposit(self):
-        self.setPosition([self.linkedObj.position[0],0.45,self.linkedObj.position[2]])
-        self.completed = True
-
-    def setPosition(self, position: list) -> None:
-        '''Set position of object in class and in scene'''
-        #Set human object's position and in the scene 
-        objPosition = self.node.getField("translation")
-        objPosition.setSFVec3f(position)
-        self.position = position
-
-class ActivityMat(PickableObject):
-    def __init__(self, pos:list, node,number):
-        super().__init__(pos)
-        self.node = node
-        self.colour = supervisor.getFromDef('PAD'+str(number)+'MATERIAL').getField("diffuseColor").getSFColor()
-        self.radius = supervisor.getFromDef('ACTIVITYPAD'+str(number)).getField('size').getSFVec3f()[0] / 2
-
-    def __repr__(self):
-        return f'{self.colour}'
-
-
-class Human(PickableObject):
+class Human():
     '''Human object holding the boundaries'''
-    def __init__(self, pos: list, ap: int, vtype: str, score: int):
+    def __init__(self, node, ap: int, vtype: str, score: int):
         '''Initialises the radius and position of the human'''
-        super().__init__(pos)
+    
+        self.wb_node = node
+
+        self.wb_translationField = self.wb_node.getField('translation')
+
         self.arrayPosition = ap
         self.scoreWorth = score
         self.radius = 0.15
@@ -205,6 +120,14 @@ class Human(PickableObject):
         self.simple_victim_type = self.get_simple_victim_type()
 
         self.identified = False
+
+    @property
+    def position(self) -> list:
+        return self.wb_translationField.getSFVec3f()
+    
+    @position.setter
+    def position(self, pos: list) -> None:
+        self.wb_translationField.setSFVec3f(pos)
 
     def identify(self):
         supervisor.getFromDef('human'+str(self.arrayPosition)+'texture').getField('url').setMFString(0,'./textures/'+self.victim_type+'_found.png')
@@ -220,43 +143,39 @@ class Human(PickableObject):
 
     def getType(self) -> int:
         '''Set type of human (adult or child) through object size'''
-        #Get human from scene nodes
-        human = humanNodes.getMFNode(self.arrayPosition)
         #Get human size
-        humanSize = human.getField("scale").getSFVec3f()
+        humanSize = self.wb_node.getField("scale").getSFVec3f()
 
         if humanSize[1] == 0.5:
             return 2  
         else:
             return 1  
 
-    def setPosition(self, position: list) -> None:
-        '''Set position of object in class and in scene'''
-        #Get human from scene nodes
-        obj = humanNodes.getMFNode(self.arrayPosition)
-        #Set human object's position and in the scene 
-        objPosition = obj.getField("translation")
-        objPosition.setSFVec3f(position)
-        self.position = position
+    def checkPosition(self, pos: list, min_dist: float) -> bool:
+        '''Check if a position is near an object, based on the min_dist value'''
+        #Get distance from the object to the passed position using manhattan distance for speed
+        #TODO Check if we want to use euclidian or manhattan distance -- currently manhattan
+        distance = abs(self.position[0] - pos[0]) + abs(self.position[2] - pos[2])
+        return distance < min_dist
 
 class Checkpoint:
     '''Checkpoint object holding the boundaries'''
     def __init__(self, min: list, max: list, center: list):
-        '''Initialize the maximum and minimum corners for the Checkpoint'''
+        '''Initialize the maximum and minimum corners for the checkpoint'''
         self.min = min
         self.max = max
         self.center = center
     
     def checkPosition(self, pos: list) -> bool:
-        '''Check if a position is in this Checkpoint'''
+        '''Check if a position is in this checkpoint'''
         #If the x position is within the bounds
         if pos[0] >= self.min[0] and pos[0] <= self.max[0]:
             #if the z position is within the bounds
             if pos[2] >= self.min[1] and pos[2] <= self.max[1]:
-                #It is in this Checkpoint
+                #It is in this checkpoint
                 return True
         
-        #It is not in this Checkpoint
+        #It is not in this checkpoint
         return False
 
 def getPath(number: int) -> str:
@@ -346,17 +265,14 @@ def getHumans():
     for i in range(numberOfHumans):
         #Get each human from children field in the human root node HUMANGROUP
         human = humanNodes.getMFNode(i)
-        #Get human translation
-        humanPos = human.getField("translation")
 
         victimDescription = supervisor.getFromDef('human'+str(i)+'solid').getField('description').getSFString()
         textureType = victimDescription.split(',')[0]
         scoreWorth = int(victimDescription.split(',')[1])
         print(textureType)
 
-        print(humanPos.getSFVec3f())
         #Create Human Object from human position
-        humanObj = Human(humanPos.getSFVec3f(),i,textureType,scoreWorth)
+        humanObj = Human(human ,i, textureType,scoreWorth)
         humans.append(humanObj)
 
 def resetVictimsTextures():
@@ -376,26 +292,15 @@ def relocate(num):
         if relocatePosition == []:
             print('No checkpoint visited')
         else:
-            robot0Pos.setSFVec3f([relocatePosition[0],-0.0751,relocatePosition[2]])
+            robot0Obj.position = [relocatePosition[0],-0.0751,relocatePosition[2]]
     elif int(num) == 1:
         relocatePosition = robot1Obj.lastVisitedCheckPointPosition
 
         if relocatePosition == []:
             print('No checkpoint visited')
         else:
-            robot1Pos.setSFVec3f([relocatePosition[0],-0.0751,relocatePosition[2]])
+            robot1Obj.position = [relocatePosition[0],-0.0751,relocatePosition[2]]
 
-
-
-
-
-#Get the robot nodes by their DEF names
-robot0 = supervisor.getFromDef("ROBOT0")
-robot1 = supervisor.getFromDef("ROBOT1")
-
-#Get the translation fields
-robot0Pos = robot0.getField("translation")
-robot1Pos = robot1.getField("translation")
 
 #Get the output from the object placement supervisor
 #objectPlacementOutput = supervisor.getFromDef("OBJECTPLACER").getField("customData")
@@ -412,28 +317,6 @@ humanGroup = supervisor.getFromDef('HUMANGROUP')
 humanNodes = humanGroup.getField("children")
 #Get number of humans in map
 numberOfHumans = humanNodes.getCount()
-
-activities = []
-
-
-def getActivities():
-    
-    activityObjectsGroup = supervisor.getFromDef('ACTOBJECTSGROUP')
-    activityObjectsNodes = activityObjectsGroup.getField('children')
-    
-    activityMatsGroup = supervisor.getFromDef('ACTMATGROUP')
-    activityMatsNodes = activityMatsGroup.getField('children')
-    
-    for i in range(activityObjectsNodes.getCount()):
-        
-        activityObject = activityObjectsNodes.getMFNode(i)
-        activityMat = activityMatsNodes.getMFNode(i)
-        
-        activityMatObj = ActivityMat(activityMat.getField("translation").getSFVec3f(),activityMat,i)
-        activityObj = ActivityBlock(activityObject.getField("translation").getSFVec3f(),activityObject,activityMatObj,i)
-        
-        activities.append([activityObj,activityMatObj])
-        print(activities)
         
 
 # activity0 = supervisor.getFromDef('ACT0')
@@ -472,13 +355,17 @@ previousRunState = False
 #The game has not yet started
 gameStarted = False
 
+#Get the robot nodes by their DEF names
+robot0 = supervisor.getFromDef("ROBOT0")
+robot1 = supervisor.getFromDef("ROBOT1")
+
 #Init both robots as objects to hold their info
-robot0Obj = Robot()
-robot1Obj = Robot()
+robot0Obj = Robot(robot0)
+robot1Obj = Robot(robot1)
 
 #Both robots start in bases
-#robot0InBase = True
-#robot1InBase = True
+#robot0InCheckpoint = True
+#robot1InCheckpoint = True
 
 #The simulation is running
 simulationRunning = True
@@ -507,7 +394,7 @@ receiver.enable(32)
 
 #Until the match ends (also while paused)
 while simulationRunning:
-    
+
     #The first frame of the game running only
     if first and currentlyRunning:
         #Restart both controllers
@@ -519,7 +406,7 @@ while simulationRunning:
     r1 = False
     #Test if the robots are in bases
     for checkpoint in checkpoints:
-        if checkpoint.checkPosition(robot0Pos.getSFVec3f()):
+        if checkpoint.checkPosition(robot0Obj.position):
             r0 = True
             robot0Obj.lastVisitedCheckPointPosition = checkpoint.center
 
@@ -537,7 +424,7 @@ while simulationRunning:
                 updateHistory()
 
 
-        if checkpoint.checkPosition(robot1Pos.getSFVec3f()):
+        if checkpoint.checkPosition(robot1Obj.position):
             r1 = True
             robot1Obj.lastVisitedCheckPointPosition = checkpoint.center
 
@@ -555,17 +442,17 @@ while simulationRunning:
                 updateHistory()
 
     #Print when robot0 enters or exits a checkpoint
-    if robot0Obj.inBase != r0:
-        robot0Obj.inBase = r0
-        if robot0Obj.inBase:
+    if robot0Obj.inCheckpoint != r0:
+        robot0Obj.inCheckpoint = r0
+        if robot0Obj.inCheckpoint:
             print("Robot 0 entered a checkpoint")
         else:
             print("Robot 0 exited a checkpoint")
 
     #Print when robot1 enters or exits a checkpoint
-    if robot1Obj.inBase != r1:
-        robot1Obj.inBase = r1
-        if robot1Obj.inBase:
+    if robot1Obj.inCheckpoint != r1:
+        robot1Obj.inCheckpoint = r1
+        if robot1Obj.inCheckpoint:
             print("Robot 1 entered a checkpoint")
         else:
             print("Robot 1 exited a checkpoint")
@@ -594,7 +481,7 @@ while simulationRunning:
     
 
     #TODO NEED TO ADD LED FUNCTIONALITY
-    if robot0Obj.timeStopped(robot0) >= 5:
+    if robot0Obj.timeStopped() >= 5:
 
         if not robot0Obj.messages.is_empty():
 

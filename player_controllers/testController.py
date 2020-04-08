@@ -11,6 +11,11 @@ messagedSent = False
 
 emitter = robot.getEmitter('emitter')
 
+cam = robot.getCamera('camera')
+cam.enable(32)
+cam1 = robot.getCamera('colour_sensor')
+cam1.enable(32)
+
 led = robot.getLED('led8')
 led.set(True)
 
