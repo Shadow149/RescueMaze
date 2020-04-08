@@ -493,6 +493,8 @@ def generateWorld(x, y, checkpoints, traps):
     yStart = 0
 
     startTile = [0, 0]
+    startBay  = [0, 0]
+    startDir = 0
 
     #Top edge
     if startEdge == 0:
@@ -501,11 +503,14 @@ def generateWorld(x, y, checkpoints, traps):
         xStart = random.randrange(1, len(array[0]) - 1)
         #Add a tile for the start
         array[yStart][xStart] = Tile()
+        startBay = [xStart, yStart]
         #Remove the walls to connect it to the maze
         array[yStart][xStart].removeWalls([2])
         array[yStart + 1][xStart].removeWalls([0])
         #Take a record of the position of the start tile in the maze
         startTile = [xStart, yStart + 1]
+        #Set start direction
+        startDir = 2
     #Right edge
     if startEdge == 1:
         #Pick start position
@@ -513,11 +518,14 @@ def generateWorld(x, y, checkpoints, traps):
         yStart = random.randrange(1, len(array) - 1)
         #Add a tile for the start
         array[yStart][xStart] = Tile()
+        startBay = [xStart, yStart]
         #Remove the walls to connect it to the maze
         array[yStart][xStart].removeWalls([3])
         array[yStart][xStart - 1].removeWalls([1])
         #Take a record of the position of the start tile in the maze
         startTile = [xStart - 1, yStart]
+        #Set start direction
+        startDir = 3
     #Bottom edge
     if startEdge == 2:
         #Pick start position
@@ -525,11 +533,14 @@ def generateWorld(x, y, checkpoints, traps):
         xStart = random.randrange(1, len(array[0]) - 1)
         #Add a tile for the start
         array[yStart][xStart] = Tile()
+        startBay = [xStart, yStart]
         #Remove the walls to connect it to the maze
         array[yStart][xStart].removeWalls([0])
         array[yStart - 1][xStart].removeWalls([2])
         #Take a record of the position of the start tile in the maze
         startTile = [xStart, yStart - 1]
+        #Set start direction
+        startDir = 0
     #Left edge
     if startEdge == 3:
         #Pick start position
@@ -537,11 +548,14 @@ def generateWorld(x, y, checkpoints, traps):
         yStart = random.randrange(1, len(array) - 1)
         #Add a tile for the start
         array[yStart][xStart] = Tile()
+        startBay = [xStart, yStart]
         #Remove the walls to connect it to the maze
         array[yStart][xStart].removeWalls([1])
         array[yStart][xStart + 1].removeWalls([3])
         #Take a record of the position of the start tile in the maze
         startTile = [xStart + 1, yStart]
+        #Set start direction
+        startDir = 1
 
     #Calculate minimum orthogonal distance between start and end
     minDistance = min(10, int((x + y) / 2) + 1)
@@ -627,7 +641,7 @@ def generateWorld(x, y, checkpoints, traps):
     addTraps(array, traps, startTile, endTile, x, y)
 
     #Return the array, root node, room boundaries and doors
-    return array
+    return array, [startBay, startDir]
 
 
 def addObstacle(debris):
@@ -675,7 +689,7 @@ def generateObstacles(bulky, debris):
 def generatePlan (xSize, ySize, numCheckpoints, numTraps, bulkyObstacles, debris):
     '''Perform a map generation up to png - does not update map file'''
     #Generate the world and tree
-    world = generateWorld(xSize, ySize, numCheckpoints, numTraps)
+    world, startPos = generateWorld(xSize, ySize, numCheckpoints, numTraps)
 	
     #Create a list of obstacles
     obstacles = generateObstacles(bulkyObstacles, debris)
@@ -686,10 +700,10 @@ def generatePlan (xSize, ySize, numCheckpoints, numTraps, bulkyObstacles, debris
     print("Generation Successful")
 
     #Return generated parts
-    return world, obstacles
+    return world, obstacles, startPos
 
 
-def generateWorldFile (world, obstacles, numThermal, numVisual, window):
+def generateWorldFile (world, obstacles, numThermal, numVisual, startPos, window):
     #Array of wall tiles
     walls = []
 
@@ -713,7 +727,7 @@ def generateWorldFile (world, obstacles, numThermal, numVisual, window):
                 walls[y][x] = [True, world[y][x].getWalls(), world[y][x].getCheckpoint(), world[y][x].getTrap(), world[y][x].getGoal()]
 
     #Make a map from the walls and objects
-    WorldCreator.makeFile(walls, obstacles, numThermal, numVisual, window)
+    WorldCreator.makeFile(walls, obstacles, numThermal, numVisual, startPos, window)
 
 
 def checkNoNones (dataValues):
@@ -741,6 +755,7 @@ world = None
 obstacles = None
 thermalHumans = None
 visualHumans = None
+startTilePos = None
 
 #Loop while the UI is active
 while guiActive:
@@ -755,7 +770,7 @@ while guiActive:
         #A generation has started (resets flag so generation is not called again)
         window.generateStarted()
         #Generate a plan with the values
-        world, obstacles = generatePlan(genValues[0][0], genValues[0][1], genValues[3][0], genValues[3][1], genValues[2][0], genValues[2][1])
+        world, obstacles, startTilePos = generatePlan(genValues[0][0], genValues[0][1], genValues[3][0], genValues[3][1], genValues[2][0], genValues[2][1])
         #Unpack the unused human values
         thermalHumans, visualHumans = genValues[1][0], genValues[1][1]
         #Unpack the used obstacle counts
@@ -773,14 +788,14 @@ while guiActive:
         #Saving has begin (resets flag so save is not called twice)
         window.saveStarted()
         #If all values that are needed are not None
-        if checkNoNones([world, obstacles, thermalHumans, visualHumans]):
+        if checkNoNones([world, obstacles, thermalHumans, visualHumans, startTilePos]):
             #Generate and save a world
-            generateWorldFile(world, obstacles, thermalHumans, visualHumans, window)
+            generateWorldFile(world, obstacles, thermalHumans, visualHumans, startTilePos, window)
 
     #Attempt update loops           
     try:
         #Toggle the save button to the correct state
-        window.setSaveButton(checkNoNones([world, obstacles, thermalHumans, visualHumans]))
+        window.setSaveButton(checkNoNones([world, obstacles, thermalHumans, visualHumans, startTilePos]))
         #Update loops for the UI - manually called to prevent blocking of this program
         window.update_idletasks()
         window.update()

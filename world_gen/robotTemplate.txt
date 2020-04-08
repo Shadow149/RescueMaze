@@ -1,0 +1,6 @@
+DEF ROBOT{0} E-puck {{
+	controller "robot{0}Controller"
+	translation {1} -0.075 {2}
+	rotation 0 1 0 {3} 
+	name "robot{0}"
+}}

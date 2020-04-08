@@ -6,6 +6,6 @@ DEF MAINSUPERVISOR Robot {
 
 DEF OBJECTPLACER Robot {
   name "ObjectPlacementSupervisor"
-  controller "ObjectPlacementSupervisor"
+  controller ""
   supervisor TRUE
 }

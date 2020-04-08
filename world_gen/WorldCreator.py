@@ -367,7 +367,7 @@ def convertTileToExternalWallIndex (pos, walls):
     return "", 0
 
 
-def createFileData (walls, obstacles, numThermal, numVisual):
+def createFileData (walls, obstacles, numThermal, numVisual, startPos):
     '''Create a file data string from the positions and scales'''
     #Open the file containing the standard header
     headerFile = open(os.path.join(dirname, "fileHeader.txt"), "r")
@@ -382,6 +382,13 @@ def createFileData (walls, obstacles, numThermal, numVisual):
     groupPart = groupTemplate.read()
     #Close template file
     groupTemplate.close()
+
+    #Open the file containing the template for a robot
+    robotTemplate = open(os.path.join(dirname, "robotTemplate.txt"), "r")
+    #Read template
+    robotPart = robotTemplate.read()
+    #Close template file
+    robotTemplate.close()
 
     #All the map tiles templates
     tileTypes = ["fourWalls", "threeWalls", "twoWallsRightAngle", "twoWallsTunnel", "oneWall", "zeroWalls", "twoWallsOnePillar", "oneWallOnePillarLeft", "oneWallOnePillarRight", "oneWallTwoPillars", "fourPillars", "threePillars", "twoPillarsHorizontal", "twoPillarsDiagonal", "onePillar"]
@@ -434,6 +441,20 @@ def createFileData (walls, obstacles, numThermal, numVisual):
     boundsPart = boundsTemplate.read()
     #Close template file
     boundsTemplate.close()
+
+    #Open the file containing the template for the obstacles
+    obstacleTemplate = open(os.path.join(dirname, "obstacleTemplate.txt"), "r")
+    #Read template
+    obstaclePart = obstacleTemplate.read()
+    #Close template file
+    obstacleTemplate.close()
+
+    #Open the file containing the template for the debris
+    debrisTemplate = open(os.path.join(dirname, "debrisTemplate.txt"), "r")
+    #Read template
+    debrisPart = debrisTemplate.read()
+    #Close template file
+    debrisTemplate.close()
     
     #Open the file containing the template for the supervisor
     supervisorTemplate = open(os.path.join(dirname, "supervisorTemplate.txt"), "r")
@@ -520,18 +541,73 @@ def createFileData (walls, obstacles, numThermal, numVisual):
     fileData = fileData + groupPart.format(allExternals, "EXTERNALWALLS")
     fileData = fileData + groupPart.format(allTiles, "WALLTILES")
     fileData = fileData + groupPart.format(allExtras, "SPECIALTILES")
-    fileData = fileData + groupPart.format(allCheckpointBounds, "checkpointBounds")
-    fileData = fileData + groupPart.format(allTrapBounds, "trapBounds")
-    fileData = fileData + groupPart.format(allGoalBounds, "goalBounds")
+    fileData = fileData + groupPart.format(allCheckpointBounds, "CHECKPOINTBOUNDS")
+    fileData = fileData + groupPart.format(allTrapBounds, "TRAPBOUNDS")
+    fileData = fileData + groupPart.format(allGoalBounds, "GOALBOUNDS")
 
+    #String to hold all the data for the obstacles
+    allObstacles = ""
+    allDebris = ""
+
+    #Id to give a unique name to the obstacles
+    obstacleId = 0
+    debrisId = 0
+
+    #Iterate obstalces
+    for obstacle in obstacles:
+        #If this is debris
+        if obstacle[3]:
+            #Add the debris object
+            allDebris = allDebris + debrisPart.format(debrisId, obstacle[0], obstacle[1], obstacle[2])
+            #Increment id counter
+            debrisId = debrisId + 1
+        else:
+            #Add the obstacle
+            allObstacles = allObstacles + obstaclePart.format(obstacleId, obstacle[0], obstacle[1], obstacle[2])
+            #Increment id counter
+            obstacleId = obstacleId + 1
+
+    #Add obstacles and debris to the file
+    fileData = fileData + groupPart.format(allObstacles, "OBSTACLES")
+    fileData = fileData + groupPart.format(allDebris, "DEBRIS")
+    
+    #String to hold all the data for the robots
+    robotData = ""
+    #If starting facing up
+    if startPos[1] == 0:
+        #Add robots (spaced -X, +X) and rotated
+        robotData = robotData + robotPart.format(0, (startPos[0][0] * 0.3 + startX) - 0.075, startPos[0][1] * 0.3 + startZ, 0)
+        robotData = robotData + robotPart.format(1, (startPos[0][0] * 0.3 + startX) + 0.075, startPos[0][1] * 0.3 + startZ, 0)
+    #If starting facing right
+    if startPos[1] == 1:
+        #Add robots (spaced -Z, +Z) and rotated
+        robotData = robotData + robotPart.format(0, startPos[0][0] * 0.3 + startX, (startPos[0][1] * 0.3 + startZ) - 0.075, -1.5708)
+        robotData = robotData + robotPart.format(1, startPos[0][0] * 0.3 + startX, (startPos[0][1] * 0.3 + startZ) + 0.075, -1.5708)
+    #If starting facing down
+    if startPos[1] == 2:
+        #Add robots (spaced +X, -X) and rotated
+        robotData = robotData + robotPart.format(0, (startPos[0][0] * 0.3 + startX) + 0.075, startPos[0][1] * 0.3 + startZ, 3.14159)
+        robotData = robotData + robotPart.format(1, (startPos[0][0] * 0.3 + startX) - 0.075, startPos[0][1] * 0.3 + startZ, 3.14159)
+    #If starting facing left
+    if startPos[1] == 3:
+        #Add robots (spaced +Z, -Z) and rotated
+        robotData = robotData + robotPart.format(0, startPos[0][0] * 0.3 + startX, (startPos[0][1] * 0.3 + startZ) + 0.075, 1.5708)
+        robotData = robotData + robotPart.format(1, startPos[0][0] * 0.3 + startX, (startPos[0][1] * 0.3 + startZ) - 0.075, 1.5708)
+                                            
+    #Add the robot data to the file
+    fileData = fileData + robotData
+
+    #Add supervisors
+    fileData = fileData + supervisorPart
+    
     #Return the file data as a string
     return fileData
 
 
-def makeFile(boxData, obstacles, thermal, visual, uiWindow = None):
+def makeFile(boxData, obstacles, thermal, visual, startPos, uiWindow = None):
     '''Create and save the file for the information'''
     #Generate the file string for the map
-    data = createFileData(boxData, obstacles, thermal, visual)
+    data = createFileData(boxData, obstacles, thermal, visual, startPos)
     #The default file path
     filePath = os.path.join(dirname, "generatedWorld.wbt")
 
