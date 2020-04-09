@@ -25,37 +25,6 @@ from decimal import Decimal
 import os
 dirname = os.path.dirname(__file__)
 
-#List of activity colours (could be generated in future)
-activityColours = [[1, 0, 1], [0, 1, 1], [1, 1, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1]]
-
-
-def transformFromBounds(start, end):
-    '''Convert from a start and end wall point into a position and scale'''
-    #Convert start and end to decimals - aids precision
-    start = [Decimal(start[0]), Decimal(start[1])]
-    end = [Decimal(end[0]), Decimal(end[1])]
-    #Position is half the difference between the start and the end added to the start
-    pos = [start[0] + ((end[0] - start[0]) / Decimal(2)), start[1] + ((end[1] - start[1]) / Decimal(2))]
-    #Scale is the end take the start add 1
-    scale = [end[0] - start[0] + Decimal(1), end[1] - start[1] + Decimal(1)]
-
-    #Convert scale to .wbt space (divide by 10)
-    scale[0] = scale[0] / Decimal(10)
-    scale[1] = scale[1] / Decimal(10)
-    #Convert pos to .wbt space (divide by 10 then shift (centered on 0))
-    pos[0] = (pos[0] / Decimal(10)) - Decimal(12.45)
-    pos[1] = (pos[1] / Decimal(10)) - Decimal(9.95)
-
-    #Convert back to floating point values
-    scale[0] = float(scale[0])
-    scale[1] = float(scale[1])
-    pos[0] = float(pos[0])
-    pos[1] = float(pos[1])
-
-    #Returnt the position and scale of the box
-    return pos, scale
-
-
 def checkForCorners(pos, walls):
     '''Check if each of the corners is needed'''
     #Surrounding tile directions
@@ -294,7 +263,7 @@ def convertTileToExternalWallIndex (pos, walls):
 
     #If there is no tile here there is no need for an external wall
     if not thisWall[0]:
-        return "", 0
+        return "", 0, ""
 
     #Surrounding tiles
     around = [[0, -1], [1, 0], [0, 1], [-1, 0]]
@@ -363,8 +332,70 @@ def convertTileToExternalWallIndex (pos, walls):
     #Three walls Right missing
     if not otherTiles[0] and otherTiles[1] and not otherTiles[2] and not otherTiles[3]:
         return "externalWallHoop", 1.5708
-    
+
+    #No external walls needed, no rotation needed
     return "", 0
+
+
+def checkForNotch (pos, walls):
+    '''Determine if a notch is needed on either side'''
+    #Variables to store if each notch is needed
+    needLeft = False
+    needRight = False
+
+    #Surrounding tiles
+    around = [[0, -1], [1, 0], [0, 1], [-1, 0]]
+    #Tiles to check if notches are needed
+    notchAround = [[ [1, -1], [-1, -1] ],
+                   [ [1, 1], [1, -1] ],
+                   [ [-1, 1], [1, 1] ],
+                   [ [-1, -1], [-1, 1] ]]
+
+    #Current direction
+    d = 0
+    #Number of surrounding tiles
+    surround = 0
+
+    #Direction of present tile
+    dire = -1
+
+    #Iterate for surrounding tiles
+    for a in around:
+        #If x axis is within array
+        if pos[0] + a[0] < len(walls[0]) and pos[0] + a[0] > -1:
+            #If y axis is within array
+            if pos[1] + a[1] < len(walls) and pos[1] + a[1] > -1:
+                #If there is a tile there
+                if walls[pos[1] + a[1]][pos[0] + a[0]][0]:
+                    #Add to number of surrounding tiles
+                    surround = surround + 1
+                    #Store direction
+                    dire = d
+        #Increment direction
+        d = d + 1
+
+    #If there was only one connected tile and there is a valid stored direction
+    if surround == 1 and dire > -1 and dire < len(notchAround):
+        #Get the left and right tile positions to check
+        targetLeft = [pos[0] + notchAround[dire][0][0], pos[1] + notchAround[dire][0][1]]
+        targetRight = [pos[0] + notchAround[dire][1][0], pos[1] + notchAround[dire][1][1]]
+
+        #If the left tile is a valid target position
+        if targetLeft[0] < len(walls[0]) and targetLeft[0] > -1 and targetLeft[1] < len(walls) and targetLeft[1] > -1:
+            #If there is no tile there
+            if not walls[targetLeft[1]][targetLeft[0]][0]:
+                #A left notch is needed
+                needLeft = True
+
+        #If the right tile is a valid target position
+        if targetRight[0] < len(walls[0]) and targetRight[0] > -1 and targetRight[1] < len(walls) and targetRight[1] > -1:
+            #If there is no tile there
+            if not walls[targetRight[1]][targetRight[0]][0]:
+                #A right notch is needed
+                needRight = True
+
+    #Return information about needed notches
+    return needLeft, needRight
 
 
 def createFileData (walls, obstacles, numThermal, numVisual, startPos):
@@ -406,7 +437,7 @@ def createFileData (walls, obstacles, numThermal, numVisual, startPos):
         tileTemp.close()
 
     #All the exterior wall templates
-    externalTileTypes = ["externalWallSingle", "externalWallCorner", "externalWallHoop"]
+    externalTileTypes = ["externalWallSingle", "externalWallCorner", "externalWallHoop", "notchLeft", "notchRight"]
     externalTileTemplates = []
     #Iterate through the tiles
     for name in externalTileTypes:
@@ -500,6 +531,9 @@ def createFileData (walls, obstacles, numThermal, numVisual, startPos):
 
                 #Get the external name and rotation
                 externalTileName, externalRotation = convertTileToExternalWallIndex([x, z], walls)
+                #Get notches
+                leftNotch, rightNotch = checkForNotch([x, z], walls)
+                
                 #If there is a wall needed
                 if externalTileName in externalTileTypes:
                     #Get the template index
@@ -507,6 +541,20 @@ def createFileData (walls, obstacles, numThermal, numVisual, startPos):
                     #Add the external wall data to the string of external data
                     allExternals = allExternals + externalTileTemplates[templateIndex].format(x * 0.3 + startX, z * 0.3 + startZ, externalRotation, tileId)
 
+                #If a left notch needs to be added
+                if leftNotch:
+                    #Get the template index
+                    templateIndex = externalTileTypes.index("notchLeft")
+                    #Add the notch data to the string of external data
+                    allExternals = allExternals + externalTileTemplates[templateIndex].format(x * 0.3 + startX, z * 0.3 + startZ, externalRotation, tileId)
+
+                #If a left notch needs to be added
+                if rightNotch:
+                    #Get the template index
+                    templateIndex = externalTileTypes.index("notchRight")
+                    #Add the notch data to the string of external data
+                    allExternals = allExternals + externalTileTemplates[templateIndex].format(x * 0.3 + startX, z * 0.3 + startZ, externalRotation, tileId)
+                
                 #checkpoint
                 if walls[z][x][2]:
                     #Add the checkpoint to the extra data
@@ -594,6 +642,8 @@ def createFileData (walls, obstacles, numThermal, numVisual, startPos):
         robotData = robotData + robotPart.format(0, startPos[0][0] * 0.3 + startX, (startPos[0][1] * 0.3 + startZ) + 0.075, 1.5708)
         robotData = robotData + robotPart.format(1, startPos[0][0] * 0.3 + startX, (startPos[0][1] * 0.3 + startZ) - 0.075, 1.5708)
                                             
+    fileData = fileData + groupPart.format("", "HUMANGROUP")
+    
     #Add the robot data to the file
     fileData = fileData + robotData
 

@@ -1,0 +1,23 @@
+DEF externalWallNotchright Transform {{
+      translation {0} 0 {1}
+      rotation 0 1 0 {2}
+      children [
+        DEF RIGHTNOTCH Solid {{
+          translation 0.15625 -0.01 0.14375
+          children [
+            Shape {{
+              appearance DEF WALLAPPEARANCE Appearance {{
+                material Material {{
+                  diffuseColor 0.2 0.466667 0.521569
+                }}
+              }}
+              geometry DEF BACKWALLBOX Box {{
+                size 0.0125 0.17 0.0125
+              }}
+            }}
+          ]
+          name "rightNotch{3}"
+          boundingObject USE BACKWALLBOX
+        }}
+      ]
+    }}

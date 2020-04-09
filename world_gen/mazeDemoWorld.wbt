@@ -2,8 +2,8 @@
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.999928878437099 -0.009371009136621353 -0.007377144114529859 1.3338189131671512
-  position 0.06417560150525822 -997.4870604696454 0.6342691382956034
+  orientation -0.9824214905408554 -0.17734572160548198 -0.0582795843474759 0.6455949239724382
+  position -0.05338490189765717 -999.5634822090769 0.6507726274500039
 }
 TexturedBackground {
 }
@@ -1013,16 +1013,60 @@ DEF BUILDINGBLOCKS Transform {
         }
       ]
     }
-	
+    DEF externalWallNotchLeft Transform {
+      children [
+        DEF LEFTNOTCH Solid {
+          translation -0.15625 -0.01 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.0125 0.17 0.0125
+              }
+            }
+          ]
+          name "leftNotch"
+          boundingObject USE BACKWALLBOX
+        }
+      ]
+    }
+    DEF externalWallNotchRight Transform {
+      children [
+        DEF LEFTNOTCH Solid {
+          translation 0.15625 -0.01 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.0125 0.17 0.0125
+              }
+            }
+          ]
+          name "rightNotch"
+          boundingObject USE BACKWALLBOX
+        }
+      ]
+    }
   ]
 }
-
 DEF ROBOT0 E-puck {
-	controller ""
-	translation 0 0 0 
-	name "robot0"
+  hidden position_0_0 3.100673222701764e-08
+  hidden position_0_1 3.1006771555631985e-08
+  hidden rotation_1 -1 0 0 2.9802322387695313e-08
+  hidden rotation_2 -1 0 0 2.9802322387695313e-08
+  translation -1.0500486781601357e-13 -0.07506395853637257 -8.304237365759737e-11
+  rotation -7.491283411320218e-05 1.971493685031206e-08 0.9999999971940334 5.9537461321077124e-06
+  name "robot0"
+  controller ""
 }
-
 DEF EXTERNALWALLS Group {
   children [
     DEF BACKWALLMAIN Solid {
