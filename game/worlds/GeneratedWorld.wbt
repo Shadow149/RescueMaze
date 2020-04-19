@@ -8,1996 +8,2508 @@ Viewpoint {
 TexturedBackground {
 }
 TexturedBackgroundLight {
-}    DEF EXTERNALWALLS Group {
+}    DEF WALLTILES Group {
         children [
-DEF externalWallHoop Transform {
-      translation -1.2 0 0.30000000000000004
-      rotation 0 1 0 1.5708
-      children [
-        DEF BACKWALL Solid {
-          translation 0 -0.01 -0.15625
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.17 0.0125
-              }
-            }
-          ]
-          name "externalWall0,5"
-          boundingObject USE BACKWALLBOX
-        }
-        DEF LEFTWALL Solid {
-          translation -0.15625 -0.01 -0.0125
-          children [
-            Shape {
-              appearance USE WALLAPPEARANCE
-              geometry DEF BACKWALLBOX Box {
-                size 0.0125 0.17 0.3
-              }
-            }
-          ]
-          name "externalWall1,5"
-          boundingObject USE BACKWALLBOX
-        }
-        DEF RIGHTWALL Solid {
-          translation 0.15625 -0.01 -0.0125
-          children [
-            Shape {
-              appearance USE WALLAPPEARANCE
-              geometry DEF BACKWALLBOX Box {
-                size 0.0125 0.17 0.3
-              }
-            }
-          ]
-          name "externalWall2,5"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF externalWallNotchLeft Transform {
-      translation -1.2 0 0.30000000000000004
-      rotation 0 1 0 1.5708
-      children [
-        DEF LEFTNOTCH Solid {
-          translation -0.15625 -0.01 0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.0125 0.17 0.0125
-              }
-            }
-          ]
-          name "leftNotch5"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF externalWallCorner Transform {
-      translation -0.8999999999999999 0 -0.8999999999999999
-      rotation 0 1 0 0
-      children [
-        DEF BACKWALL Solid {
-          translation 0 -0.01 -0.15625
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.17 0.0125
-              }
-            }
-          ]
-          name "externalWall0,9"
-          boundingObject USE BACKWALLBOX
-        }
-        DEF LEFTWALL Solid {
-          translation -0.15625 -0.01 -0.00625
-          children [
-            Shape {
-              appearance USE WALLAPPEARANCE
-              geometry DEF BACKWALLBOX Box {
-                size 0.0125 0.17 0.3125
-              }
-            }
-          ]
-          name "externalWall1,9"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF externalWallSingle Transform {
-      translation -0.8999999999999999 0 -0.6
-      rotation 0 1 0 1.5708
-      children [
-        DEF BACKWALL Solid {
-          translation 0 -0.01 -0.15625
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.17 0.0125
-              }
-            }
-          ]
-          name "externalWall10"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF externalWallSingle Transform {
-      translation -0.8999999999999999 0 -0.30000000000000004
-      rotation 0 1 0 1.5708
-      children [
-        DEF BACKWALL Solid {
-          translation 0 -0.01 -0.15625
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.17 0.0125
-              }
-            }
-          ]
-          name "externalWall11"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF externalWallSingle Transform {
-      translation -0.8999999999999999 0 0.0
-      rotation 0 1 0 1.5708
-      children [
-        DEF BACKWALL Solid {
-          translation 0 -0.01 -0.15625
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.17 0.0125
-              }
-            }
-          ]
-          name "externalWall12"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF externalWallSingle Transform {
-      translation -0.8999999999999999 0 0.30000000000000004
-      rotation 0 1 0 3.14159
-      children [
-        DEF BACKWALL Solid {
-          translation 0 -0.01 -0.15625
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.17 0.0125
-              }
-            }
-          ]
-          name "externalWall13"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF externalWallSingle Transform {
-      translation -0.6 0 -0.8999999999999999
-      rotation 0 1 0 0
-      children [
-        DEF BACKWALL Solid {
-          translation 0 -0.01 -0.15625
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.17 0.0125
-              }
-            }
-          ]
-          name "externalWall17"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF externalWallSingle Transform {
-      translation -0.6 0 0.30000000000000004
-      rotation 0 1 0 3.14159
-      children [
-        DEF BACKWALL Solid {
-          translation 0 -0.01 -0.15625
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.17 0.0125
-              }
-            }
-          ]
-          name "externalWall21"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF externalWallSingle Transform {
-      translation -0.30000000000000004 0 -0.8999999999999999
-      rotation 0 1 0 0
-      children [
-        DEF BACKWALL Solid {
-          translation 0 -0.01 -0.15625
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.17 0.0125
-              }
-            }
-          ]
-          name "externalWall25"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF externalWallSingle Transform {
-      translation -0.30000000000000004 0 0.30000000000000004
-      rotation 0 1 0 3.14159
-      children [
-        DEF BACKWALL Solid {
-          translation 0 -0.01 -0.15625
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.17 0.0125
-              }
-            }
-          ]
-          name "externalWall29"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF externalWallSingle Transform {
-      translation 0.0 0 -0.8999999999999999
-      rotation 0 1 0 0
-      children [
-        DEF BACKWALL Solid {
-          translation 0 -0.01 -0.15625
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.17 0.0125
-              }
-            }
-          ]
-          name "externalWall33"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF externalWallSingle Transform {
-      translation 0.0 0 0.30000000000000004
-      rotation 0 1 0 3.14159
-      children [
-        DEF BACKWALL Solid {
-          translation 0 -0.01 -0.15625
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.17 0.0125
-              }
-            }
-          ]
-          name "externalWall37"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF externalWallSingle Transform {
-      translation 0.30000000000000004 0 -0.8999999999999999
-      rotation 0 1 0 0
-      children [
-        DEF BACKWALL Solid {
-          translation 0 -0.01 -0.15625
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.17 0.0125
-              }
-            }
-          ]
-          name "externalWall41"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF externalWallSingle Transform {
-      translation 0.30000000000000004 0 -0.6
-      rotation 0 1 0 -1.5708
-      children [
-        DEF BACKWALL Solid {
-          translation 0 -0.01 -0.15625
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.17 0.0125
-              }
-            }
-          ]
-          name "externalWall42"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF externalWallSingle Transform {
-      translation 0.30000000000000004 0 -0.30000000000000004
-      rotation 0 1 0 -1.5708
-      children [
-        DEF BACKWALL Solid {
-          translation 0 -0.01 -0.15625
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.17 0.0125
-              }
-            }
-          ]
-          name "externalWall43"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF externalWallSingle Transform {
-      translation 0.30000000000000004 0 0.0
-      rotation 0 1 0 -1.5708
-      children [
-        DEF BACKWALL Solid {
-          translation 0 -0.01 -0.15625
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.17 0.0125
-              }
-            }
-          ]
-          name "externalWall44"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF externalWallCorner Transform {
-      translation 0.30000000000000004 0 0.30000000000000004
-      rotation 0 1 0 3.14159
-      children [
-        DEF BACKWALL Solid {
-          translation 0 -0.01 -0.15625
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.17 0.0125
-              }
-            }
-          ]
-          name "externalWall0,45"
-          boundingObject USE BACKWALLBOX
-        }
-        DEF LEFTWALL Solid {
-          translation -0.15625 -0.01 -0.00625
-          children [
-            Shape {
-              appearance USE WALLAPPEARANCE
-              geometry DEF BACKWALLBOX Box {
-                size 0.0125 0.17 0.3125
-              }
-            }
-          ]
-          name "externalWall1,45"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF externalWallHoop Transform {
-      translation 0.5999999999999999 0 -0.8999999999999999
-      rotation 0 1 0 -1.5708
-      children [
-        DEF BACKWALL Solid {
-          translation 0 -0.01 -0.15625
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.17 0.0125
-              }
-            }
-          ]
-          name "externalWall0,49"
-          boundingObject USE BACKWALLBOX
-        }
-        DEF LEFTWALL Solid {
-          translation -0.15625 -0.01 -0.0125
-          children [
-            Shape {
-              appearance USE WALLAPPEARANCE
-              geometry DEF BACKWALLBOX Box {
-                size 0.0125 0.17 0.3
-              }
-            }
-          ]
-          name "externalWall1,49"
-          boundingObject USE BACKWALLBOX
-        }
-        DEF RIGHTWALL Solid {
-          translation 0.15625 -0.01 -0.0125
-          children [
-            Shape {
-              appearance USE WALLAPPEARANCE
-              geometry DEF BACKWALLBOX Box {
-                size 0.0125 0.17 0.3
-              }
-            }
-          ]
-          name "externalWall2,49"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF externalWallNotchLeft Transform {
-      translation 0.5999999999999999 0 -0.8999999999999999
-      rotation 0 1 0 -1.5708
-      children [
-        DEF LEFTNOTCH Solid {
-          translation -0.15625 -0.01 0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.0125 0.17 0.0125
-              }
-            }
-          ]
-          name "leftNotch49"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-
-        ]
-    }
-    DEF WALLTILES Group {
-        children [
-DEF block1 Transform {
-      translation -1.2 0 0.30000000000000004
-      rotation 0 1 0 -1.5708
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock5"
-          boundingObject USE FLOORBOX
-        }
-        DEF FRONTWALL Solid {
-          translation 0 0 0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF FRONTWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock0,5"
-          boundingObject USE FRONTWALLBOX
-        }
-        DEF LEFTWALL Solid {
-          translation -0.14375 0 -0.00625
-          children [
-            Shape {
-              appearance USE WALLAPPEARANCE
-              geometry DEF LEFTWALLBOX Box {
-                size 0.0125 0.15 0.2875
-              }
-            }
-          ]
-          name "wallBlock1,5"
-          boundingObject USE LEFTWALLBOX
-        }
-        DEF RIGHTWALL Solid {
-          translation 0.14375 0 -0.00625
-          children [
-            Shape {
-              appearance USE WALLAPPEARANCE
-              geometry DEF RIGHTWALLBOX Box {
-                size 0.0125 0.15 0.2875
-              }
-            }
-          ]
-          name "wallBlock2,5"
-          boundingObject USE RIGHTWALLBOX
-        }
-      ]
-    }
-DEF block2 Transform {
-      translation -0.8999999999999999 0 -0.8999999999999999
-      rotation 0 1 0 -1.5708
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock9"
-          boundingObject USE FLOORBOX
-        }
-        DEF FRONTWALL Solid {
-          translation 0 0 0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF FRONTWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock0,9"
-          boundingObject USE FRONTWALLBOX
-        }
-        DEF LEFTWALL Solid {
-          translation -0.14375 0 -0.00625
-          children [
-            Shape {
-              appearance USE WALLAPPEARANCE
-              geometry DEF LEFTWALLBOX Box {
-                size 0.0125 0.15 0.2875
-              }
-            }
-          ]
-          name "wallBlock1,9"
-          boundingObject USE LEFTWALLBOX
-        }
-      ]
-    }
-DEF block4 Transform {
-      translation -0.8999999999999999 0 -0.6
-      rotation 0 1 0 1.5708
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock10"
-          boundingObject USE FLOORBOX
-        }
-        DEF BACKWALL Solid {
-          translation 0 0 -0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock10"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF block3 Transform {
-      translation -0.8999999999999999 0 -0.30000000000000004
-      rotation 0 1 0 1.5708
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock11"
-          boundingObject USE FLOORBOX
-        }
-        DEF BACKWALL Solid {
-          translation 0 0 -0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock0,11"
-          boundingObject USE BACKWALLBOX
-        }
-        DEF FRONTWALL Solid {
-          translation 0 0 0.14375
-          children [
-            Shape {
-              appearance USE WALLAPPEARANCE
-              geometry DEF FRONTWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock1,11"
-          boundingObject USE FRONTWALLBOX
-        }
-      ]
-    }
-DEF block11 Transform {
-      translation -0.8999999999999999 0 0.0
-      rotation 0 1 0 0
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock12"
-          boundingObject USE FLOORBOX
-        }
-        DEF FRONTWALL Solid {
-          translation 0 0 0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF FRONTWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock0,12"
-          boundingObject USE FRONTWALLBOX
-        }
-        DEF LEFTWALL Solid {
-          translation -0.14375 0 -0.00625
-          children [
-            Shape {
-              appearance USE WALLAPPEARANCE
-              geometry DEF LEFTWALLBOX Box {
-                size 0.0125 0.15 0.2875
-              }
-            }
-          ]
-          name "wallBlock1,12"
-          boundingObject USE LEFTWALLBOX
-        }
-        DEF BACKRIGHTCORNER Solid {
-          translation 0.14375 0 -0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.0125 0.15 0.0125
-              }
-            }
-          ]
-          name "pillarBlock12"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF block3 Transform {
-      translation -0.8999999999999999 0 0.30000000000000004
-      rotation 0 1 0 0
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock13"
-          boundingObject USE FLOORBOX
-        }
-        DEF BACKWALL Solid {
-          translation 0 0 -0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock0,13"
-          boundingObject USE BACKWALLBOX
-        }
-        DEF FRONTWALL Solid {
-          translation 0 0 0.14375
-          children [
-            Shape {
-              appearance USE WALLAPPEARANCE
-              geometry DEF FRONTWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock1,13"
-          boundingObject USE FRONTWALLBOX
-        }
-      ]
-    }
-DEF block4 Transform {
-      translation -0.6 0 -0.8999999999999999
-      rotation 0 1 0 0
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock17"
-          boundingObject USE FLOORBOX
-        }
-        DEF BACKWALL Solid {
-          translation 0 0 -0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock17"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF block5 Transform {
-      translation -0.6 0 -0.6
-      rotation 0 1 0 0
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock18"
-          boundingObject USE FLOORBOX
-        }
-      ]
-    }
-DEF block2 Transform {
-      translation -0.6 0 -0.30000000000000004
-      rotation 0 1 0 0
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock19"
-          boundingObject USE FLOORBOX
-        }
-        DEF FRONTWALL Solid {
-          translation 0 0 0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF FRONTWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock0,19"
-          boundingObject USE FRONTWALLBOX
-        }
-        DEF LEFTWALL Solid {
-          translation -0.14375 0 -0.00625
-          children [
-            Shape {
-              appearance USE WALLAPPEARANCE
-              geometry DEF LEFTWALLBOX Box {
-                size 0.0125 0.15 0.2875
-              }
-            }
-          ]
-          name "wallBlock1,19"
-          boundingObject USE LEFTWALLBOX
-        }
-      ]
-    }
-DEF block4 Transform {
-      translation -0.6 0 0.0
-      rotation 0 1 0 0
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock20"
-          boundingObject USE FLOORBOX
-        }
-        DEF BACKWALL Solid {
-          translation 0 0 -0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock20"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF block4 Transform {
-      translation -0.6 0 0.30000000000000004
-      rotation 0 1 0 3.14159
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock21"
-          boundingObject USE FLOORBOX
-        }
-        DEF BACKWALL Solid {
-          translation 0 0 -0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock21"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF block4 Transform {
-      translation -0.30000000000000004 0 -0.8999999999999999
-      rotation 0 1 0 0
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock25"
-          boundingObject USE FLOORBOX
-        }
-        DEF BACKWALL Solid {
-          translation 0 0 -0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock25"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF block2 Transform {
-      translation -0.30000000000000004 0 -0.6
-      rotation 0 1 0 1.5708
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock26"
-          boundingObject USE FLOORBOX
-        }
-        DEF FRONTWALL Solid {
-          translation 0 0 0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF FRONTWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock0,26"
-          boundingObject USE FRONTWALLBOX
-        }
-        DEF LEFTWALL Solid {
-          translation -0.14375 0 -0.00625
-          children [
-            Shape {
-              appearance USE WALLAPPEARANCE
-              geometry DEF LEFTWALLBOX Box {
-                size 0.0125 0.15 0.2875
-              }
-            }
-          ]
-          name "wallBlock1,26"
-          boundingObject USE LEFTWALLBOX
-        }
-      ]
-    }
-DEF block2 Transform {
-      translation -0.30000000000000004 0 -0.30000000000000004
-      rotation 0 1 0 3.14159
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock27"
-          boundingObject USE FLOORBOX
-        }
-        DEF FRONTWALL Solid {
-          translation 0 0 0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF FRONTWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock0,27"
-          boundingObject USE FRONTWALLBOX
-        }
-        DEF LEFTWALL Solid {
-          translation -0.14375 0 -0.00625
-          children [
-            Shape {
-              appearance USE WALLAPPEARANCE
-              geometry DEF LEFTWALLBOX Box {
-                size 0.0125 0.15 0.2875
-              }
-            }
-          ]
-          name "wallBlock1,27"
-          boundingObject USE LEFTWALLBOX
-        }
-      ]
-    }
-DEF block5 Transform {
-      translation -0.30000000000000004 0 0.0
-      rotation 0 1 0 0
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock28"
-          boundingObject USE FLOORBOX
-        }
-      ]
-    }
-DEF block4 Transform {
-      translation -0.30000000000000004 0 0.30000000000000004
-      rotation 0 1 0 3.14159
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock29"
-          boundingObject USE FLOORBOX
-        }
-        DEF BACKWALL Solid {
-          translation 0 0 -0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock29"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF block4 Transform {
-      translation 0.0 0 -0.8999999999999999
-      rotation 0 1 0 0
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock33"
-          boundingObject USE FLOORBOX
-        }
-        DEF BACKWALL Solid {
-          translation 0 0 -0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock33"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF block3 Transform {
-      translation 0.0 0 -0.6
-      rotation 0 1 0 1.5708
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock34"
-          boundingObject USE FLOORBOX
-        }
-        DEF BACKWALL Solid {
-          translation 0 0 -0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock0,34"
-          boundingObject USE BACKWALLBOX
-        }
-        DEF FRONTWALL Solid {
-          translation 0 0 0.14375
-          children [
-            Shape {
-              appearance USE WALLAPPEARANCE
-              geometry DEF FRONTWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock1,34"
-          boundingObject USE FRONTWALLBOX
-        }
-      ]
-    }
-DEF block3 Transform {
-      translation 0.0 0 -0.30000000000000004
-      rotation 0 1 0 1.5708
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock35"
-          boundingObject USE FLOORBOX
-        }
-        DEF BACKWALL Solid {
-          translation 0 0 -0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock0,35"
-          boundingObject USE BACKWALLBOX
-        }
-        DEF FRONTWALL Solid {
-          translation 0 0 0.14375
-          children [
-            Shape {
-              appearance USE WALLAPPEARANCE
-              geometry DEF FRONTWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock1,35"
-          boundingObject USE FRONTWALLBOX
-        }
-      ]
-    }
-DEF block2 Transform {
-      translation 0.0 0 0.0
-      rotation 0 1 0 1.5708
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock36"
-          boundingObject USE FLOORBOX
-        }
-        DEF FRONTWALL Solid {
-          translation 0 0 0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF FRONTWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock0,36"
-          boundingObject USE FRONTWALLBOX
-        }
-        DEF LEFTWALL Solid {
-          translation -0.14375 0 -0.00625
-          children [
-            Shape {
-              appearance USE WALLAPPEARANCE
-              geometry DEF LEFTWALLBOX Box {
-                size 0.0125 0.15 0.2875
-              }
-            }
-          ]
-          name "wallBlock1,36"
-          boundingObject USE LEFTWALLBOX
-        }
-      ]
-    }
-DEF block3 Transform {
-      translation 0.0 0 0.30000000000000004
-      rotation 0 1 0 0
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock37"
-          boundingObject USE FLOORBOX
-        }
-        DEF BACKWALL Solid {
-          translation 0 0 -0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock0,37"
-          boundingObject USE BACKWALLBOX
-        }
-        DEF FRONTWALL Solid {
-          translation 0 0 0.14375
-          children [
-            Shape {
-              appearance USE WALLAPPEARANCE
-              geometry DEF FRONTWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock1,37"
-          boundingObject USE FRONTWALLBOX
-        }
-      ]
-    }
-DEF block13 Transform {
-      translation 0.30000000000000004 0 -0.8999999999999999
-      rotation 0 1 0 0
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock41"
-          boundingObject USE FLOORBOX
-        }
-        DEF BACKWALL Solid {
-          translation 0 0 -0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock41"
-          boundingObject USE BACKWALLBOX
-        }
-        DEF FRONTRIGHTCORNER Solid {
-          translation 0.14375 0 0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.0125 0.15 0.0125
-              }
-            }
-          ]
-          name "pillarBlock41"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF block3 Transform {
-      translation 0.30000000000000004 0 -0.6
-      rotation 0 1 0 1.5708
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock42"
-          boundingObject USE FLOORBOX
-        }
-        DEF BACKWALL Solid {
-          translation 0 0 -0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock0,42"
-          boundingObject USE BACKWALLBOX
-        }
-        DEF FRONTWALL Solid {
-          translation 0 0 0.14375
-          children [
-            Shape {
-              appearance USE WALLAPPEARANCE
-              geometry DEF FRONTWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock1,42"
-          boundingObject USE FRONTWALLBOX
-        }
-      ]
-    }
-DEF block3 Transform {
-      translation 0.30000000000000004 0 -0.30000000000000004
-      rotation 0 1 0 1.5708
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock43"
-          boundingObject USE FLOORBOX
-        }
-        DEF BACKWALL Solid {
-          translation 0 0 -0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock0,43"
-          boundingObject USE BACKWALLBOX
-        }
-        DEF FRONTWALL Solid {
-          translation 0 0 0.14375
-          children [
-            Shape {
-              appearance USE WALLAPPEARANCE
-              geometry DEF FRONTWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock1,43"
-          boundingObject USE FRONTWALLBOX
-        }
-      ]
-    }
-DEF block3 Transform {
-      translation 0.30000000000000004 0 0.0
-      rotation 0 1 0 1.5708
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock44"
-          boundingObject USE FLOORBOX
-        }
-        DEF BACKWALL Solid {
-          translation 0 0 -0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock0,44"
-          boundingObject USE BACKWALLBOX
-        }
-        DEF FRONTWALL Solid {
-          translation 0 0 0.14375
-          children [
-            Shape {
-              appearance USE WALLAPPEARANCE
-              geometry DEF FRONTWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock1,44"
-          boundingObject USE FRONTWALLBOX
-        }
-      ]
-    }
-DEF block11 Transform {
-      translation 0.30000000000000004 0 0.30000000000000004
-      rotation 0 1 0 1.5708
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock45"
-          boundingObject USE FLOORBOX
-        }
-        DEF FRONTWALL Solid {
-          translation 0 0 0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF FRONTWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock0,45"
-          boundingObject USE FRONTWALLBOX
-        }
-        DEF LEFTWALL Solid {
-          translation -0.14375 0 -0.00625
-          children [
-            Shape {
-              appearance USE WALLAPPEARANCE
-              geometry DEF LEFTWALLBOX Box {
-                size 0.0125 0.15 0.2875
-              }
-            }
-          ]
-          name "wallBlock1,45"
-          boundingObject USE LEFTWALLBOX
-        }
-        DEF BACKRIGHTCORNER Solid {
-          translation 0.14375 0 -0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF BACKWALLBOX Box {
-                size 0.0125 0.15 0.0125
-              }
-            }
-          ]
-          name "pillarBlock45"
-          boundingObject USE BACKWALLBOX
-        }
-      ]
-    }
-DEF block1 Transform {
-      translation 0.5999999999999999 0 -0.8999999999999999
-      rotation 0 1 0 1.5708
-      children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock49"
-          boundingObject USE FLOORBOX
-        }
-        DEF FRONTWALL Solid {
-          translation 0 0 0.14375
-          children [
-            Shape {
-              appearance DEF WALLAPPEARANCE Appearance {
-                material Material {
-                  diffuseColor 0.2 0.466667 0.521569
-                }
-              }
-              geometry DEF FRONTWALLBOX Box {
-                size 0.3 0.15 0.0125
-              }
-            }
-          ]
-          name "wallBlock0,49"
-          boundingObject USE FRONTWALLBOX
-        }
-        DEF LEFTWALL Solid {
-          translation -0.14375 0 -0.00625
-          children [
-            Shape {
-              appearance USE WALLAPPEARANCE
-              geometry DEF LEFTWALLBOX Box {
-                size 0.0125 0.15 0.2875
-              }
-            }
-          ]
-          name "wallBlock1,49"
-          boundingObject USE LEFTWALLBOX
-        }
-        DEF RIGHTWALL Solid {
-          translation 0.14375 0 -0.00625
-          children [
-            Shape {
-              appearance USE WALLAPPEARANCE
-              geometry DEF RIGHTWALLBOX Box {
-                size 0.0125 0.15 0.2875
-              }
-            }
-          ]
-          name "wallBlock2,49"
-          boundingObject USE RIGHTWALLBOX
-        }
-      ]
-    }
-
-        ]
-    }
-    DEF SPECIALTILES Group {
-        children [
-DEF goal Transform {
-      translation -1.2 0 0.30000000000000004
-      rotation 0 1 0 0
-      children [
-        Solid {
-          translation 0 -0.075 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0 0 0
-                  emissiveColor 0.0313725 0.835294 0.0313725
-                  shininess 0.8
-                }
-              }
-              geometry Box {
-                size 0.3 0.001 0.3
-              }
-            }
-          ]
-          name "goalBlock5"
-        }
-      ]
-    }
-DEF checkpoint Transform {
-      translation -0.6 0 -0.8999999999999999
-      rotation 0 1 0 0
-      children [
-        Solid {
-          translation 0 -0.075 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0 0 0
-                  emissiveColor 0.65 0.65 0.65
-                  shininess 0.8
-                }
-              }
-              geometry Box {
-                size 0.3 0.001 0.3
-              }
-            }
-          ]
-          name "checkpointBlock17"
-        }
-      ]
-    }
-DEF trap Transform {
-      translation 0.0 0 -0.6
-      rotation 0 1 0 0
-      children [
-        Solid {
-          translation 0 -0.075 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0 0 0
-                  emissiveColor 0.0235294 0.0235294 0.0235294
-                  shininess 0.8
-                }
-              }
-              geometry Box {
-                size 0.3 0.001 0.3
-              }
-            }
-          ]
-          name "trapBlock34"
-        }
-      ]
-    }
-DEF checkpoint Transform {
-      translation 0.30000000000000004 0 -0.6
-      rotation 0 1 0 0
-      children [
-        Solid {
-          translation 0 -0.075 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0 0 0
-                  emissiveColor 0.65 0.65 0.65
-                  shininess 0.8
-                }
-              }
-              geometry Box {
-                size 0.3 0.001 0.3
-              }
-            }
-          ]
-          name "checkpointBlock42"
-        }
-      ]
-    }
+DEF TILE worldTile {
+  xPos 0
+  zPos 0
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "0"
+}
+DEF TILE worldTile {
+  xPos 0
+  zPos 1
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "1"
+}
+DEF TILE worldTile {
+  xPos 0
+  zPos 2
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "2"
+}
+DEF TILE worldTile {
+  xPos 0
+  zPos 3
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "3"
+}
+DEF TILE worldTile {
+  xPos 0
+  zPos 4
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "4"
+}
+DEF TILE worldTile {
+  xPos 0
+  zPos 5
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "5"
+}
+DEF TILE worldTile {
+  xPos 0
+  zPos 6
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "6"
+}
+DEF TILE worldTile {
+  xPos 0
+  zPos 7
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall TRUE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal TRUE
+  rightExternal FALSE
+  bottomExternal TRUE
+  leftExternal TRUE
+  notch "left"
+  notchRotation 1.57079
+  start TRUE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "7"
+}
+DEF TILE worldTile {
+  xPos 0
+  zPos 8
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "8"
+}
+DEF TILE worldTile {
+  xPos 0
+  zPos 9
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "9"
+}
+DEF TILE worldTile {
+  xPos 1
+  zPos 0
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "10"
+}
+DEF TILE worldTile {
+  xPos 1
+  zPos 1
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal TRUE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal TRUE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "11"
+}
+DEF TILE worldTile {
+  xPos 1
+  zPos 2
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal TRUE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "12"
+}
+DEF TILE worldTile {
+  xPos 1
+  zPos 3
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal TRUE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "13"
+}
+DEF TILE worldTile {
+  xPos 1
+  zPos 4
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal TRUE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "14"
+}
+DEF TILE worldTile {
+  xPos 1
+  zPos 5
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal TRUE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint TRUE
+  width 10
+  height 10
+  id "15"
+}
+DEF TILE worldTile {
+  xPos 1
+  zPos 6
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal TRUE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "16"
+}
+DEF TILE worldTile {
+  xPos 1
+  zPos 7
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner TRUE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal TRUE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "17"
+}
+DEF TILE worldTile {
+  xPos 1
+  zPos 8
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "18"
+}
+DEF TILE worldTile {
+  xPos 1
+  zPos 9
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "19"
+}
+DEF TILE worldTile {
+  xPos 2
+  zPos 0
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "20"
+}
+DEF TILE worldTile {
+  xPos 2
+  zPos 1
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner TRUE
+  topRightCorner FALSE
+  topExternal TRUE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "21"
+}
+DEF TILE worldTile {
+  xPos 2
+  zPos 2
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "22"
+}
+DEF TILE worldTile {
+  xPos 2
+  zPos 3
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "23"
+}
+DEF TILE worldTile {
+  xPos 2
+  zPos 4
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "24"
+}
+DEF TILE worldTile {
+  xPos 2
+  zPos 5
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "25"
+}
+DEF TILE worldTile {
+  xPos 2
+  zPos 6
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "26"
+}
+DEF TILE worldTile {
+  xPos 2
+  zPos 7
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal TRUE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "27"
+}
+DEF TILE worldTile {
+  xPos 2
+  zPos 8
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "28"
+}
+DEF TILE worldTile {
+  xPos 2
+  zPos 9
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "29"
+}
+DEF TILE worldTile {
+  xPos 3
+  zPos 0
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "30"
+}
+DEF TILE worldTile {
+  xPos 3
+  zPos 1
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal TRUE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "31"
+}
+DEF TILE worldTile {
+  xPos 3
+  zPos 2
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner TRUE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "32"
+}
+DEF TILE worldTile {
+  xPos 3
+  zPos 3
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "33"
+}
+DEF TILE worldTile {
+  xPos 3
+  zPos 4
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "34"
+}
+DEF TILE worldTile {
+  xPos 3
+  zPos 5
+  floor TRUE
+  topWall TRUE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "35"
+}
+DEF TILE worldTile {
+  xPos 3
+  zPos 6
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "36"
+}
+DEF TILE worldTile {
+  xPos 3
+  zPos 7
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal TRUE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "37"
+}
+DEF TILE worldTile {
+  xPos 3
+  zPos 8
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "38"
+}
+DEF TILE worldTile {
+  xPos 3
+  zPos 9
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "39"
+}
+DEF TILE worldTile {
+  xPos 4
+  zPos 0
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "40"
+}
+DEF TILE worldTile {
+  xPos 4
+  zPos 1
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal TRUE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "41"
+}
+DEF TILE worldTile {
+  xPos 4
+  zPos 2
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "42"
+}
+DEF TILE worldTile {
+  xPos 4
+  zPos 3
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "43"
+}
+DEF TILE worldTile {
+  xPos 4
+  zPos 4
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner TRUE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "44"
+}
+DEF TILE worldTile {
+  xPos 4
+  zPos 5
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "45"
+}
+DEF TILE worldTile {
+  xPos 4
+  zPos 6
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "46"
+}
+DEF TILE worldTile {
+  xPos 4
+  zPos 7
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal TRUE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "47"
+}
+DEF TILE worldTile {
+  xPos 4
+  zPos 8
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "48"
+}
+DEF TILE worldTile {
+  xPos 4
+  zPos 9
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "49"
+}
+DEF TILE worldTile {
+  xPos 5
+  zPos 0
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "50"
+}
+DEF TILE worldTile {
+  xPos 5
+  zPos 1
+  floor TRUE
+  topWall TRUE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal TRUE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "51"
+}
+DEF TILE worldTile {
+  xPos 5
+  zPos 2
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "52"
+}
+DEF TILE worldTile {
+  xPos 5
+  zPos 3
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "53"
+}
+DEF TILE worldTile {
+  xPos 5
+  zPos 4
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "54"
+}
+DEF TILE worldTile {
+  xPos 5
+  zPos 5
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "55"
+}
+DEF TILE worldTile {
+  xPos 5
+  zPos 6
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "56"
+}
+DEF TILE worldTile {
+  xPos 5
+  zPos 7
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal TRUE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "57"
+}
+DEF TILE worldTile {
+  xPos 5
+  zPos 8
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "58"
+}
+DEF TILE worldTile {
+  xPos 5
+  zPos 9
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "59"
+}
+DEF TILE worldTile {
+  xPos 6
+  zPos 0
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "60"
+}
+DEF TILE worldTile {
+  xPos 6
+  zPos 1
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal TRUE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "61"
+}
+DEF TILE worldTile {
+  xPos 6
+  zPos 2
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall TRUE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "62"
+}
+DEF TILE worldTile {
+  xPos 6
+  zPos 3
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "63"
+}
+DEF TILE worldTile {
+  xPos 6
+  zPos 4
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "64"
+}
+DEF TILE worldTile {
+  xPos 6
+  zPos 5
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap TRUE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "65"
+}
+DEF TILE worldTile {
+  xPos 6
+  zPos 6
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "66"
+}
+DEF TILE worldTile {
+  xPos 6
+  zPos 7
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal TRUE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "67"
+}
+DEF TILE worldTile {
+  xPos 6
+  zPos 8
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "68"
+}
+DEF TILE worldTile {
+  xPos 6
+  zPos 9
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "69"
+}
+DEF TILE worldTile {
+  xPos 7
+  zPos 0
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "70"
+}
+DEF TILE worldTile {
+  xPos 7
+  zPos 1
+  floor TRUE
+  topWall TRUE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal TRUE
+  rightExternal TRUE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "71"
+}
+DEF TILE worldTile {
+  xPos 7
+  zPos 2
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal TRUE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "72"
+}
+DEF TILE worldTile {
+  xPos 7
+  zPos 3
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner TRUE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal TRUE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint TRUE
+  width 10
+  height 10
+  id "73"
+}
+DEF TILE worldTile {
+  xPos 7
+  zPos 4
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal TRUE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap TRUE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "74"
+}
+DEF TILE worldTile {
+  xPos 7
+  zPos 5
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal TRUE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "75"
+}
+DEF TILE worldTile {
+  xPos 7
+  zPos 6
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal TRUE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "76"
+}
+DEF TILE worldTile {
+  xPos 7
+  zPos 7
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal TRUE
+  bottomExternal TRUE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "77"
+}
+DEF TILE worldTile {
+  xPos 7
+  zPos 8
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "78"
+}
+DEF TILE worldTile {
+  xPos 7
+  zPos 9
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "79"
+}
+DEF TILE worldTile {
+  xPos 8
+  zPos 0
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "80"
+}
+DEF TILE worldTile {
+  xPos 8
+  zPos 1
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "81"
+}
+DEF TILE worldTile {
+  xPos 8
+  zPos 2
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "82"
+}
+DEF TILE worldTile {
+  xPos 8
+  zPos 3
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "83"
+}
+DEF TILE worldTile {
+  xPos 8
+  zPos 4
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "84"
+}
+DEF TILE worldTile {
+  xPos 8
+  zPos 5
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "85"
+}
+DEF TILE worldTile {
+  xPos 8
+  zPos 6
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "86"
+}
+DEF TILE worldTile {
+  xPos 8
+  zPos 7
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "87"
+}
+DEF TILE worldTile {
+  xPos 8
+  zPos 8
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "88"
+}
+DEF TILE worldTile {
+  xPos 8
+  zPos 9
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "89"
+}
+DEF TILE worldTile {
+  xPos 9
+  zPos 0
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "90"
+}
+DEF TILE worldTile {
+  xPos 9
+  zPos 1
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "91"
+}
+DEF TILE worldTile {
+  xPos 9
+  zPos 2
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "92"
+}
+DEF TILE worldTile {
+  xPos 9
+  zPos 3
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "93"
+}
+DEF TILE worldTile {
+  xPos 9
+  zPos 4
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "94"
+}
+DEF TILE worldTile {
+  xPos 9
+  zPos 5
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "95"
+}
+DEF TILE worldTile {
+  xPos 9
+  zPos 6
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "96"
+}
+DEF TILE worldTile {
+  xPos 9
+  zPos 7
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "97"
+}
+DEF TILE worldTile {
+  xPos 9
+  zPos 8
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "98"
+}
+DEF TILE worldTile {
+  xPos 9
+  zPos 9
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  width 10
+  height 10
+  id "99"
+}
 
         ]
     }
@@ -2006,20 +2518,20 @@ DEF checkpoint Transform {
 DEF boundary Group {
   children [
     DEF checkpointBoundsMin0 Transform {
-          translation -0.75 0 -1.0499999999999998
+          translation -1.3499999999999999 0 -0.15
     }
     DEF checkpointBoundsMax0 Transform {
-          translation -0.44999999999999996 0 -0.7499999999999999
+          translation -1.05 0 0.15
     }
   ]
 }
 DEF boundary Group {
   children [
     DEF checkpointBoundsMin1 Transform {
-          translation 0.15000000000000005 0 -0.75
+          translation 0.45000000000000007 0 -0.7500000000000001
     }
     DEF checkpointBoundsMax0 Transform {
-          translation 0.45000000000000007 0 -0.44999999999999996
+          translation 0.7500000000000001 0 -0.45000000000000007
     }
   ]
 }
@@ -2031,10 +2543,20 @@ DEF boundary Group {
 DEF boundary Group {
   children [
     DEF trapBoundsMin0 Transform {
-          translation -0.15 0 -0.75
+          translation 0.14999999999999983 0 -0.15
     }
     DEF checkpointBoundsMax0 Transform {
-          translation 0.15 0 -0.44999999999999996
+          translation 0.44999999999999984 0 0.15
+    }
+  ]
+}
+DEF boundary Group {
+  children [
+    DEF trapBoundsMin1 Transform {
+          translation 0.45000000000000007 0 -0.45000000000000007
+    }
+    DEF checkpointBoundsMax0 Transform {
+          translation 0.7500000000000001 0 -0.15000000000000005
     }
   ]
 }
@@ -2046,10 +2568,10 @@ DEF boundary Group {
 DEF boundary Group {
   children [
     DEF goalBoundsMin0 Transform {
-          translation -1.3499999999999999 0 0.15000000000000005
+          translation -1.65 0 0.45000000000000007
     }
     DEF checkpointBoundsMax0 Transform {
-          translation -1.05 0 0.45000000000000007
+          translation -1.35 0 0.7500000000000001
     }
   ]
 }
@@ -2058,11 +2580,211 @@ DEF boundary Group {
     }
     DEF OBSTACLES Group {
         children [
+		DEF OBSTACLE0 Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+						material Material {
+						diffuseColor 0.45 0.45 0.45
+						}
+                    }
+                    geometry DEF OBSTACLEBOX0 Box {
+						size 0.05 0.15 0.12
+                    }
+                }
+            ]
+            name "obstacle0"
+            boundingObject USE OBSTACLEBOX0
+	    recognitionColors [
+			0.45 0.45 0.45
+		]
+        }
+		DEF OBSTACLE1 Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+						material Material {
+						diffuseColor 0.45 0.45 0.45
+						}
+                    }
+                    geometry DEF OBSTACLEBOX1 Box {
+						size 0.16 0.15 0.13
+                    }
+                }
+            ]
+            name "obstacle1"
+            boundingObject USE OBSTACLEBOX1
+	    recognitionColors [
+			0.45 0.45 0.45
+		]
+        }
 
         ]
     }
     DEF DEBRIS Group {
         children [
+		DEF DEBRIS0 Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+						material Material {
+						diffuseColor 0.45 0.45 0.45
+						}
+                    }
+                    geometry DEF OBSTACLEBOX0 Box {
+						size 0.04 0.01 0.03
+                    }
+                }
+            ]
+            name "debris0"
+            boundingObject USE OBSTACLEBOX0
+	    recognitionColors [
+			0.45 0.45 0.45
+		]
+        }
+		DEF DEBRIS1 Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+						material Material {
+						diffuseColor 0.45 0.45 0.45
+						}
+                    }
+                    geometry DEF OBSTACLEBOX1 Box {
+						size 0.04 0.01 0.04
+                    }
+                }
+            ]
+            name "debris1"
+            boundingObject USE OBSTACLEBOX1
+	    recognitionColors [
+			0.45 0.45 0.45
+		]
+        }
+		DEF DEBRIS2 Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+						material Material {
+						diffuseColor 0.45 0.45 0.45
+						}
+                    }
+                    geometry DEF OBSTACLEBOX2 Box {
+						size 0.03 0.01 0.02
+                    }
+                }
+            ]
+            name "debris2"
+            boundingObject USE OBSTACLEBOX2
+	    recognitionColors [
+			0.45 0.45 0.45
+		]
+        }
+		DEF DEBRIS3 Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+						material Material {
+						diffuseColor 0.45 0.45 0.45
+						}
+                    }
+                    geometry DEF OBSTACLEBOX3 Box {
+						size 0.02 0.01 0.04
+                    }
+                }
+            ]
+            name "debris3"
+            boundingObject USE OBSTACLEBOX3
+	    recognitionColors [
+			0.45 0.45 0.45
+		]
+        }
+		DEF DEBRIS4 Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+						material Material {
+						diffuseColor 0.45 0.45 0.45
+						}
+                    }
+                    geometry DEF OBSTACLEBOX4 Box {
+						size 0.02 0.01 0.03
+                    }
+                }
+            ]
+            name "debris4"
+            boundingObject USE OBSTACLEBOX4
+	    recognitionColors [
+			0.45 0.45 0.45
+		]
+        }
+		DEF DEBRIS5 Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+						material Material {
+						diffuseColor 0.45 0.45 0.45
+						}
+                    }
+                    geometry DEF OBSTACLEBOX5 Box {
+						size 0.02 0.01 0.02
+                    }
+                }
+            ]
+            name "debris5"
+            boundingObject USE OBSTACLEBOX5
+	    recognitionColors [
+			0.45 0.45 0.45
+		]
+        }
+		DEF DEBRIS6 Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+						material Material {
+						diffuseColor 0.45 0.45 0.45
+						}
+                    }
+                    geometry DEF OBSTACLEBOX6 Box {
+						size 0.02 0.01 0.03
+                    }
+                }
+            ]
+            name "debris6"
+            boundingObject USE OBSTACLEBOX6
+	    recognitionColors [
+			0.45 0.45 0.45
+		]
+        }
+		DEF DEBRIS7 Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+						material Material {
+						diffuseColor 0.45 0.45 0.45
+						}
+                    }
+                    geometry DEF OBSTACLEBOX7 Box {
+						size 0.03 0.01 0.04
+                    }
+                }
+            ]
+            name "debris7"
+            boundingObject USE OBSTACLEBOX7
+	    recognitionColors [
+			0.45 0.45 0.45
+		]
+        }
 
         ]
     }
@@ -2073,13 +2795,13 @@ DEF boundary Group {
     }
 DEF ROBOT0 E-puck {
 	controller "robot0Controller"
-	translation 0.5999999999999999 -0.075 -0.825
-	rotation 0 1 0 1.5708 
+	translation -1.5 -0.075 0.5250000000000001
+	rotation 0 1 0 -1.5708 
 	name "robot0"
 }DEF ROBOT1 E-puck {
 	controller "robot1Controller"
-	translation 0.5999999999999999 -0.075 -0.9749999999999999
-	rotation 0 1 0 1.5708 
+	translation -1.5 -0.075 0.675
+	rotation 0 1 0 -1.5708 
 	name "robot1"
 }DEF MAINSUPERVISOR Robot {
   supervisor TRUE

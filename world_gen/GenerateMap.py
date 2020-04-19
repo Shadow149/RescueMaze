@@ -1,6 +1,5 @@
-"""Map Generation Main Script Type 2 v1
+"""Map Generation Main Script Type 2 v2
    Written by Robbie Goldman and Alfred Roberts
-   Based on type 1 but modified to perform maze generation not BSP
 
 Changelog:
  Type 1
@@ -18,7 +17,9 @@ Changelog:
  - Added door calculations (position and connected rooms)
  Type 2
  V1:
- 
+ - Based on type 1 but modified to perform maze generation not BSP
+ V2:
+ - Changed so that the start is the exit too
 """
 
 import random
@@ -584,38 +585,38 @@ def generateWorld(x, y, checkpoints, traps):
         #Get an end position (chosen randomly)
         xEnd, yEnd = possibleEnd[random.randrange(0, len(possibleEnd))]
         #Add a tile where the goal is
-        array[yEnd][xEnd] = Tile()
+        #array[yEnd][xEnd] = Tile()
         #Top edge
         if xEnd == 0:
             #Remove the walls to connect goal to maze
-            array[yEnd][xEnd].removeWalls([1])
-            array[yEnd][xEnd + 1].removeWalls([3])
+            #array[yEnd][xEnd].removeWalls([1])
+            #array[yEnd][xEnd + 1].removeWalls([3])
             #Store the position of the end of the maze
             endTile = [xEnd + 1, yEnd]
         #Right edge
         if xEnd == len(array[0]) - 1:
             #Remove the walls to connect goal to maze
-            array[yEnd][xEnd].removeWalls([3])
-            array[yEnd][xEnd - 1].removeWalls([1])
+            #array[yEnd][xEnd].removeWalls([3])
+            #array[yEnd][xEnd - 1].removeWalls([1])
             #Store the position of the end of the maze
             endTile = [xEnd - 1, yEnd]
         #Bottom edge
         if yEnd == 0:
             #Remove the walls to connect goal to maze
-            array[yEnd][xEnd].removeWalls([2])
-            array[yEnd + 1][xEnd].removeWalls([0])
+            #array[yEnd][xEnd].removeWalls([2])
+            #array[yEnd + 1][xEnd].removeWalls([0])
             #Store the position of the end of the maze
             endTile = [xEnd, yEnd + 1]
         #Left edge
         if yEnd == len(array) - 1:
             #Remove the walls to connect goal to maze
-            array[yEnd][xEnd].removeWalls([0])
-            array[yEnd - 1][xEnd].removeWalls([2])
+            #array[yEnd][xEnd].removeWalls([0])
+            #array[yEnd - 1][xEnd].removeWalls([2])
             #Store the position of the end of the maze
             endTile = [xEnd, yEnd - 1]
 
         #Add a goal to the end point
-        array[yEnd][xEnd].addGoal()
+        array[yStart][xStart].addGoal()
 
     #Generate maze
     depthFirstMaze(array, startTile)
