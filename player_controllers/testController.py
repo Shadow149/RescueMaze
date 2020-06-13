@@ -13,22 +13,40 @@ emitter = robot.getEmitter('emitter')
 
 cam = robot.getCamera('camera')
 cam.enable(32)
+cam.recognitionEnable(32)
 cam1 = robot.getCamera('colour_sensor')
 cam1.enable(32)
 
 led = robot.getLED('led8')
 led.set(True)
 
-message = struct.pack('i i i c', 0, -30, -15, b'H')
+wheelLeft = robot.getMotor("left wheel motor")
+wheelRight = robot.getMotor("right wheel motor")
+
 
 while robot.step(32) != -1:
     currentTime = robot.getTime()
+    #wheelLeft.setPosition(999)
+    #wheelRight.setPosition(999)
+    cam.getRecognitionObjects()
 
-    if currentTime - startTime > 3 and not messagedSent:
+    if cam1.getImage() != b'\n\n\n\xff' :
+        wheelLeft.setVelocity(6.28)
+        wheelRight.setVelocity(6.28)
+    else:
+        wheelLeft.setVelocity(0)
+        wheelRight.setVelocity(0)
+
+    if currentTime - startTime > 6 and not messagedSent:
+        message = struct.pack('i i i c', 1, -30, -15, b'H')
         emitter.send(message)
 
-        message = struct.pack('i i i c', 0, -60, 14, b'U')
+        message = struct.pack('i i i c', 1, -60, 14, b'S')
         emitter.send(message)
+
+        message = struct.pack('i i i c', 1, 0, 0, b'E')
+        emitter.send(message)
+
         messagedSent = True
 
     if int(currentTime) % 2 == 0:

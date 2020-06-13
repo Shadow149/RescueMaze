@@ -51,5 +51,5 @@ while myRobot.step(timeStep) != -1:
                     collecting = True 
     
     else:
-        if action(myRobot, startTime, 3, collectingHuman, "collecting..."):
+        if action(myRobot, startTime, 4, collectingHuman, "collecting..."):
             collecting = False

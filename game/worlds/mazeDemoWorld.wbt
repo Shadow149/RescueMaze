@@ -2,8 +2,8 @@
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.12618208041856246 0.924875412830561 0.35872489922326656 2.51253963752262
-  position 1.1860814001954865 1.7289950514284058 -2.1736822526654587
+  orientation 0.07050579404754874 -0.947654672037687 -0.3114154067654141 3.5642891371380787
+  position 1.011570947594862 2.295548300550645 -2.7648370650078764
 }
 TexturedBackground {
 }
@@ -1082,23 +1082,6 @@ DEF WALLS Group {
     DEF block2 Transform {
       rotation 0 1 0 1.570796
       children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock2(1)"
-          boundingObject USE FLOORBOX
-        }
         DEF FRONTWALL Solid {
           translation 0 0 0.14375
           children [
@@ -2122,23 +2105,6 @@ DEF WALLS Group {
       translation -0.9 0 0.3
       rotation 0 1 0 1.570796
       children [
-        DEF FLOOR Solid {
-          translation 0 -0.085 0
-          children [
-            Shape {
-              appearance Appearance {
-                material Material {
-                  diffuseColor 0.635294 0.635294 0.635294
-                }
-              }
-              geometry DEF FLOORBOX Box {
-                size 0.3 0.02 0.3
-              }
-            }
-          ]
-          name "floorBlock3(6)"
-          boundingObject USE FLOORBOX
-        }
         DEF BACKWALL Solid {
           translation 0 0 -0.14375
           children [
@@ -2475,46 +2441,162 @@ DEF TRAPS Group {
   children [
     DEF trap Transform {
       children [
-        Solid {
-          translation 0 -0.075 0
+        DEF FLOOR Solid {
+          translation 0 -0.185 0
           children [
             Shape {
               appearance Appearance {
                 material Material {
-                  diffuseColor 0 0 0
-                  emissiveColor 0.0235294 0.0235294 0.0235294
-                  shininess 0.8
+                  diffuseColor 0.3 0.3 0.3
                 }
               }
-              geometry Box {
-                size 0.3 0.001 0.3
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
               }
             }
           ]
-          name "trapBlock(1)"
+          name "floorBlock3(6)"
+          boundingObject USE FLOORBOX
+        }
+        Solid {
+          translation -2.8549e-07 -0.125 -0.13
+          rotation 0 1 0 -1.5707953071795862
+          children [
+            Shape {
+              appearance DEF TRAPAPP Appearance {
+                material Material {
+                  diffuseColor 0.05 0.05 0.05
+                  shininess 0.8
+                }
+              }
+              geometry DEF TRAPEDGEBOX Box {
+                size 0.04 0.1 0.3
+              }
+            }
+          ]
+          boundingObject USE TRAPEDGEBOX
+        }
+        Solid {
+          translation -2.03924e-08 -0.125 0.13
+          rotation 0 1 0 -1.5707953071795862
+          children [
+            Shape {
+              appearance USE TRAPAPP
+              geometry DEF TRAPEDGEBOX Box {
+                size 0.04 0.1 0.3
+              }
+            }
+          ]
+          boundingObject USE TRAPEDGEBOX
+        }
+        Solid {
+          translation -0.13 -0.125 2.06647e-15
+          rotation 0 1 0 3.14159
+          children [
+            Shape {
+              appearance USE TRAPAPP
+              geometry DEF TRAPEDGEBOX Box {
+                size 0.04 0.1 0.3
+              }
+            }
+          ]
+          boundingObject USE TRAPEDGEBOX
+        }
+        Solid {
+          translation 0.13 -0.125 6.89936e-07
+          rotation 0 1 0 3.14159
+          children [
+            Shape {
+              appearance USE TRAPAPP
+              geometry DEF TRAPEDGEBOX Box {
+                size 0.04 0.1 0.3
+              }
+            }
+          ]
+          boundingObject USE TRAPEDGEBOX
         }
       ]
     }
     DEF trap Transform {
-      translation -0.9 0 0.3
+      translation -0.89 0 0.3
       children [
-        Solid {
-          translation 0 -0.075 0
+        DEF FLOOR Solid {
+          translation 0 -0.185 0
           children [
             Shape {
               appearance Appearance {
                 material Material {
-                  diffuseColor 0 0 0
-                  emissiveColor 0.0235294 0.0235294 0.0235294
-                  shininess 0.8
+                  diffuseColor 0.3 0.3 0.3
                 }
               }
-              geometry Box {
-                size 0.3 0.001 0.3
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
               }
             }
           ]
-          name "trapBlock(2)"
+          name "floorBlock3(7)"
+          boundingObject USE FLOORBOX
+        }
+        Solid {
+          translation -2.8549e-07 -0.125 -0.13
+          rotation 0 1 0 -1.5707953071795862
+          children [
+            Shape {
+              appearance DEF TRAPAPP Appearance {
+                material Material {
+                  diffuseColor 0.05 0.05 0.05
+                  shininess 0.8
+                }
+              }
+              geometry DEF TRAPEDGEBOX Box {
+                size 0.04 0.1 0.3
+              }
+            }
+          ]
+          name "solid(1)"
+          boundingObject USE TRAPEDGEBOX
+        }
+        Solid {
+          translation -2.03924e-08 -0.125 0.13
+          rotation 0 1 0 -1.5707953071795862
+          children [
+            Shape {
+              appearance USE TRAPAPP
+              geometry DEF TRAPEDGEBOX Box {
+                size 0.04 0.1 0.3
+              }
+            }
+          ]
+          name "solid(2)"
+          boundingObject USE TRAPEDGEBOX
+        }
+        Solid {
+          translation -0.13 -0.125 2.06647e-15
+          rotation 0 1 0 3.14159
+          children [
+            Shape {
+              appearance USE TRAPAPP
+              geometry DEF TRAPEDGEBOX Box {
+                size 0.04 0.1 0.3
+              }
+            }
+          ]
+          name "solid(3)"
+          boundingObject USE TRAPEDGEBOX
+        }
+        Solid {
+          translation 0.13 -0.125 6.89936e-07
+          rotation 0 1 0 3.14159
+          children [
+            Shape {
+              appearance USE TRAPAPP
+              geometry DEF TRAPEDGEBOX Box {
+                size 0.04 0.1 0.3
+              }
+            }
+          ]
+          name "solid(4)"
+          boundingObject USE TRAPEDGEBOX
         }
       ]
     }
@@ -2543,9 +2625,7 @@ DEF CHECKPOINTS Group {
             Shape {
               appearance Appearance {
                 material Material {
-                  diffuseColor 0 0 0
-                  emissiveColor 0.65098 0.65098 0.65098
-                  shininess 0.8
+                  diffuseColor 1 1 1
                 }
               }
               geometry Box {
@@ -2566,8 +2646,7 @@ DEF CHECKPOINTS Group {
             Shape {
               appearance Appearance {
                 material Material {
-                  diffuseColor 0 0 0
-                  emissiveColor 0.65098 0.65098 0.65098
+                  diffuseColor 1 1 1
                   shininess 0.8
                 }
               }
@@ -2584,17 +2663,27 @@ DEF CHECKPOINTS Group {
 }
 DEF GOALS Group {
   children [
-    DEF goal Transform {
-      translation 0.3 0 -0.9
+    DEF start0max Transform {
+      translation 0.44 0 -0.76
+    }
+    DEF start0min Transform {
+      translation 0.16 0 -1.04
+    }
+    DEF start1min Transform {
+      translation -1.04 0 0.74
+    }
+    DEF start1max Transform {
+      translation -0.76 0 1.04
+    }
+    DEF start0 Transform {
+      translation 0.3 -0.075 -0.9
       children [
         Solid {
-          translation 0 -0.075 0
           children [
             Shape {
               appearance Appearance {
                 material Material {
-                  diffuseColor 0 0 0
-                  emissiveColor 0.0313725 0.835294 0.0313725
+                  diffuseColor 0.0313725 0.835294 0.0313725
                   shininess 0.8
                 }
               }
@@ -2607,93 +2696,83 @@ DEF GOALS Group {
         }
       ]
     }
+    DEF start1 Transform {
+      translation -0.91 -0.075 0.89
+      children [
+        Solid {
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.0313725 0.835294 0.0313725
+                }
+              }
+              geometry Box {
+                size 0.3 0.001 0.3
+              }
+            }
+          ]
+          name "goalBlock(2)"
+        }
+      ]
+    }
   ]
 }
 DEF HUMANGROUP Group {
   children [
-    Transform {
-      translation -0.31 0 -0.165
-      children [
-        DEF human0solid Solid {
-          translation 0.01 0 0
-          rotation -3.3905013482585576e-09 0.7071072811865696 -0.7071062811861719 3.14159
-          scale 0.04 0.04 0.04
-          children [
-            Shape {
-              appearance Appearance {
-                texture DEF human0texture ImageTexture {
-                  url [
-                    "./textures/victim_harmed_not_found.png"
-                  ]
-                }
-              }
-              geometry Plane {
-              }
-            }
-          ]
-          name "solid(5)"
-          description "victim_harmed,30"
-        }
-      ]
+    Victim {
+      translation -0.3 8.48532e-08 -0.1626
+      scoreWorth 30
     }
-    Transform {
-      translation -0.6 0 0.135
-      children [
-        DEF human1solid Solid {
-          rotation -3.3905013482585576e-09 0.7071072811865696 -0.7071062811861719 3.14159
-          scale 0.04 0.04 0.04
-          children [
-            Shape {
-              appearance Appearance {
-                texture DEF human1texture ImageTexture {
-                  url [
-                    "./textures/victim_unharmed_not_found.png"
-                  ]
-                }
-              }
-              geometry Plane {
-              }
-            }
-          ]
-          name "solid(1)"
-          description "victim_unharmed,30"
-        }
-      ]
+    Victim {
+      translation -0.6 -1.89779e-06 0.1374
+      type "unharmed"
+      scoreWorth 30
     }
-    Transform {
-      translation -1.037 0 -0.285
-      rotation 0 1 0 -1.5707953071795862
+    Victim {
+      translation -1.0374 3.56777e-06 -0.3026
+      rotation -0.5773516025189619 -0.5773516025189619 0.5773476025217157 -2.094405307179586
+      type "stable"
+    }
+  ]
+}
+DEF SWAMPS Group {
+  children [
+    DEF swamp0max Transform {
+      translation -0.16 0 0.45
+    }
+    DEF swamp0min Transform {
+      translation -0.46 0 0.16
+    }
+    DEF swamp0 Transform {
+      translation -0.31 0 0.3
       children [
-        DEF human2solid Solid {
-          rotation -3.3905013482585576e-09 0.7071072811865696 -0.7071062811861719 3.14159
-          scale 0.04 0.04 0.04
+        Solid {
+          translation 0 -0.075 0
           children [
             Shape {
               appearance Appearance {
-                texture DEF human2texture ImageTexture {
-                  url [
-                    "./textures/victim_unharmed_not_found.png"
-                  ]
+                material Material {
+                  diffuseColor 0.517647 0.392157 0.192157
                 }
               }
-              geometry Plane {
+              geometry Box {
+                size 0.3 0.001 0.3
               }
             }
           ]
-          name "solid(2)"
-          description "victim_unharmed,10"
+          name "checkpointBlock(4)"
         }
       ]
     }
   ]
 }
-DEF ROBOT0 E-puck {
-  translation 0.2921920000236199 -0.0750639048115891 -0.890515000000056
-  rotation 2.987846004015382e-06 0.9999999999955365 -5.931027511477663e-11 -3.141585310789689
-  name "robot0"
-  controller "robot0Controller"
-  camera_width 64
-  camera_height 64
+DEF ROBOT1 E-puck-custom {
+  translation -0.908823 -0.0750639 0.897861
+  controller "robot1Controller"
+  camera_fieldOfView 0.9
+  camera_width 128
+  camera_height 128
   turretSlot [
     GPS {
     }
@@ -2708,11 +2787,27 @@ DEF ROBOT0 E-puck {
     }
   ]
 }
-DEF ROBOT1 E-puck {
-  translation -0.9198899999763799 -0.07506390481158907 0.874185999999944
-  rotation 2.987846004467529e-06 0.9999999999955365 -5.931746475956824e-11 -3.141585310789683
-  name "robot1"
-  controller "robot1Controller"
+DEF ROBOT0 E-puck-custom {
+  translation 0.299533 -0.0750639 -0.884085
+  rotation 0 1 0 3.14159
+  name "e-puck(1)"
+  controller "robot0Controller"
+  camera_fieldOfView 0.9
+  camera_width 128
+  camera_height 128
+  turretSlot [
+    GPS {
+    }
+  ]
+  groundSensorsSlot [
+    Camera {
+      translation -0.02 0 0.0299998
+      rotation 0 1 0 -1.5707953071795862
+      name "colour_sensor"
+      width 1
+      height 1
+    }
+  ]
 }
 DEF MAINSUPERVISOR Robot {
   children [
