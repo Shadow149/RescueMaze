@@ -1,6 +1,22 @@
-DEF ROBOT{0} E-puck {{
-	controller "robot{0}Controller"
-	translation {1} -0.075 {2}
-	rotation 0 1 0 {3} 
-	name "robot{0}"
+DEF ROBOT{0} E-puck-custom {{
+  translation {1} -0.075 {2}
+  rotation 0 1 0 {3}
+  name "e-puck{0}"
+  controller "robot{0}Controller"
+  camera_fieldOfView 0.9
+  camera_width 128
+  camera_height 128
+  turretSlot [
+    GPS {{
+    }}
+  ]
+  groundSensorsSlot [
+    Camera {{
+      translation -0.02 0 0.0299998
+      rotation 0 1 0 -1.5707953071795862
+      name "colour_sensor"
+      width 1
+      height 1
+    }}
+  ]
 }}

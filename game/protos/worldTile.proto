@@ -19,6 +19,7 @@ PROTO worldTile [
 	  field SFBool start FALSE
 	  field SFBool trap FALSE
 	  field SFBool checkpoint FALSE
+	  field SFBool swamp FALSE
 	  field SFFloat width 0.0
 	  field SFFloat height 0.0
 	  field SFString id ""
@@ -573,7 +574,7 @@ PROTO worldTile [
 						]
 					}
 				%{end}%
-				%{if fields.topLeftCorner.value == true or ((fields.topWall.value == true or fields.leftWall.value == true) and fields.floor.value == true) then}%
+				%{if fields.topLeftCorner.value == true or ((fields.topWall.value == true or fields.leftWall.value == true) and (fields.floor.value == true or fields.trap.value == true)) then}%
 					Transform {
 						children [
 							DEF TOPLEFTCORNER Solid {
@@ -596,7 +597,7 @@ PROTO worldTile [
 						]
 					}
 				%{end}%
-				%{if fields.topRightCorner.value == true or ((fields.topWall.value == true or fields.rightWall.value == true) and fields.floor.value == true) then}%
+				%{if fields.topRightCorner.value == true or ((fields.topWall.value == true or fields.rightWall.value == true) and (fields.floor.value == true or fields.trap.value == true)) then}%
 					Transform {
 						children [
 							DEF BACKRIGHTCORNER Solid {
@@ -619,7 +620,7 @@ PROTO worldTile [
 						]
 					}
 				%{end}%
-				%{if fields.bottomLeftCorner.value == true or ((fields.bottomWall.value == true or fields.leftWall.value == true) and fields.floor.value == true) then}%
+				%{if fields.bottomLeftCorner.value == true or ((fields.bottomWall.value == true or fields.leftWall.value == true) and (fields.floor.value == true or fields.trap.value == true)) then}%
 					Transform{
 						children[
 							DEF FRONTLEFTCORNER Solid {
@@ -642,7 +643,7 @@ PROTO worldTile [
 						]
 					}
 				%{end}%
-				%{if fields.bottomRightCorner.value == true or ((fields.bottomWall.value == true or fields.rightWall.value == true) and fields.floor.value == true) then}%
+				%{if fields.bottomRightCorner.value == true or ((fields.bottomWall.value == true or fields.rightWall.value == true) and (fields.floor.value == true or fields.trap.value == true)) then}%
 					Transform {
 						children [
 							DEF FRONTRIGHTCORNER Solid {
@@ -716,23 +717,84 @@ PROTO worldTile [
 				%{if fields.trap.value == true then}%
 					DEF TRAP Transform {
 						children [
-							Solid {
-								translation 0 -0.075 0
+							
+							DEF FLOOR Solid {
+								translation 0 -0.185 0
 								children [
 									Shape {
 										appearance Appearance {
 											material Material {
-												diffuseColor 0 0 0
-												emissiveColor 0.023 0.023 0.023
-												shininess 0.8
+												diffuseColor 0.3 0.3 0.3
 											}
 										}
-										geometry Box {
-											size 0.3 0.001 0.3
+										geometry DEF FLOORBOX Box {
+											size 0.3 0.02 0.3
 										}
 									}
 								]
-								name "trapBlock%{=fields.id.value}%"
+								name "trapFloor%{=fields.id.value}%"
+								boundingObject USE FLOORBOX
+							}
+							Solid {
+							  translation -2.8549e-07 -0.125 -0.13
+							  rotation 0 1 0 -1.5707953071795862
+							  children [
+								Shape {
+								  appearance DEF TRAPAPP Appearance {
+									material Material {
+									  diffuseColor 0.05 0.05 0.05
+									  shininess 0.8
+									}
+								  }
+								  geometry DEF TRAPEDGEBOX Box {
+									size 0.04 0.1 0.3
+								  }
+								}
+							  ]
+							  name "trapFrontEdge%{=fields.id.value}%"
+							  boundingObject USE TRAPEDGEBOX
+							}
+							Solid {
+							  translation -2.03924e-08 -0.125 0.13
+							  rotation 0 1 0 -1.5707953071795862
+							  children [
+								Shape {
+								  appearance USE TRAPAPP
+								  geometry DEF TRAPEDGEBOX Box {
+									size 0.04 0.1 0.3
+								  }
+								}
+							  ]
+							  name "trapBackEdge%{=fields.id.value}%"
+							  boundingObject USE TRAPEDGEBOX
+							}
+							Solid {
+							  translation -0.13 -0.125 2.06647e-15
+							  rotation 0 1 0 3.14159
+							  children [
+								Shape {
+								  appearance USE TRAPAPP
+								  geometry DEF TRAPEDGEBOX Box {
+									size 0.04 0.1 0.3
+								  }
+								}
+							  ]
+							  name "trapRightEdge%{=fields.id.value}%"
+							  boundingObject USE TRAPEDGEBOX
+							}
+							Solid {
+							  translation 0.13 -0.125 6.89936e-07
+							  rotation 0 1 0 3.14159
+							  children [
+								Shape {
+								  appearance USE TRAPAPP
+								  geometry DEF TRAPEDGEBOX Box {
+									size 0.04 0.1 0.3
+								  }
+								}
+							  ]
+							  name "trapLeftEdge%{=fields.id.value}%"
+							  boundingObject USE TRAPEDGEBOX
 							}
 						]
 					}
@@ -781,6 +843,28 @@ PROTO worldTile [
 									}
 								]
 								name "startBlock%{=fields.id.value}%"
+							}
+						]
+					}
+				%{end}%
+				%{if fields.swamp.value == true then}%
+					DEF START Transform {
+						children [
+							Solid {
+								translation 0 -0.075 0
+								children [
+									Shape {
+										appearance Appearance {
+											material Material {
+												diffuseColor 0.517647 0.392157 0.192157
+											}
+										}
+										geometry Box {
+											size 0.3 0.001 0.3
+										}
+									}
+								]
+								name "swampBlock%{=fields.id.value}%"
 							}
 						]
 					}

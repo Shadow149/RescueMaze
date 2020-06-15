@@ -43,6 +43,7 @@ class Tile ():
         self.checkpoint = False
         self.trap = False
         self.goal = False
+        self.swamp = False
 
     def addWalls (self, wallList: list) -> None:
         '''Add a list of walls'''
@@ -67,34 +68,48 @@ class Tile ():
             self.leftWall = False
 
     def addCheckpoint (self) -> None:
-        '''Add a checkpoint - removes traps and goals'''
+        '''Add a checkpoint - removes traps, goals and swamps'''
         self.checkpoint = True
         self.trap = False
         self.goal = False
+        self.swamp = False
 
     def removeCheckpoint (self) -> None:
         '''Remove a checkpoint'''
         self.checkpoint = False
 
     def addTrap (self) -> None:
-        '''Add a trap - removes checkpoints and goals'''
+        '''Add a trap - removes checkpoints, goals and swamps'''
         self.trap = True
         self.checkpoint = False
         self.goal = False
+        self.swamp = False
 
     def removeTrap (self) -> None:
         '''Remove a trap'''
         self.trap = False
 
     def addGoal (self) -> None:
-        '''Add a goal - removes checkpoints and traps'''
+        '''Add a goal - removes checkpoints, traps and swamps'''
         self.goal = True
         self.checkpoint = False
         self.trap = False
+        self.swamp = False
 
     def removeGoal (self) -> None:
         '''Remove a goal'''
         self.goal = False
+    
+    def addSwamp (self) -> None:
+        '''Add a swamp - removes checkpoints, traps and goals'''
+        self.swamp = True
+        self.checkpoint = False
+        self.trap = False
+        self.goal = False
+
+    def removeSwamp (self) -> None:
+        '''Remove a swamp'''
+        self.swamp = False
     
     def getWalls (self) -> list:
         '''Returns a list of bools which represents if each of the four walls is present'''
@@ -111,7 +126,11 @@ class Tile ():
     def getGoal (self) -> bool:
         '''Return if this tile has a goal'''
         return self.goal
-
+    
+    def getSwamp (self) -> bool:
+        '''Return if this tile has a swamp'''
+        return self.swamp
+    
     def generatePixels (self) -> list:
         '''Generate a grid of pixels for this tile'''
         #Array to hold pixel information
@@ -120,13 +139,15 @@ class Tile ():
         #The background pixel colour
         basicPixel = 0
 
-        #Change background colour if this is a checkpoint / trap / goal
+        #Change background colour if this is a checkpoint / trap / goal / swamp
         if self.checkpoint:
             basicPixel = 2
         if self.trap:
             basicPixel = 3
         if self.goal:
             basicPixel = 4
+        if self.swamp:
+            basicPixel = 5
 
         #Fill array with background pixels
         for y in range(0, 20):
@@ -226,6 +247,10 @@ def printWorld(array):
                         if pixels[y][x] == 4:
                             #Add green pixel
                             img.putpixel((xStart + x, yStart + y), (0, 255, 0))
+                        #If there is a swamp
+                        if pixels[y][x] == 5:
+                            #Add tan pixel
+                            img.putpixel((xStart + x, yStart + y), (222, 184, 135))
             #Increase y start each pass
             yStart = yStart + 20
         #Increase x start position each time
@@ -482,8 +507,32 @@ def addTraps(array, traps, startTile, endTile, x, y):
                         #Remove the quadrant from the options
                         del quads[rQ]
 
+def addSwamps(array, swamps, startTile, endTile, x, y):
+    '''Adds a number of swamps to the map'''
+    #Iterate for each swamp
+    print(swamps)
+    for i in range(0, swamps):
+        #Not added yet
+        added = False
+        attempt = 0
+        #Repeat until added or 100 tries reached
+        while not added and attempt < 100:
+            #Get a random tile
+            xPos = random.randrange(1, x)
+            yPos = random.randrange(1, y)
+            tile = array[yPos][xPos]
+            #If this isn't the start, end or not a tile
+            if [xPos, yPos] != startTile and [xPos, yPos] != endTile and tile != None:
+                #If there is nothing there already
+                if not tile.getGoal() and not tile.getCheckpoint() and not tile.getSwamp() and not tile.getTrap():
+                    #Add the swamp
+                    tile.addSwamp()
+                    added = True
+            #Increment counter
+            attempt = attempt + 1
+            
 
-def generateWorld(x, y, checkpoints, traps):
+def generateWorld(x, y, checkpoints, traps, swamps):
     '''Perform generation of a world array'''
     #Create the empty array
     array = createEmptyWorld(x, y)
@@ -640,6 +689,9 @@ def generateWorld(x, y, checkpoints, traps):
 
     #Add traps
     addTraps(array, traps, startTile, endTile, x, y)
+    
+    #Add swamps
+    addSwamps(array, swamps, startTile, endTile, x, y)
 
     #Return the array, root node, room boundaries and doors
     return array, [startBay, startDir]
@@ -687,10 +739,10 @@ def generateObstacles(bulky, debris):
     return obstacles
 
 
-def generatePlan (xSize, ySize, numCheckpoints, numTraps, bulkyObstacles, debris):
+def generatePlan (xSize, ySize, numCheckpoints, numTraps, bulkyObstacles, debris, numSwamps):
     '''Perform a map generation up to png - does not update map file'''
     #Generate the world and tree
-    world, startPos = generateWorld(xSize, ySize, numCheckpoints, numTraps)
+    world, startPos = generateWorld(xSize, ySize, numCheckpoints, numTraps, numSwamps)
 	
     #Create a list of obstacles
     obstacles = generateObstacles(bulkyObstacles, debris)
@@ -714,8 +766,8 @@ def generateWorldFile (world, obstacles, numThermal, numVisual, startPos, window
         row = []
         #Iterate horizontally
         for x in range(0, len(world[0]) + 1):
-            #Add each tile [present, [uWall,rWall,dWall,lWall], checkpoint, trap, goal]
-            row.append([False, [False, False, False, False], False, False, False])
+            #Add each tile [present, [uWall,rWall,dWall,lWall], checkpoint, trap, goal, swamp]
+            row.append([False, [False, False, False, False], False, False, False, False])
         #Add row to array
         walls.append(row)
 
@@ -725,7 +777,7 @@ def generateWorldFile (world, obstacles, numThermal, numVisual, startPos, window
             #If there is a tile there
             if world[y][x] != None:
                 #Add the wall data
-                walls[y][x] = [True, world[y][x].getWalls(), world[y][x].getCheckpoint(), world[y][x].getTrap(), world[y][x].getGoal()]
+                walls[y][x] = [True, world[y][x].getWalls(), world[y][x].getCheckpoint(), world[y][x].getTrap(), world[y][x].getGoal(), world[y][x].getSwamp()]
 
     #Make a map from the walls and objects
     WorldCreator.makeFile(walls, obstacles, numThermal, numVisual, startPos, window)
@@ -766,12 +818,12 @@ while guiActive:
         #Cannot save now
         window.setSaveButton(False)
         #Get generation values as follows:
-        #[[xSize ySize], [thermal, visual], [bulky, debris], [checkpoints, traps]]
+        #[[xSize ySize], [thermal, visual], [bulky, debris], [checkpoints, traps, swamps]]
         genValues = window.getValues()
         #A generation has started (resets flag so generation is not called again)
         window.generateStarted()
         #Generate a plan with the values
-        world, obstacles, startTilePos = generatePlan(genValues[0][0], genValues[0][1], genValues[3][0], genValues[3][1], genValues[2][0], genValues[2][1])
+        world, obstacles, startTilePos = generatePlan(genValues[0][0], genValues[0][1], genValues[3][0], genValues[3][1], genValues[2][0], genValues[2][1], genValues[3][2])
         #Unpack the unused human values
         thermalHumans, visualHumans = genValues[1][0], genValues[1][1]
         #Unpack the used obstacle counts

@@ -141,12 +141,12 @@ class GenerateWindow(tk.Tk):
         self.basicSection.grid_rowconfigure(0, minsize=670)
 
         #List of default difficulty values
-        self.difficulties = [[[5, 5], [4, 3], [0, 0], [2, 1]],
-                             [[6, 5], [6, 4], [1, 5], [2, 1]],
-                             [[7, 7], [7, 5], [2, 8], [2, 2]],
-                             [[9, 7], [8, 5], [2, 9], [3, 2]],
-                             [[11, 9], [9, 6], [3, 10], [3, 3]],
-                             [[15, 15], [12, 8], [4, 15], [4, 3]]]
+        self.difficulties = [[[5, 5], [4, 3], [0, 0], [2, 1, 1]],
+                             [[6, 5], [6, 4], [1, 0], [2, 1, 1]],
+                             [[7, 7], [7, 5], [2, 0], [2, 2, 2]],
+                             [[9, 7], [8, 5], [2, 0], [3, 2, 3]],
+                             [[11, 9], [9, 6], [3, 0], [3, 3, 3]],
+                             [[15, 15], [12, 8], [4, 0], [4, 3, 4]]]
 
         #Setup the grid for the advanced page
         self.advancedSection.grid_columnconfigure(0, minsize=275)
@@ -176,7 +176,7 @@ class GenerateWindow(tk.Tk):
         self.inputsArray.append(self.createSliderSection(self.advRoom, 5, 15, "Rooms", "Vertical:", 5, 15, "Horizontal:"))
         self.inputsArray.append(self.createSliderSection(self.advHumans, 0, 20, "Humans", "Visual:", 0, 20, "Thermal:"))
         self.inputsArray.append(self.createSliderSection(self.advObstacles, 0, 10, "Obstacles", "Debris:", 0, 20, "Bulky:"))
-        self.inputsArray.append(self.createSliderSection(self.advTiles, 2, 4, "Tiles", "Traps:", 0, 4, "Checkpoints:"))
+        self.inputsArray.append(self.createSliderSection(self.advTiles, 2, 4, "Tiles", "Traps:", 0, 4, "Checkpoints:", "Swamps:", 0, 6))
         
         #Add a slider to choose the difficulty
         self.basicSlider = tk.Scale(self.basicSection, label="Difficulty:", font=self.inputFont, showvalue=0, from_=0, to=5, orient=tk.HORIZONTAL, length=250, command = self.moveBasicSlider)
@@ -238,7 +238,7 @@ class GenerateWindow(tk.Tk):
         self.advancedSection.tkraise()
 
 
-    def createSliderSection (self, parent, minVal: int, maxVal: int, title: str, extraTitle = None, extraMin = None, extraMax = None, firstTitle = "Number:") -> list:
+    def createSliderSection (self, parent, minVal: int, maxVal: int, title: str, extraTitle = None, extraMin = None, extraMax = None, firstTitle = "Number:", thirdTitle = None, thirdMin = None, thirdMax = None) -> list:
         '''Add a slider section to the given parent'''
         #Configure parent grid
         parent.grid_columnconfigure(0, weight = 1)
@@ -253,15 +253,24 @@ class GenerateWindow(tk.Tk):
         if extraTitle != None and extraMin != None and extraMax != None:
             #Add another row
             slideFrame.grid_rowconfigure(1, weight = 1)
+        #If there is a third slider
+        if thirdTitle != None and thirdMin != None and thirdMax != None:
+            #Add another row
+            slideFrame.grid_rowconfigure(2, weight = 1)
         #Create boolean variable to hold the locked state of the slider
         enabled = tk.BooleanVar()
         #Create the slider
         mainSlider = self.createSlider(slideFrame, minVal, maxVal, firstTitle)
         extraSlider = None
+        thirdSlider = None
         #If there is an extra slider
         if extraTitle != None and extraMin != None and extraMax != None:
             #Create the extra slider
             extraSlider = self.createSlider(slideFrame, extraMin, extraMax, extraTitle, 1)
+        #If there is a third slider
+        if thirdTitle != None and thirdMin != None and thirdMax != None:
+            #Create the third slider
+            thirdSlider = self.createSlider(slideFrame, thirdMin, thirdMax, thirdTitle, 2)
         #Create the header frame (to hold name and enabled box)
         headerFrame = tk.Frame(parent)
         headerFrame.grid(row = 0, column = 0, sticky = (tk.N, tk.E, tk.S, tk.W))
@@ -274,9 +283,16 @@ class GenerateWindow(tk.Tk):
         #Create locked check box
         enabledBox = tk.Checkbutton(headerFrame, onvalue = True, offvalue = False, variable = enabled, command = self.inputChanged)
         enabledBox.grid(row = 0, column = 1, sticky = (tk.N, tk.E, tk.S, tk.W))
-
-        #Return the boolean variable and both sliders
-        return [enabled, mainSlider, extraSlider]
+        
+        #Boolean variable and both sliders
+        toReturn = [enabled, mainSlider, extraSlider]
+        #If there is a third
+        if thirdTitle != None and thirdMin != None and thirdMax != None:
+            #Add it to the data being returned
+            toReturn.append(thirdSlider)
+        
+        #Return the boolean variable and all sliders
+        return toReturn
 
         
     def createSlider (self, parent, minVal: int, maxVal: int, name: str, rowNum = 0) -> tk.Scale:
@@ -358,16 +374,26 @@ class GenerateWindow(tk.Tk):
                     #Set slider to enabled
                     field[1].configure(state = "normal", troughcolor = self.troughColourDefault)
                     #If there is an extra slider (otherwise it will be None)
-                    if (field[2] != None):
+                    if field[2] != None:
                         #Set the extra slider to enabled
                         field[2].configure(state = "normal", troughcolor = self.troughColourDefault)
+                    #If there is a third slider
+                    if len(field) > 3:
+                        if field[3] != None:
+                            #Set the third slider to enabled
+                            field[3].configure(state = "normal", troughcolor = self.troughColourDefault)
                 else:
                     #Set slider to disabled
                     field[1].configure(state = "disabled", troughcolor = "#AA8888")
                     #If there is an extra slider (otherwise it will be None)
-                    if (field[2] != None):
+                    if field[2] != None:
                         #Set the extra slider to disabled
                         field[2].configure(state = "disabled", troughcolor = "#AA8888")
+                    #If there is a third slider
+                    if len(field) > 3:
+                        if field[3] != None:
+                            #Set the third slider to disabled
+                            field[3].configure(state = "disabled", troughcolor = "#AA8888")
 
 
     def getValues (self) -> list:

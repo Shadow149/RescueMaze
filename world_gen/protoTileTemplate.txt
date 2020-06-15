@@ -19,7 +19,8 @@ DEF TILE worldTile {{
   start {17}
   trap {18}
   checkpoint {19}
-  width {20}
-  height {21}
-  id "{22}"
+  swamp {20}
+  width {21}
+  height {22}
+  id "{23}"
 }}

@@ -235,12 +235,11 @@ def createFileData (walls, obstacles, numThermal, numVisual, startPos):
 
     #Strings to hold the tile parts
     allTiles = ""
-    #allExternals = ""
-    #allExtras = ""
     #Strings to hold the boundaries for special tiles
     allCheckpointBounds = ""
     allTrapBounds = ""
     allGoalBounds = ""
+    allSwampBounds = ""
 
     #Upper left corner to start placing tiles from
     width = len(walls[0])
@@ -253,6 +252,7 @@ def createFileData (walls, obstacles, numThermal, numVisual, startPos):
     checkId = 0
     trapId = 0
     goalId = 0
+    swampId = 0
 
     #Iterate through all the tiles
     for x in range(0, len(walls[0])):
@@ -268,7 +268,7 @@ def createFileData (walls, obstacles, numThermal, numVisual, startPos):
             if notchData[1]:
                 notch = "right"
             #Create a new tile with all the data
-            tile = protoTilePart.format(x, z, walls[z][x][0], walls[z][x][1][0], walls[z][x][1][1], walls[z][x][1][2], walls[z][x][1][3], corners[0], corners[1], corners[2], corners[3], externals[0], externals[1], externals[2], externals[3], notch, notchData[2], walls[z][x][4], walls[z][x][3], walls[z][x][2], width, height, tileId)
+            tile = protoTilePart.format(x, z, walls[z][x][0] and not walls[z][x][3], walls[z][x][1][0], walls[z][x][1][1], walls[z][x][1][2], walls[z][x][1][3], corners[0], corners[1], corners[2], corners[3], externals[0], externals[1], externals[2], externals[3], notch, notchData[2], walls[z][x][4], walls[z][x][3], walls[z][x][2], walls[z][x][5], width, height, tileId)
             tile = tile.replace("True", "TRUE")
             tile = tile.replace("False", "FALSE")
             allTiles = allTiles + tile
@@ -292,6 +292,12 @@ def createFileData (walls, obstacles, numThermal, numVisual, startPos):
                 allGoalBounds = allGoalBounds + boundsPart.format("start", goalId, (x * 0.3 + startX) - 0.15, (z * 0.3 + startZ) - 0.15, (x * 0.3 + startX) + 0.15, (z * 0.3 + startZ) + 0.15)
                 #Increment id counter
                 goalId = goalId + 1
+            #swamp
+            if walls[z][x][5]:
+                #Add bounds to the swamp boundaries
+                allSwampBounds = allSwampBounds + boundsPart.format("swamp", swampId, (x * 0.3 + startX) - 0.15, (z * 0.3 + startZ) - 0.15, (x * 0.3 + startX) + 0.15, (z * 0.3 + startZ) + 0.15)
+                #Increment id counter
+                swampId = swampId + 1
             #Increment id counter
             tileId = tileId + 1
 
@@ -300,6 +306,7 @@ def createFileData (walls, obstacles, numThermal, numVisual, startPos):
     fileData = fileData + groupPart.format(allCheckpointBounds, "CHECKPOINTBOUNDS")
     fileData = fileData + groupPart.format(allTrapBounds, "TRAPBOUNDS")
     fileData = fileData + groupPart.format(allGoalBounds, "STARTBOUNDS")
+    fileData = fileData + groupPart.format(allSwampBounds, "SWAMPBOUNDS")
 
     #String to hold all the data for the obstacles
     allObstacles = ""
