@@ -37,17 +37,20 @@ while robot.step(32) != -1:
         wheelLeft.setVelocity(0)
         wheelRight.setVelocity(0)
 
-    if currentTime - startTime > 6 and not messagedSent:
-        message = struct.pack('i i i c', 1, -30, -15, b'H')
-        emitter.send(message)
+    message = struct.pack('i i i c', 0, -30, -15, b'H')
+    emitter.send(message)
 
-        message = struct.pack('i i i c', 1, -60, 14, b'S')
-        emitter.send(message)
+    message = struct.pack('i i i c', 0, 27, -37, b'H')
+    emitter.send(message)
 
-        message = struct.pack('i i i c', 1, 0, 0, b'E')
-        emitter.send(message)
+    message = struct.pack('i i i c', 0, -60, 14, b'S')
+    emitter.send(message)
 
-        messagedSent = True
+    message = struct.pack('i i i c', 0, -100, -30, b'S')
+    emitter.send(message)
+
+    #message = struct.pack('i i i c', 1, 0, 0, b'E')
+    #emitter.send(message)
 
     if int(currentTime) % 2 == 0:
         led.set(True)

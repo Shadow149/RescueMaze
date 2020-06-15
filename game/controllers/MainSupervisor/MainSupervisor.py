@@ -145,6 +145,8 @@ class Human():
 
         self.wb_translationField = self.wb_node.getField('translation')
 
+        self.wb_rotationField = self.wb_node.getField('rotation')
+
         self.wb_typeField = self.wb_node.getField('type')
         self.wb_foundField = self.wb_node.getField('found')
 
@@ -162,6 +164,14 @@ class Human():
     @position.setter
     def position(self, pos: list) -> None:
         self.wb_translationField.setSFVec3f(pos)
+
+    @property
+    def rotation(self) -> list:
+        return self.wb_rotationField.getSFRotation()
+
+    @rotation.setter
+    def rotation(self, pos: list) -> None:
+        self.wb_rotationField.setSFRotation(pos)
 
     @property
     def victim_type(self) -> list:
@@ -204,7 +214,43 @@ class Human():
         # Get distance from the object to the passed position using manhattan distance for speed
         # TODO Check if we want to use euclidian or manhattan distance -- currently manhattan
         distance = abs(self.position[0] - pos[0]) + abs(self.position[2] - pos[2])
-        return distance < min_dist
+        return distance <= min_dist
+
+    def onSameSide(self, pos: list) -> bool:
+        #get side its pointing at
+
+        #0 1 0 -pi/2 -> X axis
+        #0 1 0 pi/2 -> -X axis
+        #0 1 0 pi -> Z axis
+        #0 1 0 0 -> -Z axis
+
+        rot = self.rotation[3]
+        rot = round(rot, 2)
+
+        if rot == -1.57:
+            #X axis
+            robot_x = pos[0]
+            if robot_x > self.position[0]:
+                return True
+        elif rot == 1.57:
+            #-X axis
+            robot_x = pos[0]
+            if robot_x < self.position[0]:
+                return True
+        elif rot == 3.14:
+            #Z axis
+            robot_z = pos[2]
+            if robot_z > self.position[2]:
+                return True
+        elif rot == 0:
+            #-Z axis
+            robot_z = pos[2]
+            if robot_z < self.position[2]:
+                return True
+
+        return False
+        
+
 
 
 class Tile():
@@ -340,7 +386,7 @@ def updateHistory():
 
 
 def getHumans():
-    print('yeet')
+    #print('yeet')
     # Iterate for each human
     for i in range(numberOfHumans):
         # Get each human from children field in the human root node HUMANGROUP
@@ -348,8 +394,8 @@ def getHumans():
 
         victimType = human.getField('type').getSFString()
         scoreWorth = human.getField('scoreWorth').getSFInt32()
-        print(victimType)
-        print(scoreWorth)
+        #print(victimType)
+        #print(scoreWorth)
 
         # Create Human Object from human position
         humanObj = Human(human, i, victimType, scoreWorth)
@@ -365,7 +411,7 @@ def resetVictimsTextures():
 def relocate(num):
     if int(num) == 0:
         relocatePosition = robot0Obj.lastVisitedCheckPointPosition
-        print(relocatePosition)
+        #print(relocatePosition)
 
         if relocatePosition == []:
             print('No checkpoint visited')
@@ -611,7 +657,7 @@ while simulationRunning:
                     robot1Obj.history.enqueue("Found checkpoint  +10")
                     updateHistory()
 
-    # Print when robot0 enters or exits a checkpoint
+    # #Print when robot0 enters or exits a checkpoint
     if robot0Obj.inSimulation:
         if robot0Obj.inCheckpoint != r0:
             robot0Obj.inCheckpoint = r0
@@ -621,7 +667,7 @@ while simulationRunning:
                 print("Robot 0 exited a checkpoint")
 
     if robot1Obj.inSimulation:
-        # Print when robot1 enters or exits a checkpoint
+        # #Print when robot1 enters or exits a checkpoint
         if robot1Obj.inCheckpoint != r1:
             robot1Obj.inCheckpoint = r1
             if robot1Obj.inCheckpoint:
@@ -642,33 +688,33 @@ while simulationRunning:
             if swamp.checkPosition(robot1Obj.position):
                 r1s = True
 
-    # Print when robot0 enters or exits a checkpoint
+    # #Print when robot0 enters or exits a checkpoint
     if robot0Obj.inSimulation:
         if robot0Obj.inSwamp != r0s:
             robot0Obj.inSwamp = r0s
             if robot0Obj.inSwamp:
                 robot0Obj.setMaxVelocity(2)
-                print("Robot 0 entered a swamp")
+                #print("Robot 0 entered a swamp")
                 robot0Obj.history.enqueue("Entered swamp")
                 updateHistory()
             else:
                 robot0Obj.setMaxVelocity(DEFAULT_MAX_VELOCITY)
-                print("Robot 0 exited a swamp")
+                #print("Robot 0 exited a swamp")
                 #robot0Obj.history.enqueue("Exited swamp")
                 #updateHistory()
 
-    # Print when robot1 enters or exits a checkpoint
+    # #Print when robot1 enters or exits a checkpoint
     if robot1Obj.inSimulation:
         if robot1Obj.inSwamp != r1s:
             robot1Obj.inSwamp = r1s
             if robot1Obj.inSwamp:
                 robot1Obj.setMaxVelocity(2)
-                print("Robot 1 entered a swamp")
+                #print("Robot 1 entered a swamp")
                 robot0Obj.history.enqueue("Entered swamp")
                 updateHistory()
             else:
                 robot1Obj.setMaxVelocity(DEFAULT_MAX_VELOCITY)
-                print("Robot 1 exited a swamp")
+                #print("Robot 1 exited a swamp")
                 #robot1Obj.history.enqueue("Exited swamp")
                 #updateHistory()
 
@@ -686,9 +732,9 @@ while simulationRunning:
 
         if robotNumber == 0:
             if robot0Obj.inSimulation:
-                print('message updated')
+                #print('message updated')
                 robot0Obj.messages.enqueue((estimated_victim_position, victimType))
-                print(robot0Obj.messages.queue)
+                #print(robot0Obj.messages.queue)
         else:
             if robot1Obj.inSimulation:
                 robot1Obj.messages.enqueue((estimated_victim_position, victimType))
@@ -698,16 +744,16 @@ while simulationRunning:
     if robot0Obj.inSimulation:
         if not robot0Obj.messages.is_empty():
 
-            print('peek', robot0Obj.messages.peek())
+            #print('peek', robot0Obj.messages.peek())
             r0_exitmessage = robot0Obj.messages.peek()[1]
-            print(r0_exitmessage)
+            #print(r0_exitmessage)
 
             if r0_exitmessage == 'E':
 
                 robot0Obj.messages.dequeue()
 
                 if robot0Obj.startingTile.checkPosition(robot0Obj.position):
-                    print("Robot 0 Successful Exit")
+                    #print("Robot 0 Successful Exit")
 
                     robot0Obj.history.enqueue("Successful Exit")
 
@@ -719,16 +765,16 @@ while simulationRunning:
     if robot1Obj.inSimulation:
         if not robot1Obj.messages.is_empty():
 
-            print('peek', robot1Obj.messages.peek())
+            #print('peek', robot1Obj.messages.peek())
             r1_exitmessage = robot1Obj.messages.peek()[1]
-            print(r1_exitmessage)
+            #print(r1_exitmessage)
 
             if r1_exitmessage == 'E':
 
                 robot1Obj.messages.dequeue()
 
                 if robot1Obj.startingTile.checkPosition(robot1Obj.position):
-                    print("Robot 1 Successful Exit")
+                    #print("Robot 1 Successful Exit")
 
                     robot1Obj.history.enqueue("Successful Exit")
 
@@ -742,7 +788,7 @@ while simulationRunning:
 
             if not robot0Obj.messages.is_empty():
 
-                print('peek', robot0Obj.messages.peek())
+                #print('peek', robot0Obj.messages.peek())
                 r0_est_vic_pos = robot0Obj.messages.peek()[0]
                 r0_est_vic_type = robot0Obj.messages.peek()[1]
 
@@ -750,27 +796,29 @@ while simulationRunning:
 
                 for i, h in enumerate(humans):
                     if not h.identified:
-                        if h.checkPosition(r0_est_vic_pos, 0.15):
+                        if h.checkPosition(robot0Obj.position, 0.15):
+                            if h.onSameSide(robot0Obj.position):
+                                if h.checkPosition(r0_est_vic_pos, 0.15):
 
-                            print("Robot 0 Successful Victim Identification")
+                                    #print("Robot 0 Successful Victim Identification")
 
-                            pointsScored = h.scoreWorth
+                                    pointsScored = h.scoreWorth
 
-                            if r0_est_vic_type.lower() == h.simple_victim_type.lower():
-                                robot0Obj.history.enqueue("Successful Vitim Type Correct  Bonus + 10")
-                                pointsScored += 10
+                                    if r0_est_vic_type.lower() == h.simple_victim_type.lower():
+                                        robot0Obj.history.enqueue("Successful Vitim Type Correct  Bonus + 10")
+                                        pointsScored += 10
 
-                            robot0Obj.history.enqueue("Successful Victim Identification " + " +" + str(h.scoreWorth))
-                            robot0Obj.increaseScore(pointsScored)
+                                    robot0Obj.history.enqueue("Successful Victim Identification " + " +" + str(h.scoreWorth))
+                                    robot0Obj.increaseScore(pointsScored)
 
-                            h.identified = 1
-                            updateHistory()
+                                    h.identified = 1
+                                    updateHistory()
     if robot1Obj.inSimulation:
         if robot1Obj.timeStopped() >= 5:
 
             if not robot1Obj.messages.is_empty():
 
-                print('peek', robot1Obj.messages.peek())
+                #print('peek', robot1Obj.messages.peek())
                 r1_est_vic_pos = robot1Obj.messages.peek()[0]
                 r1_est_vic_type = robot1Obj.messages.peek()[1]
 
@@ -778,29 +826,30 @@ while simulationRunning:
 
                 for i, h in enumerate(humans):
                     if not h.identified:
-                        if h.checkPosition(r1_est_vic_pos, 0.15):
+                        if h.checkPosition(robot1Obj.position, 0.15):
+                            if h.onSameSide(robot1Obj.position):
+                                if h.checkPosition(r1_est_vic_pos, 0.15):
 
-                            print("Robot 1 Successful Victim Identification")
+                                    #print("Robot 1 Successful Victim Identification")
 
-                            pointsScored = h.scoreWorth
+                                    pointsScored = h.scoreWorth
 
-                            if r1_est_vic_type.lower() == h.simple_victim_type.lower():
-                                robot1Obj.history.enqueue("Successful Vitim Type Correct  Bonus + 10")
-                                pointsScored += 10
+                                    if r1_est_vic_type.lower() == h.simple_victim_type.lower():
+                                        robot1Obj.history.enqueue("Successful Vitim Type Correct  Bonus + 10")
+                                        pointsScored += 10
 
-                            robot1Obj.history.enqueue("Successful Victim Identification " + " +" + str(h.scoreWorth))
-                            robot1Obj.increaseScore(pointsScored)
+                                    robot1Obj.history.enqueue("Successful Victim Identification " + " +" + str(h.scoreWorth))
+                                    robot1Obj.increaseScore(pointsScored)
 
-                            h.identified = 1
-                            updateHistory()
+                                    h.identified = 1
+                                    updateHistory()
 
     if robot0Obj.inSimulation:
         if robot0Obj.timeStopped() >= 20:
-            robot0Obj.history.enqueue("LOP - Relocating to checkpoint")
+            robot0Obj.history.enqueue("LOP -5 points -- Relocating to checkpoint")
+            robot0Obj.increaseScore(-5)
             updateHistory()
             relocate(0)
-            robot0Obj._stoppedTime = 0
-            robot0Obj._timeStopped = None
 
             robot0Obj._timeStopped = 0
             robot0Obj._stopped = False
@@ -808,7 +857,8 @@ while simulationRunning:
 
     if robot1Obj.inSimulation:
         if robot1Obj.timeStopped() >= 20:
-            robot1Obj.history.enqueue("LOP - Relocating to checkpoint")
+            robot1Obj.history.enqueue("LOP -5 points -- Relocating to checkpoint")
+            robot1Obj.increaseScore(-5)
             updateHistory()
             relocate(1)
 
@@ -818,9 +868,9 @@ while simulationRunning:
 
     # If the running state changes
     if previousRunState != currentlyRunning:
-        # Update the value and print
+        # Update the value and #print
         previousRunState = currentlyRunning
-        print("Run State:", currentlyRunning)
+        #print("Run State:", currentlyRunning)
 
     # Get human positions if game started
     # if gameStarted and not humansLoaded:
@@ -844,7 +894,7 @@ while simulationRunning:
                 # Pause the match
                 currentlyRunning = False
             if parts[0] == "reset":
-                print("Reset message Received")
+                #print("Reset message Received")
                 # Reset both controller files
                 resetControllerFile(0)
                 resetControllerFile(1)

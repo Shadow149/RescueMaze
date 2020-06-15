@@ -2,8 +2,8 @@
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.07050579404754874 -0.947654672037687 -0.3114154067654141 3.5642891371380787
-  position 1.011570947594862 2.295548300550645 -2.7648370650078764
+  orientation -0.06314071625124112 0.9511915176199632 0.30207275077224605 2.749067643598082
+  position 0.4809701686736409 1.5484426468265646 -2.3209119786711288
 }
 TexturedBackground {
 }
@@ -2474,6 +2474,7 @@ DEF TRAPS Group {
               }
             }
           ]
+          name "solid0"
           boundingObject USE TRAPEDGEBOX
         }
         Solid {
@@ -2487,6 +2488,7 @@ DEF TRAPS Group {
               }
             }
           ]
+          name "solid1"
           boundingObject USE TRAPEDGEBOX
         }
         Solid {
@@ -2500,6 +2502,7 @@ DEF TRAPS Group {
               }
             }
           ]
+          name "solid2"
           boundingObject USE TRAPEDGEBOX
         }
         Solid {
@@ -2513,6 +2516,7 @@ DEF TRAPS Group {
               }
             }
           ]
+          name "solid3"
           boundingObject USE TRAPEDGEBOX
         }
       ]
@@ -2722,16 +2726,25 @@ DEF HUMANGROUP Group {
   children [
     Victim {
       translation -0.3 8.48532e-08 -0.1626
+      name "Victim0"
+      scoreWorth 30
+    }
+    Victim {
+      translation 0.3 8.48532e-08 -0.4326
+      rotation 0 1 0 3.14159
+      name "Victim1"
       scoreWorth 30
     }
     Victim {
       translation -0.6 -1.89779e-06 0.1374
+      name "Victim2"
       type "unharmed"
       scoreWorth 30
     }
     Victim {
       translation -1.0374 3.56777e-06 -0.3026
-      rotation -0.5773516025189619 -0.5773516025189619 0.5773476025217157 -2.094405307179586
+      rotation 0 1 0 -1.5707953071795862
+      name "Victim3"
       type "stable"
     }
   ]
@@ -2767,9 +2780,11 @@ DEF SWAMPS Group {
     }
   ]
 }
-DEF ROBOT1 E-puck-custom {
-  translation -0.908823 -0.0750639 0.897861
-  controller "robot1Controller"
+DEF ROBOT0 E-puck-custom {
+  translation 0.299533 -0.0750639 -0.884085
+  rotation 0 1 0 3.14159
+  name "e-puck(1)"
+  controller "robot0Controller"
   camera_fieldOfView 0.9
   camera_width 128
   camera_height 128
@@ -2787,11 +2802,10 @@ DEF ROBOT1 E-puck-custom {
     }
   ]
 }
-DEF ROBOT0 E-puck-custom {
-  translation 0.299533 -0.0750639 -0.884085
-  rotation 0 1 0 3.14159
-  name "e-puck(1)"
-  controller "robot0Controller"
+DEF ROBOT1 E-puck-custom {
+  translation -0.908823 -0.0750639 0.897861
+  name "e-puck 1"
+  controller "robot1Controller"
   camera_fieldOfView 0.9
   camera_width 128
   camera_height 128
