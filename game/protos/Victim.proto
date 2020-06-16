@@ -4,7 +4,7 @@
 PROTO Victim [
     field SFVec3f    translation       0 0 0
     field SFRotation rotation          0 0 0 0
-    field SFInt32    found             0
+    field SFBool     found             FALSE
     field SFString   name              "Victim"
     field SFString   type              "harmed"
     field SFInt32    scoreWorth        10
@@ -26,10 +26,10 @@ PROTO Victim [
                     im:filledRectangle(0, 0, 127, 127, color)
             
                     -- add the text in the texture
-                    if fields.found.value == 0 then
-                        textColor = im:colorAllocate(0, 0, 0)
-                    else
+                    if fields.found.value then
                         textColor = im:colorAllocate(100, 100, 100)
+                    else
+                        textColor = im:colorAllocate(0, 0, 0)
                     end
         
                     gd.fontCacheSetup()
@@ -77,7 +77,11 @@ PROTO Victim [
                     }
                 ]
                 recognitionColors [
-                    1 1 1
+                    %{ if fields.found.value then }%
+                        0 0 0
+                    %{ else }%                 
+                        1 1 1
+                    %{ end }%
                 ]
             }
         ]

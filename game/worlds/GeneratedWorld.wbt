@@ -1,9 +1,10 @@
 #VRML_SIM R2020a utf8
 WorldInfo {
+  basicTimeStep 16
 }
 Viewpoint {
-  orientation -0.999999999992902 3.3007734659748418e-06 1.8168571735575623e-06 1.2200003645025932
-  position -0.1747262787363444 4.036435669284458 1.3312185549232434
+  orientation -0.9266854942793478 -0.3573449124420116 -0.11644143697177532 0.6762508431161578
+  position -0.7204895122525407 1.4038213821459442 2.154000539612
 }
 TexturedBackground {
 }
@@ -719,6 +720,29 @@ DEF OBSTACLES Group {
 DEF DEBRIS Group {
 }
 DEF HUMANGROUP Group {
+  children [
+    Victim {
+      translation -0.76 0 0.163
+      rotation 0 1 0 3.14159
+    }
+    Victim {
+      translation -0.15 0 -0.737
+      rotation 0 1 0 3.14159
+      name "Victim(3)"
+    }
+    Victim {
+      translation -0.313 0 0.303
+      rotation 0 1 0 1.5708
+      name "Victim(1)"
+      type "unharmed"
+    }
+    Victim {
+      translation -0.013 0 -0.0069997
+      rotation 0 1 0 1.5708
+      name "Victim(2)"
+      type "stable"
+    }
+  ]
 }
 DEF ROBOT0 E-puck-custom {
   translation -0.8249999999999998 -0.075 0.5999999999999999
@@ -765,6 +789,7 @@ DEF ROBOT1 E-puck-custom {
 DEF MAINSUPERVISOR Robot {
   children [
     Receiver {
+      channel 1
     }
   ]
   controller "MainSupervisor"

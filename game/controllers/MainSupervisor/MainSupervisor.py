@@ -69,7 +69,7 @@ class Robot:
         self._stopped = False
         self._stoppedTime = None
 
-        self.messages = Queue()
+        self.message = []
 
         #TODO make first tile first checkpoint
         self.lastVisitedCheckPointPosition = []
@@ -183,11 +183,11 @@ class Human():
 
     @property
     def identified(self) -> list:
-        return self.wb_foundField.getSFInt32()
+        return self.wb_foundField.getSFBool()
 
     @identified.setter
     def identified(self, idfy: int):
-        self.wb_foundField.setSFInt32(idfy)
+        self.wb_foundField.setSFBool(idfy)
 
     def get_simple_victim_type(self):
         if self._victim_type == 'harmed':
@@ -405,7 +405,7 @@ def getHumans():
 def resetVictimsTextures():
     # Iterate for each victim
     for i in range(numberOfHumans):
-        humans[i].identified = 0
+        humans[i].identified = False
 
 
 def relocate(num):
@@ -572,7 +572,7 @@ startingTileObj = StartTile([starting_minPos[0], starting_minPos[2]], [starting_
 
 robot0Obj.startingTile = startingTileObj
 robot0Obj.lastVisitedCheckPointPosition = startingTileObj.center
-print(startingTileObj.center)
+#print(startingTileObj.center)
 robot0Obj.visitedCheckpoints.append(startingTileObj.center)
 
 # #----------------
@@ -724,24 +724,24 @@ while simulationRunning:
         if robotNumber == 0:
             if robot0Obj.inSimulation:
                 #print('message updated')
-                robot0Obj.messages.enqueue((estimated_victim_position, victimType))
+                robot0Obj.message = (estimated_victim_position, victimType)
                 #print(robot0Obj.messages.queue)
         else:
             if robot1Obj.inSimulation:
-                robot1Obj.messages.enqueue((estimated_victim_position, victimType))
+                robot1Obj.message = (estimated_victim_position, victimType)
 
         receiver.nextPacket()
 
     if robot0Obj.inSimulation:
-        if not robot0Obj.messages.is_empty():
+        if robot0Obj.message != []:
 
             #print('peek', robot0Obj.messages.peek())
-            r0_exitmessage = robot0Obj.messages.peek()[1]
+            r0_exitmessage = robot0Obj.message[1]
             #print(r0_exitmessage)
 
             if r0_exitmessage == 'E':
 
-                robot0Obj.messages.dequeue()
+                robot0Obj.message = []
 
                 if robot0Obj.startingTile.checkPosition(robot0Obj.position):
                     #print("Robot 0 Successful Exit")
@@ -754,15 +754,15 @@ while simulationRunning:
                     robot0Obj.inSimulation = False
 
     if robot1Obj.inSimulation:
-        if not robot1Obj.messages.is_empty():
+        if robot1Obj.message != []:
 
             #print('peek', robot1Obj.messages.peek())
-            r1_exitmessage = robot1Obj.messages.peek()[1]
+            r1_exitmessage = robot1Obj.message[1]
             #print(r1_exitmessage)
 
             if r1_exitmessage == 'E':
 
-                robot1Obj.messages.dequeue()
+                robot1Obj.message = []
 
                 if robot1Obj.startingTile.checkPosition(robot1Obj.position):
                     #print("Robot 1 Successful Exit")
@@ -777,13 +777,14 @@ while simulationRunning:
     if robot0Obj.inSimulation:
         if robot0Obj.timeStopped() >= 5:
 
-            if not robot0Obj.messages.is_empty():
+            if robot0Obj.message != []:
 
                 #print('peek', robot0Obj.messages.peek())
-                r0_est_vic_pos = robot0Obj.messages.peek()[0]
-                r0_est_vic_type = robot0Obj.messages.peek()[1]
-
-                robot0Obj.messages.dequeue()
+                r0_est_vic_pos = robot0Obj.message[0]
+                #print(r0_est_vic_pos)
+                r0_est_vic_type = robot0Obj.message[1]
+                #print(robot0Obj.message)
+                robot0Obj.message = []
 
                 for i, h in enumerate(humans):
                     if not h.identified:
@@ -802,18 +803,18 @@ while simulationRunning:
                                     robot0Obj.history.enqueue("Successful Victim Identification " + " +" + str(h.scoreWorth))
                                     robot0Obj.increaseScore(pointsScored)
 
-                                    h.identified = 1
+                                    h.identified = True
                                     updateHistory()
     if robot1Obj.inSimulation:
         if robot1Obj.timeStopped() >= 5:
 
-            if not robot1Obj.messages.is_empty():
+            if robot1Obj.message != []:
 
                 #print('peek', robot1Obj.messages.peek())
-                r1_est_vic_pos = robot1Obj.messages.peek()[0]
-                r1_est_vic_type = robot1Obj.messages.peek()[1]
+                r1_est_vic_pos = robot1Obj.message[0]
+                r1_est_vic_type = robot1Obj.message[1]
 
-                robot1Obj.messages.dequeue()
+                robot1Obj.message = []
 
                 for i, h in enumerate(humans):
                     if not h.identified:
@@ -832,7 +833,7 @@ while simulationRunning:
                                     robot1Obj.history.enqueue("Successful Victim Identification " + " +" + str(h.scoreWorth))
                                     robot1Obj.increaseScore(pointsScored)
 
-                                    h.identified = 1
+                                    h.identified = True
                                     updateHistory()
 
     if robot0Obj.inSimulation:

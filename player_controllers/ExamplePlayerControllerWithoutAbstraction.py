@@ -43,6 +43,7 @@ class Player (Robot):
 
         self.emitter = self.getEmitter('emitter')
         self.gps = self.getGPS('gps')
+        self.gps.enable(self.timeStep)
         
         self.humanLoaded = False
         self.activityLoaded = False
@@ -157,7 +158,7 @@ class Player (Robot):
     def nearObject(self, objPos: list):
         '''Return true if relative object is < 0.5 metres away'''
         #TODO make 0.5 a constant that can change
-        return abs(objPos[0]) < 0.08 and abs(objPos[2]) < 0.08
+        return abs(objPos[0]) < 0.05 and abs(objPos[2]) < 0.05
     
     def findClosestObject(self, objects: list):
         '''Find closest detected object using relative object position values'''
@@ -192,7 +193,7 @@ class Player (Robot):
             #Find the difference in x values between centre of camera and human image position
             dx = center - humanImagePos
 
-            print('doing things')
+            #print('doing things')
             
             if dx < 0:
                 # Human on the right
@@ -379,7 +380,7 @@ class Player (Robot):
             if self.nearObject(human[0]) and not self.humanLoaded and not self.collecting:
                 self.collecting = True
                 self.mode = STOP
-                self.humanLoaded = True
+                #self.humanLoaded = True
                 #Get start time for picking up human so it can used for calculating how long its been picking up for.
                 self.timerStartTime = self.getTime()
                 break
@@ -414,12 +415,17 @@ class Player (Robot):
             self.mode = STOP
             #Get current time
             currentTime = self.getTime()
-            message = struct.pack('i i i c', 0, 27, -37, b'H')
+
+            position = self.gps.getValues()
+
+            #print(int(position[0]*100),  int(position[2]*100))
+
+            message = struct.pack('i i i c', 0, int(position[0]*100),  int(position[2]*100), b'H')
             self.emitter.send(message)
             
             #If time passed is greater than 3.5 seconds (to account for how long the robot takes to become still)
             #TODO use velocity to start timer
-            if currentTime - self.timerStartTime > 5.5:
+            if currentTime - self.timerStartTime > 7.5:
                 #Robot has picked up human
                 #Once time has passed, reset everything
                 self.timerStartTime = 0
