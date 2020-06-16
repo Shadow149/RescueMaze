@@ -1,11 +1,10 @@
 DEF MAINSUPERVISOR Robot {
+  children [
+    Receiver {
+      channel 1
+    }
+  ]
   supervisor TRUE
   controller "MainSupervisor"
   window "MainSupervisorWindow"
-}
-
-DEF OBJECTPLACER Robot {
-  name "ObjectPlacementSupervisor"
-  controller ""
-  supervisor TRUE
 }
