@@ -2,8 +2,8 @@
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.06314071625124112 0.9511915176199632 0.30207275077224605 2.749067643598082
-  position 0.4809701686736409 1.5484426468265646 -2.3209119786711288
+  orientation -0.06573301106182976 0.9540046022353279 0.2924968207870971 2.719200291101484
+  position 0.6392389884655889 1.2465632134112563 -1.9220227176121845
 }
 TexturedBackground {
 }
@@ -2210,6 +2210,24 @@ DEF WALLS Group {
           ]
           name "floorBlock12(2)"
           boundingObject USE FLOORBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0.139999 0 0.00375
+          rotation 0 1 0 1.5708
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock1(5)"
+          boundingObject USE FRONTWALLBOX
         }
         DEF BACKWALL Solid {
           translation 0 0 -0.14375

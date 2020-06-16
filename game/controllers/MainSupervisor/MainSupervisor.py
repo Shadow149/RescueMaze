@@ -435,9 +435,9 @@ def relocate(num):
 checkpoints = []
 # Empty list to contain swamps
 swamps = []
-
 # Global empty list to contain human objects
 humans = []
+
 # Boolean value stating whether or not humans have been placed in the map
 humansLoaded = False
 # Get group node containing humans
@@ -453,7 +453,8 @@ numberOfHumans = humanNodes.getCount()
 
 
 # Iterate for each checkpoint
-numberOfCheckpoints = int(supervisor.getFromDef('CHECKPOINTS').getField('children').getCount() / 3)
+checkpointBounds = supervisor.getFromDef('CHECKPOINTBOUNDS').getField('children')
+numberOfCheckpoints = int(checkpointBounds.getCount())
 
 for i in range(numberOfCheckpoints):
     # Get the checkpoint minimum node and translation
@@ -466,15 +467,12 @@ for i in range(numberOfCheckpoints):
     minPos = minPos.getSFVec3f()
     maxPos = maxPos.getSFVec3f()
 
-    checkpointCenter = supervisor.getFromDef('checkpoint' + str(i))
-    centerPos = checkpointCenter.getField("translation")
-
-    centerPos = centerPos.getSFVec3f()
+    centerPos = [(maxPos[0]+minPos[0])/2,maxPos[1],(maxPos[2]+minPos[2])/2]
     # Create a checkpoint object using the min and max (x,z)
     checkpointObj = Checkpoint([minPos[0], minPos[2]], [maxPos[0], maxPos[2]], centerPos)
     checkpoints.append(checkpointObj)
 
-numberOfSwamps = int(supervisor.getFromDef('SWAMPS').getField('children').getCount() / 3)
+numberOfSwamps = supervisor.getFromDef('SWAMPBOUNDS').getField('children').getCount()
 
 for i in range(numberOfSwamps):
     # Get the swamp minimum node and translation
@@ -487,10 +485,7 @@ for i in range(numberOfSwamps):
     minPos = minPos.getSFVec3f()
     maxPos = maxPos.getSFVec3f()
 
-    swampCenter = supervisor.getFromDef('swamp' + str(i))
-    centerPos = swampCenter.getField("translation")
-
-    centerPos = centerPos.getSFVec3f()
+    centerPos = [(maxPos[0]+minPos[0])/2,maxPos[1],(maxPos[2]+minPos[2])/2]
     # Create a swamp object using the min and max (x,z)
     swampObj = Checkpoint([minPos[0], minPos[2]], [maxPos[0], maxPos[2]], centerPos)
     swamps.append(swampObj)
@@ -561,46 +556,42 @@ receiver = supervisor.getReceiver('receiver')
 receiver.enable(32)
 
 # Get the starting tile minimum node and translation
-robot0_startingPointMin = supervisor.getFromDef("start0min")
-robot0_minPos = robot0_startingPointMin.getField("translation")
+starting_PointMin = supervisor.getFromDef("start0min")
+starting_minPos = starting_PointMin.getField("translation")
 
 # Get maximum node and translation
-robot0_startingPointMax = supervisor.getFromDef("start0max")
-robot0_maxPos = robot0_startingPointMax.getField("translation")
-
-robot0_startingPoint = supervisor.getFromDef("start0")
-robot0_centerPos = robot0_startingPoint.getField("translation")
+starting_PointMax = supervisor.getFromDef("start0max")
+starting_maxPos = starting_PointMax.getField("translation")
 
 # Get the vector positons
-robot0_minPos = robot0_minPos.getSFVec3f()
-robot0_maxPos = robot0_maxPos.getSFVec3f()
-robot0_centerPos = robot0_centerPos.getSFVec3f()
+starting_minPos = starting_minPos.getSFVec3f()
+starting_maxPos = starting_maxPos.getSFVec3f()
+starting_centerPos = [(starting_maxPos[0]+starting_minPos[0])/2,starting_maxPos[1],(starting_maxPos[2]+starting_minPos[2])/2]
 
-startingTileObj = StartTile([robot0_minPos[0], robot0_minPos[2]], [robot0_maxPos[0], robot0_maxPos[2]], robot0_centerPos)
+startingTileObj = StartTile([starting_minPos[0], starting_minPos[2]], [starting_maxPos[0], starting_maxPos[2]], starting_centerPos)
 
 robot0Obj.startingTile = startingTileObj
 robot0Obj.lastVisitedCheckPointPosition = startingTileObj.center
+print(startingTileObj.center)
 robot0Obj.visitedCheckpoints.append(startingTileObj.center)
 
-#----------------
+# #----------------
 
-# Get the starting tile minimum node and translation
-robot1_startingPointMin = supervisor.getFromDef("start1min")
-robot1_minPos = robot1_startingPointMin.getField("translation")
+# # Get the starting tile minimum node and translation
+# robot1_startingPointMin = supervisor.getFromDef("start1min")
+# robot1_minPos = robot1_startingPointMin.getField("translation")
 
-# Get maximum node and translation
-robot1_startingPointMax = supervisor.getFromDef("start1max")
-robot1_maxPos = robot1_startingPointMax.getField("translation")
+# # Get maximum node and translation
+# robot1_startingPointMax = supervisor.getFromDef("start1max")
+# robot1_maxPos = robot1_startingPointMax.getField("translation")
 
-robot1_startingPoint = supervisor.getFromDef("start1")
-robot1_centerPos = robot1_startingPoint.getField("translation")
+# robot1_startingPoint = supervisor.getFromDef("start1")
+# robot1_centerPos = robot1_startingPoint.getField("translation")
 
-# Get the vector positons
-robot1_minPos = robot1_minPos.getSFVec3f()
-robot1_maxPos = robot1_maxPos.getSFVec3f()
-robot1_centerPos = robot1_centerPos.getSFVec3f()
-
-startingTileObj = StartTile([robot1_minPos[0], robot1_minPos[2]], [robot1_maxPos[0], robot1_maxPos[2]], robot1_centerPos)
+# # Get the vector positons
+# robot1_minPos = robot1_minPos.getSFVec3f()
+# robot1_maxPos = robot1_maxPos.getSFVec3f()
+# robot1_centerPos = robot1_centerPos.getSFVec3f()
 
 robot1Obj.startingTile = startingTileObj
 robot1Obj.lastVisitedCheckPointPosition = startingTileObj.center
