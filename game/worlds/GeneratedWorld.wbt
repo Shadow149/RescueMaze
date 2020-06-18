@@ -3,8 +3,8 @@ WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation -0.9266854942793478 -0.3573449124420116 -0.11644143697177532 0.6762508431161578
-  position -0.7204895122525407 1.4038213821459442 2.154000539612
+  orientation 0.7974282702521716 0.5685047993897973 0.2022633107446731 5.443874365914886
+  position -1.774828725505726 1.9727276782402385 1.8324307786308127
 }
 TexturedBackground {
 }
@@ -726,6 +726,16 @@ DEF HUMANGROUP Group {
       rotation 0 1 0 3.14159
     }
     Victim {
+      translation -0.76 0 -0.437
+      rotation 0 1 0 3.14159
+      name "Victim(4)"
+    }
+    Victim {
+      translation -1.05 0 -0.463
+      rotation 0 -1 0 0
+      name "Victim(8)"
+    }
+    Victim {
       translation -0.15 0 -0.737
       rotation 0 1 0 3.14159
       name "Victim(3)"
@@ -737,16 +747,34 @@ DEF HUMANGROUP Group {
       type "unharmed"
     }
     Victim {
+      translation -0.313 0 -0.307
+      rotation 0 1 0 1.5708
+      name "Victim(5)"
+      type "unharmed"
+    }
+    Victim {
+      translation 0.287 0 -0.307
+      rotation 0 1 0 1.5708
+      name "Victim(6)"
+      type "unharmed"
+    }
+    Victim {
       translation -0.013 0 -0.0069997
       rotation 0 1 0 1.5708
       name "Victim(2)"
       type "stable"
     }
+    Victim {
+      translation -0.613 0 -0.00699745
+      rotation 0 1 0 1.5708
+      name "Victim(7)"
+      type "unharmed"
+    }
   ]
 }
 DEF ROBOT0 E-puck-custom {
-  translation -0.8249999999999998 -0.075 0.5999999999999999
-  name "e-puck0"
+  translation -0.825 -0.075 0.6
+  name "e-puck 0"
   controller "robot0Controller"
   camera_fieldOfView 0.9
   camera_width 128
@@ -766,8 +794,8 @@ DEF ROBOT0 E-puck-custom {
   ]
 }
 DEF ROBOT1 E-puck-custom {
-  translation -0.6749999999999999 -0.075 0.5999999999999999
-  name "e-puck1"
+  translation -0.675 -0.075 0.6
+  name "e-puck 1"
   controller "robot1Controller"
   camera_fieldOfView 0.9
   camera_width 128

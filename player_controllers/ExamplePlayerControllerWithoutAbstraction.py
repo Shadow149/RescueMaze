@@ -19,6 +19,7 @@ TURN_RIGHT = "TURN_RIGHT"
 TURN_LEFT_OBJECT = "TURN_LEFT_OBJECT"
 TURN_RIGHT_OBJECT = "TURN_RIGHT_OBJECT"
 STOP = "STOP"
+EXIT = "EXIT"
 
 class Player (Robot):
 
@@ -45,6 +46,7 @@ class Player (Robot):
         self.gps = self.getGPS('gps')
         self.gps.enable(self.timeStep)
         
+        self.messageSent = False
         self.humanLoaded = False
         self.activityLoaded = False
         self.collecting = False
@@ -57,6 +59,9 @@ class Player (Robot):
         self.camera = self.getCamera('camera')
         self.camera.enable(self.timeStep)
         self.camera.recognitionEnable(self.timeStep)
+
+        self.ground_camera = self.getCamera('colour_sensor')
+        self.ground_camera.enable(self.timeStep)
         
         #config wheels
         self.wheels.append(self.getMotor("left wheel motor"))
@@ -89,6 +94,8 @@ class Player (Robot):
         #idk
         self.wheels[0].setVelocity(0.0)
         self.wheels[1].setVelocity(0.0)
+
+        self.simulationStartTime = self.getTime()
     
     def getDetectedObjects(self):
         '''Get detected objects from camera'''
@@ -420,8 +427,10 @@ class Player (Robot):
 
             #print(int(position[0]*100),  int(position[2]*100))
 
-            message = struct.pack('i i i c', 0, int(position[0]*100),  int(position[2]*100), b'H')
-            self.emitter.send(message)
+            if not self.messageSent:
+                message = struct.pack('i i i c', 0, int(position[0]*100),  int(position[2]*100), b'H')
+                self.emitter.send(message)
+                self.messageSent = True
             
             #If time passed is greater than 3.5 seconds (to account for how long the robot takes to become still)
             #TODO use velocity to start timer
@@ -431,7 +440,11 @@ class Player (Robot):
                 self.timerStartTime = 0
                 self.mode = MOVE_FORWARD
                 self.collecting = False
+                self.messageSent = False
 
+
+        if self.ground_camera.getImage() == b'\x10\xb8\x10\xff' and self.getTime() - self.simulationStartTime > 120:
+            self.mode = EXIT
         # elif self.collectingActivity:
         #     self.mode = STOP
         #     #Get current time
@@ -485,6 +498,10 @@ class Player (Robot):
             elif self.mode == STOP:
                 self.speeds[0] = 0
                 self.speeds[1] = 0
+
+            elif self.mode == EXIT:
+                message = struct.pack('i i i c', 0, 0, 0, b'E')
+                self.emitter.send(message)
                 
                 
             self.wheels[0].setVelocity(self.speeds[0])
@@ -494,6 +511,8 @@ class Player (Robot):
             # Webots is about to quit.
             if self.step(self.timeStep) == -1:
                 break
+
+            #print(self.ground_camera.getImage())
 
 
 controller = Player()

@@ -129,7 +129,10 @@ class Robot:
         return self._timeStopped
 
     def increaseScore(self, score: int) -> None:
-        self._score += score
+        if self._score + score < 0:
+            self._score = 0
+        else:
+            self._score += score
 
     def getScore(self) -> int:
         return self._score
@@ -411,21 +414,25 @@ def resetVictimsTextures():
 def relocate(num):
     if int(num) == 0:
         relocatePosition = robot0Obj.lastVisitedCheckPointPosition
-        #print(relocatePosition)
 
-        if relocatePosition == []:
-            print('No checkpoint visited')
-        else:
-            robot0Obj.position = [relocatePosition[0], -0.0751, relocatePosition[2]]
-            robot0Obj.rotation = [0,1,0,0]
+        robot0Obj.position = [relocatePosition[0], -0.0751, relocatePosition[2]]
+        robot0Obj.rotation = [0,1,0,0]
+
+        robot0Obj.history.enqueue("Lack of Progress - 5")
+        robot0Obj.history.enqueue("Relocating to checkpoint")
+        robot0Obj.increaseScore(-5)
+        updateHistory()
+
     elif int(num) == 1:
         relocatePosition = robot1Obj.lastVisitedCheckPointPosition
 
-        if relocatePosition == []:
-            print('No checkpoint visited')
-        else:
-            robot1Obj.position = [relocatePosition[0], -0.0751, relocatePosition[2]]
-            robot1Obj.rotation = [0,1,0,0]
+        robot1Obj.position = [relocatePosition[0], -0.0751, relocatePosition[2]]
+        robot1Obj.rotation = [0,1,0,0]
+
+        robot1Obj.history.enqueue("Lack of Progress - 5")
+        robot1Obj.history.enqueue("Relocating to checkpoint")
+        robot1Obj.increaseScore(-5)
+        updateHistory()
 
 
 # Get the output from the object placement supervisor
@@ -724,11 +731,11 @@ while simulationRunning:
         if robotNumber == 0:
             if robot0Obj.inSimulation:
                 #print('message updated')
-                robot0Obj.message = (estimated_victim_position, victimType)
+                robot0Obj.message = [estimated_victim_position, victimType]
                 #print(robot0Obj.messages.queue)
         else:
             if robot1Obj.inSimulation:
-                robot1Obj.message = (estimated_victim_position, victimType)
+                robot1Obj.message = [estimated_victim_position, victimType]
 
         receiver.nextPacket()
 
@@ -753,6 +760,9 @@ while simulationRunning:
                     robot0Obj.wb_node.remove()
                     robot0Obj.inSimulation = False
 
+                    robot0Obj.increaseScore(10)
+                    robot0Obj.increaseScore(int(robot0Obj.getScore() * 0.1))
+
     if robot1Obj.inSimulation:
         if robot1Obj.message != []:
 
@@ -774,6 +784,9 @@ while simulationRunning:
                     robot1Obj.wb_node.remove()
                     robot1Obj.inSimulation = False
 
+                    robot1Obj.increaseScore(10)
+                    robot1Obj.increaseScore(int(robot1Obj.getScore() * 0.1))
+
     if robot0Obj.inSimulation:
         if robot0Obj.timeStopped() >= 5:
 
@@ -789,22 +802,28 @@ while simulationRunning:
                 for i, h in enumerate(humans):
                     if not h.identified:
                         if h.checkPosition(robot0Obj.position, 0.15):
-                            if h.onSameSide(robot0Obj.position):
-                                if h.checkPosition(r0_est_vic_pos, 0.15):
+                            if h.checkPosition(r0_est_vic_pos, 0.15):
+                                    if h.onSameSide(robot0Obj.position):
+        
+                                        #print("Robot 0 Successful Victim Identification")
 
-                                    #print("Robot 0 Successful Victim Identification")
+                                        pointsScored = h.scoreWorth
 
-                                    pointsScored = h.scoreWorth
+                                        if r0_est_vic_type.lower() == h.simple_victim_type.lower():
+                                            robot0Obj.history.enqueue("Successful Vitim Type Correct Bonus  + 10")
+                                            pointsScored += 10
 
-                                    if r0_est_vic_type.lower() == h.simple_victim_type.lower():
-                                        robot0Obj.history.enqueue("Successful Vitim Type Correct  Bonus + 10")
-                                        pointsScored += 10
+                                        robot0Obj.history.enqueue("Successful Victim Identification " + " +" + str(h.scoreWorth))
+                                        robot0Obj.increaseScore(pointsScored)
 
-                                    robot0Obj.history.enqueue("Successful Victim Identification " + " +" + str(h.scoreWorth))
-                                    robot0Obj.increaseScore(pointsScored)
+                                        h.identified = True
+                                        updateHistory()
+                            else:
+                                robot0Obj.history.enqueue("Misidentification of victim  - 5")
+                                robot0Obj.increaseScore(-5)
 
-                                    h.identified = True
-                                    updateHistory()
+                                updateHistory()
+
     if robot1Obj.inSimulation:
         if robot1Obj.timeStopped() >= 5:
 
@@ -819,28 +838,31 @@ while simulationRunning:
                 for i, h in enumerate(humans):
                     if not h.identified:
                         if h.checkPosition(robot1Obj.position, 0.15):
-                            if h.onSameSide(robot1Obj.position):
-                                if h.checkPosition(r1_est_vic_pos, 0.15):
+                            if h.checkPosition(r1_est_vic_pos, 0.15):
+                                    if h.onSameSide(robot1Obj.position):
+        
+                                        #print("Robot 1 Successful Victim Identification")
 
-                                    #print("Robot 1 Successful Victim Identification")
+                                        pointsScored = h.scoreWorth
 
-                                    pointsScored = h.scoreWorth
+                                        if r1_est_vic_type.lower() == h.simple_victim_type.lower():
+                                            robot1Obj.history.enqueue("Successful Vitim Type Correct Bonus  + 10")
+                                            pointsScored += 10
 
-                                    if r1_est_vic_type.lower() == h.simple_victim_type.lower():
-                                        robot1Obj.history.enqueue("Successful Vitim Type Correct  Bonus + 10")
-                                        pointsScored += 10
+                                        robot1Obj.history.enqueue("Successful Victim Identification " + " +" + str(h.scoreWorth))
+                                        robot1Obj.increaseScore(pointsScored)
 
-                                    robot1Obj.history.enqueue("Successful Victim Identification " + " +" + str(h.scoreWorth))
-                                    robot1Obj.increaseScore(pointsScored)
+                                        h.identified = True
+                                        updateHistory()
 
-                                    h.identified = True
-                                    updateHistory()
+                            else:
+                                robot1Obj.history.enqueue("Misidentification of victim  - 5")
+                                robot1Obj.increaseScore(-5)
+
+                                updateHistory()
 
     if robot0Obj.inSimulation:
         if robot0Obj.timeStopped() >= 20:
-            robot0Obj.history.enqueue("LOP -5 points -- Relocating to checkpoint")
-            robot0Obj.increaseScore(-5)
-            updateHistory()
             relocate(0)
 
             robot0Obj._timeStopped = 0
@@ -849,9 +871,7 @@ while simulationRunning:
 
     if robot1Obj.inSimulation:
         if robot1Obj.timeStopped() >= 20:
-            robot1Obj.history.enqueue("LOP -5 points -- Relocating to checkpoint")
-            robot1Obj.increaseScore(-5)
-            updateHistory()
+            
             relocate(1)
 
             robot1Obj._timeStopped = 0
