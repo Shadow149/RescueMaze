@@ -415,9 +415,9 @@ def performGeneration ():
     unusablePlaces = unusablePlaces + finalObstacles
     
     #Place all the humans
-    finalHumans = setHumanPositions(numberOfHumans, humanNodes, allRooms, unusableRooms, unusablePlaces)
+    #finalHumans = setHumanPositions(numberOfHumans, humanNodes, allRooms, unusableRooms, unusablePlaces)
     #Add humans to the unusables list
-    unusablePlaces = unusablePlaces + finalHumans
+    unusablePlaces = unusablePlaces
     print(unusablePlaces)
 
     #Send signal to say that items have been placed

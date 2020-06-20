@@ -1,0 +1,86 @@
+#VRML_SIM R2020a utf8
+# tags: static
+
+PROTO Victim [
+    field SFVec3f    translation       0 0 0
+    field SFRotation rotation          0 0 0 0
+    field SFBool     found             FALSE
+    field SFString   name              "Victim"
+    field SFString   type              "harmed"
+    field SFInt32    scoreWorth        10
+]
+{
+    Transform{
+        translation IS translation
+        rotation IS rotation
+        children [
+            Solid {
+                %{
+                    -- load lua-gd module and create a uniform texture
+                    local gd = require("gd")
+                    local debug = require("debug")
+                    local wbrandom = require('wbrandom')
+                    
+                    local im = gd.createTrueColor(128, 128)
+                    color = im:colorAllocate( 255, 255 , 255)
+                    im:filledRectangle(0, 0, 127, 127, color)
+            
+                    -- add the text in the texture
+                    if fields.found.value then
+                        textColor = im:colorAllocate(100, 100, 100)
+                    else
+                        textColor = im:colorAllocate(0, 0, 0)
+                    end
+        
+                    gd.fontCacheSetup()
+        
+                    if fields.type.value == 'harmed' or fields.type.value == 'h' or fields.type.value == 'H' then
+                        im:stringFT(textColor, "Arial", 96, 0, 18, 112, 'H')
+                    elseif fields.type.value == 'unharmed' or fields.type.value == 'u' or fields.type.value == 'U' then
+                        im:stringFT(textColor, "Arial", 96, 0, 18, 112, 'U')
+                    elseif fields.type.value == 'stable' or fields.type.value == 's' or fields.type.value == 'S' then
+                        im:stringFT(textColor, "Arial", 96, 0, 18, 112, 'S')
+                    end
+        
+                    -- save the image in a png file
+                    local file_name = debug.getinfo(1,'S').source  -- get the file_name of the current file
+                    file_name = file_name .. wbrandom.integer(0, 100000)  -- add a random number to reduce file_name clashes
+                    local i = 0  -- make sure the file does not already exist
+                    local file = io.open(file_name .. i .. ".png", "r")
+                    while file do
+                        file:close()
+                        i = i + 1
+                        file = io.open(file_name .. i .. ".png", "r")
+                    end
+                    im:png(file_name .. i .. ".png")
+                    gd.fontCacheShutdown()
+        
+                }%
+                translation 0 0 0
+                rotation 0 0.707105 -0.707108 3.14159
+                children [
+                    Shape {
+                        appearance Appearance {
+                            texture DEF human0texture ImageTexture {
+                                url [ %{= '"' .. context.temporary_files_path .. file_name .. i .. '.png"' }% ]
+                            }
+                        }
+                        geometry DEF VICTIMPLANE Box {
+                            size 0.04 0.001 0.04
+                        }
+                    }
+                ]
+                name IS name
+                boundingObject USE VICTIMPLANE
+                recognitionColors [
+                    %{ if fields.found.value then }%
+                        0 0 0
+                    %{ else }%                 
+                        1 1 1
+                    %{ end }%
+                ]
+            }
+        ]
+    }
+}
+

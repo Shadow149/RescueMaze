@@ -1,0 +1,2853 @@
+#VRML_SIM R2020a utf8
+WorldInfo {
+}
+Viewpoint {
+  orientation -0.06573301106182976 0.9540046022353279 0.2924968207870971 2.719200291101484
+  position 0.6392389884655889 1.2465632134112563 -1.9220227176121845
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+DEF BUILDINGBLOCKS Transform {
+  translation 0 -1000 0
+  children [
+    DEF block0 Transform {
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock0"
+          boundingObject USE FLOORBOX
+        }
+        DEF BACKWALL Solid {
+          translation 0 0 -0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "backWallBlock0"
+          boundingObject USE BACKWALLBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0 0 0.14375
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock0"
+          boundingObject USE FRONTWALLBOX
+        }
+        DEF LEFTWALL Solid {
+          translation -0.14375 0 0
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF LEFTWALLBOX Box {
+                size 0.0125 0.15 0.275
+              }
+            }
+          ]
+          name "leftWallBlock0"
+          boundingObject USE LEFTWALLBOX
+        }
+        DEF RIGHTWALL Solid {
+          translation 0.14375 0 0
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF RIGHTWALLBOX Box {
+                size 0.0125 0.15 0.275
+              }
+            }
+          ]
+          name "rightWallBlock0"
+          boundingObject USE RIGHTWALLBOX
+        }
+      ]
+    }
+    DEF block1 Transform {
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock1"
+          boundingObject USE FLOORBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0 0 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock1"
+          boundingObject USE FRONTWALLBOX
+        }
+        DEF LEFTWALL Solid {
+          translation -0.14375 0 -0.00625
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF LEFTWALLBOX Box {
+                size 0.0125 0.15 0.2875
+              }
+            }
+          ]
+          name "leftWallBlock1"
+          boundingObject USE LEFTWALLBOX
+        }
+        DEF RIGHTWALL Solid {
+          translation 0.14375 0 -0.00625
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF RIGHTWALLBOX Box {
+                size 0.0125 0.15 0.2875
+              }
+            }
+          ]
+          name "rightWallBlock1"
+          boundingObject USE RIGHTWALLBOX
+        }
+      ]
+    }
+    DEF block2 Transform {
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock2"
+          boundingObject USE FLOORBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0 0 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock2"
+          boundingObject USE FRONTWALLBOX
+        }
+        DEF LEFTWALL Solid {
+          translation -0.14375 0 -0.00625
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF LEFTWALLBOX Box {
+                size 0.0125 0.15 0.2875
+              }
+            }
+          ]
+          name "leftWallBlock2"
+          boundingObject USE LEFTWALLBOX
+        }
+      ]
+    }
+    DEF block3 Transform {
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock3"
+          boundingObject USE FLOORBOX
+        }
+        DEF BACKWALL Solid {
+          translation 0 0 -0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "backWallBlock3"
+          boundingObject USE BACKWALLBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0 0 0.14375
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock3"
+          boundingObject USE FRONTWALLBOX
+        }
+      ]
+    }
+    DEF block4 Transform {
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock4"
+          boundingObject USE FLOORBOX
+        }
+        DEF BACKWALL Solid {
+          translation 0 0 -0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "backWallBlock4"
+          boundingObject USE BACKWALLBOX
+        }
+      ]
+    }
+    DEF block5 Transform {
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock4(1)"
+          boundingObject USE FLOORBOX
+        }
+      ]
+    }
+    DEF block6 Transform {
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock6"
+          boundingObject USE FLOORBOX
+        }
+        DEF BACKLEFTCORNER Solid {
+          translation -0.14375 0 -0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.0125 0.15 0.0125
+              }
+            }
+          ]
+          name "backLeftCornerBlock6"
+          boundingObject USE BACKWALLBOX
+        }
+        DEF BACKRIGHTCORNER Solid {
+          translation 0.14375 0 -0.14375
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF BACKWALLBOX Box {
+                size 0.0125 0.15 0.0125
+              }
+            }
+          ]
+          name "backRightCornerBlock6"
+          boundingObject USE BACKWALLBOX
+        }
+        DEF FRONTLEFTCORNER Solid {
+          translation -0.14375 0 0.14375
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF BACKWALLBOX Box {
+                size 0.0125 0.15 0.0125
+              }
+            }
+          ]
+          name "frontLeftCornerBlock6"
+          boundingObject USE BACKWALLBOX
+        }
+        DEF FRONTRIGHTCORNER Solid {
+          translation 0.14375 0 0.14375
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF BACKWALLBOX Box {
+                size 0.0125 0.15 0.0125
+              }
+            }
+          ]
+          name "frontRightCornerBlock6"
+          boundingObject USE BACKWALLBOX
+        }
+      ]
+    }
+    DEF block7 Transform {
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock7"
+          boundingObject USE FLOORBOX
+        }
+        DEF BACKLEFTCORNER Solid {
+          translation -0.14375 0 -0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.0125 0.15 0.0125
+              }
+            }
+          ]
+          name "backLeftCornerBlock7"
+          boundingObject USE BACKWALLBOX
+        }
+        DEF BACKRIGHTCORNER Solid {
+          translation 0.14375 0 -0.14375
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF BACKWALLBOX Box {
+                size 0.0125 0.15 0.0125
+              }
+            }
+          ]
+          name "backRightCornerBlock7"
+          boundingObject USE BACKWALLBOX
+        }
+        DEF FRONTLEFTCORNER Solid {
+          translation -0.14375 0 0.14375
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF BACKWALLBOX Box {
+                size 0.0125 0.15 0.0125
+              }
+            }
+          ]
+          name "frontLeftCornerBlock7"
+          boundingObject USE BACKWALLBOX
+        }
+      ]
+    }
+    DEF block8 Transform {
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock8"
+          boundingObject USE FLOORBOX
+        }
+        DEF BACKLEFTCORNER Solid {
+          translation -0.14375 0 -0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.0125 0.15 0.0125
+              }
+            }
+          ]
+          name "backLeftCornerBlock8"
+          boundingObject USE BACKWALLBOX
+        }
+        DEF BACKRIGHTCORNER Solid {
+          translation 0.14375 0 -0.14375
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF BACKWALLBOX Box {
+                size 0.0125 0.15 0.0125
+              }
+            }
+          ]
+          name "backRightCornerBlock8"
+          boundingObject USE BACKWALLBOX
+        }
+      ]
+    }
+    DEF block9 Transform {
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock9"
+          boundingObject USE FLOORBOX
+        }
+        DEF BACKLEFTCORNER Solid {
+          translation -0.14375 0 -0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.0125 0.15 0.0125
+              }
+            }
+          ]
+          name "backLeftCornerBlock9"
+          boundingObject USE BACKWALLBOX
+        }
+        DEF FRONTRIGHTCORNER Solid {
+          translation 0.14375 0 0.14375
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF BACKWALLBOX Box {
+                size 0.0125 0.15 0.0125
+              }
+            }
+          ]
+          name "frontRightCornerBlock9"
+          boundingObject USE BACKWALLBOX
+        }
+      ]
+    }
+    DEF block10 Transform {
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock10"
+          boundingObject USE FLOORBOX
+        }
+        DEF BACKLEFTCORNER Solid {
+          translation -0.14375 0 -0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.0125 0.15 0.0125
+              }
+            }
+          ]
+          name "backLeftCornerBlock10"
+          boundingObject USE BACKWALLBOX
+        }
+      ]
+    }
+    DEF block11 Transform {
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock2(4)"
+          boundingObject USE FLOORBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0 0 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock11"
+          boundingObject USE FRONTWALLBOX
+        }
+        DEF LEFTWALL Solid {
+          translation -0.14375 0 -0.00625
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF LEFTWALLBOX Box {
+                size 0.0125 0.15 0.2875
+              }
+            }
+          ]
+          name "leftWallBlock11"
+          boundingObject USE LEFTWALLBOX
+        }
+        DEF BACKRIGHTCORNER Solid {
+          translation 0.14375 0 -0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.0125 0.15 0.0125
+              }
+            }
+          ]
+          name "bacRightCornerBlock11"
+          boundingObject USE BACKWALLBOX
+        }
+      ]
+    }
+    DEF block12 Transform {
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock12"
+          boundingObject USE FLOORBOX
+        }
+        DEF BACKWALL Solid {
+          translation 0 0 -0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "backWallBlock12"
+          boundingObject USE BACKWALLBOX
+        }
+        DEF FRONTLEFTCORNER Solid {
+          translation -0.14375 0 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.0125 0.15 0.0125
+              }
+            }
+          ]
+          name "frontLeftCornerBlock12"
+          boundingObject USE BACKWALLBOX
+        }
+      ]
+    }
+    DEF block13 Transform {
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock13"
+          boundingObject USE FLOORBOX
+        }
+        DEF BACKWALL Solid {
+          translation 0 0 -0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "backWallBlock13"
+          boundingObject USE BACKWALLBOX
+        }
+        DEF FRONTRIGHTCORNER Solid {
+          translation 0.14375 0 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.0125 0.15 0.0125
+              }
+            }
+          ]
+          name "frontRightCornerBlock13"
+          boundingObject USE BACKWALLBOX
+        }
+      ]
+    }
+    DEF block14 Transform {
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock14"
+          boundingObject USE FLOORBOX
+        }
+        DEF BACKWALL Solid {
+          translation 0 0 -0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "backWallBlock14"
+          boundingObject USE BACKWALLBOX
+        }
+        DEF FRONTRIGHTCORNER Solid {
+          translation 0.14375 0 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.0125 0.15 0.0125
+              }
+            }
+          ]
+          name "frontRightCornerBlock14"
+          boundingObject USE BACKWALLBOX
+        }
+        DEF FRONTLEFTCORNER Solid {
+          translation -0.14375 0 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.0125 0.15 0.0125
+              }
+            }
+          ]
+          name "frontLeftCornerBlock14"
+          boundingObject USE BACKWALLBOX
+        }
+      ]
+    }
+    DEF trap Transform {
+      children [
+        Solid {
+          translation 0 -0.075 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0 0 0
+                  emissiveColor 0.0235294 0.0235294 0.0235294
+                  shininess 0.8
+                }
+              }
+              geometry Box {
+                size 0.3 0.001 0.3
+              }
+            }
+          ]
+          name "trapBlock"
+        }
+      ]
+    }
+    DEF checkpoint Transform {
+      children [
+        Solid {
+          translation 0 -0.075 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0 0 0
+                  emissiveColor 0.65098 0.65098 0.65098
+                  shininess 0.8
+                }
+              }
+              geometry Box {
+                size 0.3 0.001 0.3
+              }
+            }
+          ]
+          name "checkpointBlock"
+        }
+      ]
+    }
+    DEF goal Transform {
+      children [
+        Solid {
+          translation 0 -0.075 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0 0 0
+                  emissiveColor 0.0313725 0.835294 0.0313725
+                  shininess 0.8
+                }
+              }
+              geometry Box {
+                size 0.3 0.001 0.3
+              }
+            }
+          ]
+          name "goalBlock"
+        }
+      ]
+    }
+  ]
+}
+DEF EXTERNALWALLS Group {
+  children [
+    DEF BACKWALLMAIN Solid {
+      translation -0.45 -0.01 -0.75625
+      children [
+        Shape {
+          appearance DEF WALLAPPEARANCE Appearance {
+            material Material {
+              diffuseColor 0.2 0.466667 0.521569
+            }
+          }
+          geometry DEF BACKWALLBOX Box {
+            size 1.2 0.17 0.0125
+          }
+        }
+      ]
+      name "backWall"
+      boundingObject USE BACKWALLBOX
+    }
+    DEF BACKWALLSMALL Solid {
+      translation 0.3 -0.01 -1.05625
+      children [
+        Shape {
+          appearance USE WALLAPPEARANCE
+          geometry DEF BACKWALLBOX Box {
+            size 0.3 0.17 0.0125
+          }
+        }
+      ]
+      name "backWall(1)"
+      boundingObject USE BACKWALLBOX
+    }
+    DEF FRONTWALLMAIN Solid {
+      translation -0.15 -0.01 0.75625
+      children [
+        Shape {
+          appearance USE WALLAPPEARANCE
+          geometry DEF FRONTWALLBOX Box {
+            size 1.2 0.17 0.0125
+          }
+        }
+      ]
+      name "frontWall"
+      boundingObject USE FRONTWALLBOX
+    }
+    DEF FRONTWALLSMALL Solid {
+      translation -0.9 -0.01 1.05625
+      children [
+        Shape {
+          appearance USE WALLAPPEARANCE
+          geometry DEF FRONTWALLBOX Box {
+            size 0.3 0.17 0.0125
+          }
+        }
+      ]
+      name "frontWall(1)"
+      boundingObject USE FRONTWALLBOX
+    }
+    DEF LEFTWALL Solid {
+      translation -1.05625 -0.01 0.15
+      children [
+        Shape {
+          appearance USE WALLAPPEARANCE
+          geometry DEF LEFTWALLBOX Box {
+            size 0.0125 0.17 1.825
+          }
+        }
+      ]
+      name "leftWall"
+      boundingObject USE LEFTWALLBOX
+    }
+    DEF RIGHTWALL Solid {
+      translation 0.45625 -0.01 -0.15
+      children [
+        Shape {
+          appearance USE WALLAPPEARANCE
+          geometry DEF RIGHTWALLBOX Box {
+            size 0.0125 0.17 1.825
+          }
+        }
+      ]
+      name "rightWall"
+      boundingObject USE RIGHTWALLBOX
+    }
+    DEF RIGHTWALLSMALL Solid {
+      translation -0.74375 -0.01 0.9125
+      children [
+        Shape {
+          appearance USE WALLAPPEARANCE
+          geometry DEF RIGHTWALLBOX Box {
+            size 0.0125 0.17 0.3
+          }
+        }
+      ]
+      name "rightWall(1)"
+      boundingObject USE RIGHTWALLBOX
+    }
+    DEF LEFTWALLSMALL Solid {
+      translation 0.14375 -0.01 -0.9125
+      children [
+        Shape {
+          appearance USE WALLAPPEARANCE
+          geometry DEF RIGHTWALLBOX Box {
+            size 0.0125 0.17 0.3
+          }
+        }
+      ]
+      name "leftWall(1)"
+      boundingObject USE RIGHTWALLBOX
+    }
+  ]
+}
+DEF WALLS Group {
+  children [
+    DEF block3 Transform {
+      translation -0.3 0 0
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock3(1)"
+          boundingObject USE FLOORBOX
+        }
+        DEF BACKWALL Solid {
+          translation 0 0 -0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "backWallBlock3(1)"
+          boundingObject USE BACKWALLBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0 0 0.14375
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock3(1)"
+          boundingObject USE FRONTWALLBOX
+        }
+      ]
+    }
+    DEF block2 Transform {
+      rotation 0 1 0 1.570796
+      children [
+        DEF FRONTWALL Solid {
+          translation 0 0 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock2(1)"
+          boundingObject USE FRONTWALLBOX
+        }
+        DEF LEFTWALL Solid {
+          translation -0.14375 0 -0.00625
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF LEFTWALLBOX Box {
+                size 0.0125 0.15 0.2875
+              }
+            }
+          ]
+          name "leftWallBlock2(1)"
+          boundingObject USE LEFTWALLBOX
+        }
+      ]
+    }
+    DEF block2 Transform {
+      translation -0.3 0 0.3
+      rotation 0 1 0 3.14159
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock2(2)"
+          boundingObject USE FLOORBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0 0 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock2(2)"
+          boundingObject USE FRONTWALLBOX
+        }
+        DEF LEFTWALL Solid {
+          translation -0.14375 0 -0.00625
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF LEFTWALLBOX Box {
+                size 0.0125 0.15 0.2875
+              }
+            }
+          ]
+          name "leftWallBlock2(2)"
+          boundingObject USE LEFTWALLBOX
+        }
+      ]
+    }
+    DEF block2 Transform {
+      translation 0 0 0.3
+      rotation 0 1 0 -1.570796
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock2(3)"
+          boundingObject USE FLOORBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0 0 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock2(3)"
+          boundingObject USE FRONTWALLBOX
+        }
+        DEF LEFTWALL Solid {
+          translation -0.14375 0 -0.00625
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF LEFTWALLBOX Box {
+                size 0.0125 0.15 0.2875
+              }
+            }
+          ]
+          name "leftWallBlock2(3)"
+          boundingObject USE LEFTWALLBOX
+        }
+      ]
+    }
+    DEF block3 Transform {
+      translation 0.3 0 0
+      rotation 0 1 0 1.570796
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock3(2)"
+          boundingObject USE FLOORBOX
+        }
+        DEF BACKWALL Solid {
+          translation 0 0 -0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "backWallBlock3(2)"
+          boundingObject USE BACKWALLBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0 0 0.14375
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock3(2)"
+          boundingObject USE FRONTWALLBOX
+        }
+      ]
+    }
+    DEF block12 Transform {
+      translation 0.3 0 0.3
+      rotation 0 1 0 -1.5708
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock12(1)"
+          boundingObject USE FLOORBOX
+        }
+        DEF BACKWALL Solid {
+          translation 0 0 -0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "backWallBlock12(1)"
+          boundingObject USE BACKWALLBOX
+        }
+        DEF FRONTLEFTCORNER Solid {
+          translation -0.14375 0 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.0125 0.15 0.0125
+              }
+            }
+          ]
+          name "frontLeftCornerBlock12(1)"
+          boundingObject USE BACKWALLBOX
+        }
+      ]
+    }
+    DEF block2 Transform {
+      translation 0.3 0 -0.3
+      rotation 0 1 0 3.141593
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock2(5)"
+          boundingObject USE FLOORBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0 0 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock2(4)"
+          boundingObject USE FRONTWALLBOX
+        }
+        DEF LEFTWALL Solid {
+          translation -0.14375 0 -0.00625
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF LEFTWALLBOX Box {
+                size 0.0125 0.15 0.2875
+              }
+            }
+          ]
+          name "leftWallBlock2(4)"
+          boundingObject USE LEFTWALLBOX
+        }
+      ]
+    }
+    DEF block2 Transform {
+      translation 0 0 -0.6
+      rotation 0 1 0 -1.5708
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock2(6)"
+          boundingObject USE FLOORBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0 0 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock2(5)"
+          boundingObject USE FRONTWALLBOX
+        }
+        DEF LEFTWALL Solid {
+          translation -0.14375 0 -0.00625
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF LEFTWALLBOX Box {
+                size 0.0125 0.15 0.2875
+              }
+            }
+          ]
+          name "leftWallBlock2(5)"
+          boundingObject USE LEFTWALLBOX
+        }
+      ]
+    }
+    DEF block1 Transform {
+      translation -0.3 0 -0.6
+      rotation 0 1 0 1.570796
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock1(2)"
+          boundingObject USE FLOORBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0 0 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock1(2)"
+          boundingObject USE FRONTWALLBOX
+        }
+        DEF LEFTWALL Solid {
+          translation -0.14375 0 -0.00625
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF LEFTWALLBOX Box {
+                size 0.0125 0.15 0.2875
+              }
+            }
+          ]
+          name "leftWallBlock1(2)"
+          boundingObject USE LEFTWALLBOX
+        }
+        DEF RIGHTWALL Solid {
+          translation 0.14375 0 -0.00625
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF RIGHTWALLBOX Box {
+                size 0.0125 0.15 0.2875
+              }
+            }
+          ]
+          name "rightWallBlock1(2)"
+          boundingObject USE RIGHTWALLBOX
+        }
+      ]
+    }
+    DEF block3 Transform {
+      translation -0.6 0 -0.6
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock3(3)"
+          boundingObject USE FLOORBOX
+        }
+        DEF BACKWALL Solid {
+          translation 0 0 -0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "backWallBlock3(3)"
+          boundingObject USE BACKWALLBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0 0 0.14375
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock3(3)"
+          boundingObject USE FRONTWALLBOX
+        }
+      ]
+    }
+    DEF block2 Transform {
+      translation -0.9 0 -0.6
+      rotation 0 1 0 -1.5708
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock2(7)"
+          boundingObject USE FLOORBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0 0 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock2(6)"
+          boundingObject USE FRONTWALLBOX
+        }
+        DEF LEFTWALL Solid {
+          translation -0.14375 0 -0.00625
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF LEFTWALLBOX Box {
+                size 0.0125 0.15 0.2875
+              }
+            }
+          ]
+          name "leftWallBlock2(6)"
+          boundingObject USE LEFTWALLBOX
+        }
+      ]
+    }
+    DEF block1 Transform {
+      translation 0.3 0 0.6
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock1(3)"
+          boundingObject USE FLOORBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0 0 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock1(3)"
+          boundingObject USE FRONTWALLBOX
+        }
+        DEF LEFTWALL Solid {
+          translation -0.14375 0 -0.00625
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF LEFTWALLBOX Box {
+                size 0.0125 0.15 0.2875
+              }
+            }
+          ]
+          name "leftWallBlock1(3)"
+          boundingObject USE LEFTWALLBOX
+        }
+        DEF RIGHTWALL Solid {
+          translation 0.14375 0 -0.00625
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF RIGHTWALLBOX Box {
+                size 0.0125 0.15 0.2875
+              }
+            }
+          ]
+          name "rightWallBlock1(3)"
+          boundingObject USE RIGHTWALLBOX
+        }
+      ]
+    }
+    DEF block2 Transform {
+      translation -0.6 0 0
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock2(8)"
+          boundingObject USE FLOORBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0 0 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock2(7)"
+          boundingObject USE FRONTWALLBOX
+        }
+        DEF LEFTWALL Solid {
+          translation -0.14375 0 -0.00625
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF LEFTWALLBOX Box {
+                size 0.0125 0.15 0.2875
+              }
+            }
+          ]
+          name "leftWallBlock2(7)"
+          boundingObject USE LEFTWALLBOX
+        }
+      ]
+    }
+    DEF block2 Transform {
+      translation -0.6 0 0.3
+      rotation 0 1 0 -1.5708
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock2(9)"
+          boundingObject USE FLOORBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0 0 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock2(8)"
+          boundingObject USE FRONTWALLBOX
+        }
+        DEF LEFTWALL Solid {
+          translation -0.14375 0 -0.00625
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF LEFTWALLBOX Box {
+                size 0.0125 0.15 0.2875
+              }
+            }
+          ]
+          name "leftWallBlock2(8)"
+          boundingObject USE LEFTWALLBOX
+        }
+      ]
+    }
+    DEF block4 Transform {
+      translation -0.6 0 -0.3
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock4(5)"
+          boundingObject USE FLOORBOX
+        }
+        DEF BACKWALL Solid {
+          translation 0 0 -0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "backWallBlock4(3)"
+          boundingObject USE BACKWALLBOX
+        }
+      ]
+    }
+    DEF block3 Transform {
+      translation -0.3 0 -0.3
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock3(4)"
+          boundingObject USE FLOORBOX
+        }
+        DEF BACKWALL Solid {
+          translation 0 0 -0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "backWallBlock3(4)"
+          boundingObject USE BACKWALLBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0 0 0.14375
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock3(4)"
+          boundingObject USE FRONTWALLBOX
+        }
+      ]
+    }
+    DEF block10 Transform {
+      translation 0 0 -0.3
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock10(1)"
+          boundingObject USE FLOORBOX
+        }
+        DEF BACKLEFTCORNER Solid {
+          translation -0.14375 0 -0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.0125 0.15 0.0125
+              }
+            }
+          ]
+          name "backLeftCornerBlock10(1)"
+          boundingObject USE BACKWALLBOX
+        }
+      ]
+    }
+    DEF block2 Transform {
+      translation -0.3 0 0.6
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock2(10)"
+          boundingObject USE FLOORBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0 0 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock2(9)"
+          boundingObject USE FRONTWALLBOX
+        }
+        DEF LEFTWALL Solid {
+          translation -0.14375 0 -0.00625
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF LEFTWALLBOX Box {
+                size 0.0125 0.15 0.2875
+              }
+            }
+          ]
+          name "leftWallBlock2(9)"
+          boundingObject USE LEFTWALLBOX
+        }
+      ]
+    }
+    DEF block2 Transform {
+      translation -0.6 0 0.6
+      rotation 0 1 0 1.570796
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock2(11)"
+          boundingObject USE FLOORBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0 0 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock2(10)"
+          boundingObject USE FRONTWALLBOX
+        }
+        DEF LEFTWALL Solid {
+          translation -0.14375 0 -0.00625
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF LEFTWALLBOX Box {
+                size 0.0125 0.15 0.2875
+              }
+            }
+          ]
+          name "leftWallBlock2(10)"
+          boundingObject USE LEFTWALLBOX
+        }
+      ]
+    }
+    DEF block4 Transform {
+      translation -0.9 0 -0.3
+      rotation 0 1 0 1.570796
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock4(2)"
+          boundingObject USE FLOORBOX
+        }
+        DEF BACKWALL Solid {
+          translation 0 0 -0.14375
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF BACKWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "backWallBlock4(1)"
+          boundingObject USE BACKWALLBOX
+        }
+      ]
+    }
+    DEF block3 Transform {
+      translation -0.9 0 0
+      rotation 0 1 0 1.570796
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock3(5)"
+          boundingObject USE FLOORBOX
+        }
+        DEF BACKWALL Solid {
+          translation 0 0 -0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "backWallBlock3(5)"
+          boundingObject USE BACKWALLBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0 0 0.14375
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock3(5)"
+          boundingObject USE FRONTWALLBOX
+        }
+      ]
+    }
+    DEF block3 Transform {
+      translation -0.9 0 0.3
+      rotation 0 1 0 1.570796
+      children [
+        DEF BACKWALL Solid {
+          translation 0 0 -0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "backWallBlock3(6)"
+          boundingObject USE BACKWALLBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0 0 0.14375
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock3(6)"
+          boundingObject USE FRONTWALLBOX
+        }
+      ]
+    }
+    DEF block2 Transform {
+      translation 0 0 0.6
+      rotation 0 1 0 1.570796
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock2(13)"
+          boundingObject USE FLOORBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0 0 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock2(12)"
+          boundingObject USE FRONTWALLBOX
+        }
+        DEF LEFTWALL Solid {
+          translation -0.14375 0 -0.00625
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF LEFTWALLBOX Box {
+                size 0.0125 0.15 0.2875
+              }
+            }
+          ]
+          name "leftWallBlock2(12)"
+          boundingObject USE LEFTWALLBOX
+        }
+      ]
+    }
+    DEF block12 Transform {
+      translation 0.3 0 -0.6
+      rotation 0 1 0 -1.5708
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock12(2)"
+          boundingObject USE FLOORBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0.139999 0 0.00375
+          rotation 0 1 0 1.5708
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock1(5)"
+          boundingObject USE FRONTWALLBOX
+        }
+        DEF BACKWALL Solid {
+          translation 0 0 -0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "backWallBlock12(2)"
+          boundingObject USE BACKWALLBOX
+        }
+        DEF FRONTLEFTCORNER Solid {
+          translation -0.14375 0 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.0125 0.15 0.0125
+              }
+            }
+          ]
+          name "frontLeftCornerBlock12(2)"
+          boundingObject USE BACKWALLBOX
+        }
+      ]
+    }
+    DEF block1 Transform {
+      translation -0.9 0 0.9
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock1(1)"
+          boundingObject USE FLOORBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0 0 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock1(1)"
+          boundingObject USE FRONTWALLBOX
+        }
+        DEF LEFTWALL Solid {
+          translation -0.14375 0 -0.00625
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF LEFTWALLBOX Box {
+                size 0.0125 0.15 0.2875
+              }
+            }
+          ]
+          name "leftWallBlock1(1)"
+          boundingObject USE LEFTWALLBOX
+        }
+        DEF RIGHTWALL Solid {
+          translation 0.14375 0 -0.00625
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF RIGHTWALLBOX Box {
+                size 0.0125 0.15 0.2875
+              }
+            }
+          ]
+          name "rightWallBlock1(1)"
+          boundingObject USE RIGHTWALLBOX
+        }
+      ]
+    }
+    DEF block1 Transform {
+      translation 0.3 0 -0.9
+      rotation 0 1 0 3.141593
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock1(4)"
+          boundingObject USE FLOORBOX
+        }
+        DEF FRONTWALL Solid {
+          translation 0 0 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF FRONTWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "frontWallBlock1(4)"
+          boundingObject USE FRONTWALLBOX
+        }
+        DEF LEFTWALL Solid {
+          translation -0.14375 0 -0.00625
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF LEFTWALLBOX Box {
+                size 0.0125 0.15 0.2875
+              }
+            }
+          ]
+          name "leftWallBlock1(4)"
+          boundingObject USE LEFTWALLBOX
+        }
+        DEF RIGHTWALL Solid {
+          translation 0.14375 0 -0.00625
+          children [
+            Shape {
+              appearance USE WALLAPPEARANCE
+              geometry DEF RIGHTWALLBOX Box {
+                size 0.0125 0.15 0.2875
+              }
+            }
+          ]
+          name "rightWallBlock1(4)"
+          boundingObject USE RIGHTWALLBOX
+        }
+      ]
+    }
+    DEF block12 Transform {
+      translation -0.9 0 0.6
+      rotation 0 1 0 1.570796
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.085 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.635294 0.635294 0.635294
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock12(3)"
+          boundingObject USE FLOORBOX
+        }
+        DEF BACKWALL Solid {
+          translation 0 0 -0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.3 0.15 0.0125
+              }
+            }
+          ]
+          name "backWallBlock12(3)"
+          boundingObject USE BACKWALLBOX
+        }
+        DEF FRONTLEFTCORNER Solid {
+          translation -0.14375 0 0.14375
+          children [
+            Shape {
+              appearance DEF WALLAPPEARANCE Appearance {
+                material Material {
+                  diffuseColor 0.2 0.466667 0.521569
+                }
+              }
+              geometry DEF BACKWALLBOX Box {
+                size 0.0125 0.15 0.0125
+              }
+            }
+          ]
+          name "frontLeftCornerBlock12(3)"
+          boundingObject USE BACKWALLBOX
+        }
+      ]
+    }
+  ]
+}
+DEF TRAPS Group {
+  children [
+    DEF trap Transform {
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.185 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.3 0.3 0.3
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock3(6)"
+          boundingObject USE FLOORBOX
+        }
+        Solid {
+          translation -2.8549e-07 -0.125 -0.13
+          rotation 0 1 0 -1.5707953071795862
+          children [
+            Shape {
+              appearance DEF TRAPAPP Appearance {
+                material Material {
+                  diffuseColor 0.05 0.05 0.05
+                  shininess 0.8
+                }
+              }
+              geometry DEF TRAPEDGEBOX Box {
+                size 0.04 0.1 0.3
+              }
+            }
+          ]
+          name "solid0"
+          boundingObject USE TRAPEDGEBOX
+        }
+        Solid {
+          translation -2.03924e-08 -0.125 0.13
+          rotation 0 1 0 -1.5707953071795862
+          children [
+            Shape {
+              appearance USE TRAPAPP
+              geometry DEF TRAPEDGEBOX Box {
+                size 0.04 0.1 0.3
+              }
+            }
+          ]
+          name "solid1"
+          boundingObject USE TRAPEDGEBOX
+        }
+        Solid {
+          translation -0.13 -0.125 2.06647e-15
+          rotation 0 1 0 3.14159
+          children [
+            Shape {
+              appearance USE TRAPAPP
+              geometry DEF TRAPEDGEBOX Box {
+                size 0.04 0.1 0.3
+              }
+            }
+          ]
+          name "solid2"
+          boundingObject USE TRAPEDGEBOX
+        }
+        Solid {
+          translation 0.13 -0.125 6.89936e-07
+          rotation 0 1 0 3.14159
+          children [
+            Shape {
+              appearance USE TRAPAPP
+              geometry DEF TRAPEDGEBOX Box {
+                size 0.04 0.1 0.3
+              }
+            }
+          ]
+          name "solid3"
+          boundingObject USE TRAPEDGEBOX
+        }
+      ]
+    }
+    DEF trap Transform {
+      translation -0.89 0 0.3
+      children [
+        DEF FLOOR Solid {
+          translation 0 -0.185 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.3 0.3 0.3
+                }
+              }
+              geometry DEF FLOORBOX Box {
+                size 0.3 0.02 0.3
+              }
+            }
+          ]
+          name "floorBlock3(7)"
+          boundingObject USE FLOORBOX
+        }
+        Solid {
+          translation -2.8549e-07 -0.125 -0.13
+          rotation 0 1 0 -1.5707953071795862
+          children [
+            Shape {
+              appearance DEF TRAPAPP Appearance {
+                material Material {
+                  diffuseColor 0.05 0.05 0.05
+                  shininess 0.8
+                }
+              }
+              geometry DEF TRAPEDGEBOX Box {
+                size 0.04 0.1 0.3
+              }
+            }
+          ]
+          name "solid(1)"
+          boundingObject USE TRAPEDGEBOX
+        }
+        Solid {
+          translation -2.03924e-08 -0.125 0.13
+          rotation 0 1 0 -1.5707953071795862
+          children [
+            Shape {
+              appearance USE TRAPAPP
+              geometry DEF TRAPEDGEBOX Box {
+                size 0.04 0.1 0.3
+              }
+            }
+          ]
+          name "solid(2)"
+          boundingObject USE TRAPEDGEBOX
+        }
+        Solid {
+          translation -0.13 -0.125 2.06647e-15
+          rotation 0 1 0 3.14159
+          children [
+            Shape {
+              appearance USE TRAPAPP
+              geometry DEF TRAPEDGEBOX Box {
+                size 0.04 0.1 0.3
+              }
+            }
+          ]
+          name "solid(3)"
+          boundingObject USE TRAPEDGEBOX
+        }
+        Solid {
+          translation 0.13 -0.125 6.89936e-07
+          rotation 0 1 0 3.14159
+          children [
+            Shape {
+              appearance USE TRAPAPP
+              geometry DEF TRAPEDGEBOX Box {
+                size 0.04 0.1 0.3
+              }
+            }
+          ]
+          name "solid(4)"
+          boundingObject USE TRAPEDGEBOX
+        }
+      ]
+    }
+  ]
+}
+DEF CHECKPOINTS Group {
+  children [
+    DEF checkpoint0min Transform {
+      translation -0.45 0 -0.74
+    }
+    DEF checkpoint1min Transform {
+      translation 0.16 0 0.45
+    }
+    DEF checkpoint1max Transform {
+      translation 0.43 0 0.73
+    }
+    DEF checkpoint0max Transform {
+      translation -0.17 0 -0.47
+    }
+    DEF checkpoint1 Transform {
+      translation 0.3 0 0.6
+      children [
+        Solid {
+          translation 0 -0.075 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 1 1 1
+                }
+              }
+              geometry Box {
+                size 0.3 0.001 0.3
+              }
+            }
+          ]
+          name "checkpointBlock(1)"
+        }
+      ]
+    }
+    DEF checkpoint0 Transform {
+      translation -0.3 0 -0.6
+      children [
+        Solid {
+          translation 0 -0.075 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 1 1 1
+                  shininess 0.8
+                }
+              }
+              geometry Box {
+                size 0.3 0.001 0.3
+              }
+            }
+          ]
+          name "checkpointBlock(2)"
+        }
+      ]
+    }
+  ]
+}
+DEF GOALS Group {
+  children [
+    DEF start0max Transform {
+      translation 0.44 0 -0.76
+    }
+    DEF start0min Transform {
+      translation 0.16 0 -1.04
+    }
+    DEF start1min Transform {
+      translation -1.04 0 0.74
+    }
+    DEF start1max Transform {
+      translation -0.76 0 1.04
+    }
+    DEF start0 Transform {
+      translation 0.3 -0.075 -0.9
+      children [
+        Solid {
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.0313725 0.835294 0.0313725
+                  shininess 0.8
+                }
+              }
+              geometry Box {
+                size 0.3 0.001 0.3
+              }
+            }
+          ]
+          name "goalBlock(1)"
+        }
+      ]
+    }
+    DEF start1 Transform {
+      translation -0.91 -0.075 0.89
+      children [
+        Solid {
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.0313725 0.835294 0.0313725
+                }
+              }
+              geometry Box {
+                size 0.3 0.001 0.3
+              }
+            }
+          ]
+          name "goalBlock(2)"
+        }
+      ]
+    }
+  ]
+}
+DEF HUMANGROUP Group {
+  children [
+    Victim {
+      translation -0.3 8.48532e-08 -0.1626
+      name "Victim0"
+      scoreWorth 30
+    }
+    Victim {
+      translation 0.3 8.48532e-08 -0.4326
+      rotation 0 1 0 3.14159
+      name "Victim1"
+      scoreWorth 30
+    }
+    Victim {
+      translation -0.6 -1.89779e-06 0.1374
+      name "Victim2"
+      type "unharmed"
+      scoreWorth 30
+    }
+    Victim {
+      translation -1.0374 3.56777e-06 -0.3026
+      rotation 0 1 0 -1.5707953071795862
+      name "Victim3"
+      type "stable"
+    }
+  ]
+}
+DEF SWAMPS Group {
+  children [
+    DEF swamp0max Transform {
+      translation -0.16 0 0.45
+    }
+    DEF swamp0min Transform {
+      translation -0.46 0 0.16
+    }
+    DEF swamp0 Transform {
+      translation -0.31 0 0.3
+      children [
+        Solid {
+          translation 0 -0.075 0
+          children [
+            Shape {
+              appearance Appearance {
+                material Material {
+                  diffuseColor 0.517647 0.392157 0.192157
+                }
+              }
+              geometry Box {
+                size 0.3 0.001 0.3
+              }
+            }
+          ]
+          name "checkpointBlock(4)"
+        }
+      ]
+    }
+  ]
+}
+DEF ROBOT0 E-puck-custom {
+  translation 0.299533 -0.0750639 -0.884085
+  rotation 0 1 0 3.14159
+  name "e-puck(1)"
+  controller "robot0Controller"
+  camera_fieldOfView 0.9
+  camera_width 128
+  camera_height 128
+  turretSlot [
+    GPS {
+    }
+  ]
+  groundSensorsSlot [
+    Camera {
+      translation -0.02 0 0.0299998
+      rotation 0 1 0 -1.5707953071795862
+      name "colour_sensor"
+      width 1
+      height 1
+    }
+  ]
+}
+DEF ROBOT1 E-puck-custom {
+  translation -0.908823 -0.0750639 0.897861
+  name "e-puck 1"
+  controller "robot1Controller"
+  camera_fieldOfView 0.9
+  camera_width 128
+  camera_height 128
+  turretSlot [
+    GPS {
+    }
+  ]
+  groundSensorsSlot [
+    Camera {
+      translation -0.02 0 0.0299998
+      rotation 0 1 0 -1.5707953071795862
+      name "colour_sensor"
+      width 1
+      height 1
+    }
+  ]
+}
+DEF MAINSUPERVISOR Robot {
+  children [
+    Receiver {
+      channel 1
+    }
+  ]
+  controller "MainSupervisor"
+  supervisor TRUE
+  window "MainSupervisorWindow"
+}

@@ -1,0 +1,23 @@
+#VRML_OBJ R2020a utf8
+DEF ROBOT1 E-puck-custom {
+  translation -0.675 -0.075 0.6
+  rotation 0 1 0 0
+  name "e-puck 1"
+  controller "robot1Controller"
+  camera_fieldOfView 0.9
+  camera_width 128
+  camera_height 128
+  turretSlot [
+    GPS {
+    }
+  ]
+  groundSensorsSlot [
+    Camera {
+      translation -0.02 0 0.0299998
+      rotation 0 1 0 -1.5707953071795862
+      name "colour_sensor"
+      width 1
+      height 1
+    }
+  ]
+}
