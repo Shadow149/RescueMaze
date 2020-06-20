@@ -165,7 +165,7 @@ class Player (Robot):
     def nearObject(self, objPos: list):
         '''Return true if relative object is < 0.5 metres away'''
         #TODO make 0.5 a constant that can change
-        return abs(objPos[0]) < 0.05 and abs(objPos[2]) < 0.05
+        return abs(objPos[0]) < 0.08 and abs(objPos[2]) < 0.08
     
     def findClosestObject(self, objects: list):
         '''Find closest detected object using relative object position values'''

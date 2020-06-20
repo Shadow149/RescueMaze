@@ -7,6 +7,7 @@ import os
 import random
 import struct
 from RelocateCalculator import generateRelocatePosition
+import math
 
 # Create the instance of the supervisor class
 supervisor = Supervisor()
@@ -216,7 +217,7 @@ class Human():
         '''Check if a position is near an object, based on the min_dist value'''
         # Get distance from the object to the passed position using manhattan distance for speed
         # TODO Check if we want to use euclidian or manhattan distance -- currently manhattan
-        distance = abs(self.position[0] - pos[0]) + abs(self.position[2] - pos[2])
+        distance = math.sqrt(((self.position[0] - pos[0])**2) + ((self.position[2] - pos[2])**2))
         return distance <= min_dist
 
     def onSameSide(self, pos: list) -> bool:
