@@ -852,6 +852,7 @@ Robot {
       zoom Zoom {
       }
       recognition Recognition {
+        occlusion TRUE
 	    }
     }
     DEF EPUCK_LED0 LED {

@@ -58,24 +58,20 @@ PROTO Victim [
                 }%
                 translation 0 0 0
                 rotation 0 0.707105 -0.707108 3.14159
-                scale 0.04 0.04 0.04
-                name IS name
                 children [
-                    Transform {
-                        translation 0 0 0
-                        children [
-                            Shape {
-                                appearance Appearance {
-                                    texture DEF human0texture ImageTexture {
-                                        url [ %{= '"' .. context.temporary_files_path .. file_name .. i .. '.png"' }% ]
-                                    }
-                                }
-                                geometry Plane {
-                                }
+                    Shape {
+                        appearance Appearance {
+                            texture DEF human0texture ImageTexture {
+                                url [ %{= '"' .. context.temporary_files_path .. file_name .. i .. '.png"' }% ]
                             }
-                        ]
+                        }
+                        geometry DEF VICTIMPLANE Box {
+                            size 0.04 0.001 0.04
+                        }
                     }
                 ]
+                name IS name
+                boundingObject USE VICTIMPLANE
                 recognitionColors [
                     %{ if fields.found.value then }%
                         0 0 0
