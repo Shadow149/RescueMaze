@@ -40,6 +40,8 @@ class Human():
             return 'U'
         elif self.victim_type == 'victim_stable':
             return 'S'
+        else self.victim_type == 'victim_heat': # Temperature victim
+            return 'T'
 
     def getType(self) -> int:
         '''Set type of human (adult or child) through object size'''

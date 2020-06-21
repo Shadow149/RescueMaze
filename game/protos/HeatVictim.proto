@@ -1,0 +1,33 @@
+#VRML_SIM R2020a utf8
+# tags: static
+
+PROTO HeatVictim [
+	field SFVec3f    translation       0 0 0
+    field SFRotation rotation          0 0 0 0
+    field SFString   name              "HeatVictim"
+    unconnectedField SFString   type              "Heat"
+    unconnectedField SFInt32    scoreWorth        10
+    unconnectedField SFBool     found             FALSE
+]
+{
+	
+	Solid {
+  		translation IS translation
+  		rotation IS rotation
+  		name IS name
+  		children [
+    		Shape {
+      		appearance Appearance {
+      		}
+	      	geometry Box {
+	        	size 0.007 0.05 0.05
+	      	}
+	    	}
+	    	PointLight {
+	      		attenuation 0 0 13
+	      		color 1 0 0
+	      	radius 10
+	    	}
+	  	]
+	}
+}

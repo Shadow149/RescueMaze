@@ -3,8 +3,8 @@ WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation 0.917637075704381 -0.3893537695154781 -0.07966077740519456 5.844433540291287
-  position -0.5095311953525012 1.1040538493552774 2.025354160800229
+  orientation 0.999897132982556 -0.013310448063760041 -0.005343727688290433 5.519484410813884
+  position -0.3332068495869703 2.067749599412536 1.9258771284528033
 }
 TexturedBackground {
 }
@@ -721,6 +721,18 @@ DEF DEBRIS Group {
 }
 DEF HUMANGROUP Group {
   children [
+    HeatVictim {
+      translation -1.187 0 0
+      name "HeatVictim(1)"
+      found TRUE
+    }
+    HeatVictim {
+      translation 0.583 0 -0.89
+      name "HeatVictim(2)"
+    }
+    HeatVictim {
+      translation 0.013 0 0
+    }
     Victim {
       translation -0.76 0 0.163
       rotation 0 1 0 3.14159
@@ -782,6 +794,31 @@ DEF ROBOT0 E-puck-custom {
   turretSlot [
     GPS {
     }
+    LightSensor {
+      translation -0.03 0 0
+      rotation 0 1 0 3.14
+      name "left_heat_sensor"
+      lookupTable [
+        0 21 0
+        0.85 25 0
+        5 37 0
+        1000 38 0
+      ]
+      colorFilter 1 0 0
+      occlusion TRUE
+    }
+    LightSensor {
+      translation 0.03 0 0
+      name "right_heat_sensor"
+      lookupTable [
+        0 21 0
+        0.85 25 0
+        5 37 0
+        1000 38 0
+      ]
+      colorFilter 1 0 0
+      occlusion TRUE
+    }
   ]
   groundSensorsSlot [
     Camera {
@@ -802,6 +839,31 @@ DEF ROBOT1 E-puck-custom {
   camera_height 128
   turretSlot [
     GPS {
+    }
+    LightSensor {
+      translation -0.03 0 0
+      rotation 0 1 0 3.14
+      name "left_heat_sensor"
+      lookupTable [
+        0 21 0
+        0.85 25 0
+        5 37 0
+        1000 38 0
+      ]
+      colorFilter 1 0 0
+      occlusion TRUE
+    }
+    LightSensor {
+      translation 0.03 0 0
+      name "right_heat_sensor"
+      lookupTable [
+        0 21 0
+        0.85 25 0
+        5 37 0
+        1000 38 0
+      ]
+      colorFilter 1 0 0
+      occlusion TRUE
     }
   ]
   groundSensorsSlot [
