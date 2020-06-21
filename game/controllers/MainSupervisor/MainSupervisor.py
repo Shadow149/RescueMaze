@@ -6,7 +6,6 @@ from controller import Supervisor
 import os
 import random
 import struct
-from RelocateCalculator import generateRelocatePosition
 import math
 
 # Create the instance of the supervisor class
