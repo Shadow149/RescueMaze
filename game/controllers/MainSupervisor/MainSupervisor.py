@@ -793,7 +793,7 @@ while simulationRunning:
                     robot1Obj.increaseScore(int(robot1Obj.getScore() * 0.1))
 
     if robot0Obj.inSimulation:
-        if robot0Obj.timeStopped() >= 5:
+        if robot0Obj.timeStopped() >= 3:
 
             if robot0Obj.message != []:
 
@@ -830,7 +830,7 @@ while simulationRunning:
                                 updateHistory()
 
     if robot1Obj.inSimulation:
-        if robot1Obj.timeStopped() >= 5:
+        if robot1Obj.timeStopped() >= 3:
 
             if robot1Obj.message != []:
 
