@@ -200,6 +200,8 @@ class Human():
             return 'U'
         elif self._victim_type == 'stable':
             return 'S'
+        elif self._victim_type == 'heat': # Temperature victim
+            return 'T'
         else:
             return self._victim_type
 
