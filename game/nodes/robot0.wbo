@@ -1,6 +1,6 @@
 #VRML_OBJ R2020a utf8
 DEF ROBOT0 E-puck-custom {
-  translation -0.825 -0.075 0.6
+  translation 0 -1000 0
   rotation 0 1 0 0
   name "e-puck 0"
   controller "robot0Controller"

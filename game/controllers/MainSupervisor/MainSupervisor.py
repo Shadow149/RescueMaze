@@ -606,6 +606,9 @@ robot1Obj.startingTile = startingTileObj
 robot1Obj.lastVisitedCheckPointPosition = startingTileObj.center
 robot1Obj.visitedCheckpoints.append(startingTileObj.center)
 
+robot0Obj.position = [startingTileObj.center[0] - 0.05, startingTileObj.center[1], startingTileObj.center[2]]
+robot1Obj.position = [startingTileObj.center[0] + 0.05, startingTileObj.center[1], startingTileObj.center[2]]
+
 # Until the match ends (also while paused)
 while simulationRunning:
 
