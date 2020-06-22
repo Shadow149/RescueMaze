@@ -815,7 +815,7 @@ while simulationRunning:
                                         pointsScored = h.scoreWorth
 
                                         if r0_est_vic_type.lower() == h.simple_victim_type.lower():
-                                            robot0Obj.history.enqueue("Successful Vitim Type Correct Bonus  + 10")
+                                            robot0Obj.history.enqueue("Successful Victim Type Correct Bonus  + 10")
                                             pointsScored += 10
 
                                         robot0Obj.history.enqueue("Successful Victim Identification " + " +" + str(h.scoreWorth))
@@ -851,7 +851,7 @@ while simulationRunning:
                                         pointsScored = h.scoreWorth
 
                                         if r1_est_vic_type.lower() == h.simple_victim_type.lower():
-                                            robot1Obj.history.enqueue("Successful Vitim Type Correct Bonus  + 10")
+                                            robot1Obj.history.enqueue("Successful Victim Type Correct Bonus  + 10")
                                             pointsScored += 10
 
                                         robot1Obj.history.enqueue("Successful Victim Identification " + " +" + str(h.scoreWorth))
