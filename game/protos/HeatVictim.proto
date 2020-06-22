@@ -22,7 +22,7 @@ PROTO HeatVictim [
 						appearance Appearance {
 						}
 						geometry Box {
-							size 0.04 0.001 0.04
+							size 0.04 0.007 0.04
 						}
 					}
 					PointLight {
