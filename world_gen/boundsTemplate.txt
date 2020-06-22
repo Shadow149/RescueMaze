@@ -1,10 +1,10 @@
 DEF boundary Group {{
   children [
     DEF {0}{1}min Transform {{
-          translation {2} 0 {3}
+          translation {2} -0.075 {3}
     }}
     DEF {0}{1}max Transform {{
-          translation {4} 0 {5}
+          translation {4} -0.075 {5}
     }}
   ]
 }}
