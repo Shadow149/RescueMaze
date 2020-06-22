@@ -25,17 +25,15 @@ PROTO HeatVictim [
 							size 0.04 0.007 0.04
 						}
 					}
-					PointLight {
-						%{ if fields.found.value then }%
-							attenuation 0 0 0
-							color 1 0 0
-							radius 0
-						%{ else }%                 
+					%{ if fields.found.value then }%
+						
+					%{ else }%       
+						PointLight {
 							attenuation 0 0 13
 							color 1 0 0
 							radius 10
-						%{ end }%
-					}
+						}
+					%{ end }%
 				]
 			}
 		]
