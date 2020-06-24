@@ -9,6 +9,31 @@ DEF ROBOT{0} E-puck-custom {{
   turretSlot [
     GPS {{
     }}
+    LightSensor {{
+      translation -0.03 0 0
+      rotation 0 1 0 3.14
+      name "left_heat_sensor"
+      lookupTable [
+        0 21 0
+        0.85 25 0
+        5 37 0
+        1000 38 0
+      ]
+      colorFilter 1 0 0
+      occlusion TRUE
+    }}
+    LightSensor {{
+      translation 0.03 0 0
+      name "right_heat_sensor"
+      lookupTable [
+        0 21 0
+        0.85 25 0
+        5 37 0
+        1000 38 0
+      ]
+      colorFilter 1 0 0
+      occlusion TRUE
+    }}
   ]
   groundSensorsSlot [
     Camera {{
