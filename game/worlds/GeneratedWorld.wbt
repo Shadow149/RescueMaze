@@ -1,791 +1,2767 @@
-#VRML_SIM R2020a utf8
+#VRML_SIM R2019b utf8
 WorldInfo {
-  basicTimeStep 16
 }
 Viewpoint {
-  orientation 0.999897132982556 -0.013310448063760041 -0.005343727688290433 5.519484410813884
-  position -0.33278521191891275 2.105511562291152 1.965317729537494
+  orientation -0.999999999992902 3.3007734659748418e-06 1.8168571735575623e-06 1.2200003645025932
+  position -0.17471300125797107 10.574047080188782 3.723531785483898
 }
 TexturedBackground {
 }
 TexturedBackgroundLight {
+}    DEF WALLTILES Group {
+        children [
+DEF TILE worldTile {
+  xPos 0
+  zPos 0
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "0"
 }
-DEF WALLTILES Group {
+DEF TILE worldTile {
+  xPos 0
+  zPos 1
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "1"
+}
+DEF TILE worldTile {
+  xPos 0
+  zPos 2
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "2"
+}
+DEF TILE worldTile {
+  xPos 0
+  zPos 3
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "3"
+}
+DEF TILE worldTile {
+  xPos 0
+  zPos 4
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "4"
+}
+DEF TILE worldTile {
+  xPos 0
+  zPos 5
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "5"
+}
+DEF TILE worldTile {
+  xPos 0
+  zPos 6
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "6"
+}
+DEF TILE worldTile {
+  xPos 0
+  zPos 7
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "7"
+}
+DEF TILE worldTile {
+  xPos 0
+  zPos 8
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "8"
+}
+DEF TILE worldTile {
+  xPos 0
+  zPos 9
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "9"
+}
+DEF TILE worldTile {
+  xPos 1
+  zPos 0
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "10"
+}
+DEF TILE worldTile {
+  xPos 1
+  zPos 1
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal TRUE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal TRUE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "11"
+}
+DEF TILE worldTile {
+  xPos 1
+  zPos 2
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal TRUE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "12"
+}
+DEF TILE worldTile {
+  xPos 1
+  zPos 3
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal TRUE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "13"
+}
+DEF TILE worldTile {
+  xPos 1
+  zPos 4
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner TRUE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal TRUE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "14"
+}
+DEF TILE worldTile {
+  xPos 1
+  zPos 5
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal TRUE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "15"
+}
+DEF TILE worldTile {
+  xPos 1
+  zPos 6
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal TRUE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "16"
+}
+DEF TILE worldTile {
+  xPos 1
+  zPos 7
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall TRUE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal TRUE
+  leftExternal TRUE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "17"
+}
+DEF TILE worldTile {
+  xPos 1
+  zPos 8
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "18"
+}
+DEF TILE worldTile {
+  xPos 1
+  zPos 9
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "19"
+}
+DEF TILE worldTile {
+  xPos 2
+  zPos 0
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "20"
+}
+DEF TILE worldTile {
+  xPos 2
+  zPos 1
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal TRUE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "21"
+}
+DEF TILE worldTile {
+  xPos 2
+  zPos 2
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall TRUE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "22"
+}
+DEF TILE worldTile {
+  xPos 2
+  zPos 3
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint TRUE
+  swamp FALSE
+  width 10
+  height 10
+  id "23"
+}
+DEF TILE worldTile {
+  xPos 2
+  zPos 4
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "24"
+}
+DEF TILE worldTile {
+  xPos 2
+  zPos 5
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "25"
+}
+DEF TILE worldTile {
+  xPos 2
+  zPos 6
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap TRUE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "26"
+}
+DEF TILE worldTile {
+  xPos 2
+  zPos 7
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal TRUE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "27"
+}
+DEF TILE worldTile {
+  xPos 2
+  zPos 8
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "28"
+}
+DEF TILE worldTile {
+  xPos 2
+  zPos 9
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "29"
+}
+DEF TILE worldTile {
+  xPos 3
+  zPos 0
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "30"
+}
+DEF TILE worldTile {
+  xPos 3
+  zPos 1
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner TRUE
+  topRightCorner FALSE
+  topExternal TRUE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "31"
+}
+DEF TILE worldTile {
+  xPos 3
+  zPos 2
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "32"
+}
+DEF TILE worldTile {
+  xPos 3
+  zPos 3
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "33"
+}
+DEF TILE worldTile {
+  xPos 3
+  zPos 4
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "34"
+}
+DEF TILE worldTile {
+  xPos 3
+  zPos 5
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint TRUE
+  swamp FALSE
+  width 10
+  height 10
+  id "35"
+}
+DEF TILE worldTile {
+  xPos 3
+  zPos 6
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "36"
+}
+DEF TILE worldTile {
+  xPos 3
+  zPos 7
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner TRUE
+  bottomRightCorner TRUE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "37"
+}
+DEF TILE worldTile {
+  xPos 3
+  zPos 8
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall TRUE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal TRUE
+  bottomExternal TRUE
+  leftExternal TRUE
+  notch ""
+  notchRotation 3.14159
+  start TRUE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "38"
+}
+DEF TILE worldTile {
+  xPos 3
+  zPos 9
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "39"
+}
+DEF TILE worldTile {
+  xPos 4
+  zPos 0
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "40"
+}
+DEF TILE worldTile {
+  xPos 4
+  zPos 1
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal TRUE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "41"
+}
+DEF TILE worldTile {
+  xPos 4
+  zPos 2
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "42"
+}
+DEF TILE worldTile {
+  xPos 4
+  zPos 3
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner TRUE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp TRUE
+  width 10
+  height 10
+  id "43"
+}
+DEF TILE worldTile {
+  xPos 4
+  zPos 4
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner TRUE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "44"
+}
+DEF TILE worldTile {
+  xPos 4
+  zPos 5
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "45"
+}
+DEF TILE worldTile {
+  xPos 4
+  zPos 6
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp TRUE
+  width 10
+  height 10
+  id "46"
+}
+DEF TILE worldTile {
+  xPos 4
+  zPos 7
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal TRUE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "47"
+}
+DEF TILE worldTile {
+  xPos 4
+  zPos 8
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "48"
+}
+DEF TILE worldTile {
+  xPos 4
+  zPos 9
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "49"
+}
+DEF TILE worldTile {
+  xPos 5
+  zPos 0
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "50"
+}
+DEF TILE worldTile {
+  xPos 5
+  zPos 1
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal TRUE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "51"
+}
+DEF TILE worldTile {
+  xPos 5
+  zPos 2
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "52"
+}
+DEF TILE worldTile {
+  xPos 5
+  zPos 3
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall TRUE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "53"
+}
+DEF TILE worldTile {
+  xPos 5
+  zPos 4
+  floor TRUE
+  topWall TRUE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "54"
+}
+DEF TILE worldTile {
+  xPos 5
+  zPos 5
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "55"
+}
+DEF TILE worldTile {
+  xPos 5
+  zPos 6
+  floor FALSE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap TRUE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "56"
+}
+DEF TILE worldTile {
+  xPos 5
+  zPos 7
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner TRUE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal TRUE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "57"
+}
+DEF TILE worldTile {
+  xPos 5
+  zPos 8
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "58"
+}
+DEF TILE worldTile {
+  xPos 5
+  zPos 9
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "59"
+}
+DEF TILE worldTile {
+  xPos 6
+  zPos 0
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "60"
+}
+DEF TILE worldTile {
+  xPos 6
+  zPos 1
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal TRUE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "61"
+}
+DEF TILE worldTile {
+  xPos 6
+  zPos 2
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "62"
+}
+DEF TILE worldTile {
+  xPos 6
+  zPos 3
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner TRUE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "63"
+}
+DEF TILE worldTile {
+  xPos 6
+  zPos 4
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "64"
+}
+DEF TILE worldTile {
+  xPos 6
+  zPos 5
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "65"
+}
+DEF TILE worldTile {
+  xPos 6
+  zPos 6
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "66"
+}
+DEF TILE worldTile {
+  xPos 6
+  zPos 7
+  floor TRUE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall TRUE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal TRUE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "67"
+}
+DEF TILE worldTile {
+  xPos 6
+  zPos 8
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "68"
+}
+DEF TILE worldTile {
+  xPos 6
+  zPos 9
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "69"
+}
+DEF TILE worldTile {
+  xPos 7
+  zPos 0
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "70"
+}
+DEF TILE worldTile {
+  xPos 7
+  zPos 1
+  floor TRUE
+  topWall TRUE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal TRUE
+  rightExternal TRUE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "71"
+}
+DEF TILE worldTile {
+  xPos 7
+  zPos 2
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal TRUE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "72"
+}
+DEF TILE worldTile {
+  xPos 7
+  zPos 3
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal TRUE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "73"
+}
+DEF TILE worldTile {
+  xPos 7
+  zPos 4
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal TRUE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "74"
+}
+DEF TILE worldTile {
+  xPos 7
+  zPos 5
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall TRUE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal TRUE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "75"
+}
+DEF TILE worldTile {
+  xPos 7
+  zPos 6
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal TRUE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "76"
+}
+DEF TILE worldTile {
+  xPos 7
+  zPos 7
+  floor TRUE
+  topWall FALSE
+  rightWall TRUE
+  bottomWall TRUE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal TRUE
+  bottomExternal TRUE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "77"
+}
+DEF TILE worldTile {
+  xPos 7
+  zPos 8
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "78"
+}
+DEF TILE worldTile {
+  xPos 7
+  zPos 9
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "79"
+}
+DEF TILE worldTile {
+  xPos 8
+  zPos 0
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "80"
+}
+DEF TILE worldTile {
+  xPos 8
+  zPos 1
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "81"
+}
+DEF TILE worldTile {
+  xPos 8
+  zPos 2
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "82"
+}
+DEF TILE worldTile {
+  xPos 8
+  zPos 3
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "83"
+}
+DEF TILE worldTile {
+  xPos 8
+  zPos 4
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "84"
+}
+DEF TILE worldTile {
+  xPos 8
+  zPos 5
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "85"
+}
+DEF TILE worldTile {
+  xPos 8
+  zPos 6
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "86"
+}
+DEF TILE worldTile {
+  xPos 8
+  zPos 7
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "87"
+}
+DEF TILE worldTile {
+  xPos 8
+  zPos 8
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "88"
+}
+DEF TILE worldTile {
+  xPos 8
+  zPos 9
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "89"
+}
+DEF TILE worldTile {
+  xPos 9
+  zPos 0
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "90"
+}
+DEF TILE worldTile {
+  xPos 9
+  zPos 1
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "91"
+}
+DEF TILE worldTile {
+  xPos 9
+  zPos 2
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "92"
+}
+DEF TILE worldTile {
+  xPos 9
+  zPos 3
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "93"
+}
+DEF TILE worldTile {
+  xPos 9
+  zPos 4
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "94"
+}
+DEF TILE worldTile {
+  xPos 9
+  zPos 5
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "95"
+}
+DEF TILE worldTile {
+  xPos 9
+  zPos 6
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "96"
+}
+DEF TILE worldTile {
+  xPos 9
+  zPos 7
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "97"
+}
+DEF TILE worldTile {
+  xPos 9
+  zPos 8
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "98"
+}
+DEF TILE worldTile {
+  xPos 9
+  zPos 9
+  floor FALSE
+  topWall FALSE
+  rightWall FALSE
+  bottomWall FALSE
+  leftWall FALSE
+  topLeftCorner FALSE
+  bottomLeftCorner FALSE
+  bottomRightCorner FALSE
+  topRightCorner FALSE
+  topExternal FALSE
+  rightExternal FALSE
+  bottomExternal FALSE
+  leftExternal FALSE
+  notch ""
+  notchRotation 0
+  start FALSE
+  trap FALSE
+  checkpoint FALSE
+  swamp FALSE
+  width 10
+  height 10
+  id "99"
+}
+
+        ]
+    }
+    DEF CHECKPOINTBOUNDS Group {
+        children [
+DEF boundary Group {
   children [
-    DEF TILE worldTile {
-      width 9
-      height 8
-      id "0"
-    }
-    DEF TILE worldTile {
-      zPos 1
-      width 9
-      height 8
-      id "1"
-    }
-    DEF TILE worldTile {
-      zPos 2
-      width 9
-      height 8
-      id "2"
-    }
-    DEF TILE worldTile {
-      zPos 3
-      width 9
-      height 8
-      id "3"
-    }
-    DEF TILE worldTile {
-      zPos 4
-      width 9
-      height 8
-      id "4"
-    }
-    DEF TILE worldTile {
-      zPos 5
-      width 9
-      height 8
-      id "5"
-    }
-    DEF TILE worldTile {
-      zPos 6
-      width 9
-      height 8
-      id "6"
-    }
-    DEF TILE worldTile {
-      zPos 7
-      width 9
-      height 8
-      id "7"
-    }
-    DEF TILE worldTile {
-      xPos 1
-      width 9
-      height 8
-      id "8"
-    }
-    DEF TILE worldTile {
-      xPos 1
-      zPos 1
-      floor TRUE
-      topWall TRUE
-      leftWall TRUE
-      topExternal TRUE
-      leftExternal TRUE
-      width 9
-      height 8
-      id "9"
-    }
-    DEF TILE worldTile {
-      xPos 1
-      zPos 2
-      floor TRUE
-      bottomWall TRUE
-      leftWall TRUE
-      leftExternal TRUE
-      width 9
-      height 8
-      id "10"
-    }
-    DEF TILE worldTile {
-      xPos 1
-      zPos 3
-      floor TRUE
-      topWall TRUE
-      rightWall TRUE
-      leftWall TRUE
-      leftExternal TRUE
-      width 9
-      height 8
-      id "11"
-    }
-    DEF TILE worldTile {
-      xPos 1
-      zPos 4
-      floor TRUE
-      leftWall TRUE
-      bottomRightCorner TRUE
-      leftExternal TRUE
-      width 9
-      height 8
-      id "12"
-    }
-    DEF TILE worldTile {
-      xPos 1
-      zPos 5
-      floor TRUE
-      rightWall TRUE
-      bottomWall TRUE
-      leftWall TRUE
-      bottomExternal TRUE
-      leftExternal TRUE
-      checkpoint TRUE
-      width 9
-      height 8
-      id "13"
-    }
-    DEF TILE worldTile {
-      xPos 1
-      zPos 6
-      width 9
-      height 8
-      id "14"
-    }
-    DEF TILE worldTile {
-      xPos 1
-      zPos 7
-      width 9
-      height 8
-      id "15"
-    }
-    DEF TILE worldTile {
-      xPos 2
-      width 9
-      height 8
-      id "16"
-    }
-    DEF TILE worldTile {
-      xPos 2
-      zPos 1
-      floor TRUE
-      topWall TRUE
-      bottomWall TRUE
-      topExternal TRUE
-      checkpoint TRUE
-      width 9
-      height 8
-      id "17"
-    }
-    DEF TILE worldTile {
-      xPos 2
-      zPos 2
-      floor TRUE
-      topWall TRUE
-      bottomWall TRUE
-      width 9
-      height 8
-      id "18"
-    }
-    DEF TILE worldTile {
-      xPos 2
-      zPos 3
-      floor TRUE
-      topWall TRUE
-      leftWall TRUE
-      bottomRightCorner TRUE
-      width 9
-      height 8
-      id "19"
-    }
-    DEF TILE worldTile {
-      xPos 2
-      zPos 4
-      floor TRUE
-      rightWall TRUE
-      bottomWall TRUE
-      width 9
-      height 8
-      id "20"
-    }
-    DEF TILE worldTile {
-      xPos 2
-      zPos 5
-      floor TRUE
-      topWall TRUE
-      leftWall TRUE
-      bottomRightCorner TRUE
-      width 9
-      height 8
-      id "21"
-    }
-    DEF TILE worldTile {
-      xPos 2
-      zPos 6
-      floor TRUE
-      rightWall TRUE
-      bottomWall TRUE
-      leftWall TRUE
-      rightExternal TRUE
-      bottomExternal TRUE
-      leftExternal TRUE
-      notchRotation 3.14159
-      start TRUE
-      width 9
-      height 8
-      id "22"
-    }
-    DEF TILE worldTile {
-      xPos 2
-      zPos 7
-      width 9
-      height 8
-      id "23"
-    }
-    DEF TILE worldTile {
-      xPos 3
-      width 9
-      height 8
-      id "24"
-    }
-    DEF TILE worldTile {
-      xPos 3
-      zPos 1
-      floor TRUE
-      topWall TRUE
-      bottomWall TRUE
-      topExternal TRUE
-      width 9
-      height 8
-      id "25"
-    }
-    DEF TILE worldTile {
-      xPos 3
-      zPos 2
-      floor TRUE
-      topWall TRUE
-      rightWall TRUE
-      swamp TRUE
-      width 9
-      height 8
-      id "26"
-    }
-    DEF TILE worldTile {
-      xPos 3
-      zPos 3
-      floor TRUE
-      rightWall TRUE
-      bottomWall TRUE
-      width 9
-      height 8
-      id "27"
-    }
-    DEF TILE worldTile {
-      xPos 3
-      zPos 4
-      floor TRUE
-      topWall TRUE
-      leftWall TRUE
-      bottomRightCorner TRUE
-      width 9
-      height 8
-      id "28"
-    }
-    DEF TILE worldTile {
-      xPos 3
-      zPos 5
-      floor TRUE
-      rightWall TRUE
-      bottomWall TRUE
-      topLeftCorner TRUE
-      bottomExternal TRUE
-      width 9
-      height 8
-      id "29"
-    }
-    DEF TILE worldTile {
-      xPos 3
-      zPos 6
-      width 9
-      height 8
-      id "30"
-    }
-    DEF TILE worldTile {
-      xPos 3
-      zPos 7
-      width 9
-      height 8
-      id "31"
-    }
-    DEF TILE worldTile {
-      xPos 4
-      width 9
-      height 8
-      id "32"
-    }
-    DEF TILE worldTile {
-      xPos 4
-      zPos 1
-      floor TRUE
-      topWall TRUE
-      bottomWall TRUE
-      topExternal TRUE
-      width 9
-      height 8
-      id "33"
-    }
-    DEF TILE worldTile {
-      xPos 4
-      zPos 2
-      floor TRUE
-      topWall TRUE
-      leftWall TRUE
-      width 9
-      height 8
-      id "34"
-    }
-    DEF TILE worldTile {
-      xPos 4
-      zPos 3
-      floor TRUE
-      leftWall TRUE
-      width 9
-      height 8
-      id "35"
-    }
-    DEF TILE worldTile {
-      xPos 4
-      zPos 4
-      floor TRUE
-      rightWall TRUE
-      bottomWall TRUE
-      topLeftCorner TRUE
-      width 9
-      height 8
-      id "36"
-    }
-    DEF TILE worldTile {
-      xPos 4
-      zPos 5
-      topWall TRUE
-      bottomWall TRUE
-      leftWall TRUE
-      bottomExternal TRUE
-      trap TRUE
-      width 9
-      height 8
-      id "37"
-    }
-    DEF TILE worldTile {
-      xPos 4
-      zPos 6
-      width 9
-      height 8
-      id "38"
-    }
-    DEF TILE worldTile {
-      xPos 4
-      zPos 7
-      width 9
-      height 8
-      id "39"
-    }
-    DEF TILE worldTile {
-      xPos 5
-      width 9
-      height 8
-      id "40"
-    }
-    DEF TILE worldTile {
-      xPos 5
-      zPos 1
-      floor TRUE
-      topWall TRUE
-      topExternal TRUE
-      width 9
-      height 8
-      id "41"
-    }
-    DEF TILE worldTile {
-      xPos 5
-      zPos 2
-      floor TRUE
-      bottomWall TRUE
-      width 9
-      height 8
-      id "42"
-    }
-    DEF TILE worldTile {
-      xPos 5
-      zPos 3
-      floor TRUE
-      topWall TRUE
-      rightWall TRUE
-      width 9
-      height 8
-      id "43"
-    }
-    DEF TILE worldTile {
-      xPos 5
-      zPos 4
-      floor TRUE
-      leftWall TRUE
-      width 9
-      height 8
-      id "44"
-    }
-    DEF TILE worldTile {
-      xPos 5
-      zPos 5
-      floor TRUE
-      bottomWall TRUE
-      topLeftCorner TRUE
-      bottomExternal TRUE
-      width 9
-      height 8
-      id "45"
-    }
-    DEF TILE worldTile {
-      xPos 5
-      zPos 6
-      width 9
-      height 8
-      id "46"
-    }
-    DEF TILE worldTile {
-      xPos 5
-      zPos 7
-      width 9
-      height 8
-      id "47"
-    }
-    DEF TILE worldTile {
-      xPos 6
-      width 9
-      height 8
-      id "48"
-    }
-    DEF TILE worldTile {
-      xPos 6
-      zPos 1
-      floor TRUE
-      topWall TRUE
-      rightWall TRUE
-      topExternal TRUE
-      rightExternal TRUE
-      width 9
-      height 8
-      id "49"
-    }
-    DEF TILE worldTile {
-      xPos 6
-      zPos 2
-      floor TRUE
-      rightWall TRUE
-      bottomLeftCorner TRUE
-      rightExternal TRUE
-      width 9
-      height 8
-      id "50"
-    }
-    DEF TILE worldTile {
-      xPos 6
-      zPos 3
-      floor TRUE
-      rightWall TRUE
-      leftWall TRUE
-      rightExternal TRUE
-      width 9
-      height 8
-      id "51"
-    }
-    DEF TILE worldTile {
-      xPos 6
-      zPos 4
-      floor TRUE
-      rightWall TRUE
-      rightExternal TRUE
-      width 9
-      height 8
-      id "52"
-    }
-    DEF TILE worldTile {
-      xPos 6
-      zPos 5
-      floor TRUE
-      rightWall TRUE
-      bottomWall TRUE
-      rightExternal TRUE
-      bottomExternal TRUE
-      width 9
-      height 8
-      id "53"
-    }
-    DEF TILE worldTile {
-      xPos 6
-      zPos 6
-      width 9
-      height 8
-      id "54"
-    }
-    DEF TILE worldTile {
-      xPos 6
-      zPos 7
-      width 9
-      height 8
-      id "55"
-    }
-    DEF TILE worldTile {
-      xPos 7
-      width 9
-      height 8
-      id "56"
-    }
-    DEF TILE worldTile {
-      xPos 7
-      zPos 1
-      width 9
-      height 8
-      id "57"
-    }
-    DEF TILE worldTile {
-      xPos 7
-      zPos 2
-      width 9
-      height 8
-      id "58"
-    }
-    DEF TILE worldTile {
-      xPos 7
-      zPos 3
-      width 9
-      height 8
-      id "59"
-    }
-    DEF TILE worldTile {
-      xPos 7
-      zPos 4
-      width 9
-      height 8
-      id "60"
-    }
-    DEF TILE worldTile {
-      xPos 7
-      zPos 5
-      width 9
-      height 8
-      id "61"
-    }
-    DEF TILE worldTile {
-      xPos 7
-      zPos 6
-      width 9
-      height 8
-      id "62"
-    }
-    DEF TILE worldTile {
-      xPos 7
-      zPos 7
-      width 9
-      height 8
-      id "63"
-    }
-    DEF TILE worldTile {
-      xPos 8
-      width 9
-      height 8
-      id "64"
-    }
-    DEF TILE worldTile {
-      xPos 8
-      zPos 1
-      width 9
-      height 8
-      id "65"
-    }
-    DEF TILE worldTile {
-      xPos 8
-      zPos 2
-      width 9
-      height 8
-      id "66"
-    }
-    DEF TILE worldTile {
-      xPos 8
-      zPos 3
-      width 9
-      height 8
-      id "67"
-    }
-    DEF TILE worldTile {
-      xPos 8
-      zPos 4
-      width 9
-      height 8
-      id "68"
-    }
-    DEF TILE worldTile {
-      xPos 8
-      zPos 5
-      width 9
-      height 8
-      id "69"
-    }
-    DEF TILE worldTile {
-      xPos 8
-      zPos 6
-      width 9
-      height 8
-      id "70"
-    }
-    DEF TILE worldTile {
-      xPos 8
-      zPos 7
-      width 9
-      height 8
-      id "71"
+    DEF checkpoint0min Transform {
+          translation -1.05 0 -0.7500000000000001
+    }
+    DEF checkpoint0max Transform {
+          translation -0.75 0 -0.45000000000000007
     }
   ]
 }
-DEF CHECKPOINTBOUNDS Group {
+DEF boundary Group {
   children [
-    DEF boundary Group {
-      children [
-        DEF checkpoint0min Transform {
-          translation -1.1999999999999997 0 0.15000000000000005
-        }
-        DEF checkpoint0max Transform {
-          translation -0.8999999999999998 0 0.45000000000000007
-        }
-      ]
+    DEF checkpoint1min Transform {
+          translation -0.7500000000000001 0 -0.15
     }
-    DEF boundary Group {
-      children [
-        DEF checkpoint1min Transform {
-          translation -0.8999999999999999 0 -1.0499999999999998
-        }
-        DEF checkpoint1max Transform {
-          translation -0.5999999999999999 0 -0.7499999999999999
-        }
-      ]
+    DEF checkpoint1max Transform {
+          translation -0.45000000000000007 0 0.15
     }
   ]
 }
-DEF TRAPBOUNDS Group {
+
+        ]
+    }
+    DEF TRAPBOUNDS Group {
+        children [
+DEF boundary Group {
   children [
-    DEF boundary Group {
-      children [
-        DEF trap0min Transform {
-          translation -0.29999999999999993 0 0.15000000000000005
-        }
-        DEF trap0max Transform {
-          translation 8.326672684688674e-17 0 0.45000000000000007
-        }
-      ]
+    DEF trap0min Transform {
+          translation -1.05 0 0.14999999999999983
+    }
+    DEF trap0max Transform {
+          translation -0.75 0 0.44999999999999984
     }
   ]
 }
-DEF STARTBOUNDS Group {
+DEF boundary Group {
   children [
-    DEF boundary Group {
-      children [
-        DEF start0min Transform {
-          translation -0.8999999999999999 0 0.44999999999999984
-        }
-        DEF start0max Transform {
-          translation -0.5999999999999999 0 0.7499999999999999
-        }
-      ]
+    DEF trap1min Transform {
+          translation -0.15 0 0.14999999999999983
+    }
+    DEF trap1max Transform {
+          translation 0.15 0 0.44999999999999984
     }
   ]
 }
-DEF SWAMPBOUNDS Group {
+
+        ]
+    }
+    DEF STARTBOUNDS Group {
+        children [
+DEF boundary Group {
   children [
-    DEF boundary Group {
-      children [
-        DEF swamp0min Transform {
-          translation -0.6 0 -0.75
-        }
-        DEF swamp0max Transform {
-          translation -0.29999999999999993 0 -0.44999999999999996
-        }
-      ]
+    DEF start0min Transform {
+          translation -0.7500000000000001 0 0.7499999999999999
+    }
+    DEF start0max Transform {
+          translation -0.45000000000000007 0 1.0499999999999998
     }
   ]
 }
-DEF OBSTACLES Group {
+
+        ]
+    }
+    DEF SWAMPBOUNDS Group {
+        children [
+DEF boundary Group {
   children [
-    DEF OBSTACLE0 Solid {
-      translation 0 -1000 0
-      children [
-        Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0.45 0.45 0.45
-            }
-          }
-          geometry DEF OBSTACLEBOX0 Box {
-            size 0.15 0.15 0.08
-          }
+    DEF swamp0min Transform {
+          translation -0.45000000000000007 0 -0.7500000000000001
+    }
+    DEF swamp0max Transform {
+          translation -0.15000000000000005 0 -0.45000000000000007
+    }
+  ]
+}
+DEF boundary Group {
+  children [
+    DEF swamp1min Transform {
+          translation -0.45000000000000007 0 0.14999999999999983
+    }
+    DEF swamp1max Transform {
+          translation -0.15000000000000005 0 0.44999999999999984
+    }
+  ]
+}
+
+        ]
+    }
+    DEF OBSTACLES Group {
+        children [
+		DEF OBSTACLE0 Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+						material Material {
+						diffuseColor 0.45 0.45 0.45
+						}
+                    }
+                    geometry DEF OBSTACLEBOX0 Box {
+						size 0.06 0.15 0.06
+                    }
+                }
+            ]
+            name "obstacle0"
+            boundingObject USE OBSTACLEBOX0
+	    recognitionColors [
+			0.45 0.45 0.45
+		]
         }
-      ]
-      name "obstacle0"
-      boundingObject USE OBSTACLEBOX0
-      recognitionColors [
-        0.45 0.45 0.45
-      ]
+		DEF OBSTACLE1 Solid {
+            translation 0 -1000 0
+            children [
+                Shape {
+                    appearance Appearance {
+						material Material {
+						diffuseColor 0.45 0.45 0.45
+						}
+                    }
+                    geometry DEF OBSTACLEBOX1 Box {
+						size 0.15 0.15 0.08
+                    }
+                }
+            ]
+            name "obstacle1"
+            boundingObject USE OBSTACLEBOX1
+	    recognitionColors [
+			0.45 0.45 0.45
+		]
+        }
+
+        ]
     }
-  ]
-}
-DEF DEBRIS Group {
-}
-DEF HUMANGROUP Group {
-  children [
-    HeatVictim {
-      translation -1.187 0 0
-      name "HeatVictim(1)"
+    DEF DEBRIS Group {
+        children [
+
+        ]
     }
-    HeatVictim {
-      translation 0.583 0 -0.89
-      name "HeatVictim(2)"
+    DEF HUMANGROUP Group {
+        children [
+
+        ]
     }
-    HeatVictim {
-      translation 0.013 0 0
-    }
-    Victim {
-      translation -0.76 0 0.163
-      rotation 0 1 0 3.14159
-    }
-    Victim {
-      translation -0.76 0 -0.437
-      rotation 0 1 0 3.14159
-      name "Victim(4)"
-    }
-    Victim {
-      translation -1.05 0 -0.463
-      rotation 0 -1 0 0
-      name "Victim(8)"
-    }
-    Victim {
-      translation -0.15 0 -0.737
-      rotation 0 1 0 3.14159
-      name "Victim(3)"
-    }
-    Victim {
-      translation -0.313 0 0.303
-      rotation 0 1 0 1.5708
-      name "Victim(1)"
-      type "unharmed"
-    }
-    Victim {
-      translation -0.313 0 -0.307
-      rotation 0 1 0 1.5708
-      name "Victim(5)"
-      type "unharmed"
-    }
-    Victim {
-      translation 0.287 0 -0.307
-      rotation 0 1 0 1.5708
-      name "Victim(6)"
-      type "unharmed"
-    }
-    Victim {
-      translation -0.013 0 -0.0069997
-      rotation 0 1 0 1.5708
-      name "Victim(2)"
-      type "stable"
-    }
-    Victim {
-      translation -0.613 0 -0.00699745
-      rotation 0 1 0 1.5708
-      name "Victim(7)"
-      type "unharmed"
-    }
-  ]
-}
 DEF ROBOT0 E-puck-custom {
-  translation -0.825 -0.075 0.6
-  name "e-puck 0"
+  translation -0.675 -0.075 0.8999999999999999
+  rotation 0 1 0 0
+  name "e-puck0"
   controller "robot0Controller"
   camera_fieldOfView 0.9
   camera_width 128
@@ -793,31 +2769,6 @@ DEF ROBOT0 E-puck-custom {
   turretSlot [
     GPS {
     }
-    LightSensor {
-      translation -0.03 0 0
-      rotation 0 1 0 3.14
-      name "left_heat_sensor"
-      lookupTable [
-        0 21 0
-        0.85 25 0
-        5 37 0
-        1000 38 0
-      ]
-      colorFilter 1 0 0
-      occlusion TRUE
-    }
-    LightSensor {
-      translation 0.03 0 0
-      name "right_heat_sensor"
-      lookupTable [
-        0 21 0
-        0.85 25 0
-        5 37 0
-        1000 38 0
-      ]
-      colorFilter 1 0 0
-      occlusion TRUE
-    }
   ]
   groundSensorsSlot [
     Camera {
@@ -828,10 +2779,10 @@ DEF ROBOT0 E-puck-custom {
       height 1
     }
   ]
-}
-DEF ROBOT1 E-puck-custom {
-  translation -0.675 -0.075 0.6
-  name "e-puck 1"
+}DEF ROBOT1 E-puck-custom {
+  translation -0.5250000000000001 -0.075 0.8999999999999999
+  rotation 0 1 0 0
+  name "e-puck1"
   controller "robot1Controller"
   camera_fieldOfView 0.9
   camera_width 128
@@ -839,31 +2790,6 @@ DEF ROBOT1 E-puck-custom {
   turretSlot [
     GPS {
     }
-    LightSensor {
-      translation -0.03 0 0
-      rotation 0 1 0 3.14
-      name "left_heat_sensor"
-      lookupTable [
-        0 21 0
-        0.85 25 0
-        5 37 0
-        1000 38 0
-      ]
-      colorFilter 1 0 0
-      occlusion TRUE
-    }
-    LightSensor {
-      translation 0.03 0 0
-      name "right_heat_sensor"
-      lookupTable [
-        0 21 0
-        0.85 25 0
-        5 37 0
-        1000 38 0
-      ]
-      colorFilter 1 0 0
-      occlusion TRUE
-    }
   ]
   groundSensorsSlot [
     Camera {
@@ -874,17 +2800,12 @@ DEF ROBOT1 E-puck-custom {
       height 1
     }
   ]
-}
-DEF MAINSUPERVISOR Robot {
-  children [
-    Receiver {
-      channel 1
-    }
-  ]
-  controller "MainSupervisor"
+}DEF MAINSUPERVISOR Robot {
   supervisor TRUE
+  controller "MainSupervisor"
   window "MainSupervisorWindow"
 }
+
 DEF OBJECTPLACER Robot {
   name "ObjectPlacementSupervisor"
   controller ""

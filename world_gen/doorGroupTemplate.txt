@@ -1,5 +1,0 @@
-DEF DOORGROUP Group {{
-    children [
-{0}
-    ]
-}}

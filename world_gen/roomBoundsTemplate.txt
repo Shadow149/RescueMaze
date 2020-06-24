@@ -1,5 +1,0 @@
-DEF ROOM{1}BOUNDS Group {{
-    children [
-{0}
-    ]
-}}

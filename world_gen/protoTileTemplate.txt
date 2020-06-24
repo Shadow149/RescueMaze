@@ -1,0 +1,26 @@
+DEF TILE worldTile {{
+  xPos {0}
+  zPos {1}
+  floor {2}
+  topWall {3}
+  rightWall {4}
+  bottomWall {5}
+  leftWall {6}
+  topLeftCorner {10}
+  bottomLeftCorner {9}
+  bottomRightCorner {8}
+  topRightCorner {7}
+  topExternal {11}
+  rightExternal {12}
+  bottomExternal {13}
+  leftExternal {14}
+  notch "{15}"
+  notchRotation {16}
+  start {17}
+  trap {18}
+  checkpoint {19}
+  swamp {20}
+  width {21}
+  height {22}
+  id "{23}"
+}}
