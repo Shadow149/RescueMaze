@@ -43,5 +43,8 @@ DEF ROBOT{0} E-puck-custom {{
       width 1
       height 1
     }}
+	Gyro {{
+    rotation 0 0 1 1.57079
+	}}
   ]
 }}

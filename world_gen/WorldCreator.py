@@ -171,7 +171,7 @@ def checkForNotch (pos, walls):
     return needLeft, needRight, rotation
 
 
-def createFileData (walls, obstacles, numThermal, numVisual, startPos):
+def createFileData (walls, obstacles, startPos):
     '''Create a file data string from the positions and scales'''
     #Open the file containing the standard header
     headerFile = open(os.path.join(dirname, "fileHeader.txt"), "r")
@@ -228,6 +228,20 @@ def createFileData (walls, obstacles, numThermal, numVisual, startPos):
     supervisorPart = supervisorTemplate.read()
     #Close template file
     supervisorTemplate.close()
+    
+    #Open the file containing the template for the visual humans
+    visualHumanTemplate = open(os.path.join(dirname, "visualHumanTemplate.txt"), "r")
+    #Read template
+    visualHumanPart = visualHumanTemplate.read()
+    #Close template file
+    visualHumanTemplate.close()
+    
+    #Open the file containing the template for the thermal humans
+    thermalHumanTemplate = open(os.path.join(dirname, "thermalHumanTemplate.txt"), "r")
+    #Read template
+    thermalHumanPart = thermalHumanTemplate.read()
+    #Close template file
+    thermalHumanTemplate.close()
 
 
     #Create file data - initialy just the header
@@ -240,12 +254,23 @@ def createFileData (walls, obstacles, numThermal, numVisual, startPos):
     allTrapBounds = ""
     allGoalBounds = ""
     allSwampBounds = ""
+    
+    #String to hold all the humans
+    allHumans = ""
 
     #Upper left corner to start placing tiles from
     width = len(walls[0])
     height = len(walls)
     startX = -(len(walls[0]) * 0.3 / 2.0)
     startZ = -(len(walls) * 0.3 / 2.0)
+    
+    #Rotations of humans for each wall
+    humanRotation = [3.14, 1.57, 0, -1.57]
+    #Offsets for visual and thermal humans
+    humanOffset = [[0, -0.1375], [0.1375, 0], [0, 0.1375], [-0.1375, 0]]
+    humanOffsetThermal = [[0, -0.136], [0.136, 0], [0, 0.136], [-0.136, 0]]
+    #Names of types of visual human
+    humanTypesVisual = ["harmed", "unharmed", "stable"]
 
     #Id numbers used to give a unique but interable name to tile pieces
     tileId = 0
@@ -253,6 +278,7 @@ def createFileData (walls, obstacles, numThermal, numVisual, startPos):
     trapId = 0
     goalId = 0
     swampId = 0
+    humanId = 0
 
     #Iterate through all the tiles
     for x in range(0, len(walls[0])):
@@ -300,6 +326,27 @@ def createFileData (walls, obstacles, numThermal, numVisual, startPos):
                 swampId = swampId + 1
             #Increment id counter
             tileId = tileId + 1
+            
+            #Human
+            if walls[z][x][6] != 0:
+                #Position of tile
+                humanPos = [(x * 0.3) + startX , (z * 0.3) + startZ]
+                humanRot = humanRotation[walls[z][x][7]]
+                #Thermal
+                if walls[z][x][6] == 4:
+                    humanPos[0] = humanPos[0] + humanOffsetThermal[walls[z][x][7]][0]
+                    humanPos[1] = humanPos[1] + humanOffsetThermal[walls[z][x][7]][1]
+                    allHumans = allHumans + thermalHumanPart.format(humanPos[0], humanPos[1], humanRot, humanId)
+                else:
+                    humanPos[0] = humanPos[0] + humanOffset[walls[z][x][7]][0]
+                    humanPos[1] = humanPos[1] + humanOffset[walls[z][x][7]][1]
+                    allHumans = allHumans + visualHumanPart.format(humanPos[0], humanPos[1], humanRot, humanId, humanTypesVisual[walls[z][x][6] - 1])
+                
+                humanId = humanId + 1
+                
+                
+                
+            
 
     #Add the data pieces to the file data
     fileData = fileData + groupPart.format(allTiles, "WALLTILES")
@@ -357,7 +404,7 @@ def createFileData (walls, obstacles, numThermal, numVisual, startPos):
         robotData = robotData + robotPart.format(0, startPos[0][0] * 0.3 + startX, (startPos[0][1] * 0.3 + startZ) + 0.075, 1.5708)
         robotData = robotData + robotPart.format(1, startPos[0][0] * 0.3 + startX, (startPos[0][1] * 0.3 + startZ) - 0.075, 1.5708)
                                             
-    fileData = fileData + groupPart.format("", "HUMANGROUP")
+    fileData = fileData + groupPart.format(allHumans, "HUMANGROUP")
     
     #Add the robot data to the file
     fileData = fileData + robotData
@@ -369,10 +416,10 @@ def createFileData (walls, obstacles, numThermal, numVisual, startPos):
     return fileData
 
 
-def makeFile(boxData, obstacles, thermal, visual, startPos, uiWindow = None):
+def makeFile(boxData, obstacles, startPos, uiWindow = None):
     '''Create and save the file for the information'''
     #Generate the file string for the map
-    data = createFileData(boxData, obstacles, thermal, visual, startPos)
+    data = createFileData(boxData, obstacles, startPos)
     #The default file path
     filePath = os.path.join(dirname, "generatedWorld.wbt")
 

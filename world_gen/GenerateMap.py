@@ -1,4 +1,4 @@
-"""Map Generation Main Script Type 2 v2
+"""Map Generation Main Script Type 2 v3
    Written by Robbie Goldman and Alfred Roberts
 
 Changelog:
@@ -20,6 +20,8 @@ Changelog:
  - Based on type 1 but modified to perform maze generation not BSP
  V2:
  - Changed so that the start is the exit too
+ V3:
+ - Added human generation
 """
 
 import random
@@ -44,6 +46,8 @@ class Tile ():
         self.trap = False
         self.goal = False
         self.swamp = False
+        #List of humans [up, right, down, left]
+        self.humans = [0,0,0,0]
 
     def addWalls (self, wallList: list) -> None:
         '''Add a list of walls'''
@@ -130,6 +134,44 @@ class Tile ():
     def getSwamp (self) -> bool:
         '''Return if this tile has a swamp'''
         return self.swamp
+       
+    def addHuman (self, type, wall) -> bool:
+        '''Add a human to a given wall, returns true only if a wall was present in that direction and it didn't contain a human'''
+        #Get the walls from this tile
+        walls = self.getWalls()
+        #If the wall position is valid
+        if wall < len(walls) and wall < len(self.humans) and wall >= 0:
+            #If there isn't already a human on that wall
+            if walls[wall] and self.humans[wall] == 0:
+                #Set the human value
+                self.humans[wall] = type
+                #Successfully added
+                return True
+        
+        #Failed to add human
+        return False
+    
+    def getHuman (self) -> bool:
+        '''Returns true if there is a human on this tile'''
+        #Iterate humans list
+        for h in self.humans:
+            #If it is a human
+            if h != 0:
+                return True
+        #Otherwise
+        return False
+        
+    def getHumanData (self) -> list:
+        '''Returns the human type and the wall it is on'''
+        #Iterate through the walls
+        for i in range(0, len(self.humans)):
+            #If there is a human
+            if self.humans[i] != 0:
+                #Return the human type and the wall
+                return self.humans[i], i
+        
+        #Return no human
+        return 0, 0
     
     def generatePixels (self) -> list:
         '''Generate a grid of pixels for this tile'''
@@ -161,21 +203,48 @@ class Tile ():
             for x in range(0, 20):
                 pixels[0][x] = 1
                 pixels[1][x] = 1
+            #Add upper human
+            if self.humans[0] > 0:
+                hColour = 6
+                if self.humans[0] == 4:
+                    hColour = 7
+                for x in range(5, 16):
+                    pixels[2][x] = hColour
         #Add left wall
         if self.leftWall:
             for y in range(0, 20):
                 pixels[y][0] = 1
                 pixels[y][1] = 1
+            #Add left human
+            if self.humans[3] > 0:
+                hColour = 6
+                if self.humans[3] == 4:
+                    hColour = 7
+                for y in range(5, 16):
+                    pixels[y][2] = hColour
         #Add lower wall
         if self.lowerWall:
             for x in range(0, 20):
                 pixels[len(pixels) - 1][x] = 1
                 pixels[len(pixels) - 2][x] = 1
+            if self.humans[2] > 0:
+                hColour = 6
+                if self.humans[2] == 4:
+                    hColour = 7
+                for x in range(5, 16):
+                    pixels[len(pixels) - 3][x] = hColour
         #Add right wall
         if self.rightWall:
             for y in range(0, 20):
                 pixels[y][len(pixels[0]) - 1] = 1
                 pixels[y][len(pixels[0]) - 2] = 1
+            #Add right human
+            if self.humans[1] > 0:
+                hColour = 6
+                if self.humans[1] == 4:
+                    hColour = 7
+                for y in range(5, 16):
+                    pixels[y][len(pixels[0]) - 3] = hColour
 
         #Return array of pixels
         return pixels
@@ -251,6 +320,14 @@ def printWorld(array):
                         if pixels[y][x] == 5:
                             #Add tan pixel
                             img.putpixel((xStart + x, yStart + y), (222, 184, 135))
+                        #If there is a visual human
+                        if pixels[y][x] == 6:
+                            #Add magenta pixel
+                            img.putpixel((xStart + x, yStart + y), (255, 0, 255))
+                        #If there is a thermal human
+                        if pixels[y][x] == 7:
+                            #Add red pixel
+                            img.putpixel((xStart + x, yStart + y), (255, 0, 0))
             #Increase y start each pass
             yStart = yStart + 20
         #Increase x start position each time
@@ -530,9 +607,62 @@ def addSwamps(array, swamps, startTile, endTile, x, y):
                     added = True
             #Increment counter
             attempt = attempt + 1
-            
 
-def generateWorld(x, y, checkpoints, traps, swamps):
+
+def addHumans (array, numberVisual, numberThermal, x, y):
+    '''Add the specified number of humans to the array'''
+    #List to hold all humans to add
+    toAdd = []
+    
+    #For each of the visual humans
+    for i in range(0, numberVisual):
+        #Pick a random type (1 - harmed, 2 - unharmed, 3 - stable)
+        toAdd.append(random.randrange(1, 4))
+    
+    #For each of the thermal humans
+    for i in range(0, numberThermal):
+        #Add a thermal
+        toAdd.append(4)
+    
+    #Iterate for every human
+    for h in toAdd:
+        #Not added yet, give 200 attempts
+        added = False
+        attempts = 200
+        
+        #While still trying to add
+        while not added and attempts > 0:
+            #Decreate attempt amount
+            attempts = attempts - 1
+            #Random tile position
+            xPos = random.randrange(1, x + 1)
+            yPos = random.randrange(1, y + 1)
+            #Get the tile and it's walls
+            tile = array[yPos][xPos]
+            tileWalls = tile.getWalls()
+            #If the tile is empty and does not have a human yet
+            if not tile.getTrap() and not tile.getSwamp() and not tile.getCheckpoint() and not tile.getHuman():
+                #List of availiable walls
+                allowedWalls = []
+                #Iterate walls
+                for pos in range(0, len(tileWalls)):
+                    #If that wall is present
+                    if tileWalls[pos]:
+                        #Add to availiable list
+                        allowedWalls.append(pos)
+                
+                #If there are some walls
+                if len(allowedWalls) > 0:
+                    #Select a wall randomly
+                    sel = allowedWalls[random.randrange(0,len(allowedWalls))]
+                    #Attempt to add to that wall
+                    success = tile.addHuman(h, sel)
+                    #If it could be added
+                    if success:
+                        #This human has been placed
+                        added = True
+
+def generateWorld(x, y, checkpoints, traps, swamps, visual, thermal):
     '''Perform generation of a world array'''
     #Create the empty array
     array = createEmptyWorld(x, y)
@@ -692,6 +822,9 @@ def generateWorld(x, y, checkpoints, traps, swamps):
     
     #Add swamps
     addSwamps(array, swamps, startTile, endTile, x, y)
+    
+    #Add humans
+    addHumans(array, visual, thermal, x, y)
 
     #Return the array, root node, room boundaries and doors
     return array, [startBay, startDir]
@@ -739,10 +872,10 @@ def generateObstacles(bulky, debris):
     return obstacles
 
 
-def generatePlan (xSize, ySize, numCheckpoints, numTraps, bulkyObstacles, debris, numSwamps):
+def generatePlan (xSize, ySize, numCheckpoints, numTraps, bulkyObstacles, debris, numSwamps, numVisualHumans, numThermalHumans):
     '''Perform a map generation up to png - does not update map file'''
     #Generate the world and tree
-    world, startPos = generateWorld(xSize, ySize, numCheckpoints, numTraps, numSwamps)
+    world, startPos = generateWorld(xSize, ySize, numCheckpoints, numTraps, numSwamps, numVisualHumans, numThermalHumans)
 	
     #Create a list of obstacles
     obstacles = generateObstacles(bulkyObstacles, debris)
@@ -756,7 +889,7 @@ def generatePlan (xSize, ySize, numCheckpoints, numTraps, bulkyObstacles, debris
     return world, obstacles, startPos
 
 
-def generateWorldFile (world, obstacles, numThermal, numVisual, startPos, window):
+def generateWorldFile (world, obstacles, startPos, window):
     #Array of wall tiles
     walls = []
 
@@ -766,8 +899,8 @@ def generateWorldFile (world, obstacles, numThermal, numVisual, startPos, window
         row = []
         #Iterate horizontally
         for x in range(0, len(world[0]) + 1):
-            #Add each tile [present, [uWall,rWall,dWall,lWall], checkpoint, trap, goal, swamp]
-            row.append([False, [False, False, False, False], False, False, False, False])
+            #Add each tile [present, [uWall,rWall,dWall,lWall], checkpoint, trap, goal, swamp, humanType, humanWall]
+            row.append([False, [False, False, False, False], False, False, False, False, 0, 0])
         #Add row to array
         walls.append(row)
 
@@ -776,11 +909,13 @@ def generateWorldFile (world, obstacles, numThermal, numVisual, startPos, window
         for x in range(0, len(world[0])):
             #If there is a tile there
             if world[y][x] != None:
+                #Get the human data
+                humanInfo = world[y][x].getHumanData()
                 #Add the wall data
-                walls[y][x] = [True, world[y][x].getWalls(), world[y][x].getCheckpoint(), world[y][x].getTrap(), world[y][x].getGoal(), world[y][x].getSwamp()]
+                walls[y][x] = [True, world[y][x].getWalls(), world[y][x].getCheckpoint(), world[y][x].getTrap(), world[y][x].getGoal(), world[y][x].getSwamp(), humanInfo[0], humanInfo[1]]
 
     #Make a map from the walls and objects
-    WorldCreator.makeFile(walls, obstacles, numThermal, numVisual, startPos, window)
+    WorldCreator.makeFile(walls, obstacles, startPos, window)
 
 
 def checkNoNones (dataValues):
@@ -822,10 +957,10 @@ while guiActive:
         genValues = window.getValues()
         #A generation has started (resets flag so generation is not called again)
         window.generateStarted()
-        #Generate a plan with the values
-        world, obstacles, startTilePos = generatePlan(genValues[0][0], genValues[0][1], genValues[3][0], genValues[3][1], genValues[2][0], genValues[2][1], genValues[3][2])
-        #Unpack the unused human values
+        #Unpack the human values
         thermalHumans, visualHumans = genValues[1][0], genValues[1][1]
+        #Generate a plan with the values
+        world, obstacles, startTilePos = generatePlan(genValues[0][0], genValues[0][1], genValues[3][0], genValues[3][1], genValues[2][0], genValues[2][1], genValues[3][2], visualHumans, thermalHumans)
         #Unpack the used obstacle counts
         bulkyObstacles, debris = genValues[2][0], genValues[2][1]
         #Update the UI image of the map
@@ -841,9 +976,9 @@ while guiActive:
         #Saving has begin (resets flag so save is not called twice)
         window.saveStarted()
         #If all values that are needed are not None
-        if checkNoNones([world, obstacles, thermalHumans, visualHumans, startTilePos]):
+        if checkNoNones([world, obstacles, startTilePos]):
             #Generate and save a world
-            generateWorldFile(world, obstacles, thermalHumans, visualHumans, startTilePos, window)
+            generateWorldFile(world, obstacles, startTilePos, window)
 
     #Attempt update loops           
     try:
