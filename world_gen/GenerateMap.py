@@ -48,6 +48,9 @@ class Tile ():
         self.swamp = False
         #List of humans [up, right, down, left]
         self.humans = [0,0,0,0]
+        self.hasHuman = False
+        #No obstacles yet
+        self.obstacle = False
 
     def addWalls (self, wallList: list) -> None:
         '''Add a list of walls'''
@@ -140,11 +143,13 @@ class Tile ():
         #Get the walls from this tile
         walls = self.getWalls()
         #If the wall position is valid
-        if wall < len(walls) and wall < len(self.humans) and wall >= 0:
+        if wall < len(walls) and wall < len(self.humans) and wall >= 0 and not self.hasHuman:
             #If there isn't already a human on that wall
             if walls[wall] and self.humans[wall] == 0:
                 #Set the human value
                 self.humans[wall] = type
+                #This tile does contain a human
+                self.hasHuman = True
                 #Successfully added
                 return True
         
@@ -172,6 +177,13 @@ class Tile ():
         
         #Return no human
         return 0, 0
+     
+    def addObstacle(self) -> None:
+        '''Toggle flag for an obstacle to true'''
+        self.obstacle = True
+    
+    def getObstacle(self) -> bool:
+        '''Returns true if an obstacle has been placed in this tile'''
     
     def generatePixels (self) -> list:
         '''Generate a grid of pixels for this tile'''
@@ -245,7 +257,13 @@ class Tile ():
                     hColour = 7
                 for y in range(5, 16):
                     pixels[y][len(pixels[0]) - 3] = hColour
-
+        
+        #Add obstacle marker
+        if self.obstacle:
+            for x in range(8, 13):
+                for y in range(8, 13):
+                    pixels[y][x] = 8
+                    
         #Return array of pixels
         return pixels
 
@@ -328,6 +346,10 @@ def printWorld(array):
                         if pixels[y][x] == 7:
                             #Add red pixel
                             img.putpixel((xStart + x, yStart + y), (255, 0, 0))
+                        #If there is an obstacle
+                        if pixels[y][x] == 8:
+                            #Add orange pixel
+                            img.putpixel((xStart + x, yStart + y), (255, 127, 0))
             #Increase y start each pass
             yStart = yStart + 20
         #Increase x start position each time
@@ -384,6 +406,7 @@ def getAllAround (world, pos):
 
     #Return the tiles and directions
     return aroundPositions, aroundDirs
+
 
 def depthFirstMaze (world, start):
     '''Generate a maze using depth first search'''
@@ -584,6 +607,7 @@ def addTraps(array, traps, startTile, endTile, x, y):
                         #Remove the quadrant from the options
                         del quads[rQ]
 
+
 def addSwamps(array, swamps, startTile, endTile, x, y):
     '''Adds a number of swamps to the map'''
     #Iterate for each swamp
@@ -609,6 +633,121 @@ def addSwamps(array, swamps, startTile, endTile, x, y):
             attempt = attempt + 1
 
 
+def generateHumanSpaces(array, x, y):
+    '''Generate a list of wall groups with directions'''
+    wallGroups = []
+    
+    #Two directional lists of walls
+    currentGroup = []
+    currentGroupOther = []
+    
+    #Iterate through each tile (left to right, top to bottom)
+    for yPos in range(1, y + 1):
+        for xPos in range(1, x + 1):
+            #Get this tile
+            cTile = array[yPos][xPos]
+            #If this has an upper wall and no special tile states
+            if cTile.getWalls()[0] and not cTile.getTrap() and not cTile.getCheckpoint() and not cTile.getSwamp():
+                #Add this tile to the list of tiles
+                currentGroup.append(cTile)
+            #Otherwise if there are tiles in the group
+            elif len(currentGroup) != 0:
+                #Add group to list with upper direction
+                wallGroups.append([0, currentGroup])
+                currentGroup = []
+            #If there is a wall on the right
+            if cTile.getWalls()[1] and len(currentGroup) != 0:
+                #End the group and add to the list with direction
+                wallGroups.append([0, currentGroup])
+                currentGroup = []
+            #If the end of the row has been reached
+            if xPos == x + 1:
+                #If there are tiles in the group
+                if len(currentGroup) != 0:
+                    #Add to list of groups with direction
+                    wallGroups.append([0, currentGroup])
+                #End group
+                currentGroup = []
+            
+            #If this has a lower wall and no special tile states
+            if cTile.getWalls()[2] and not cTile.getTrap() and not cTile.getCheckpoint() and not cTile.getSwamp():
+                #Add this tile to the list of tiles
+                currentGroupOther.append(cTile)
+            #Otherwise if there are tiles in the group
+            elif len(currentGroupOther) != 0:
+                #Add group to list with down direction
+                wallGroups.append([2, currentGroupOther])
+                currentGroupOther = []
+            #If there is a wall on the right
+            if cTile.getWalls()[1] and len(currentGroupOther) != 0:
+                #End the group and add to the list with direction
+                wallGroups.append([2, currentGroupOther])
+                currentGroupOther = []
+            #If the end of the row has been reached
+            if xPos == x + 1:
+                #If there are tiles in the group
+                if len(currentGroupOther) != 0:
+                    #Add to list of groups with direction
+                    wallGroups.append([2, currentGroupOther])
+                #End group
+                currentGroupOther = []
+    
+    #Iterate through each tile (top to bottom, left to right)    
+    for xPos in range(1, x + 1):
+        for yPos in range(1, y + 1):
+            #Get this tile
+            cTile = array[yPos][xPos]
+            #If this has a right wall and no special tile states
+            if cTile.getWalls()[1] and not cTile.getTrap() and not cTile.getCheckpoint() and not cTile.getSwamp():
+                #Add this tile to the list of tiles
+                currentGroup.append(cTile)
+            #Otherwise if there are tiles in the group
+            elif len(currentGroup) != 0:
+                #Add group to list with right direction
+                wallGroups.append([1, currentGroup])
+                currentGroup = []
+            #If there is a wall on the bottom
+            if cTile.getWalls()[2] and len(currentGroup) != 0:
+                #End the group and add to the list with direction
+                wallGroups.append([1, currentGroup])
+                currentGroup = []
+            #If the end of the column has been reached
+            if yPos == y + 1:
+                #If there are tiles in the group
+                if len(currentGroup) != 0:
+                    #Add to list of groups with direction
+                    wallGroups.append([1, currentGroup])
+                #End group
+                currentGroup = []
+            
+            cTile = array[yPos][xPos]
+            #If this has a left wall and no special tile states
+            if cTile.getWalls()[3] and not cTile.getTrap() and not cTile.getCheckpoint() and not cTile.getSwamp():
+                #Add this tile to the list of tiles
+                currentGroupOther.append(cTile)
+            #Otherwise if there are tiles in the group
+            elif len(currentGroupOther) != 0:
+                #Add group to list with left direction
+                wallGroups.append([3, currentGroupOther])
+                currentGroupOther = []
+            #If there is a wall on the bottom
+            if cTile.getWalls()[2] and len(currentGroupOther) != 0:
+                #End the group and add to the list with direction
+                wallGroups.append([3, currentGroupOther])
+                currentGroupOther = []
+            #If the end of the column has been reached
+            if yPos == y + 1:
+                #If there are tiles in the group
+                if len(currentGroupOther) != 0:
+                    #Add to list of groups with direction
+                    wallGroups.append([3, currentGroupOther])
+                #End group
+                currentGroupOther = []
+    
+    #Return the list of wall groups
+    return wallGroups
+
+
 def addHumans (array, numberVisual, numberThermal, x, y):
     '''Add the specified number of humans to the array'''
     #List to hold all humans to add
@@ -623,44 +762,70 @@ def addHumans (array, numberVisual, numberThermal, x, y):
     for i in range(0, numberThermal):
         #Add a thermal
         toAdd.append(4)
-    
-    #Iterate for every human
-    for h in toAdd:
-        #Not added yet, give 200 attempts
-        added = False
-        attempts = 200
         
-        #While still trying to add
-        while not added and attempts > 0:
-            #Decreate attempt amount
-            attempts = attempts - 1
-            #Random tile position
-            xPos = random.randrange(1, x + 1)
-            yPos = random.randrange(1, y + 1)
-            #Get the tile and it's walls
-            tile = array[yPos][xPos]
-            tileWalls = tile.getWalls()
-            #If the tile is empty and does not have a human yet
-            if not tile.getTrap() and not tile.getSwamp() and not tile.getCheckpoint() and not tile.getHuman():
-                #List of availiable walls
-                allowedWalls = []
-                #Iterate walls
-                for pos in range(0, len(tileWalls)):
-                    #If that wall is present
-                    if tileWalls[pos]:
-                        #Add to availiable list
-                        allowedWalls.append(pos)
-                
-                #If there are some walls
-                if len(allowedWalls) > 0:
-                    #Select a wall randomly
-                    sel = allowedWalls[random.randrange(0,len(allowedWalls))]
-                    #Attempt to add to that wall
-                    success = tile.addHuman(h, sel)
-                    #If it could be added
+    humansPlaced = [0, 0]
+    
+    #If there are humans to add
+    if len(toAdd) > 0:
+    
+        #Scramble order (so that if some cannot be added it is not all thermal missing)
+        for i in range(0, 200):
+            #Random positions
+            r1 = random.randrange(0, len(toAdd))
+            r2 = random.randrange(0, len(toAdd))
+            #Temporary store item 1
+            temp = toAdd[r1]
+            #Place item 2
+            toAdd[r1] = toAdd[r2]
+            #Place item 1
+            toAdd[r2] = temp
+        
+        #Groups of walls to place humans on
+        wallGroupData = generateHumanSpaces(array, x, y)
+        used = []
+        
+        #Iterate for every human
+        for h in toAdd:
+            #Not added yet, give 200 attempts
+            added = False
+            attempts = 200
+            
+            #While still trying to add
+            while not added and attempts > 0:
+                #Decreate attempt amount
+                attempts = attempts - 1
+                #Random wall group
+                r = random.randrange(0, len(wallGroupData))
+                #If that group is unused
+                if r not in used:
+                    #Get the group data
+                    group = wallGroupData[r][1]
+                    #Randomly select a tile in that group
+                    tile = group[random.randrange(0, len(group))]
+                    #Attempt to add a human
+                    success = tile.addHuman(h, wallGroupData[r][0])
+                    #If added successfully
                     if success:
-                        #This human has been placed
                         added = True
+                        #Increment human counters
+                        if h < 4:
+                            #Visual
+                            humansPlaced[0] = humansPlaced[0] + 1
+                        else:
+                            #Thermal
+                            humansPlaced[1] = humansPlaced[1] + 1
+                        
+                        #Add position to used list
+                        used.append(r)
+                
+                #If all the groups have been used
+                if len(used) >= len(wallGroupData):
+                    #Reset for second pass
+                    used = []
+    
+    #Return the numbers of humans placed
+    return humansPlaced
+
 
 def generateWorld(x, y, checkpoints, traps, swamps, visual, thermal):
     '''Perform generation of a world array'''
@@ -824,10 +989,10 @@ def generateWorld(x, y, checkpoints, traps, swamps, visual, thermal):
     addSwamps(array, swamps, startTile, endTile, x, y)
     
     #Add humans
-    addHumans(array, visual, thermal, x, y)
+    humansAdded = addHumans(array, visual, thermal, x, y)
 
-    #Return the array, root node, room boundaries and doors
-    return array, [startBay, startDir]
+    #Return the array, start position and humans
+    return array, [startBay, startDir], humansAdded[0], humansAdded[1]
 
 
 def addObstacle(debris):
@@ -850,35 +1015,211 @@ def addObstacle(debris):
     #Create obstacle
     obstacle = [width, height, depth, debris]
     return obstacle
-	
+    
+    
+def getTileAroundBlocking(array, xPos, yPos):
+    '''Returns a list of whether there is something blocking surrounding tiles [up, right, down, left]'''
+    #Surrounding tile offsets
+    around = [[0, -1], [1, 0], [0, 1], [-1, 0]]
+    
+    #Default values - nothing
+    wallBlocks = [False, False, False, False]
+    
+    #Get the target tile
+    tile = array[yPos][xPos]
+    
+    #If this isn't a tile
+    if tile == None:
+        #Return all blocked
+        return [True, True, True, True]
+    
+    #Get the tile's walls
+    walls = tile.getWalls()
+    
+    #Iterate for four directions
+    for d in range(0, len(around)):
+        #If there is a wall
+        if walls[d]:
+            #It is blocked
+            wallBlocks[d] = True
+        else:
+            #If there isn't a wall
+            #Get the tile that is adjacent in the current direction
+            otherTile = array[yPos + around[d][1]][xPos + around[d][0]]
+            #If there is not a tile there
+            if otherTile == None:
+                #That direction is blocked
+                wallBlocks[d] = True
+            else:
+                #If there is a checkpoint, trap or swamp in that direction
+                if otherTile.getCheckpoint() or otherTile.getTrap() or otherTile.getSwamp():
+                    #It is blocked
+                    wallBlocks[d] = True
+    
+    #return the blocked state of the directions
+    return wallBlocks
 
-def generateObstacles(bulky, debris):
+
+def getStartTileFromBay(startPos):
+    '''Convert from start bay position and direction to first tile in maze position'''
+    #Facing up
+    if startPos[1] == 0:
+        return [startPos[0][0], startPos[0][1] - 1]
+    #Facing right
+    if startPos[1] == 1:
+        return [startPos[0][0] + 1, startPos[0][1]]
+    #Facing down
+    if startPos[1] == 2:
+        return [startPos[0][0], startPos[0][1] + 1]
+    #Facing left
+    if startPos[1] == 3:
+        return [startPos[0][0] - 1, startPos[0][1]]
+    
+    #Return the same if invalid direction given
+    return [startPos[0][0], startPos[0][1]]
+
+
+def selectObstaclePositon(obstacle, array, x, y, obstacles, startPos):
+    '''Select a valid position for the obstacle [x, y, z, rotation, radius]'''
+    #Calculate radius of obstacle
+    r = (((obstacle[0] / 2.0) ** 2) + ((obstacle[2] / 2.0) ** 2)) ** 0.50
+    #Not selected a valid tile yet
+    tSelected = None
+    
+    #Starting position for tiles
+    startX = -((x + 1) * 0.3 / 2.0)
+    startZ = -((y + 1) * 0.3 / 2.0)
+    
+    #The array position of the selected tile - none yet
+    tPos = [0, 0]
+    #100 attempts
+    att = 100
+    
+    #Calculate the starting tile (so it is not obscured)
+    startTile = getStartTileFromBay(startPos)
+    
+    #Repeat until a tile is found or all attempts exhausted
+    while tSelected == None and att > 0:
+        #Decrement attempts
+        att -= 1
+        #Get random tile position
+        tPos = [random.randrange(0, x), random.randrange(0, y)]
+        #Get the tile (offset for start of grid)
+        tile = array[tPos[1] + 1][tPos[0] + 1]
+        #If this is a tile and not the start point
+        if tile != None and startTile != [tPos[0] + 1, tPos[1] + 1]:
+            #If it is not a special tile and does not contain an obstacle already
+            if not tile.getCheckpoint() and not tile.getTrap() and not tile.getSwamp() and not tile.getObstacle():
+                #Target tile found
+                tSelected = tile
+    
+    #If no tile was selected
+    if tSelected == None:
+        #Return default position (not in maze)
+        return [0, -1000, 0, 0, r]
+    
+    #Boundaries of tile to pick
+    xBounds = [-0.15, 0.15]
+    zBounds = [-0.15, 0.15]
+    
+    #Get the surrounding blocks
+    walls = getTileAroundBlocking(array, tPos[0] + 1, tPos[1] + 1)
+    
+    #Get the centre position of the tile
+    tPos = [(tPos[0] * 0.3) + startX, (tPos[1] * 0.3) + startZ]
+    
+    #Adjust away from present walls by the wall thickness and the radius
+    if walls[0]:
+        zBounds[0] = zBounds[0] + 0.015 + r
+    if walls[2]:
+        zBounds[1] = zBounds[1] - 0.015 - r
+    if walls[1]:
+        xBounds[1] = xBounds[1] - 0.015 - r
+    if walls[3]:
+        xBounds[0] = xBounds[0] + 0.015 + r
+    
+    #Selected position
+    pos = [0, 0]
+    #If it has been placed
+    done = False
+    att = 200
+    
+    #Repeat until a place has been found or no attempts are left
+    while not done and att > 0:
+        #Decrement attempts
+        att -= 1
+        #Get a random position
+        pos = [round(random.uniform(xBounds[0], xBounds[1]), 5), round(random.uniform(zBounds[0], zBounds[1]), 5)]
+        #Offset with tile position
+        pos[0] = pos[0] + tPos[0]
+        pos[1] = pos[1] + tPos[1]
+        allowed = True
+        #Iterate through placed obstacles
+        for obs in obstacles:
+            #If the obstacle is in the map
+            if obs[0][1] > -1:
+                #Get the x and z distances between the obstacles
+                xDist = abs(pos[0] - obs[1][0])
+                zDist = abs(pos[1] - obs[1][2])
+                #If the total distance is less than their combined radius
+                if (((xDist ** 2) + (zDist ** 2)) ** (0.5)) < r + obs[1][4]:
+                    #They intersect and the obstacle cannot be placed here
+                    allowed = False
+        
+        #If there is no reason to disallow this place
+        if allowed:
+            #It has been successfully placed
+            done = True
+    
+    #If it has not been placed
+    if not done:
+        #Return default position (not in maze)
+        return [0, -1000, 0, 0, r]
+    
+    #Random rotation for obstacle
+    rot = round(random.uniform(0.00, 6.28), 3)
+    
+    #Add an obstacle to the selected tile
+    tSelected.addObstacle()
+    
+    #Return the position data for the tile
+    return [pos[0], 0, pos[1], rot, r]
+
+
+def generateObstacles(bulky, debris, array, x, y, startPos):
     '''Generate a list of obstacles of length numObstacles'''
     #List to hold obstacle dimensions
     obstacles = []
+    #How many obstacles have actually been placed
+    placedBulky = 0
+    placedDebris = 0
+    
     #Iterate for each static obstacle
     for i in range(0, bulky):
         #Create an obstacle and add it to the list
         newObstacle = addObstacle(False)
-        obstacles.append(newObstacle)
+        newObstaclePos = selectObstaclePositon(newObstacle, array, x, y, obstacles, startPos)
+        if newObstaclePos[1] > -1:
+            placedBulky = placedBulky + 1
+        obstacles.append([newObstacle, newObstaclePos])
 
     #Iterate for each piece of debris
     for i in range(0, debris):
         #Create an obstacle and add it to the list
         newObstacle = addObstacle(True)
-        obstacles.append(newObstacle)
+        obstacles.append([newObstacle, [0, -1000, 0, 0, 0]])
 
     #Return the list of dimensions
-    return obstacles
+    return obstacles, placedBulky, placedDebris
 
 
 def generatePlan (xSize, ySize, numCheckpoints, numTraps, bulkyObstacles, debris, numSwamps, numVisualHumans, numThermalHumans):
     '''Perform a map generation up to png - does not update map file'''
     #Generate the world and tree
-    world, startPos = generateWorld(xSize, ySize, numCheckpoints, numTraps, numSwamps, numVisualHumans, numThermalHumans)
+    world, startPos, numVisual, numThermal = generateWorld(xSize, ySize, numCheckpoints, numTraps, numSwamps, numVisualHumans, numThermalHumans)
 	
     #Create a list of obstacles
-    obstacles = generateObstacles(bulkyObstacles, debris)
+    obstacles, placedBulky, placedDebris = generateObstacles(bulkyObstacles, debris, world, xSize, ySize, startPos)
 
     #Output the world as a picture
     printWorld(world)
@@ -886,7 +1227,7 @@ def generatePlan (xSize, ySize, numCheckpoints, numTraps, bulkyObstacles, debris
     print("Generation Successful")
 
     #Return generated parts
-    return world, obstacles, startPos
+    return world, obstacles, startPos, numVisual, numThermal, placedBulky, placedDebris
 
 
 def generateWorldFile (world, obstacles, startPos, window):
@@ -944,6 +1285,8 @@ obstacles = None
 thermalHumans = None
 visualHumans = None
 startTilePos = None
+placedBulky = None
+placedDebris = None
 
 #Loop while the UI is active
 while guiActive:
@@ -960,14 +1303,14 @@ while guiActive:
         #Unpack the human values
         thermalHumans, visualHumans = genValues[1][0], genValues[1][1]
         #Generate a plan with the values
-        world, obstacles, startTilePos = generatePlan(genValues[0][0], genValues[0][1], genValues[3][0], genValues[3][1], genValues[2][0], genValues[2][1], genValues[3][2], visualHumans, thermalHumans)
+        world, obstacles, startTilePos, visualHumans, thermalHumans, placedBulky, placedDebris = generatePlan(genValues[0][0], genValues[0][1], genValues[3][0], genValues[3][1], genValues[2][0], genValues[2][1], genValues[3][2], visualHumans, thermalHumans)
         #Unpack the used obstacle counts
         bulkyObstacles, debris = genValues[2][0], genValues[2][1]
         #Update the UI image of the map
         window.updateImage()
 
         #Update the output fields of the window
-        window.setGeneratedInformation("Thermal: " + str(thermalHumans), "Visual: " + str(visualHumans), "Bulky: " + str(bulkyObstacles), "Debris: " + str(debris))
+        window.setGeneratedInformation("Thermal: " + str(thermalHumans), "Visual: " + str(visualHumans), "Bulky: " + str(placedBulky) + "(" + str(bulkyObstacles) +")", "Debris: " + str(placedDebris) + "(" + str(debris) +")")
 
     #If a save file is being called for
     if window.saving:
@@ -976,14 +1319,14 @@ while guiActive:
         #Saving has begin (resets flag so save is not called twice)
         window.saveStarted()
         #If all values that are needed are not None
-        if checkNoNones([world, obstacles, startTilePos]):
+        if checkNoNones([world, obstacles, startTilePos, thermalHumans, visualHumans, placedBulky, placedDebris]):
             #Generate and save a world
             generateWorldFile(world, obstacles, startTilePos, window)
 
     #Attempt update loops           
     try:
         #Toggle the save button to the correct state
-        window.setSaveButton(checkNoNones([world, obstacles, thermalHumans, visualHumans, startTilePos]))
+        window.setSaveButton(checkNoNones([world, obstacles, thermalHumans, visualHumans, startTilePos, placedBulky, placedDebris]))
         #Update loops for the UI - manually called to prevent blocking of this program
         window.update_idletasks()
         window.update()

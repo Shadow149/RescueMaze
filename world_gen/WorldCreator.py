@@ -25,6 +25,7 @@ Changelog:
 
 from decimal import Decimal
 import os
+import random
 dirname = os.path.dirname(__file__)
 
 def checkForCorners(pos, walls):
@@ -332,14 +333,22 @@ def createFileData (walls, obstacles, startPos):
                 #Position of tile
                 humanPos = [(x * 0.3) + startX , (z * 0.3) + startZ]
                 humanRot = humanRotation[walls[z][x][7]]
+                #Randomly move human left and right on wall
+                randomOffset = [0, 0]
+                if walls[z][x][7] in [0, 2]:
+                    #X offset for top and bottom
+                    randomOffset = [round(random.uniform(-0.08, 0.08), 3), 0]
+                else:
+                    #Z offset for left and right
+                    randomOffset = [0, round(random.uniform(-0.08, 0.08), 3)]
                 #Thermal
                 if walls[z][x][6] == 4:
-                    humanPos[0] = humanPos[0] + humanOffsetThermal[walls[z][x][7]][0]
-                    humanPos[1] = humanPos[1] + humanOffsetThermal[walls[z][x][7]][1]
+                    humanPos[0] = humanPos[0] + humanOffsetThermal[walls[z][x][7]][0] + randomOffset[0]
+                    humanPos[1] = humanPos[1] + humanOffsetThermal[walls[z][x][7]][1] + randomOffset[1]
                     allHumans = allHumans + thermalHumanPart.format(humanPos[0], humanPos[1], humanRot, humanId)
                 else:
-                    humanPos[0] = humanPos[0] + humanOffset[walls[z][x][7]][0]
-                    humanPos[1] = humanPos[1] + humanOffset[walls[z][x][7]][1]
+                    humanPos[0] = humanPos[0] + humanOffset[walls[z][x][7]][0] + randomOffset[0]
+                    humanPos[1] = humanPos[1] + humanOffset[walls[z][x][7]][1] + randomOffset[1]
                     allHumans = allHumans + visualHumanPart.format(humanPos[0], humanPos[1], humanRot, humanId, humanTypesVisual[walls[z][x][6] - 1])
                 
                 humanId = humanId + 1
@@ -366,14 +375,14 @@ def createFileData (walls, obstacles, startPos):
     #Iterate obstalces
     for obstacle in obstacles:
         #If this is debris
-        if obstacle[3]:
+        if obstacle[0][3]:
             #Add the debris object
-            allDebris = allDebris + debrisPart.format(debrisId, obstacle[0], obstacle[1], obstacle[2])
+            allDebris = allDebris + debrisPart.format(debrisId, obstacle[0][0], obstacle[0][1], obstacle[0][2])
             #Increment id counter
             debrisId = debrisId + 1
         else:
             #Add the obstacle
-            allObstacles = allObstacles + obstaclePart.format(obstacleId, obstacle[0], obstacle[1], obstacle[2])
+            allObstacles = allObstacles + obstaclePart.format(obstacleId, obstacle[0][0], obstacle[0][1], obstacle[0][2], obstacle[1][0], obstacle[1][1], obstacle[1][2], obstacle[1][3])
             #Increment id counter
             obstacleId = obstacleId + 1
 
