@@ -436,6 +436,44 @@ def relocate(num):
         robot1Obj.increaseScore(-5)
         updateHistory()
 
+def robot_quit(num):
+    if int(num) == 0:
+        if robot0Obj.inSimulation:
+            robot0Obj.wb_node.remove()
+            robot0Obj.inSimulation = False
+            supervisor.wwiSendText("robotNotInSimulation0")
+    elif int(num) == 1:
+        if robot1Obj.inSimulation:
+            robot1Obj.wb_node.remove()
+            robot1Obj.inSimulation = False
+            supervisor.wwiSendText("robotNotInSimulation1")
+
+def add_robot(num):
+    global robot0, robot1
+    if int(num) == 0:
+        if robot0 == None:
+            filePath = os.path.dirname(os.path.abspath(__file__))
+            filePath = filePath.replace('\\', '/')
+
+            root = supervisor.getRoot()
+            root_children_field = root.getField('children')
+            root_children_field.importMFNode(12,filePath + '/../../nodes/robot0.wbo')
+            robot0 = supervisor.getFromDef("ROBOT0")
+
+            supervisor.wwiSendText("robotInSimulation0")
+
+    elif int(num) == 1:
+        if robot1 == None:
+            filePath = os.path.dirname(os.path.abspath(__file__))
+            filePath = filePath.replace('\\', '/')
+
+            root = supervisor.getRoot()
+            root_children_field = root.getField('children')
+            root_children_field.importMFNode(13,filePath + '/../../nodes/robot1.wbo')
+            robot1 = supervisor.getFromDef("ROBOT1")
+
+            supervisor.wwiSendText("robotInSimulation1")
+
 
 # Get the output from the object placement supervisor
 # objectPlacementOutput = supervisor.getFromDef("OBJECTPLACER").getField("customData")
@@ -512,24 +550,8 @@ gameStarted = False
 robot0 = supervisor.getFromDef("ROBOT0")
 robot1 = supervisor.getFromDef("ROBOT1")
 
-if robot0 == None:
-    filePath = os.path.dirname(os.path.abspath(__file__))
-    filePath = filePath.replace('\\', '/')
-
-    root = supervisor.getRoot()
-    root_children_field = root.getField('children')
-    root_children_field.importMFNode(12,filePath + '/../../nodes/robot0.wbo')
-    robot0 = supervisor.getFromDef("ROBOT0")
-
-if robot1 == None:
-    filePath = os.path.dirname(os.path.abspath(__file__))
-    filePath = filePath.replace('\\', '/')
-
-    root = supervisor.getRoot()
-    root_children_field = root.getField('children')
-    root_children_field.importMFNode(13,filePath + '/../../nodes/robot1.wbo')
-    robot1 = supervisor.getFromDef("ROBOT1")
-
+add_robot(0)
+add_robot(1)
 
 # Init both robots as objects to hold their info
 robot0Obj = Robot(robot0)
@@ -762,8 +784,7 @@ while simulationRunning:
 
                     updateHistory()
                     # TODO Exit robot 0
-                    robot0Obj.wb_node.remove()
-                    robot0Obj.inSimulation = False
+                    robot_quit(0)
 
                     robot0Obj.increaseScore(10)
                     robot0Obj.increaseScore(int(robot0Obj.getScore() * 0.1))
@@ -786,8 +807,7 @@ while simulationRunning:
 
                     updateHistory()
                     # TODO Exit robot 1
-                    robot1Obj.wb_node.remove()
-                    robot1Obj.inSimulation = False
+                    robot_quit(1)
 
                     robot1Obj.increaseScore(10)
                     robot1Obj.increaseScore(int(robot1Obj.getScore() * 0.1))
@@ -952,7 +972,11 @@ while simulationRunning:
                 data = message.split(",", 1)
                 if len(data) > 1:
                     relocate(data[1])
-                pass
+            if parts[0] == 'quit':
+                data = message.split(",", 1)
+                if len(data) > 1:
+                    robot_quit(data[1])
+                
 
     # Send the update information to the robot window
     supervisor.wwiSendText(

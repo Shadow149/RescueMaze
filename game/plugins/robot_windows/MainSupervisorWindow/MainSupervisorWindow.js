@@ -86,8 +86,33 @@ function receive (message){
 				let history1 = msg[1].split(",")
 				updateHistory(history0,history1)
 				break;
+			case "robotInSimulation0":
+				robotQuitColour(0);
+				break;
+			case "robotInSimulation1":
+				robotQuitColour(1);
+				break;
+			case "robotNotInSimulation0":
+				robotQuitUnavailableColour(0);
+				break;
+			case "robotNotInSimulation1":
+				robotQuitUnavailableColour(1);
+				break;
 		}
 	}
+}
+
+function robotQuitColour(id){
+	setEnableButton('quit'+id, true)
+	setEnableButton('relocate'+id, true)
+	setEnableButton('load'+id, true)
+	setEnableButton('unload'+id, true)
+}
+function robotQuitUnavailableColour(id){
+	setEnableButton('quit'+id, false)
+	setEnableButton('relocate'+id, false)
+	setEnableButton('load'+id, false)
+	setEnableButton('unload'+id, false)
 }
 
 function humanLoadedColour(id){
@@ -372,4 +397,9 @@ function show_winning_screen(){
 
 function relocate(id){
 	window.robotWindow.send("relocate,"+id.toString());
+}
+
+function quit(id){
+	unloadPressed(id);
+	window.robotWindow.send("quit,"+id.toString());
 }
