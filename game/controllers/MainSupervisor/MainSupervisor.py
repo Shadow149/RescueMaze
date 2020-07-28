@@ -7,6 +7,8 @@ import os
 import random
 import struct
 import math
+from datetime import datetime
+
 
 # Create the instance of the supervisor class
 supervisor = Supervisor()
@@ -14,8 +16,9 @@ supervisor = Supervisor()
 # Get this supervisor node - so that it can be rest when game restarts
 mainSupervisor = supervisor.getFromDef("MAINSUPERVISOR")
 
+maxTimeMinute = 8
 # Maximum time for a match
-maxTime = 8 * 60
+maxTime = maxTimeMinute * 60
 
 DEFAULT_MAX_VELOCITY = 6.28
 
@@ -40,11 +43,22 @@ class Queue:
 class RobotHistory(Queue):
     def __init__(self):
         super().__init__()
+        self.master_history = []
 
     def enqueue(self, data):
+        self.update_master_history(data)
         if len(self.queue) > 8:
             self.dequeue()
         return self.queue.append(data)
+
+    def update_master_history(self, data):
+        current_time = supervisor.getTime()
+        time = maxTime - current_time
+        minute = int(time // 60)
+        seconds = ((time / 60) % minute) * 60
+        min_sec = "0"+str(int(minute))+":"+str(int(seconds))
+        record = [min_sec, data]
+        self.master_history.append(record)
 
 
 class Robot:
@@ -136,6 +150,14 @@ class Robot:
 
     def getScore(self) -> int:
         return self._score
+    
+    def get_log_str(self):
+        history = self.history.master_history
+        log_str = ""
+        for event in history:
+            log_str += str(event[0]) + " " + event[1] + "\n"
+            
+        return log_str
 
 
 class Human():
@@ -414,6 +436,7 @@ def resetVictimsTextures():
 
 
 def relocate(num):
+    #TODO rewrite this and the following functions to take the robotobject instead of number for cleaner code
     if int(num) == 0:
         relocatePosition = robot0Obj.lastVisitedCheckPointPosition
 
@@ -474,7 +497,38 @@ def add_robot(num):
 
             supervisor.wwiSendText("robotInSimulation1")
 
+def create_log_str():
+    r0_str = robot0Obj.get_log_str()
+    r1_str = robot1Obj.get_log_str()
+    
+    log_str = ""
+    log_str += "GAME_DURATION: "+str(maxTimeMinute)+":00\n"
+    log_str += "ROBOT_0_SCORE: "+str(robot0Obj.getScore())+"\n"
+    log_str += "ROBOT_1_SCORE: "+str(robot1Obj.getScore())+"\n"
+    log_str += "\n"
+    log_str += "ROBOT_0: TEAM_NAME_0\n"
+    log_str += r0_str
+    log_str += "\n"
+    log_str += "ROBOT_1: TEAM_NAME_1\n"
+    log_str += r1_str
+    
+    return log_str
 
+def write_log():
+    log_str = create_log_str()
+    filePath = os.path.dirname(os.path.abspath(__file__))
+    filePath = filePath.replace('\\', '/')
+    filePath = filePath + "/../../logs/"
+    
+    file_date = datetime.now()
+    logFileName = file_date.strftime("log %m-%d-%y %H,%M,%S")
+    
+    filePath += logFileName + ".txt"
+    
+    logsFile = open(filePath, "w")
+    logsFile.write(log_str)
+    logsFile.close()
+    
 # Get the output from the object placement supervisor
 # objectPlacementOutput = supervisor.getFromDef("OBJECTPLACER").getField("customData")
 
@@ -931,14 +985,15 @@ while simulationRunning:
                 # Pause the match
                 currentlyRunning = False
             if parts[0] == "reset":
-                #print("Reset message Received")
                 # Reset both controller files
                 resetControllerFile(0)
-                resetControllerFile(1)
+                resetControllerFile(1)            
                 resetVictimsTextures()
+                
                 # Reset the simulation
                 supervisor.simulationReset()
                 simulationRunning = False
+                finished = True
                 # Restart this supervisor
                 mainSupervisor.restartController()
 
@@ -1001,3 +1056,8 @@ while simulationRunning:
         if step == -1:
             # Stop simulating
             simulationRunning = False
+            finished = True
+            
+    if finished:
+        write_log()
+        
