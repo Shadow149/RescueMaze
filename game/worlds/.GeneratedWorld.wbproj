@@ -9,9 +9,13 @@ selectionDisabled: 0
 viewpointLocked: 0
 orthographicViewHeight: 1
 textFiles: -1
-renderingDevicePerspectives: e-puck0:colour_sensor;1;32;0;0
-renderingDevicePerspectives: robot0:camera;1;2.34375;0;0
-renderingDevicePerspectives: e-puck0:camera;1;1;0;0
-renderingDevicePerspectives: e-puck1:colour_sensor;1;32;0;0
-renderingDevicePerspectives: robot1:camera;1;2.34375;0.859233;0
 renderingDevicePerspectives: e-puck1:camera;1;1;0;0
+renderingDevicePerspectives: e-puck 1:camera;1;1;0;0
+renderingDevicePerspectives: e-puck1:colour_sensor;1;32;0;0
+renderingDevicePerspectives: robot0:camera;1;2.34375;0;0
+renderingDevicePerspectives: e-puck 0:colour_sensor;1;32;0;0
+renderingDevicePerspectives: e-puck 1:colour_sensor;1;32;0;0
+renderingDevicePerspectives: e-puck0:camera;1;1;0;0
+renderingDevicePerspectives: e-puck 0:camera;1;1;0;0
+renderingDevicePerspectives: e-puck0:colour_sensor;1;32;0;0
+renderingDevicePerspectives: robot1:camera;1;2.34375;0.859233;0

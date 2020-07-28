@@ -1,4 +1,4 @@
-"""Map Generation Main Script Type 2 v3
+"""Map Generation Main Script Type 2 v4
    Written by Robbie Goldman and Alfred Roberts
 
 Changelog:
@@ -22,6 +22,8 @@ Changelog:
  - Changed so that the start is the exit too
  V3:
  - Added human generation
+ V4:
+ - Updated generation so start tile is within the main map section
 """
 
 import random
@@ -273,20 +275,15 @@ def createEmptyWorld(x, y):
     array = []
 
     #Iterate y axis
-    for i in range(0, y + 2):
+    for i in range(0, y):
 
         #Create this row
         row = []
 
         #Iterate x axis
-        for j in range(0, x + 2):
-            #For the centre of the map
-            if i != 0 and i != y + 1 and j != 0 and j != x + 1:
-                #Add a new section of the maze
-                row.append(Tile())
-            else:
-                #No tile here
-                row.append(None)
+        for j in range(0, x):
+            #Add a new section of the maze
+            row.append(Tile())
         #Add the row to the array
         array.append(row)
     
@@ -397,7 +394,7 @@ def getAllAround (world, pos):
         #Get the position
         otherPos = [pos[0] + a[0], pos[1] + a[1]]
         #If the position is in the grid
-        if otherPos[0] > 0 and otherPos[0] < len(world[0]) - 1 and otherPos[1] > 0 and otherPos[1] < len(world) - 1:
+        if otherPos[0] >= 0 and otherPos[0] < len(world[0]) and otherPos[1] >= 0 and otherPos[1] < len(world):
             #Add position and direction to list
             aroundPositions.append(otherPos)
             aroundDirs.append(d)
@@ -485,8 +482,8 @@ def checkConnect (world, start, check, avoid):
                 otherTile = world[posList[i][1]][posList[i][0]]
                 #If there is a tile there
                 if otherTile != None:
-                    #If that tile isn't a trap
-                    if not otherTile.getTrap():
+                    #If that tile isn't a trap or swamp or obstacle
+                    if not otherTile.getTrap() and not otherTile.getSwamp() and not otherTile.getObstacle():
                         #Add the tile to usable tiles
                         usable.append([posList[i], directions[i]])
 
@@ -520,11 +517,22 @@ def addCheckPoints(array, checkpoints, startTile, endTile, x, y):
     '''Add a number of checkpoints to the map'''
     #Cannot put a checkpoint at the start or end
     disallowedSpaces = [startTile, endTile]
+    
+    #Get data about tiles surrounding the start
+    aroundStart, aroundStartDir = getAllAround(array, startTile)
+    
+    #Iterate through surrounding tiles
+    for i in range(0, len(aroundStart)):
+        #If there is not a wall to block
+        if not array[startTile[1]][startTile[0]].getWalls()[aroundStartDir[i]]:
+            #Cannot place check point here
+            disallowedSpaces.append([aroundStart[i][0], aroundStart[i][1]])
+    
     #Split the grid into quadrants
-    quads = [[[1, 1], [int(x / 2), int(y / 2)]],
-             [[x + 1 - int(x / 2), 1], [x, y - int(y / 2)]],
-             [[1, y + 1 - int(y / 2)], [int(x / 2), y]],
-             [[x + 1 - int(x / 2), y + 1 - int(y / 2)], [x, y]]]
+    quads = [[[0, 0], [int(x / 2) - 1, int(y / 2) - 1]],
+             [[int(x / 2), 0], [x - 1, int(y / 2) - 1]],
+             [[0, int(y / 2)], [int(x / 2) - 1, y - 1]],
+             [[int(x / 2), int(y / 2)], [x - 1, y - 1]]]
 
     #For each of the checkpoints
     for i in range(0, checkpoints):
@@ -545,7 +553,7 @@ def addCheckPoints(array, checkpoints, startTile, endTile, x, y):
                 #Get the tile
                 tile = array[yPos][xPos]
                 #If there isn't already a checkpoint or trap there
-                if not tile.getCheckpoint() and not tile.getTrap():
+                if not tile.getCheckpoint() and not tile.getTrap() and not tile.getGoal():
                     #Add a checkpoint
                     tile.addCheckpoint()
                     #Add this tile and four surrounding to not allowed spaces
@@ -560,10 +568,10 @@ def addCheckPoints(array, checkpoints, startTile, endTile, x, y):
 def addTraps(array, traps, startTile, endTile, x, y):
     '''Add a number of traps to the map'''
     #Split the grid into quadrants
-    quads = [[[1, 1], [int(x / 2), int(y / 2)]],
-             [[x + 1 - int(x / 2), 1], [x, y - int(y / 2)]],
-             [[1, y + 1 - int(y / 2)], [int(x / 2), y]],
-             [[x + 1 - int(x / 2), y + 1 - int(y / 2)], [x, y]]]
+    quads = [[[0, 0], [int(x / 2) - 1, int(y / 2) - 1]],
+             [[int(x / 2), 0], [x - 1, int(y / 2) - 1]],
+             [[0, int(y / 2)], [int(x / 2) - 1, y - 1]],
+             [[int(x / 2), int(y / 2)], [x - 1, y - 1]]]
 
     #Iterate for each trap
     for i in range(0, traps):
@@ -589,11 +597,13 @@ def addTraps(array, traps, startTile, endTile, x, y):
                     #Iterate for surrounding
                     for a in around:
                         #Get the tile
-                        checkTile = array[yPos + a[1]][xPos + a[0]]
+                        checkTile = None
+                        if yPos + a[1] >= 0 and yPos + a[1] < len(array) and xPos + a[0] >= 0 and xPos + a[0] < len(array[0]):
+                            checkTile = array[yPos + a[1]][xPos + a[0]]
                         #If there is a tile there
                         if checkTile != None:
                             #If there isn't a trap there
-                            if not checkTile.getTrap():
+                            if not checkTile.getTrap() and not checkTile.getGoal():
                                 #If a connection cannot be made to the start
                                 if not checkConnect(array, startTile ,[xPos + a[0], yPos + a[1]], [xPos, yPos]):
                                     #The trap cannot be placed here
@@ -610,8 +620,20 @@ def addTraps(array, traps, startTile, endTile, x, y):
 
 def addSwamps(array, swamps, startTile, endTile, x, y):
     '''Adds a number of swamps to the map'''
+    #Cannot put a swamp at the start or end
+    disallowedSpaces = [startTile, endTile]
+    
+    #Get data about tiles surrounding the start
+    aroundStart, aroundStartDir = getAllAround(array, startTile)
+    
+    #Iterate through surrounding tiles
+    for i in range(0, len(aroundStart)):
+        #If there is not a wall to block
+        if not array[startTile[1]][startTile[0]].getWalls()[aroundStartDir[i]]:
+            #Cannot place check point here
+            disallowedSpaces.append([aroundStart[i][0], aroundStart[i][1]])
+    
     #Iterate for each swamp
-    print(swamps)
     for i in range(0, swamps):
         #Not added yet
         added = False
@@ -619,11 +641,11 @@ def addSwamps(array, swamps, startTile, endTile, x, y):
         #Repeat until added or 100 tries reached
         while not added and attempt < 100:
             #Get a random tile
-            xPos = random.randrange(1, x)
-            yPos = random.randrange(1, y)
+            xPos = random.randrange(0, x)
+            yPos = random.randrange(0, y)
             tile = array[yPos][xPos]
             #If this isn't the start, end or not a tile
-            if [xPos, yPos] != startTile and [xPos, yPos] != endTile and tile != None:
+            if [xPos, yPos] not in disallowedSpaces:
                 #If there is nothing there already
                 if not tile.getGoal() and not tile.getCheckpoint() and not tile.getSwamp() and not tile.getTrap():
                     #Add the swamp
@@ -642,12 +664,12 @@ def generateHumanSpaces(array, x, y):
     currentGroupOther = []
     
     #Iterate through each tile (left to right, top to bottom)
-    for yPos in range(1, y + 1):
-        for xPos in range(1, x + 1):
+    for yPos in range(0, y):
+        for xPos in range(0, x):
             #Get this tile
             cTile = array[yPos][xPos]
             #If this has an upper wall and no special tile states
-            if cTile.getWalls()[0] and not cTile.getTrap() and not cTile.getCheckpoint() and not cTile.getSwamp():
+            if cTile.getWalls()[0] and not cTile.getTrap() and not cTile.getCheckpoint() and not cTile.getSwamp() and not cTile.getGoal():
                 #Add this tile to the list of tiles
                 currentGroup.append(cTile)
             #Otherwise if there are tiles in the group
@@ -670,7 +692,7 @@ def generateHumanSpaces(array, x, y):
                 currentGroup = []
             
             #If this has a lower wall and no special tile states
-            if cTile.getWalls()[2] and not cTile.getTrap() and not cTile.getCheckpoint() and not cTile.getSwamp():
+            if cTile.getWalls()[2] and not cTile.getTrap() and not cTile.getCheckpoint() and not cTile.getSwamp() and not cTile.getGoal():
                 #Add this tile to the list of tiles
                 currentGroupOther.append(cTile)
             #Otherwise if there are tiles in the group
@@ -693,12 +715,12 @@ def generateHumanSpaces(array, x, y):
                 currentGroupOther = []
     
     #Iterate through each tile (top to bottom, left to right)    
-    for xPos in range(1, x + 1):
-        for yPos in range(1, y + 1):
+    for xPos in range(0, x):
+        for yPos in range(0, y):
             #Get this tile
             cTile = array[yPos][xPos]
             #If this has a right wall and no special tile states
-            if cTile.getWalls()[1] and not cTile.getTrap() and not cTile.getCheckpoint() and not cTile.getSwamp():
+            if cTile.getWalls()[1] and not cTile.getTrap() and not cTile.getCheckpoint() and not cTile.getSwamp() and not cTile.getGoal():
                 #Add this tile to the list of tiles
                 currentGroup.append(cTile)
             #Otherwise if there are tiles in the group
@@ -722,7 +744,7 @@ def generateHumanSpaces(array, x, y):
             
             cTile = array[yPos][xPos]
             #If this has a left wall and no special tile states
-            if cTile.getWalls()[3] and not cTile.getTrap() and not cTile.getCheckpoint() and not cTile.getSwamp():
+            if cTile.getWalls()[3] and not cTile.getTrap() and not cTile.getCheckpoint() and not cTile.getSwamp() and not cTile.getGoal():
                 #Add this tile to the list of tiles
                 currentGroupOther.append(cTile)
             #Otherwise if there are tiles in the group
@@ -837,77 +859,49 @@ def generateWorld(x, y, checkpoints, traps, swamps, visual, thermal):
     xStart = 0
     yStart = 0
 
-    startTile = [0, 0]
-    startBay  = [0, 0]
     startDir = 0
 
     #Top edge
     if startEdge == 0:
         #Pick start position
         yStart = 0
-        xStart = random.randrange(1, len(array[0]) - 1)
-        #Add a tile for the start
-        array[yStart][xStart] = Tile()
-        startBay = [xStart, yStart]
-        #Remove the walls to connect it to the maze
-        array[yStart][xStart].removeWalls([2])
-        array[yStart + 1][xStart].removeWalls([0])
-        #Take a record of the position of the start tile in the maze
-        startTile = [xStart, yStart + 1]
+        xStart = random.randrange(0, len(array[0]))
         #Set start direction
         startDir = 2
     #Right edge
     if startEdge == 1:
         #Pick start position
         xStart = len(array[0]) - 1
-        yStart = random.randrange(1, len(array) - 1)
-        #Add a tile for the start
-        array[yStart][xStart] = Tile()
-        startBay = [xStart, yStart]
-        #Remove the walls to connect it to the maze
-        array[yStart][xStart].removeWalls([3])
-        array[yStart][xStart - 1].removeWalls([1])
-        #Take a record of the position of the start tile in the maze
-        startTile = [xStart - 1, yStart]
+        yStart = random.randrange(0, len(array))
         #Set start direction
         startDir = 3
     #Bottom edge
     if startEdge == 2:
         #Pick start position
         yStart = len(array) - 1
-        xStart = random.randrange(1, len(array[0]) - 1)
-        #Add a tile for the start
-        array[yStart][xStart] = Tile()
-        startBay = [xStart, yStart]
-        #Remove the walls to connect it to the maze
-        array[yStart][xStart].removeWalls([0])
-        array[yStart - 1][xStart].removeWalls([2])
-        #Take a record of the position of the start tile in the maze
-        startTile = [xStart, yStart - 1]
+        xStart = random.randrange(0, len(array[0]))
         #Set start direction
         startDir = 0
     #Left edge
     if startEdge == 3:
         #Pick start position
         xStart = 0
-        yStart = random.randrange(1, len(array) - 1)
-        #Add a tile for the start
-        array[yStart][xStart] = Tile()
-        startBay = [xStart, yStart]
-        #Remove the walls to connect it to the maze
-        array[yStart][xStart].removeWalls([1])
-        array[yStart][xStart + 1].removeWalls([3])
-        #Take a record of the position of the start tile in the maze
-        startTile = [xStart + 1, yStart]
+        yStart = random.randrange(0, len(array))
         #Set start direction
         startDir = 1
-
+    
+    #Take a record of the position of the start tile in the maze
+    startTile = [xStart, yStart]
+    
+    #Add starting tile to start position
+    array[startTile[1]][startTile[0]].addGoal()
+    
     #Calculate minimum orthogonal distance between start and end
     minDistance = min(10, int((x + y) / 2) + 1)
     possibleEnd = []
 
     #Iterate horizontal edges
-    for xEnd in range(1, len(array[0]) - 1):
+    for xEnd in range(0, len(array[0])):
         for yEnd in [0, len(array) - 1]:
             #Test if distance is enough
             if abs(xStart - xEnd) + abs(yStart - yEnd) - 1 >= minDistance:
@@ -915,7 +909,7 @@ def generateWorld(x, y, checkpoints, traps, swamps, visual, thermal):
                 possibleEnd.append([xEnd, yEnd])
 
     #Iterate vertical edges
-    for yEnd in range(1, len(array) - 1):
+    for yEnd in range(0, len(array)):
         for xEnd in [0, len(array[0]) - 1]:
             #Test if distance is enough
             if abs(xStart - xEnd) + abs(yStart - yEnd) - 1 >= minDistance:
@@ -928,39 +922,7 @@ def generateWorld(x, y, checkpoints, traps, swamps, visual, thermal):
     if len(possibleEnd) > 0:
         #Get an end position (chosen randomly)
         xEnd, yEnd = possibleEnd[random.randrange(0, len(possibleEnd))]
-        #Add a tile where the goal is
-        #array[yEnd][xEnd] = Tile()
-        #Top edge
-        if xEnd == 0:
-            #Remove the walls to connect goal to maze
-            #array[yEnd][xEnd].removeWalls([1])
-            #array[yEnd][xEnd + 1].removeWalls([3])
-            #Store the position of the end of the maze
-            endTile = [xEnd + 1, yEnd]
-        #Right edge
-        if xEnd == len(array[0]) - 1:
-            #Remove the walls to connect goal to maze
-            #array[yEnd][xEnd].removeWalls([3])
-            #array[yEnd][xEnd - 1].removeWalls([1])
-            #Store the position of the end of the maze
-            endTile = [xEnd - 1, yEnd]
-        #Bottom edge
-        if yEnd == 0:
-            #Remove the walls to connect goal to maze
-            #array[yEnd][xEnd].removeWalls([2])
-            #array[yEnd + 1][xEnd].removeWalls([0])
-            #Store the position of the end of the maze
-            endTile = [xEnd, yEnd + 1]
-        #Left edge
-        if yEnd == len(array) - 1:
-            #Remove the walls to connect goal to maze
-            #array[yEnd][xEnd].removeWalls([0])
-            #array[yEnd - 1][xEnd].removeWalls([2])
-            #Store the position of the end of the maze
-            endTile = [xEnd, yEnd - 1]
-
-        #Add a goal to the end point
-        array[yStart][xStart].addGoal()
+        endTile = [xEnd, yEnd]
 
     #Generate maze
     depthFirstMaze(array, startTile)
@@ -968,8 +930,8 @@ def generateWorld(x, y, checkpoints, traps, swamps, visual, thermal):
     #Open some random spaces
     for i in range(0, int((x + y) / 2) ** 2):
         #Random position
-        randX = random.randrange(1, len(array[0]) - 1)
-        randY = random.randrange(1, len(array) - 1)
+        randX = random.randrange(0, len(array[0]))
+        randY = random.randrange(0, len(array))
         #Get the valid directions
         allowedDirs = getAllAround(array, [randX, randY])[1]
         #If there are some positions that can be opened
@@ -992,7 +954,7 @@ def generateWorld(x, y, checkpoints, traps, swamps, visual, thermal):
     humansAdded = addHumans(array, visual, thermal, x, y)
 
     #Return the array, start position and humans
-    return array, [startBay, startDir], humansAdded[0], humansAdded[1]
+    return array, [startTile, startDir], humansAdded[0], humansAdded[1]
 
 
 def addObstacle(debris):
@@ -1105,11 +1067,11 @@ def selectObstaclePositon(obstacle, array, x, y, obstacles, startPos):
         #Get random tile position
         tPos = [random.randrange(0, x), random.randrange(0, y)]
         #Get the tile (offset for start of grid)
-        tile = array[tPos[1] + 1][tPos[0] + 1]
+        tile = array[tPos[1]][tPos[0]]
         #If this is a tile and not the start point
-        if tile != None and startTile != [tPos[0] + 1, tPos[1] + 1]:
+        if tile != None and startTile != [tPos[0], tPos[1]]:
             #If it is not a special tile and does not contain an obstacle already
-            if not tile.getCheckpoint() and not tile.getTrap() and not tile.getSwamp() and not tile.getObstacle():
+            if not tile.getCheckpoint() and not tile.getTrap() and not tile.getSwamp() and not tile.getObstacle() and not tile.getGoal():
                 #Target tile found
                 tSelected = tile
     
@@ -1123,7 +1085,7 @@ def selectObstaclePositon(obstacle, array, x, y, obstacles, startPos):
     zBounds = [-0.15, 0.15]
     
     #Get the surrounding blocks
-    walls = getTileAroundBlocking(array, tPos[0] + 1, tPos[1] + 1)
+    walls = getTileAroundBlocking(array, tPos[0], tPos[1])
     
     #Get the centre position of the tile
     tPos = [(tPos[0] * 0.3) + startX, (tPos[1] * 0.3) + startZ]

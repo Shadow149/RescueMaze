@@ -1,4 +1,4 @@
-"""Map Generation World File Creator Type 2 v2
+"""Map Generation World File Creator Type 2 v3
    Written by Robbie Goldman and Alfred Roberts
 
 Changelog:
@@ -20,6 +20,8 @@ Changelog:
  - Overhauled to change from a floor and external walls into modular pieces
  V2:
  - Changed to use proto nodes for tiles
+ v3:
+ - Removed robots from generation (commended out if needed)
 """
 
 
@@ -390,8 +392,8 @@ def createFileData (walls, obstacles, startPos):
     fileData = fileData + groupPart.format(allObstacles, "OBSTACLES")
     fileData = fileData + groupPart.format(allDebris, "DEBRIS")
     
-    #String to hold all the data for the robots
-    robotData = ""
+    #String to hold all the data for the robots (removed - now performed by supervisor)
+    '''robotData = ""
     #If starting facing up
     if startPos[1] == 0:
         #Add robots (spaced -X, +X) and rotated
@@ -411,12 +413,12 @@ def createFileData (walls, obstacles, startPos):
     if startPos[1] == 3:
         #Add robots (spaced +Z, -Z) and rotated
         robotData = robotData + robotPart.format(0, startPos[0][0] * 0.3 + startX, (startPos[0][1] * 0.3 + startZ) + 0.075, 1.5708)
-        robotData = robotData + robotPart.format(1, startPos[0][0] * 0.3 + startX, (startPos[0][1] * 0.3 + startZ) - 0.075, 1.5708)
+        robotData = robotData + robotPart.format(1, startPos[0][0] * 0.3 + startX, (startPos[0][1] * 0.3 + startZ) - 0.075, 1.5708)'''
                                             
     fileData = fileData + groupPart.format(allHumans, "HUMANGROUP")
     
-    #Add the robot data to the file
-    fileData = fileData + robotData
+    #Add the robot data to the file (removed - now performed by supervisor)
+    '''fileData = fileData + robotData'''
 
     #Add supervisors
     fileData = fileData + supervisorPart
