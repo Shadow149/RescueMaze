@@ -23,18 +23,25 @@ PROTO worldTile [
 	  field SFFloat width 0.0
 	  field SFFloat height 0.0
 	  field SFString id ""
+	  field SFFloat xScale 1.0
+	  field SFFloat zScale 1.0
+	  field SFFloat yScale 1.0
 ]
 {
       DEF TILE Transform {
 	  
 	  %{
-	  xStart = -(fields.width.value * 0.3 / 2.0)
-	  zStart = -(fields.height.value * 0.3 / 2.0)
-	  x = fields.xPos.value * 0.3 + xStart
-	  z = fields.zPos.value * 0.3 + zStart
+	  scaleX = fields.xScale.value
+	  scaleY = fields.yScale.value
+	  scaleZ = fields.zScale.value
+	  xStart = -(fields.width.value * (0.3 * scaleX) / 2.0)
+	  zStart = -(fields.height.value * (0.3 * scaleZ) / 2.0)
+	  x = fields.xPos.value * (0.3 * scaleX) + xStart
+	  z = fields.zPos.value * (0.3 * scaleZ) + zStart
 	  }%
 	  
 	  translation %{=x}% 0 %{=z}%
+	  scale %{=scaleX}% %{=scaleY}% %{=scaleZ}%
 	  
             children[
 				%{if fields.floor.value == true then}%

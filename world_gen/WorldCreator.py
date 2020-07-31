@@ -1,4 +1,4 @@
-"""Map Generation World File Creator Type 2 v3
+"""Map Generation World File Creator Type 2 v4
    Written by Robbie Goldman and Alfred Roberts
 
 Changelog:
@@ -22,6 +22,8 @@ Changelog:
  - Changed to use proto nodes for tiles
  v3:
  - Removed robots from generation (commended out if needed)
+ v4:
+ - Updated to scale tiles
 """
 
 
@@ -29,6 +31,11 @@ from decimal import Decimal
 import os
 import random
 dirname = os.path.dirname(__file__)
+
+#General scale for tiles - adjusts position and size of pieces and obstacles
+tileScale = [0.4, 0.4, 0.4]
+#The vertical position of the floor
+floorPos = -0.075 * tileScale[1]
 
 def checkForCorners(pos, walls):
     '''Check if each of the corners is needed'''
@@ -264,14 +271,14 @@ def createFileData (walls, obstacles, startPos):
     #Upper left corner to start placing tiles from
     width = len(walls[0])
     height = len(walls)
-    startX = -(len(walls[0]) * 0.3 / 2.0)
-    startZ = -(len(walls) * 0.3 / 2.0)
+    startX = -(len(walls[0]) * (0.3 * tileScale[0]) / 2.0)
+    startZ = -(len(walls) * (0.3 * tileScale[2]) / 2.0)
     
     #Rotations of humans for each wall
     humanRotation = [3.14, 1.57, 0, -1.57]
     #Offsets for visual and thermal humans
-    humanOffset = [[0, -0.1375], [0.1375, 0], [0, 0.1375], [-0.1375, 0]]
-    humanOffsetThermal = [[0, -0.136], [0.136, 0], [0, 0.136], [-0.136, 0]]
+    humanOffset = [[0, -0.1375 * tileScale[2]], [0.1375 * tileScale[0], 0], [0, 0.1375 * tileScale[2]], [-0.1375 * tileScale[0], 0]]
+    humanOffsetThermal = [[0, -0.136 * tileScale[2]], [0.136 * tileScale[0], 0], [0, 0.136 * tileScale[2]], [-0.136 * tileScale[0], 0]]
     #Names of types of visual human
     humanTypesVisual = ["harmed", "unharmed", "stable"]
 
@@ -297,34 +304,34 @@ def createFileData (walls, obstacles, startPos):
             if notchData[1]:
                 notch = "right"
             #Create a new tile with all the data
-            tile = protoTilePart.format(x, z, walls[z][x][0] and not walls[z][x][3], walls[z][x][1][0], walls[z][x][1][1], walls[z][x][1][2], walls[z][x][1][3], corners[0], corners[1], corners[2], corners[3], externals[0], externals[1], externals[2], externals[3], notch, notchData[2], walls[z][x][4], walls[z][x][3], walls[z][x][2], walls[z][x][5], width, height, tileId)
+            tile = protoTilePart.format(x, z, walls[z][x][0] and not walls[z][x][3], walls[z][x][1][0], walls[z][x][1][1], walls[z][x][1][2], walls[z][x][1][3], corners[0], corners[1], corners[2], corners[3], externals[0], externals[1], externals[2], externals[3], notch, notchData[2], walls[z][x][4], walls[z][x][3], walls[z][x][2], walls[z][x][5], width, height, tileId, tileScale[0], tileScale[1], tileScale[2])
             tile = tile.replace("True", "TRUE")
             tile = tile.replace("False", "FALSE")
             allTiles = allTiles + tile
             #checkpoint
             if walls[z][x][2]:
                 #Add bounds to the checkpoint boundaries
-                allCheckpointBounds = allCheckpointBounds + boundsPart.format("checkpoint", checkId, (x * 0.3 + startX) - 0.15, (z * 0.3 + startZ) - 0.15, (x * 0.3 + startX) + 0.15, (z * 0.3 + startZ) + 0.15)
+                allCheckpointBounds = allCheckpointBounds + boundsPart.format("checkpoint", checkId, (x * 0.3 * tileScale[0] + startX) - (0.15 * tileScale[0]), (z * 0.3 * tileScale[2] + startZ) - (0.15 * tileScale[2]), (x * 0.3 * tileScale[0] + startX) + (0.15 * tileScale[0]), (z * 0.3 * tileScale[2] + startZ) + (0.15 * tileScale[2]), floorPos)
                 #Increment id counter
                 checkId = checkId + 1
                     
             #trap
             if walls[z][x][3]:
                 #Add bounds to the trap boundaries
-                allTrapBounds = allTrapBounds + boundsPart.format("trap", trapId, (x * 0.3 + startX) - 0.15, (z * 0.3 + startZ) - 0.15, (x * 0.3 + startX) + 0.15, (z * 0.3 + startZ) + 0.15)
+                allTrapBounds = allTrapBounds + boundsPart.format("trap", trapId, (x * 0.3 * tileScale[0] + startX) - (0.15 * tileScale[0]), (z * 0.3 * tileScale[2] + startZ) - (0.15 * tileScale[2]), (x * 0.3 * tileScale[0] + startX) + (0.15 * tileScale[0]), (z * 0.3 * tileScale[2] + startZ) + (0.15 * tileScale[2]), floorPos)
                 #Increment id counter
                 trapId = trapId + 1
                     
             #goal
             if walls[z][x][4]:
                 #Add bounds to the goal boundaries
-                allGoalBounds = allGoalBounds + boundsPart.format("start", goalId, (x * 0.3 + startX) - 0.15, (z * 0.3 + startZ) - 0.15, (x * 0.3 + startX) + 0.15, (z * 0.3 + startZ) + 0.15)
+                allGoalBounds = allGoalBounds + boundsPart.format("start", goalId, (x * 0.3 * tileScale[0] + startX) - (0.15 * tileScale[0]), (z * 0.3 * tileScale[2] + startZ) - (0.15 * tileScale[2]), (x * 0.3 * tileScale[0] + startX) + (0.15 * tileScale[0]), (z * 0.3 * tileScale[2] + startZ) + (0.15 * tileScale[2]), floorPos)
                 #Increment id counter
                 goalId = goalId + 1
             #swamp
             if walls[z][x][5]:
                 #Add bounds to the swamp boundaries
-                allSwampBounds = allSwampBounds + boundsPart.format("swamp", swampId, (x * 0.3 + startX) - 0.15, (z * 0.3 + startZ) - 0.15, (x * 0.3 + startX) + 0.15, (z * 0.3 + startZ) + 0.15)
+                allSwampBounds = allSwampBounds + boundsPart.format("swamp", swampId, (x * 0.3 * tileScale[0] + startX) - (0.15 * tileScale[0]), (z * 0.3 * tileScale[2] + startZ) - (0.15 * tileScale[2]), (x * 0.3 * tileScale[0] + startX) + (0.15 * tileScale[0]), (z * 0.3 * tileScale[2] + startZ) + (0.15 * tileScale[2]), floorPos)
                 #Increment id counter
                 swampId = swampId + 1
             #Increment id counter
@@ -333,16 +340,16 @@ def createFileData (walls, obstacles, startPos):
             #Human
             if walls[z][x][6] != 0:
                 #Position of tile
-                humanPos = [(x * 0.3) + startX , (z * 0.3) + startZ]
+                humanPos = [(x * 0.3 * tileScale[0]) + startX , (z * 0.3 * tileScale[2]) + startZ]
                 humanRot = humanRotation[walls[z][x][7]]
                 #Randomly move human left and right on wall
                 randomOffset = [0, 0]
                 if walls[z][x][7] in [0, 2]:
                     #X offset for top and bottom
-                    randomOffset = [round(random.uniform(-0.08, 0.08), 3), 0]
+                    randomOffset = [round(random.uniform(-0.08 * tileScale[0], 0.08 * tileScale[0]), 3), 0]
                 else:
                     #Z offset for left and right
-                    randomOffset = [0, round(random.uniform(-0.08, 0.08), 3)]
+                    randomOffset = [0, round(random.uniform(-0.08 * tileScale[2], 0.08 * tileScale[2]), 3)]
                 #Thermal
                 if walls[z][x][6] == 4:
                     humanPos[0] = humanPos[0] + humanOffsetThermal[walls[z][x][7]][0] + randomOffset[0]
@@ -378,13 +385,13 @@ def createFileData (walls, obstacles, startPos):
     for obstacle in obstacles:
         #If this is debris
         if obstacle[0][3]:
-            #Add the debris object
-            allDebris = allDebris + debrisPart.format(debrisId, obstacle[0][0], obstacle[0][1], obstacle[0][2])
+            #Add the debris object (scaled to world size)
+            allDebris = allDebris + debrisPart.format(debrisId, obstacle[0][0] * tileScale[0], obstacle[0][1] * tileScale[1], obstacle[0][2] * tileScale[2])
             #Increment id counter
             debrisId = debrisId + 1
         else:
-            #Add the obstacle
-            allObstacles = allObstacles + obstaclePart.format(obstacleId, obstacle[0][0], obstacle[0][1], obstacle[0][2], obstacle[1][0], obstacle[1][1], obstacle[1][2], obstacle[1][3])
+            #Add the obstacle (scaled and positioned based on world scale)
+            allObstacles = allObstacles + obstaclePart.format(obstacleId, obstacle[0][0] * tileScale[0], obstacle[0][1] * tileScale[1], obstacle[0][2] * tileScale[2], obstacle[1][0] * tileScale[0], obstacle[1][1] * tileScale[1], obstacle[1][2] * tileScale[2], obstacle[1][3])
             #Increment id counter
             obstacleId = obstacleId + 1
 
