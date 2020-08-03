@@ -7,7 +7,7 @@ import os
 import random
 import struct
 import math
-from datetime import datetime
+import datetime
 
 
 # Create the instance of the supervisor class
@@ -52,25 +52,28 @@ class RobotHistory(Queue):
         return self.queue.append(data)
 
     def update_master_history(self, data):
-        current_time = supervisor.getTime()
-        time = maxTime - current_time
-        minute = int(time // 60)
-        seconds = ((time / 60) % minute) * 60
-        min_sec = "0"+str(int(minute))+":"+str(int(seconds))
-        record = [min_sec, data]
+        time = int(maxTime - timeElapsed)
+        #print(time)
+        minute = str(datetime.timedelta(seconds=time))[2:]
+        #print(minute)
+        record = [minute, data]
         self.master_history.append(record)
 
 
 class Robot:
     '''Robot object to hold values whether its in a base or holding a human'''
 
-    def __init__(self, node):
+    def __init__(self, node=None):
         '''Initialises the in a base, has a human loaded and score values'''
 
         self.wb_node = node
 
-        self.wb_translationField = self.wb_node.getField('translation')
-        self.wb_rotationField = self.wb_node.getField('rotation')
+        try:
+            self.wb_translationField = self.wb_node.getField('translation')
+            self.wb_rotationField = self.wb_node.getField('rotation')
+        except:
+            pass
+
 
         self.inCheckpoint = True
         self.inSwamp = True
@@ -93,6 +96,8 @@ class Robot:
         self.startingTile = None
 
         self.inSimulation = True
+
+        self.name = "NO_TEAM_NAME"
 
         #self.previousPosition = [None,None,None]
 
@@ -414,10 +419,14 @@ def updateHistory():
 
 def getHumans():
     #print('yeet')
+    #camera = supervisor.getFromDef('CAMERA')
     # Iterate for each human
     for i in range(numberOfHumans):
         # Get each human from children field in the human root node HUMANGROUP
         human = humanNodes.getMFNode(i)
+        
+        #human.setVisibility(camera, False)
+
 
         victimType = human.getField('type').getSFString()
         scoreWorth = human.getField('scoreWorth').getSFInt32()
@@ -435,41 +444,27 @@ def resetVictimsTextures():
         humans[i].identified = False
 
 
-def relocate(num):
-    #TODO rewrite this and the following functions to take the robotobject instead of number for cleaner code
-    if int(num) == 0:
-        relocatePosition = robot0Obj.lastVisitedCheckPointPosition
+def relocate(robotObj):
+    relocatePosition = robotObj.lastVisitedCheckPointPosition
 
-        robot0Obj.position = [relocatePosition[0], -0.0751, relocatePosition[2]]
-        robot0Obj.rotation = [0,1,0,0]
+    robotObj.position = [relocatePosition[0], -0.0751, relocatePosition[2]]
+    robotObj.rotation = [0,1,0,0]
 
-        robot0Obj.history.enqueue("Lack of Progress - 5")
-        robot0Obj.history.enqueue("Relocating to checkpoint")
-        robot0Obj.increaseScore(-5)
-        updateHistory()
+    robotObj.history.enqueue("Lack of Progress - 5")
+    robotObj.history.enqueue("Relocating to checkpoint")
+    robotObj.increaseScore(-5)
+    updateHistory()
 
-    elif int(num) == 1:
-        relocatePosition = robot1Obj.lastVisitedCheckPointPosition
+def robot_quit(robotObj, num, manualExit):
+    if robotObj.inSimulation:
+        robotObj.wb_node.remove()
+        robotObj.inSimulation = False
+        supervisor.wwiSendText("robotNotInSimulation"+str(num))
+        if manualExit:
+            robotObj.history.enqueue("Manual Exit")
+        else:
+            robotObj.history.enqueue("Successful Exit")
 
-        robot1Obj.position = [relocatePosition[0], -0.0751, relocatePosition[2]]
-        robot1Obj.rotation = [0,1,0,0]
-
-        robot1Obj.history.enqueue("Lack of Progress - 5")
-        robot1Obj.history.enqueue("Relocating to checkpoint")
-        robot1Obj.increaseScore(-5)
-        updateHistory()
-
-def robot_quit(num):
-    if int(num) == 0:
-        if robot0Obj.inSimulation:
-            robot0Obj.wb_node.remove()
-            robot0Obj.inSimulation = False
-            supervisor.wwiSendText("robotNotInSimulation0")
-    elif int(num) == 1:
-        if robot1Obj.inSimulation:
-            robot1Obj.wb_node.remove()
-            robot1Obj.inSimulation = False
-            supervisor.wwiSendText("robotNotInSimulation1")
 
 def add_robot(num):
     global robot0, robot1
@@ -504,13 +499,10 @@ def create_log_str():
     log_str = ""
     log_str += "GAME_DURATION: "+str(maxTimeMinute)+":00\n"
     log_str += "ROBOT_0_SCORE: "+str(robot0Obj.getScore())+"\n"
-    log_str += "ROBOT_1_SCORE: "+str(robot1Obj.getScore())+"\n"
     log_str += "\n"
-    log_str += "ROBOT_0: TEAM_NAME_0\n"
+    log_str += "ROBOT_0: "+str(robot0Obj.name)+"\n"
     log_str += r0_str
     log_str += "\n"
-    log_str += "ROBOT_1: TEAM_NAME_1\n"
-    log_str += r1_str
     
     return log_str
 
@@ -520,7 +512,7 @@ def write_log():
     filePath = filePath.replace('\\', '/')
     filePath = filePath + "/../../logs/"
     
-    file_date = datetime.now()
+    file_date = datetime.datetime.now()
     logFileName = file_date.strftime("log %m-%d-%y %H,%M,%S")
     
     filePath += logFileName + ".txt"
@@ -602,14 +594,15 @@ gameStarted = False
 
 # Get the robot nodes by their DEF names
 robot0 = supervisor.getFromDef("ROBOT0")
-robot1 = supervisor.getFromDef("ROBOT1")
+#robot1 = supervisor.getFromDef("ROBOT1")
 
 add_robot(0)
-add_robot(1)
+#add_robot(1)
 
 # Init both robots as objects to hold their info
 robot0Obj = Robot(robot0)
-robot1Obj = Robot(robot1)
+robot1Obj = Robot()
+robot1Obj.inSimulation = False
 
 # Both robots start in bases
 # robot0InCheckpoint = True
@@ -621,7 +614,7 @@ finished = False
 
 # Reset the controllers
 resetControllerFile(0)
-resetControllerFile(1)
+#resetControllerFile(1)
 
 # Starting scores
 # score0 = 0
@@ -678,12 +671,12 @@ robot0Obj.visitedCheckpoints.append(startingTileObj.center)
 # robot1_maxPos = robot1_maxPos.getSFVec3f()
 # robot1_centerPos = robot1_centerPos.getSFVec3f()
 
-robot1Obj.startingTile = startingTileObj
-robot1Obj.lastVisitedCheckPointPosition = startingTileObj.center
-robot1Obj.visitedCheckpoints.append(startingTileObj.center)
+# robot1Obj.startingTile = startingTileObj
+# robot1Obj.lastVisitedCheckPointPosition = startingTileObj.center
+# robot1Obj.visitedCheckpoints.append(startingTileObj.center)
 
 robot0Obj.position = [startingTileObj.center[0] - 0.05, startingTileObj.center[1], startingTileObj.center[2]]
-robot1Obj.position = [startingTileObj.center[0] + 0.05, startingTileObj.center[1], startingTileObj.center[2]]
+# robot1Obj.position = [startingTileObj.center[0] + 0.05, startingTileObj.center[1], startingTileObj.center[2]]
 
 # Until the match ends (also while paused)
 while simulationRunning:
@@ -692,7 +685,7 @@ while simulationRunning:
     if first and currentlyRunning:
         # Restart both controllers
         robot0.restartController()
-        robot1.restartController()
+        #robot1.restartController()
         first = False
 
     r0 = False
@@ -834,11 +827,9 @@ while simulationRunning:
                 if robot0Obj.startingTile.checkPosition(robot0Obj.position):
                     #print("Robot 0 Successful Exit")
 
-                    robot0Obj.history.enqueue("Successful Exit")
-
                     updateHistory()
                     # TODO Exit robot 0
-                    robot_quit(0)
+                    robot_quit(robot0Obj, 0, False)
 
                     robot0Obj.increaseScore(10)
                     robot0Obj.increaseScore(int(robot0Obj.getScore() * 0.1))
@@ -857,11 +848,10 @@ while simulationRunning:
                 if robot1Obj.startingTile.checkPosition(robot1Obj.position):
                     #print("Robot 1 Successful Exit")
 
-                    robot1Obj.history.enqueue("Successful Exit")
 
                     updateHistory()
                     # TODO Exit robot 1
-                    robot_quit(1)
+                    robot_quit(robot1Obj, 1, False)
 
                     robot1Obj.increaseScore(10)
                     robot1Obj.increaseScore(int(robot1Obj.getScore() * 0.1))
@@ -942,7 +932,7 @@ while simulationRunning:
 
     if robot0Obj.inSimulation:
         if robot0Obj.timeStopped() >= 20:
-            relocate(0)
+            relocate(robot0Obj)
 
             robot0Obj._timeStopped = 0
             robot0Obj._stopped = False
@@ -951,7 +941,7 @@ while simulationRunning:
     if robot1Obj.inSimulation:
         if robot1Obj.timeStopped() >= 20:
             
-            relocate(1)
+            relocate(robot1Obj)
 
             robot1Obj._timeStopped = 0
             robot1Obj._stopped = False
@@ -1003,6 +993,8 @@ while simulationRunning:
                     data = message.split(",", 1)
                     if len(data) > 1:
                         name, id = createController(0, data[1])
+                        if name != None:
+                            robot0Obj.name = name
                         assignController(id, name)
                 else:
                     print("Please choose controllers before simulation starts.")
@@ -1026,12 +1018,21 @@ while simulationRunning:
             if parts[0] == 'relocate':
                 data = message.split(",", 1)
                 if len(data) > 1:
-                    relocate(data[1])
+                    if int(data[1]) == 0:
+                        relocate(robot0Obj)
+                    elif int(data[1]) == 1:
+                        relocate(robot1Obj)
+                        
             if parts[0] == 'quit':
                 data = message.split(",", 1)
                 if len(data) > 1:
-                    robot_quit(data[1])
-                
+                    if int(data[1]) == 0:
+                        if gameStarted:
+                            robot_quit(robot0Obj, 0, True)
+                    elif int(data[1]) == 1:
+                        if gameStarted:
+                            robot_quit(robot1Obj, 1, True)
+                    updateHistory()
 
     # Send the update information to the robot window
     supervisor.wwiSendText(
@@ -1058,6 +1059,6 @@ while simulationRunning:
             simulationRunning = False
             finished = True
             
-    if finished:
+    if not simulationRunning and timeElapsed > 0:
         write_log()
         

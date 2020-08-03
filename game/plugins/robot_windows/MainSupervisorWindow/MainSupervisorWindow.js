@@ -103,13 +103,13 @@ function receive (message){
 }
 
 function robotQuitColour(id){
-	setEnableButton('quit'+id, true)
+	//setEnableButton('quit'+id, true)
 	setEnableButton('relocate'+id, true)
 	setEnableButton('load'+id, true)
 	setEnableButton('unload'+id, true)
 }
 function robotQuitUnavailableColour(id){
-	setEnableButton('quit'+id, false)
+	//setEnableButton('quit'+id, false)
 	setEnableButton('relocate'+id, false)
 	setEnableButton('load'+id, false)
 	setEnableButton('unload'+id, false)
@@ -141,13 +141,13 @@ function updateHistory(history0,history1){
 
 	
 	let history0End = false;
-	let history1End = false;
+	// let history1End = false;
 
 	let i = history0.length -1;
-	let j = history1.length -1;
+	// let j = history1.length -1;
 	
 
-	while(!history0End || !history1End){
+	while(!history0End){
 		text += "<tr id='historyrow'>";
 		if(history0[i] != null){
 			text += "<div class='outerDiv'><div class='innerDiv'><td id='historyrowtext'>"+history0[i]+"</td></div></div>";
@@ -156,13 +156,13 @@ function updateHistory(history0,history1){
 			text += "<div class='outerDiv'><div class='innerDiv'><td id='historyrowtext'></td></div></div>"
 			history0End = true;
 		}
-		if(history1[j] != null){
-			text += "<div class='outerDiv'><div class='innerDiv'><td id='historyrowtext'>"+history1[j]+"</td></div></div>";
-			j--;
-		}else{
-			text += "<div class='outerDiv'><div class='innerDiv'><td id='historyrowtext'></td></div></div>"
-			history1End = true;
-		}
+		// if(history1[j] != null){
+		// 	text += "<div class='outerDiv'><div class='innerDiv'><td id='historyrowtext'>"+history1[j]+"</td></div></div>";
+		// 	j--;
+		// }else{
+		// 	text += "<div class='outerDiv'><div class='innerDiv'><td id='historyrowtext'></td></div></div>"
+		// 	history1End = true;
+		// }
 		text += "</tr>";
 	}
 	document.getElementById("history").innerHTML = text;
@@ -177,13 +177,13 @@ function loadedController(id, name){
 		document.getElementById("load0").style.display = "none";
 		document.getElementById("unload0").style.display = "inline-block";
 	}
-	if (id == 1){
-		//Set name and toggle to unload button for robot 1
-		document.getElementById("robot1Name").innerHTML = name;
-		robot1Name = name;
-		document.getElementById("load1").style.display = "none";
-		document.getElementById("unload1").style.display = "inline-block";
-	}
+	// if (id == 1){
+	// 	//Set name and toggle to unload button for robot 1
+	// 	document.getElementById("robot1Name").innerHTML = name;
+	// 	robot1Name = name;
+	// 	document.getElementById("load1").style.display = "none";
+	// 	document.getElementById("unload1").style.display = "inline-block";
+	// }
 }
 
 function unloadedController(id){
@@ -196,14 +196,14 @@ function unloadedController(id){
 		document.getElementById("unload0").style.display = "none";
 		document.getElementById("load0").style.display = "inline-block";
 	}
-	if (id == 1){
-		//Reset name and toggle to load button for robot 1
-		document.getElementById("robot1File").value = "";
-		document.getElementById("robot1Name").innerHTML = "None";
-		robot1Name = "Robot 1";
-		document.getElementById("unload1").style.display = "none";
-		document.getElementById("load1").style.display = "inline-block";
-	}
+	// if (id == 1){
+	// 	//Reset name and toggle to load button for robot 1
+	// 	document.getElementById("robot1File").value = "";
+	// 	document.getElementById("robot1Name").innerHTML = "None";
+	// 	robot1Name = "Robot 1";
+	// 	document.getElementById("unload1").style.display = "none";
+	// 	document.getElementById("load1").style.display = "inline-block";
+	// }
 }
 
 function startup (){
@@ -211,13 +211,18 @@ function startup (){
 	setEnableButton("runButton", true);
 	setEnableButton("pauseButton", false);
 	setEnableButton("resetButton", true);
+
+	// setEnableButton('quit0', false)
+	// setEnableButton('quit1', false)
+	setEnableButton('relocate0', false)
+	// setEnableButton('relocate1', false)
 }
 
 function update (data){
 	//Update the ui each frame of the simulation
 	//Sets the scores and the timer
 	document.getElementById("score0").innerHTML = String(data[0]);
-	document.getElementById("score1").innerHTML = String(data[1]);
+	// document.getElementById("score1").innerHTML = String(data[1]);
 
 	scores = [data[0],data[1]]
 
@@ -261,9 +266,14 @@ function runPressed(){
 	setEnableButton("pauseButton", true);
 	//Disable all the loading buttons (cannot change loaded controllers once simulation starts)
 	setEnableButton("load0", false);
-	setEnableButton("load1", false);
+	// setEnableButton("load1", false);
 	setEnableButton("unload0", false);
-	setEnableButton("unload1", false);
+	// setEnableButton("unload1", false);
+
+	// setEnableButton('quit0', true)
+	// setEnableButton('quit1', true)
+	setEnableButton('relocate0', true)
+	// setEnableButton('relocate1', true)
 }
 
 function pausePressed(){
@@ -311,9 +321,9 @@ function endGame(){
 	setEnableButton("runButton", false)
 	setEnableButton("pauseButton", false);
 
-	if (!visable){
-		show_winning_screen()
-	}
+	// if (!visable){
+	// 	show_winning_screen()
+	// }
 }
 
 function unloadPressed(id){

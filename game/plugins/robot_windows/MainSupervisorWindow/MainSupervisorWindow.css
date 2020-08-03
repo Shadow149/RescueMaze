@@ -79,18 +79,8 @@ body{
   border: none;
   border-radius: 9999999px;
 }
-#runButton:disabled{
+#runButton:disabled, #pauseButton:disabled, #resetButton:disabled{
   background-color: #9e9e9e;
-}
-#pauseButton:disabled{
-  background-color: #9e9e9e;
-}
-#resetButton:disabled{
-  background-color: #9e9e9e;
-}
-
-.simulationStateButton:hover{
-	background-color: #7EE8FA;
 }
 
 
