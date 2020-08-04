@@ -182,7 +182,7 @@ class Human():
 
         self.arrayPosition = ap
         self.scoreWorth = score
-        self.radius = 0.15
+        self.radius = 0.06
         self._victim_type = vtype
 
         self.simple_victim_type = self.get_simple_victim_type()
@@ -241,12 +241,12 @@ class Human():
         else:
             return 1
 
-    def checkPosition(self, pos: list, min_dist: float) -> bool:
+    def checkPosition(self, pos: list) -> bool:
         '''Check if a position is near an object, based on the min_dist value'''
         # Get distance from the object to the passed position using manhattan distance for speed
         # TODO Check if we want to use euclidian or manhattan distance -- currently manhattan
         distance = math.sqrt(((self.position[0] - pos[0])**2) + ((self.position[2] - pos[2])**2))
-        return distance <= min_dist
+        return distance <= self.radius
 
     def onSameSide(self, pos: list) -> bool:
         #get side its pointing at
@@ -447,7 +447,7 @@ def resetVictimsTextures():
 def relocate(robotObj):
     relocatePosition = robotObj.lastVisitedCheckPointPosition
 
-    robotObj.position = [relocatePosition[0], -0.0751, relocatePosition[2]]
+    robotObj.position = [relocatePosition[0], -0.03, relocatePosition[2]]
     robotObj.rotation = [0,1,0,0]
 
     robotObj.history.enqueue("Lack of Progress - 5")
@@ -497,7 +497,7 @@ def create_log_str():
     r1_str = robot1Obj.get_log_str()
     
     log_str = ""
-    log_str += "GAME_DURATION: "+str(maxTimeMinute)+":00\n"
+    log_str += "MAX_GAME_DURATION: "+str(maxTimeMinute)+":00\n"
     log_str += "ROBOT_0_SCORE: "+str(robot0Obj.getScore())+"\n"
     log_str += "\n"
     log_str += "ROBOT_0: "+str(robot0Obj.name)+"\n"
@@ -677,7 +677,7 @@ robot0Obj.visitedCheckpoints.append(startingTileObj.center)
 # robot1Obj.lastVisitedCheckPointPosition = startingTileObj.center
 # robot1Obj.visitedCheckpoints.append(startingTileObj.center)
 
-robot0Obj.position = [startingTileObj.center[0] - 0.05, startingTileObj.center[1], startingTileObj.center[2]]
+robot0Obj.position = [startingTileObj.center[0], startingTileObj.center[1], startingTileObj.center[2]]
 # robot1Obj.position = [startingTileObj.center[0] + 0.05, startingTileObj.center[1], startingTileObj.center[2]]
 
 # Until the match ends (also while paused)
@@ -872,8 +872,8 @@ while simulationRunning:
 
                 for i, h in enumerate(humans):
                     if not h.identified:
-                        if h.checkPosition(robot0Obj.position, 0.15):
-                            if h.checkPosition(r0_est_vic_pos, 0.15):
+                        if h.checkPosition(robot0Obj.position):
+                            if h.checkPosition(r0_est_vic_pos):
                                     if h.onSameSide(robot0Obj.position):
         
                                         #print("Robot 0 Successful Victim Identification")
@@ -908,8 +908,8 @@ while simulationRunning:
 
                 for i, h in enumerate(humans):
                     if not h.identified:
-                        if h.checkPosition(robot1Obj.position, 0.15):
-                            if h.checkPosition(r1_est_vic_pos, 0.15):
+                        if h.checkPosition(robot1Obj.position):
+                            if h.checkPosition(r1_est_vic_pos):
                                     if h.onSameSide(robot1Obj.position):
         
                                         #print("Robot 1 Successful Victim Identification")
