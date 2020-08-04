@@ -23,4 +23,7 @@ DEF TILE worldTile {{
   width {21}
   height {22}
   id "{23}"
+  xScale {24}
+  yScale {25}
+  zScale {26}
 }}

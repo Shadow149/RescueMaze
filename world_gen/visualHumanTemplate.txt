@@ -1,0 +1,6 @@
+Victim {{
+    translation {0} 0 {1}
+    rotation 0 1 0 {2}
+    name "Victim{3}"
+    type "{4}"
+}}
