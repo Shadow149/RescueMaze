@@ -25,10 +25,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Robots not in generated world file
 
 ### Fixed
--Attempting to relocate with no robot no longer causes a crash
+- Attempting to relocate with no robot no longer causes a crash
 
-[Unreleased]: https://github.com/Shadow149/RescueMaze
-[Release 4]: 
-[Release 3]: https://github.com/Shadow149/RescueMaze/releases/tag/v1.1.1
-[Release 2]: https://github.com/Shadow149/RescueMaze/releases/tag/v1.1
-[Release 1]: https://github.com/Shadow149/RescueMaze/releases/tag/v1.0
+[Unreleased]: https://github.com/Shadow149/RescueMaze  
+[Release 4]:  
+[Release 3]: https://github.com/Shadow149/RescueMaze/releases/tag/v1.1.1  
+[Release 2]: https://github.com/Shadow149/RescueMaze/releases/tag/v1.1  
+[Release 1]: https://github.com/Shadow149/RescueMaze/releases/tag/v1.0  
