@@ -516,11 +516,13 @@ def write_log():
     logFileName = file_date.strftime("log %m-%d-%y %H,%M,%S")
     
     filePath += logFileName + ".txt"
-    
-    logsFile = open(filePath, "w")
-    logsFile.write(log_str)
-    logsFile.close()
-    
+
+    try:
+        logsFile = open(filePath, "w")
+        logsFile.write(log_str)
+        logsFile.close()
+    except:
+        print("Couldn't write log file, no log directory ./game/logs")
 # Get the output from the object placement supervisor
 # objectPlacementOutput = supervisor.getFromDef("OBJECTPLACER").getField("customData")
 
