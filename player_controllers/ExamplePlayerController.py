@@ -428,13 +428,13 @@ class Player (Robot):
             #print(int(position[0]*100),  int(position[2]*100))
 
             if not self.messageSent:
-                message = struct.pack('i i i c', 0, int(position[0]*100),  int(position[2]*100), b'H')
+                message = struct.pack('i i c', int(position[0]*100),  int(position[2]*100), b'H')
                 self.emitter.send(message)
                 self.messageSent = True
             
             #If time passed is greater than 3.5 seconds (to account for how long the robot takes to become still)
             #TODO use velocity to start timer
-            if currentTime - self.timerStartTime > 7.5:
+            if currentTime - self.timerStartTime > 3.5:
                 #Robot has picked up human
                 #Once time has passed, reset everything
                 self.timerStartTime = 0
