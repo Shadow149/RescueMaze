@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## Added
 - Quit button to remove robot from the simulation
 
-## [Release 4] - 2020-08-04
+## [Release 4] - 2020-08-05
 
 ### Added
 - Robots are now placed into the world by the supervisor
@@ -16,6 +16,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Positions of tiles, humans and obstacles randomly generated and automatically calculated based on tile scale
 
 ### Changed
+- There is now no need to specify robot type when sending data for estimated victim detection and exit messages.   
+For example from `struct.pack('i i i c', data, data1, data2, data3)` to `struct.pack('i i c', data, data1, data2)`
 - Thermal victims radius decreased
 - Tiles are now much smaller
 - Moved starting tile to within the maze
