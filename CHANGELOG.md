@@ -25,6 +25,7 @@ For example from `struct.pack('i i i c', data, data1, data2, data3)` to `struct.
 ### Removed
 - Start 'bay' on outside of maze removed
 - Robots not in generated world file
+- Obstacles are not placed into the map due to smaller tile size
 
 ### Fixed
 - Attempting to relocate with no robot no longer causes a crash
