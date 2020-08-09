@@ -66,7 +66,7 @@ PROTO Victim [
                             }
                         }
                         geometry DEF VICTIMPLANE Box {
-                            size 0.04 0.001 0.04
+                            size 0.016 0.001 0.016
                         }
                     }
                 ]

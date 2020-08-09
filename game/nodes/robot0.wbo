@@ -43,7 +43,7 @@ DEF ROBOT0 E-puck-custom {
       rotation 0 0 1 1.57079
     }
     Camera {
-      translation -0.02 0 0.0299998
+      translation -0.02 0 0
       rotation 0 1 0 -1.5707953071795862
       name "colour_sensor"
       width 1
