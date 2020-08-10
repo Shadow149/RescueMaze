@@ -10,7 +10,9 @@ viewpointLocked: 0
 orthographicViewHeight: 1
 textFiles: -1
 renderingDevicePerspectives: e-puck 0:colour_sensor;1;32;0;0
-renderingDevicePerspectives: e-puck 1:colour_sensor;1;32;0;0
-renderingDevicePerspectives: e-puck 0:camera;1;1;0;0
+renderingDevicePerspectives: e-puck 0:camera_left;1;1;0;0
 renderingDevicePerspectives: e-puck:camera;1;1;0;0
+renderingDevicePerspectives: e-puck 0:camera;1;1;0;0
+renderingDevicePerspectives: e-puck 1:colour_sensor;1;32;0;0
 renderingDevicePerspectives: e-puck 1:camera;1;1;0;0
+renderingDevicePerspectives: e-puck 0:camera_right;1;1;0;0
