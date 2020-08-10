@@ -14,12 +14,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Robots are now placed into the world by the supervisor
 - Export log of events after each game
 - Positions of tiles, humans and obstacles randomly generated and automatically calculated based on tile scale
+- Added an extra camera on the front of the robot. The cameras are labelled `camera_left` and `camera_right`.
 
 ### Changed
 - There is now no need to specify robot type when sending data for estimated victim detection and exit messages.   
 For example from `struct.pack('i i i c', data, data1, data2, data3)` to `struct.pack('i i c', data, data1, data2)`
 - Thermal victims radius decreased
 - Tiles are now much smaller
+- Victims are now much smaller
+- Increased distance sensor range
+- Moved colour camera to a less obstructive position to avoid shadows
 - Moved starting tile to within the maze
 
 ### Removed
