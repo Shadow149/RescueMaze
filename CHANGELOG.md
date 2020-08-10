@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Export log of events after each game
 - Positions of tiles, humans and obstacles randomly generated and automatically calculated based on tile scale
 - Added an extra camera on the front of the robot. The cameras are labelled `camera_left` and `camera_right`.
+- Start tile changes from green to white when the robots move off it and doesn't change back.
 
 ### Changed
 - There is now no need to specify robot type when sending data for estimated victim detection and exit messages.   

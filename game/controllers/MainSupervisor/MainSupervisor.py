@@ -101,6 +101,8 @@ class Robot:
 
         self.name = "NO_TEAM_NAME"
 
+        self.left_exit_tile = False
+
 
     @property
     def position(self) -> list:
@@ -289,6 +291,7 @@ class Tile():
 
     def checkPosition(self, pos: list) -> bool:
         '''Check if a position is in this checkpoint'''
+        print(pos)
         # If the x position is within the bounds
         if pos[0] >= self.min[0] and pos[0] <= self.max[0]:
             # if the z position is within the bounds
@@ -317,8 +320,9 @@ class Swamp(Tile):
 class StartTile(Tile):
     '''StartTile object holding the boundaries'''
 
-    def __init__(self, min: list, max: list, center=None):
+    def __init__(self, min: list, max: list, wb_node, center=None):
         super().__init__(min, max, center)
+        self.wb_node = wb_node
 
 
 def getPath(number: int) -> str:
@@ -556,6 +560,10 @@ def write_log():
 
 def set_robot_start_pos():
     '''Set robot starting position'''
+
+    starting_tile_node = supervisor.getFromDef("START_TILE")
+    
+
     # Get the starting tile minimum node and translation
     starting_PointMin = supervisor.getFromDef("start0min")
     starting_minPos = starting_PointMin.getField("translation")
@@ -569,13 +577,15 @@ def set_robot_start_pos():
     starting_maxPos = starting_maxPos.getSFVec3f()
     starting_centerPos = [(starting_maxPos[0]+starting_minPos[0])/2,starting_maxPos[1],(starting_maxPos[2]+starting_minPos[2])/2]
 
-    startingTileObj = StartTile([starting_minPos[0], starting_minPos[2]], [starting_maxPos[0], starting_maxPos[2]], starting_centerPos)
+    startingTileObj = StartTile([starting_minPos[0], starting_minPos[2]], [starting_maxPos[0], starting_maxPos[2]], starting_tile_node, center=starting_centerPos,)
 
     robot0Obj.startingTile = startingTileObj
     robot0Obj.lastVisitedCheckPointPosition = startingTileObj.center
+    robot0Obj.startingTile.wb_node.getField("start").setSFBool(True)
     robot0Obj.visitedCheckpoints.append(startingTileObj.center)
 
     robot0Obj.position = [startingTileObj.center[0], startingTileObj.center[1], startingTileObj.center[2]]
+    print("set pos")
 
 # -------------------------------
 # CODED LOADED BEFORE GAME STARTS
@@ -644,6 +654,7 @@ receiver.enable(32)
 # Set robots starting position in world
 set_robot_start_pos()
 
+
 # -------------------------------
 
 # Until the match ends (also while paused)
@@ -658,30 +669,30 @@ while simulationRunning:
         robot0.restartController()
         first = False
 
-    # Test if the robots are in checkpoints
-    for checkpoint in checkpoints:
-        if robot0Obj.inSimulation:
-            # Check position of checkpoint with the robots position
-            if checkpoint.checkPosition(robot0Obj.position):
-                r0 = True
-                # Update the robot's last visited position 
-                robot0Obj.lastVisitedCheckPointPosition = checkpoint.center
+    # # Test if the robots are in checkpoints
+    # for checkpoint in checkpoints:
+    #     if robot0Obj.inSimulation:
+    #         # Check position of checkpoint with the robots position
+    #         if checkpoint.checkPosition(robot0Obj.position):
+    #             r0 = True
+    #             # Update the robot's last visited position 
+    #             robot0Obj.lastVisitedCheckPointPosition = checkpoint.center
 
-                alreadyVisited = False
+    #             alreadyVisited = False
 
-                # Dont update if checkpoint is already visited
-                # TODO could change this to edit webots node to reduce compute time
-                if len(robot0Obj.visitedCheckpoints) > 0:
-                    for visitedCheckpoint in robot0Obj.visitedCheckpoints:
-                        if visitedCheckpoint == checkpoint.center:
-                            alreadyVisited = True
+    #             # Dont update if checkpoint is already visited
+    #             # TODO could change this to edit webots node to reduce compute time
+    #             if len(robot0Obj.visitedCheckpoints) > 0:
+    #                 for visitedCheckpoint in robot0Obj.visitedCheckpoints:
+    #                     if visitedCheckpoint == checkpoint.center:
+    #                         alreadyVisited = True
 
-                # Update robot's points and history
-                if not alreadyVisited:
-                    robot0Obj.visitedCheckpoints.append(checkpoint.center)
-                    robot0Obj.increaseScore(10)
-                    robot0Obj.history.enqueue("Found checkpoint  +10")
-                    updateHistory()
+    #             # Update robot's points and history
+    #             if not alreadyVisited:
+    #                 robot0Obj.visitedCheckpoints.append(checkpoint.center)
+    #                 robot0Obj.increaseScore(10)
+    #                 robot0Obj.history.enqueue("Found checkpoint  +10")
+    #                 updateHistory()
 
     # Print when robot0 enters or exits a checkpoint
     # Not really needed
@@ -693,11 +704,11 @@ while simulationRunning:
             else:
                 print("Robot 0 exited a checkpoint")
 
-    # Check if the robots are in swamps
-    for swamp in swamps:
-        if robot0Obj.inSimulation:
-            if swamp.checkPosition(robot0Obj.position):
-                r0s = True
+    # # Check if the robots are in swamps
+    # for swamp in swamps:
+    #     if robot0Obj.inSimulation:
+    #         if swamp.checkPosition(robot0Obj.position):
+    #             r0s = True
 
     # Check if robot is in swamp
     if robot0Obj.inSimulation:
@@ -807,6 +818,14 @@ while simulationRunning:
             robot0Obj.robot_timeStopped = 0
             robot0Obj.stopped = False
             robot0Obj.stoppedTime = None
+
+    if currentlyRunning:
+        # Check if robot has not left the starting tile
+        if not robot0Obj.left_exit_tile:
+            # Check robot position is on starting tile
+            if not robot0Obj.startingTile.checkPosition(robot0Obj.position):
+                robot0Obj.left_exit_tile = True
+                robot0Obj.startingTile.wb_node.getField("start").setSFBool(False)
 
     # If the running state changes
     if previousRunState != currentlyRunning:

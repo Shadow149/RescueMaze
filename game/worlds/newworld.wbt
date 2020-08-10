@@ -4,7 +4,7 @@ WorldInfo {
 }
 Viewpoint {
   orientation -0.9999584182711001 -0.007627731589905467 -0.004997943532300727 1.1600388354413258
-  position -0.11399940913924049 1.6287262108130192 0.6252709959399598
+  position -0.11398069129268815 1.624426525755045 0.6233982436720223
 }
 TexturedBackground {
 }
@@ -284,7 +284,7 @@ DEF WALLTILES Group {
       zScale 0.4
       yScale 0.4
     }
-    DEF TILE worldTile {
+    DEF START_TILE worldTile {
       xPos 2
       zPos 6
       floor TRUE
@@ -879,50 +879,6 @@ DEF SWAMPBOUNDS Group {
   ]
 }
 DEF OBSTACLES Group {
-  children [
-    DEF OBSTACLE0 Solid {
-      translation -0.434336 0 0.15076
-      rotation 0 1 0 3.828
-      children [
-        Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0.45 0.45 0.45
-            }
-          }
-          geometry DEF OBSTACLEBOX0 Box {
-            size 0.07600000000000001 0.06 0.064
-          }
-        }
-      ]
-      name "obstacle0"
-      boundingObject USE OBSTACLEBOX0
-      recognitionColors [
-        0.45 0.45 0.45
-      ]
-    }
-    DEF OBSTACLE1 Solid {
-      translation -0.350232 0 0.21285199999999996
-      rotation 0 1 0 3.001
-      children [
-        Shape {
-          appearance Appearance {
-            material Material {
-              diffuseColor 0.45 0.45 0.45
-            }
-          }
-          geometry DEF OBSTACLEBOX1 Box {
-            size 0.032 0.06 0.064
-          }
-        }
-      ]
-      name "obstacle1"
-      boundingObject USE OBSTACLEBOX1
-      recognitionColors [
-        0.45 0.45 0.45
-      ]
-    }
-  ]
 }
 DEF DEBRIS Group {
 }
@@ -1012,6 +968,57 @@ DEF HUMANGROUP Group {
     HeatVictim {
       translation 0.246 0 0.2944
       name "HeatVictim16"
+    }
+  ]
+}
+DEF ROBOT0 E-puck-custom {
+  translation 0 -1000 0
+  name "e-puck 0"
+  controller "robot0Controller"
+  camera_fieldOfView 1
+  camera_width 128
+  camera_height 128
+  turretSlot [
+    GPS {
+    }
+    LightSensor {
+      translation -0.03 0 0
+      rotation 0 1 0 3.14
+      name "left_heat_sensor"
+      lookupTable [
+        0 21 0
+        2 25 0
+        5 30 0
+        12 37 0
+        1000 38 0
+      ]
+      colorFilter 1 0 0
+      occlusion TRUE
+    }
+    LightSensor {
+      translation 0.03 0 0
+      name "right_heat_sensor"
+      lookupTable [
+        0 21 0
+        2 25 0
+        5 30 0
+        12 37 0
+        1000 38 0
+      ]
+      colorFilter 1 0 0
+      occlusion TRUE
+    }
+  ]
+  groundSensorsSlot [
+    Gyro {
+      rotation 0 0 1 1.57079
+    }
+    Camera {
+      translation -0.02 0 0.0299998
+      rotation 0 1 0 -1.5707953071795862
+      name "colour_sensor"
+      width 1
+      height 1
     }
   ]
 }
