@@ -1160,10 +1160,12 @@ def generateObstacles(bulky, debris, array, x, y, startPos):
     for i in range(0, bulky):
         #Create an obstacle and add it to the list
         newObstacle = addObstacle(False)
-        newObstaclePos = selectObstaclePositon(newObstacle, array, x, y, obstacles, startPos)
+        #Removed placement of obstacles due to tile size being too small to allow both obstacles and robots access
+        '''newObstaclePos = selectObstaclePositon(newObstacle, array, x, y, obstacles, startPos)
         if newObstaclePos[1] > -1:
             placedBulky = placedBulky + 1
-        obstacles.append([newObstacle, newObstaclePos])
+        obstacles.append([newObstacle, newObstaclePos])'''
+        obstacles.append([newObstacle, [0, -1000, 0, 0, 0]])
 
     #Iterate for each piece of debris
     for i in range(0, debris):
