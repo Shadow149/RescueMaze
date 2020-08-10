@@ -298,13 +298,17 @@ def createFileData (walls, obstacles, startPos):
             externals = checkForExternalWalls([x, z], walls)
             notchData = checkForNotch([x, z], walls)
             notch = ""
+            #Name to be given to the tile
+            tileName = "TILE"
+            if walls[z][x][4]:
+                tileName = "START_TILE"
             #Set notch string to correct value
             if notchData[0]:
                 notch = "left"
             if notchData[1]:
                 notch = "right"
             #Create a new tile with all the data
-            tile = protoTilePart.format(x, z, walls[z][x][0] and not walls[z][x][3], walls[z][x][1][0], walls[z][x][1][1], walls[z][x][1][2], walls[z][x][1][3], corners[0], corners[1], corners[2], corners[3], externals[0], externals[1], externals[2], externals[3], notch, notchData[2], walls[z][x][4], walls[z][x][3], walls[z][x][2], walls[z][x][5], width, height, tileId, tileScale[0], tileScale[1], tileScale[2])
+            tile = protoTilePart.format(tileName, x, z, walls[z][x][0] and not walls[z][x][3], walls[z][x][1][0], walls[z][x][1][1], walls[z][x][1][2], walls[z][x][1][3], corners[0], corners[1], corners[2], corners[3], externals[0], externals[1], externals[2], externals[3], notch, notchData[2], walls[z][x][4], walls[z][x][3], walls[z][x][2], walls[z][x][5], width, height, tileId, tileScale[0], tileScale[1], tileScale[2])
             tile = tile.replace("True", "TRUE")
             tile = tile.replace("False", "FALSE")
             allTiles = allTiles + tile
