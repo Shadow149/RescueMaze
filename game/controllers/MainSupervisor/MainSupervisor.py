@@ -723,26 +723,29 @@ while simulationRunning:
             else:
                 # If not in swamp, reset max velocity to default
                 robot0Obj.setMaxVelocity(DEFAULT_MAX_VELOCITY)
-
+                
     # If receiver has got a message
     if receiver.getQueueLength() > 0:
         # Get receiver data
         receivedData = receiver.getData()
-        # Unpack data
-        tup = struct.unpack('i i c', receivedData)
+        try:
+            # Unpack data
+            tup = struct.unpack('i i c', receivedData)
 
-        # Get data in format (est. x position, est. z position, est. victim type)
-        x = tup[0]
-        z = tup[1]
+            # Get data in format (est. x position, est. z position, est. victim type)
+            x = tup[0]
+            z = tup[1]
 
-        estimated_victim_position = (x / 100, 0, z / 100)
-        
-        victimType = tup[2].decode("utf-8")
+            estimated_victim_position = (x / 100, 0, z / 100)
+            
+            victimType = tup[2].decode("utf-8")
 
 
-        if robot0Obj.inSimulation:
-            # Store data recieved
-            robot0Obj.message = [estimated_victim_position, victimType]
+            if robot0Obj.inSimulation:
+                # Store data recieved
+                robot0Obj.message = [estimated_victim_position, victimType]
+        except:
+            print("Incorrect data format sent")
 
         receiver.nextPacket()
 

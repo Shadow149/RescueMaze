@@ -26,6 +26,7 @@ For example from `struct.pack('i i i c', data, data1, data2, data3)` to `struct.
 - Increased distance sensor range
 - Moved colour camera to a less obstructive position to avoid shadows
 - Moved starting tile to within the maze
+- Removed automatic object recognition from the camera
 
 ### Removed
 - Start 'bay' on outside of maze removed

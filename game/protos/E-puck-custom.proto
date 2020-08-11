@@ -852,9 +852,6 @@ Robot {
       noise IS camera_noise
       zoom Zoom {
       }
-      recognition Recognition {
-        occlusion TRUE
-	    }
     }
     DEF EPUCK_CAMERA_RIGHT Camera {
       name "camera_right"
@@ -899,9 +896,6 @@ Robot {
       noise IS camera_noise
       zoom Zoom {
       }
-      recognition Recognition {
-        occlusion TRUE
-	    }
     }
     DEF EPUCK_LED0 LED {
       translation 0 0.041 -0.0337
