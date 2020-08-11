@@ -291,7 +291,6 @@ class Tile():
 
     def checkPosition(self, pos: list) -> bool:
         '''Check if a position is in this checkpoint'''
-        print(pos)
         # If the x position is within the bounds
         if pos[0] >= self.min[0] and pos[0] <= self.max[0]:
             # if the z position is within the bounds
