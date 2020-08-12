@@ -28,6 +28,7 @@ For example from `struct.pack('i i i c', data, data1, data2, data3)` to `struct.
 - Moved starting tile to within the maze
 - Removed automatic object recognition from the camera
 - Heated victims are now only a point light. Removed white box.
+- Distance sensor values are now linear ranging from 0 to 16.3.
 
 ### Removed
 - Start 'bay' on outside of maze removed

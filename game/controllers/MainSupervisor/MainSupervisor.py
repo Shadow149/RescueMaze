@@ -821,6 +821,12 @@ while simulationRunning:
             robot0Obj.stopped = False
             robot0Obj.stoppedTime = None
 
+        if robot0Obj.position[1] < -0.035 and currentlyRunning:
+            relocate(robot0Obj)
+            robot0Obj.robot_timeStopped = 0
+            robot0Obj.stopped = False
+            robot0Obj.stoppedTime = None
+
     if currentlyRunning:
         # Check if robot has not left the starting tile
         if not robot0Obj.left_exit_tile:
@@ -828,6 +834,7 @@ while simulationRunning:
             if not robot0Obj.startingTile.checkPosition(robot0Obj.position):
                 robot0Obj.left_exit_tile = True
                 robot0Obj.startingTile.wb_node.getField("start").setSFBool(False)
+        
 
     # If the running state changes
     if previousRunState != currentlyRunning:
