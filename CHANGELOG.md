@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## Added
 - Quit button to remove robot from the simulation
 
-## [Release 4] - 2020-08-05
+## [Release 4] - 2020-08-13
 
 ### Added
 - Robots are now placed into the world by the supervisor
