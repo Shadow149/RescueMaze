@@ -18,13 +18,6 @@ PROTO HeatVictim [
 				rotation 0 0.707105 -0.707108 3.14159
 				name IS name
 				children [
-					Shape {
-						appearance Appearance {
-						}
-						geometry Box {
-							size 0.04 0.007 0.04
-						}
-					}
 					%{ if fields.found.value then }%
 						
 					%{ else }%       
@@ -32,6 +25,8 @@ PROTO HeatVictim [
 							attenuation 0 0 13
 							color 1 0 0
 							radius 10
+							intensity 0.5
+							castShadows TRUE
 						}
 					%{ end }%
 				]

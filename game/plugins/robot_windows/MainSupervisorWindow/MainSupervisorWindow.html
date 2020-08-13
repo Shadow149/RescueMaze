@@ -6,25 +6,35 @@
 		<br>
 		<table id="robotTable">
 		<tr>
-		<th class="halfRow">Robot 0
+		<th class="halfRow">
 		<p id="robot0Name">None</p>
 		<input type="file" class="hidden" accept=".py" onchange="fileOpened('0')" id="robot0File" />
 		<button class="button buttonLoad" onclick="openLoadController('0')" style="display:inline-block;" id="load0">Load<br>Controller</button>
 		<button class="button buttonUnload" onclick="unloadPressed('0')" style="display:none;" id="unload0">Remove<br>Controller</button></th>
-		<th class="halfRow">Robot 1
+		</th>
+		</tr>
+		<!-- <th class="halfRow">Robot 1
 		<p id="robot1Name">None</p>
 		<input type="file" class="hidden" accept=".py" onchange="fileOpened('1')" id="robot1File" />
 		<button class="button buttonLoad" onclick="openLoadController('1')" style="display:inline-block;" id="load1">Load<br>Controller</button>
-		<button class="button buttonUnload" onclick="unloadPressed('1')" style="display:none;" id="unload1">Remove<br>Controller</button></th>
-		</tr>
+		<button class="button buttonUnload" onclick="unloadPressed('1')" style="display:none;" id="unload1">Remove<br>Controller</button></th> -->
+	</tr>
 		<tr>
 			<th class="halfRow">
-				<button class="button buttonRelocate" onclick="relocate('0')" style="display:inline-block;" id="load0">Relocate</button>
+				<button class="button buttonRelocate" onclick="relocate('0')" style="display:inline-block;" id="relocate0">Relocate</button>
+			</th>
+			<!-- <th class="halfRow">
+				<button class="button buttonRelocate" onclick="relocate('1')" style="display:inline-block;" id="relocate1">Relocate</button>
+			</th> -->
+		</tr>
+		<!-- <tr>
+			<th class="halfRow">
+				<button class="button buttonQuit" onclick="quit('0')" style="display:inline-block;" id="quit0">Quit</button>
 			</th>
 			<th class="halfRow">
-				<button class="button buttonRelocate" onclick="relocate('1')" style="display:inline-block;" id="load1">Relocate</button>
+				<button class="button buttonQuit" onclick="quit('1')" style="display:inline-block;" id="quit1">Quit</button>
 			</th>
-		</tr>
+		</tr> -->
 		</table>
 		<br>
 	</div>
@@ -70,7 +80,7 @@
 		
 		<tr>
 		<th class="halfRow score"><p id="score0">0</th>
-		<th class="halfRow score"><p id="score1">0</th>
+		<!-- <th class="halfRow score"><p id="score1">0</th> -->
 		</tr>
 		</table>
 	</div>

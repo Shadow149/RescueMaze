@@ -141,12 +141,18 @@ class GenerateWindow(tk.Tk):
         self.basicSection.grid_rowconfigure(0, minsize=670)
 
         #List of default difficulty values
-        self.difficulties = [[[5, 5], [4, 3], [0, 0], [2, 1, 1]],
-                             [[6, 5], [6, 4], [1, 0], [2, 1, 1]],
-                             [[7, 7], [7, 5], [2, 0], [2, 2, 2]],
-                             [[9, 7], [8, 5], [2, 0], [3, 2, 3]],
-                             [[11, 9], [9, 6], [3, 0], [3, 3, 3]],
-                             [[15, 15], [12, 8], [4, 0], [4, 3, 4]]]
+        '''self.difficulties = [[[5, 5], [4, 7], [0, 0], [2, 1, 1]],
+                             [[6, 5], [5, 8], [1, 0], [2, 1, 1]],
+                             [[7, 7], [7, 10], [2, 0], [2, 2, 2]],
+                             [[9, 7], [8, 12], [2, 0], [3, 2, 3]],
+                             [[11, 9], [8, 17], [3, 0], [3, 3, 3]],
+                             [[15, 15], [10, 20], [4, 0], [4, 3, 4]]]'''
+        self.difficulties = [[[5, 5], [4, 7], [0, 0], [2, 1, 1]],
+                             [[6, 5], [5, 8], [0, 0], [2, 1, 1]],
+                             [[7, 7], [7, 10], [0, 0], [2, 2, 2]],
+                             [[9, 7], [8, 12], [0, 0], [3, 2, 3]],
+                             [[11, 9], [8, 17], [0, 0], [3, 3, 3]],
+                             [[15, 15], [10, 20], [0, 0], [4, 3, 4]]]
 
         #Setup the grid for the advanced page
         self.advancedSection.grid_columnconfigure(0, minsize=275)
@@ -174,7 +180,7 @@ class GenerateWindow(tk.Tk):
 
         #Add input sliders for rooms, humans, obstacles and bases
         self.inputsArray.append(self.createSliderSection(self.advRoom, 5, 15, "Rooms", "Vertical:", 5, 15, "Horizontal:"))
-        self.inputsArray.append(self.createSliderSection(self.advHumans, 0, 20, "Humans", "Visual:", 0, 20, "Thermal:"))
+        self.inputsArray.append(self.createSliderSection(self.advHumans, 0, 25, "Humans", "Visual:", 0, 25, "Thermal:"))
         self.inputsArray.append(self.createSliderSection(self.advObstacles, 0, 10, "Obstacles", "Debris:", 0, 20, "Bulky:"))
         self.inputsArray.append(self.createSliderSection(self.advTiles, 2, 4, "Tiles", "Traps:", 0, 4, "Checkpoints:", "Swamps:", 0, 6))
         

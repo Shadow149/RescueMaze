@@ -1,5 +1,6 @@
 		DEF OBSTACLE{0} Solid {{
-            translation 0 -1000 0
+            translation {4} {5} {6}
+			rotation 0 1 0 {7}
             children [
                 Shape {{
                     appearance Appearance {{

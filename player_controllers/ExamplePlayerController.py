@@ -56,7 +56,7 @@ class Player (Robot):
         self.loadedActivityColour = [0,0,0]
         
         #config camera
-        self.camera = self.getCamera('camera')
+        self.camera = self.getCamera('camera_left')
         self.camera.enable(self.timeStep)
         self.camera.recognitionEnable(self.timeStep)
 
@@ -165,7 +165,7 @@ class Player (Robot):
     def nearObject(self, objPos: list):
         '''Return true if relative object is < 0.5 metres away'''
         #TODO make 0.5 a constant that can change
-        return abs(objPos[0]) < 0.08 and abs(objPos[2]) < 0.08
+        return abs(objPos[0]) < 0.02 and abs(objPos[2]) < 0.02
     
     def findClosestObject(self, objects: list):
         '''Find closest detected object using relative object position values'''
@@ -341,7 +341,7 @@ class Player (Robot):
         #for all sensors (greater value means obstical is closer)
         for i in range(2):
             #For sensors of the left
-            #print(self.leftSensors[i].getValue())
+            #print(self.leftSensors[0].getValue())
             if self.leftSensors[i].getValue() > 80:
                 self.mode = TURN_RIGHT
             #For sensors of the right
@@ -428,13 +428,13 @@ class Player (Robot):
             #print(int(position[0]*100),  int(position[2]*100))
 
             if not self.messageSent:
-                message = struct.pack('i i i c', 0, int(position[0]*100),  int(position[2]*100), b'H')
+                message = struct.pack('i i c', int(position[0]*100),  int(position[2]*100), b'H')
                 self.emitter.send(message)
                 self.messageSent = True
             
             #If time passed is greater than 3.5 seconds (to account for how long the robot takes to become still)
             #TODO use velocity to start timer
-            if currentTime - self.timerStartTime > 7.5:
+            if currentTime - self.timerStartTime > 3.5:
                 #Robot has picked up human
                 #Once time has passed, reset everything
                 self.timerStartTime = 0
