@@ -724,7 +724,7 @@ Robot {
       type "infra-red"
     }
     DistanceSensor {
-      translation 0.0202899 0.04 0.0197056
+      translation 0.0254159 0.04 0.0282919
       rotation 0 -1 0 1.03259
       name "ps3"
       lookupTable [
@@ -734,7 +734,7 @@ Robot {
       type "infra-red"
     }
     DistanceSensor {
-      translation -0.0197058 0.04 0.02029
+      translation -0.0245787 0.04 0.0290224
       rotation 0 1 0 -2.079785307179586
       name "ps4"
       lookupTable [
@@ -744,7 +744,7 @@ Robot {
       type "infra-red"
     }
     DistanceSensor {
-      translation -0.0301427 0.04 -0.00956054
+      translation -0.0401416 0.04 -0.00941437
       rotation 0 1 0 -3.126975307179586
       name "ps5"
       lookupTable [
