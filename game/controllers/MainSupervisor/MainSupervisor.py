@@ -584,7 +584,6 @@ def set_robot_start_pos():
     robot0Obj.visitedCheckpoints.append(startingTileObj.center)
 
     robot0Obj.position = [startingTileObj.center[0], startingTileObj.center[1], startingTileObj.center[2]]
-    print("set pos")
 
 # -------------------------------
 # CODED LOADED BEFORE GAME STARTS
@@ -668,30 +667,30 @@ while simulationRunning:
         robot0.restartController()
         first = False
 
-    # # Test if the robots are in checkpoints
-    # for checkpoint in checkpoints:
-    #     if robot0Obj.inSimulation:
-    #         # Check position of checkpoint with the robots position
-    #         if checkpoint.checkPosition(robot0Obj.position):
-    #             r0 = True
-    #             # Update the robot's last visited position 
-    #             robot0Obj.lastVisitedCheckPointPosition = checkpoint.center
+    # Test if the robots are in checkpoints
+    for checkpoint in checkpoints:
+        if robot0Obj.inSimulation:
+            # Check position of checkpoint with the robots position
+            if checkpoint.checkPosition(robot0Obj.position):
+                r0 = True
+                # Update the robot's last visited position 
+                robot0Obj.lastVisitedCheckPointPosition = checkpoint.center
 
-    #             alreadyVisited = False
+                alreadyVisited = False
 
-    #             # Dont update if checkpoint is already visited
-    #             # TODO could change this to edit webots node to reduce compute time
-    #             if len(robot0Obj.visitedCheckpoints) > 0:
-    #                 for visitedCheckpoint in robot0Obj.visitedCheckpoints:
-    #                     if visitedCheckpoint == checkpoint.center:
-    #                         alreadyVisited = True
+                # Dont update if checkpoint is already visited
+                # TODO could change this to edit webots node to reduce compute time
+                if len(robot0Obj.visitedCheckpoints) > 0:
+                    for visitedCheckpoint in robot0Obj.visitedCheckpoints:
+                        if visitedCheckpoint == checkpoint.center:
+                            alreadyVisited = True
 
-    #             # Update robot's points and history
-    #             if not alreadyVisited:
-    #                 robot0Obj.visitedCheckpoints.append(checkpoint.center)
-    #                 robot0Obj.increaseScore(10)
-    #                 robot0Obj.history.enqueue("Found checkpoint  +10")
-    #                 updateHistory()
+                # Update robot's points and history
+                if not alreadyVisited:
+                    robot0Obj.visitedCheckpoints.append(checkpoint.center)
+                    robot0Obj.increaseScore(10)
+                    robot0Obj.history.enqueue("Found checkpoint  +10")
+                    updateHistory()
 
     # Print when robot0 enters or exits a checkpoint
     # Not really needed
@@ -703,11 +702,11 @@ while simulationRunning:
             else:
                 print("Robot 0 exited a checkpoint")
 
-    # # Check if the robots are in swamps
-    # for swamp in swamps:
-    #     if robot0Obj.inSimulation:
-    #         if swamp.checkPosition(robot0Obj.position):
-    #             r0s = True
+    # Check if the robots are in swamps
+    for swamp in swamps:
+        if robot0Obj.inSimulation:
+            if swamp.checkPosition(robot0Obj.position):
+                r0s = True
 
     # Check if robot is in swamp
     if robot0Obj.inSimulation:
