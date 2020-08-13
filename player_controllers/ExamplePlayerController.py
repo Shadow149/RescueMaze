@@ -1,519 +1,270 @@
+'''
+Sample code that can collect heated victims and detect visual victims.
+Please note this code doesn't detect when the victim changes to collected so stays stopped forever after collecting a victim.
+'''
+
 from controller import Robot
-import time
 import math
 import struct
+import cv2
+import numpy as np
 
-"""
-Example erebus robot controller
-Written by Alfred Roberts - 2020
+trap_colour = b'\n\n\n\xff'
+swamp_colour = b'\x12\x1b \xff'
+exit_colour = b'\x10\xb8\x10\xff'
 
-PLEASE NOTE THIS IS A WIP AND CURRENTLY ISN'T FULLY FINISHED AND DOESN'T WORK PROPERLY
-"""
+timeStep = 32
+max_velocity = 6.28
 
-#RobotName:Aura
+sensor_value = 0.07
 
-MOVE_FORWARD = "MOVE_FORWARD"
-MOVE_BACKWARDS = "MOVE_BACKWARDS"
-TURN_LEFT = "TURN_LEFT"
-TURN_RIGHT = "TURN_RIGHT"
-TURN_LEFT_OBJECT = "TURN_LEFT_OBJECT"
-TURN_RIGHT_OBJECT = "TURN_RIGHT_OBJECT"
-STOP = "STOP"
-EXIT = "EXIT"
+messageSent = False
 
-class Player (Robot):
+startTime = 0
+duration = 0
 
-    def boundSpeed(self, speed):
-        return max(-self.maxSpeed, min(self.maxSpeed, speed))
+robot = Robot()
 
-    def __init__(self):
-        super(Player, self).__init__()
-        
-        #set constants
-        self.timeStep = 32
-        self.maxSpeed = 6.28
-        
-        self.mode = MOVE_FORWARD
-        self.wheels = []
-        self.distanceSensors = []
-        self.leftSensors = []
-        self.rightSensors = []
-        self.frontSensors = []
-        
-        self.speeds = [0.0,0.0]
+wheel_left = robot.getMotor("left wheel motor")
+wheel_right = robot.getMotor("right wheel motor")
 
-        self.emitter = self.getEmitter('emitter')
-        self.gps = self.getGPS('gps')
-        self.gps.enable(self.timeStep)
-        
-        self.messageSent = False
-        self.humanLoaded = False
-        self.activityLoaded = False
-        self.collecting = False
-        self.collectingActivity = False
-        self.depositing = False
-        self.timerStartTime = 0
-        self.loadedActivityColour = [0,0,0]
-        
-        #config camera
-        self.camera = self.getCamera('camera_left')
-        self.camera.enable(self.timeStep)
-        self.camera.recognitionEnable(self.timeStep)
+camera = robot.getCamera("camera_left")
+camera.enable(timeStep)
 
-        self.ground_camera = self.getCamera('colour_sensor')
-        self.ground_camera.enable(self.timeStep)
-        
-        #config wheels
-        self.wheels.append(self.getMotor("left wheel motor"))
-        self.wheels.append(self.getMotor("right wheel motor"))
-        
-        #move forever
-        self.wheels[0].setPosition(float("inf"))
-        self.wheels[1].setPosition(float("inf"))
-        
-        #config sensors
-        
-        self.frontSensors.append(self.getDistanceSensor('ps7'))
-        self.frontSensors[0].enable(self.timeStep)
-        
-        self.frontSensors.append(self.getDistanceSensor('ps0'))
-        self.frontSensors[1].enable(self.timeStep)
+colour_camera = robot.getCamera("colour_sensor")
+colour_camera.enable(timeStep)
 
-        self.leftSensors.append(self.getDistanceSensor('ps5'))
-        self.leftSensors[0].enable(self.timeStep)
-        
-        self.leftSensors.append(self.getDistanceSensor('ps7'))
-        self.leftSensors[1].enable(self.timeStep)
+emitter = robot.getEmitter("emitter")
 
-        self.rightSensors.append(self.getDistanceSensor('ps1'))
-        self.rightSensors[0].enable(self.timeStep)
-        
-        self.rightSensors.append(self.getDistanceSensor('ps2'))
-        self.rightSensors[1].enable(self.timeStep)
-        
-        #idk
-        self.wheels[0].setVelocity(0.0)
-        self.wheels[1].setVelocity(0.0)
+gps = robot.getGPS("gps")
+gps.enable(timeStep)
 
-        self.simulationStartTime = self.getTime()
+left_heat_sensor = robot.getLightSensor("left_heat_sensor")
+right_heat_sensor = robot.getLightSensor("right_heat_sensor")
+
+left_heat_sensor.enable(timeStep)
+right_heat_sensor.enable(timeStep)
+
+leftSensors = []
+rightSensors = []
+frontSensors = []
+
+frontSensors.append(robot.getDistanceSensor("ps7"))
+frontSensors[0].enable(timeStep)
+frontSensors.append(robot.getDistanceSensor("ps0"))
+frontSensors[1].enable(timeStep)
+
+rightSensors.append(robot.getDistanceSensor("ps1"))
+rightSensors[0].enable(timeStep)
+rightSensors.append(robot.getDistanceSensor("ps2"))
+rightSensors[1].enable(timeStep)
+
+leftSensors.append(robot.getDistanceSensor("ps5"))
+leftSensors[0].enable(timeStep)
+leftSensors.append(robot.getDistanceSensor("ps6"))
+leftSensors[1].enable(timeStep)
+
+#        [left wheel speed, right wheel speed]
+speeds = [max_velocity,max_velocity]
+
+wheel_left.setPosition(float("inf"))
+wheel_right.setPosition(float("inf"))
+
+program_start = robot.getTime()
+
+victim_detection_time = 0
+
+def process(image_data, camera):
+    coords_list = []
+    img = np.array(np.frombuffer(image_data, np.uint8).reshape((camera.getHeight(), camera.getWidth(), 4)))
+    img[:,:,2] = np.zeros([img.shape[0], img.shape[1]])
+
+
+    #convert from BGR to HSV color space
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    #apply threshold
+    thresh = cv2.threshold(gray, 140, 255, cv2.THRESH_BINARY)[1]
+
+    # draw all contours in green and accepted ones in red
+    contours, h = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     
-    def getDetectedObjects(self):
-        '''Get detected objects from camera'''
-        objects = self.camera.getRecognitionObjects()
-        return objects
+    for c in contours:
+        coords = list(c[0][0])
+        coords_list.append(coords)
+        print("Victim at x="+str(coords[0])+" y="+str(coords[1]))
     
-    def getBaseObjects(self):
-        '''Get base objects from detected objects'''
-        #get objects
-        objects = self.getDetectedObjects()
-        
-        bases = []
-        
-        #for all objects in detected objects
-        for item in objects:
-            #if its the colour of the base recongition colour
-            if item.get_colors() == [0.3,0,1]:
-                #get its position relative to robot
-                deposit_pos = item.get_position()
-                #get its position in the image
-                deposit_image_pos = item.get_position_on_image()
-                #append to array as [relative [x,y,z] position, position on camera view]
-                bases.append([deposit_pos,deposit_image_pos])
-        
-        return bases
+    return coords_list
+
+def sendMessage(robot_type, v1, v2):
+    message = struct.pack('i i c', robot_type, v1, v2)
+    emitter.send(message)
+
+def sendVictimMessage():
+    global messageSent
+    position = gps.getValues()
+
+    if not messageSent:
+        #robot type, position x cm, position z cm, victim type
+        sendMessage(int(position[0] * 100), int(position[2] * 100), b'H')
+        messageSent = True
+
+
+def nearObject(position):
+    return position < 0.05
+
+def getVisibleVictims():
+    victims= []
+    img = camera.getImage()
+    coords = process(img, camera)
+
+    distance_to_wall = frontSensors[1].getValue()
+
+    for coord in coords:
+        victims.append([distance_to_wall,coord])
+
+    return victims
+
+def stopAtHeatedVictim():
+    global messageSent
+    print(left_heat_sensor.getValue(),right_heat_sensor.getValue())
     
-    def getHumanObjects(self):
-        '''Get human objects from detected objects'''
-        objects = self.getDetectedObjects()
-        
-        humans = []
-        
-        #for all objects in detected objects
-        for item in objects:
-            #if its the colour of the human recongition colour
-            if item.get_colors() == [1,1,1]:
-                #get its position relative to robot
-                human_pos = item.get_position()
-                #get its position in the image
-                human_image_pos = item.get_position_on_image()
-                #append to array as [relative [x,y,z] position, position on camera view]
-                humans.append([human_pos,human_image_pos])
-        
-        return humans
-    
-    def getWallObjects(self):
-        '''Get human objects from detected objects'''
-        objects = self.getDetectedObjects()
-        
-        walls = []
-        
-        #for all objects in detected objects
-        for item in objects:
-            #if its the colour of the wall recongition colour
-            if item.get_colors() == [0.33,0.33,0.33]:
-                #get its position relative to robot
-                wall_pos = item.get_position()
-                #get its position in the image
-                wall_image_pos = item.get_position_on_image()
-                #get its size in the image in pixels
-                wall_image_size = item.get_size_on_image()
-                #append to array as [relative [x,y,z] position, position on camera view, size on camera]
-                walls.append([wall_pos,wall_image_pos, wall_image_size])
-        
-        return walls
+    if left_heat_sensor.getValue() > 37 or right_heat_sensor.getValue() > 37:
+        stop()
+        sendVictimMessage()
+    else:
+        messageSent = False
 
-    def nearObject(self, objPos: list):
-        '''Return true if relative object is < 0.5 metres away'''
-        #TODO make 0.5 a constant that can change
-        return abs(objPos[0]) < 0.02 and abs(objPos[2]) < 0.02
-    
-    def findClosestObject(self, objects: list):
-        '''Find closest detected object using relative object position values'''
-        minDist = 999
-        closestObjectIndex = 999
-        
-        for i, obj in enumerate(objects):
-            objectPos = obj[0]
-            dist = math.sqrt(abs(objectPos[0]) + abs(objectPos[1]))
-            if dist < minDist:
-                minDist = dist
-                closestObjectIndex = i
-        
-        return closestObjectIndex
-    
-    def moveToHuman(self):
-        '''Get movement mode to move robot towards human using human position on image'''
-        
-        #Get human objects
-        humans = self.getHumanObjects()
-        #Get camera width
-        width = self.camera.getWidth()
-        
-        center = width / 2
-        
-        if len(humans) > 0:
-            #Find closest human as an index
-            closestHumanIndex = self.findClosestObject(humans)
-            #Get human position in image
-            humanImagePos = humans[closestHumanIndex][1][0]
-            
-            #Find the difference in x values between centre of camera and human image position
-            dx = center - humanImagePos
+def turnToVictim(victim):
+    # [x,y]
+    position_on_image = victim[1]
 
-            #print('doing things')
-            
-            if dx < 0:
-                # Human on the right
-                self.mode = TURN_RIGHT_OBJECT
-            else:
-                # Human on the left
-                self.mode = TURN_LEFT_OBJECT
-                
-    def moveToBase(self):
-        #Get base objects
-        base = self.getBaseObjects()
-        #Get camera width
-        width = self.camera.getWidth()
-        
-        center = width / 2
-        
-        if len(base) > 0:
-            #Find closest base as an index
-            closestBaseIndex = self.findClosestObject(base)
-            #Get base position in image
-            baseImagePos = base[closestBaseIndex][1][0]
-            
-            #Find the difference in x values between centre of camera and base image position
-            dx = center - baseImagePos
-            
-            if dx < 0:
-                # Base on the right
-                self.mode = TURN_RIGHT_OBJECT
-            else:
-                # Base on the left
-                self.mode = TURN_LEFT_OBJECT
-                    
-    def moveToDoorWay(self):
-        '''Get movement mode to move robot towards human using human position on image'''
-        
-        #Get human objects
-        walls = self.getWallObjects()
-        #Get camera width
-        width = self.camera.getWidth()
-        
-        center = width / 2
-        
-        if len(walls) > 1:
-            
-            wall1 = max(walls, key=lambda item: item[2])
-            walls.remove(wall1)
-            wall2 = max(walls, key=lambda item: item[2])
-            
-            print('wall1',wall1)
-            print('wall2',wall2)
+    width = camera.getWidth()
+    center = width / 2
 
-            doorWayCenter = (wall1[1][0] + wall2[1][0]) / 2
-            
-            #Find the difference in x values between centre of camera and human image position
-            dx = center - doorWayCenter
-            
-            if dx < 0:
-                # Human on the right
-                self.mode = TURN_RIGHT_OBJECT
-            else:
-                # Human on the left
-                self.mode = TURN_LEFT_OBJECT
+    victim_x_position = position_on_image[0]
+    dx = center - victim_x_position
 
-    def getActivityBlocks(self):
-        '''Get human objects from detected objects'''
-        objects = self.getDetectedObjects()
-        
-        blocks = []
-        
-        #for all objects in detected objects
-        for item in objects:
-            #if its the colour of the wall recongition colour
-            if item.get_colors() != [0.33,0.33,0.33] and item.get_colors() != [0.3,0,1]:
-                
-                colour_validate = [i % 1 for i in item.get_colors()]
+    if dx < 0:
+        turn_right_to_victim()
+    else:
+        turn_left_to_victim()
 
-                print('Validation:',item.get_colors(),colour_validate)
 
-                if colour_validate == [0,0,0]:
-                    block_pos = item.get_position()
+def getClosestVictim(victims):
+    shortestDistance = 999
+    closestVictim = []
 
-                    block_image_pos = item.get_position_on_image()
+    for victim in victims:
+        dist = victim[0]
+        if dist < shortestDistance:
+            shortestDistance = dist
+            closestVictim = victim
 
-                    block_image_size = item.get_size_on_image()
-                    
-                    block_colour = item.get_colors()
+    return closestVictim
 
-                    blocks.append([block_pos,block_image_pos,block_image_size,block_colour])
-        
-        return blocks    
+def stopAtVictim():
+    global messageSent
+    #get all the victims the camera can see
+    victims = getVisibleVictims()
 
-    def moveToActivity(self):
-        #Get activity block objects
-        blocks = self.getActivityBlocks()
-        #Get camera width
-        width = self.camera.getWidth()
+    foundVictim = False
 
-        activityColour = [0,0,0]
-        
-        center = width / 2
-        
-        if len(blocks) > 0:
-            #Find closest activity block as an index
-            closestActivityIndex = self.findClosestObject(blocks)
-            #Get activity position in image
-            activityImagePos = blocks[closestActivityIndex][1][0]
+    if len(victims) != 0:
+        closest_victim = getClosestVictim(victims)
+        turnToVictim(closest_victim)
 
-            activityColour = blocks[closestActivityIndex][3]
-            
-            #Find the difference in x values between centre of camera and activity block image position
-            dx = center - activityImagePos
-            
-            if dx < 0:
-                # Base on the right
-                self.mode = TURN_RIGHT_OBJECT
-            else:
-                # Base on the left
-                self.mode = TURN_LEFT_OBJECT
-        
-        print('Colour',activityColour)
-        return activityColour
-    
-    def update(self):
-        '''Update robot movement mode'''
-        
-        #Set mode to forward incase nothing else passes in the function
-        self.mode = MOVE_FORWARD
+    #if we are near a victim, stop and send a message to the supervisor
+    for victim in victims:
+        if nearObject(victim[0]) and not foundVictim:
+            stop()
+            sendVictimMessage()
+            foundVictim = True
 
-        activityHeading = [0,0,0]
+    if not foundVictim:
+        messageSent = False
 
-        #self.moveToDoorWay()
-        
-        #If a human is loaded and not collecting or depositing
-        #if self.humanLoaded and not self.collecting and not self.depositing:
-            #Move to base
-        #    self.moveToBase()
-            
-        #for all sensors (greater value means obstical is closer)
+def avoidTiles():
+    global duration, startTime
+    colour = colour_camera.getImage()
+
+    if colour == trap_colour or colour == swamp_colour:
+        move_backwards()
+        startTime = robot.getTime()
+        duration = 2
+
+def turn_right_to_victim():
+    #set left wheel speed
+    speeds[0] = 1 * max_velocity
+    #set right wheel speed
+    speeds[1] = 0.8 * max_velocity
+
+def turn_left_to_victim():
+    #set left wheel speed
+    speeds[0] = 0.8 * max_velocity
+    #set right wheel speed
+    speeds[1] = 1 * max_velocity
+
+def move_backwards():
+    #set left wheel speed
+    speeds[0] = -0.5 * max_velocity
+    #set right wheel speed
+    speeds[1] = -0.7 * max_velocity
+
+def stop():
+    #set left wheel speed
+    speeds[0] = 0
+    #set right wheel speed
+    speeds[1] = 0
+
+def turn_right():
+    #set left wheel speed
+    speeds[0] = 0.6 * max_velocity
+    #set right wheel speed
+    speeds[1] = -0.2 * max_velocity
+
+def turn_left():
+    #set left wheel speed
+    speeds[0] = -0.2 * max_velocity
+    #set right wheel speed
+    speeds[1] = 0.6 * max_velocity
+
+def spin():
+    #set left wheel speed
+    speeds[0] = 0.6 * max_velocity
+    #set right wheel speed
+    speeds[1] = -0.6 * max_velocity
+
+while robot.step(timeStep) != -1:
+    if (robot.getTime() - startTime) < duration:
+        pass
+    else:
+        startTime = 0
+        duration = 0
+
+        speeds[0] = max_velocity
+        speeds[1] = max_velocity
+
         for i in range(2):
-            #For sensors of the left
-            #print(self.leftSensors[0].getValue())
-            if self.leftSensors[i].getValue() > 80:
-                self.mode = TURN_RIGHT
-            #For sensors of the right
-            elif self.rightSensors[1-i].getValue() > 80:
-                self.mode = TURN_LEFT
-                
-        #for i in range(2):
-            #For front two sensors
-        #    if self.frontSensors[i].getValue() > 80:
-        #        self.mode = MOVE_BACKWARDS
+            #for sensors on the left, either
+            if leftSensors[i].getValue() < sensor_value:
+                turn_right()
+            #for sensors on the right, either
+            elif rightSensors[i].getValue() < sensor_value:
+                turn_left()
         
-        #If no human is loaded and not collecting or depositing
-        if not self.humanLoaded and not self.collecting and not self.depositing:
-            #Move to human
-            self.moveToHuman()
+        #for both front sensors
+        if frontSensors[0].getValue() < sensor_value and frontSensors[1].getValue() < sensor_value:
+            spin()
 
-        #if not self.activityLoaded and not self.collectingActivity and not self.depositing and not self.collecting:
-        #    activityHeading = self.moveToActivity()
-        
-        
-        
-        #Get base and human objects
-        bases = self.getBaseObjects()
-        humans = self.getHumanObjects()
-        #activities = self.getActivityBlocks()
-        #print('activities',activities)
-                
-        
-        #For all bases detected by camera
-        for base in bases:
-            #If near base and human loaded and not already depositing
-            if self.nearObject(base[0]) and self.humanLoaded and not self.depositing:
-                self.mode = STOP
-                self.depositing = True
-                #Get start time for deposit so it can be used for calculating how long its been depositing for.
-                self.timerStartTime = self.getTime()
-                break
-        
-        #For all humans detected by camera
-        #TODO move humanloaded to after time is up
-        for human in humans:
-            #If near human and human is not loaded and not already collecting
-            if self.nearObject(human[0]) and not self.humanLoaded and not self.collecting:
-                self.collecting = True
-                self.mode = STOP
-                #self.humanLoaded = True
-                #Get start time for picking up human so it can used for calculating how long its been picking up for.
-                self.timerStartTime = self.getTime()
-                break
+        stopAtVictim()
+        stopAtHeatedVictim()
 
-        # for block in activities:
-        #     #If near activity block and activity is not loaded and not already collecting
-        #     if self.nearObject(block[0]) and not self.activityLoaded and not self.collectingActivity and not self.collecting:
-        #         self.collectingActivity = True
-        #         self.mode = STOP
-        #         self.activityLoaded = True
-        #         #Get start time for picking up human so it can used for calculating how long its been picking up for.
-        #         self.timerStartTime = self.getTime()
-        #         break
-            
-        # if self.depositing:
-        #     self.mode = STOP
-        #     #Get current time
-        #     currentTime = self.getTime()
-            
-        #     #If time passed is greater than 3.5 seconds (to account for how long the robot takes to become still)
-        #     #TODO use velocity to start timer
-        #     if currentTime - self.timerStartTime > 3.5:
-        #         #Robot has deposited
-        #         #Once time has passed, reset everything
-        #         self.timerStartTime = 0
-        #         self.mode = MOVE_FORWARD
-        #         self.depositing = False
-        #         self.humanLoaded = False
-        
-        #if collecting a human        
-        if self.collecting:
-            self.mode = STOP
-            #Get current time
-            currentTime = self.getTime()
+        avoidTiles()
 
-            position = self.gps.getValues()
+        if (robot.getTime() - program_start) > 20:
+            if colour_camera.getImage() == exit_colour:
+                sendMessage(0,0,0,b'E')
 
-            #print(int(position[0]*100),  int(position[2]*100))
-
-            if not self.messageSent:
-                message = struct.pack('i i c', int(position[0]*100),  int(position[2]*100), b'H')
-                self.emitter.send(message)
-                self.messageSent = True
-            
-            #If time passed is greater than 3.5 seconds (to account for how long the robot takes to become still)
-            #TODO use velocity to start timer
-            if currentTime - self.timerStartTime > 3.5:
-                #Robot has picked up human
-                #Once time has passed, reset everything
-                self.timerStartTime = 0
-                self.mode = MOVE_FORWARD
-                self.collecting = False
-                self.messageSent = False
-
-
-        if self.ground_camera.getImage() == b'\x10\xb8\x10\xff' and self.getTime() - self.simulationStartTime > 120:
-            self.mode = EXIT
-        # elif self.collectingActivity:
-        #     self.mode = STOP
-        #     #Get current time
-        #     currentTime = self.getTime()
-            
-        #     #If time passed is greater than 3.5 seconds (to account for how long the robot takes to become still)
-        #     #TODO use velocity to start timer
-        #     if currentTime - self.timerStartTime > 3.5:
-        #         #Robot has picked up human
-        #         #Once time has passed, reset everything
-        #         self.timerStartTime = 0
-        #         self.mode = MOVE_FORWARD
-        #         self.collectingActivity = False
-        #         self.loadedActivityColour = activityHeading
-        
-        
-      
-    def run(self):
-        while True:             
-            self.update()
-            # Send actuators commands according to the mode
-            if self.mode == MOVE_FORWARD:
-                self.speeds[0] = 1 * self.maxSpeed
-                self.speeds[1] = 1 * self.maxSpeed
-            elif self.mode == MOVE_BACKWARDS:
-                self.speeds[0] = -0.5 * self.maxSpeed
-                self.speeds[1] = -1 * self.maxSpeed
-            elif self.mode == TURN_RIGHT:
-                #set left wheel speed
-                self.speeds[0] = 0.6 * self.maxSpeed
-                #set right wheel speed
-                self.speeds[1] = -0.2 * self.maxSpeed
-            elif self.mode == TURN_LEFT:
-                #set left wheel speed
-                self.speeds[0] = -0.2 * self.maxSpeed
-                #set right wheel speed
-                self.speeds[1] = 0.6 * self.maxSpeed
-                
-            elif self.mode == TURN_RIGHT_OBJECT:
-                #set left wheel speed
-                self.speeds[0] = 1 * self.maxSpeed
-                #set right wheel speed
-                self.speeds[1] = 0.8 * self.maxSpeed
-                
-            elif self.mode == TURN_LEFT_OBJECT:
-                #set left wheel speed
-                self.speeds[0] = 0.8 * self.maxSpeed
-                #set right wheel speed
-                self.speeds[1] = 1 * self.maxSpeed
-                
-            elif self.mode == STOP:
-                self.speeds[0] = 0
-                self.speeds[1] = 0
-
-            elif self.mode == EXIT:
-                message = struct.pack('i i i c', 0, 0, 0, b'E')
-                self.emitter.send(message)
-                
-                
-            self.wheels[0].setVelocity(self.speeds[0])
-            self.wheels[1].setVelocity(self.speeds[1])
-
-            # Perform a simulation step, quit the loop when
-            # Webots is about to quit.
-            if self.step(self.timeStep) == -1:
-                break
-
-            #print(self.ground_camera.getImage())
-
-
-controller = Player()
-controller.run()
+        wheel_left.setVelocity(speeds[0])
+        wheel_right.setVelocity(speeds[1])
+    

@@ -667,7 +667,7 @@ Robot {
     GPS {
     }
     LightSensor {
-      translation -0.03 0 0
+      translation -0.03 0.03 0
       rotation 0 1 0 3.14
       name "left_heat_sensor"
       lookupTable [
@@ -681,7 +681,7 @@ Robot {
       occlusion TRUE
     }
     LightSensor {
-      translation 0.03 0 0
+      translation 0.03 0.03 0
       name "right_heat_sensor"
       lookupTable [
         0 21 0

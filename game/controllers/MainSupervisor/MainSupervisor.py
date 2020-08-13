@@ -186,7 +186,7 @@ class Human():
 
         self.arrayPosition = ap
         self.scoreWorth = score
-        self.radius = 0.06
+        self.radius = 0.09
         self._victim_type = vtype
 
         self.simple_victim_type = self.get_simple_victim_type()
