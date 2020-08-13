@@ -11,7 +11,7 @@ RescueMaze is a rescue simulation competition environment designed for semi-expe
 
 ## [Changelog](https://github.com/Shadow149/RescueMaze/blob/master/CHANGELOG.md)
 
-### [Release 4] - 2020-08-05
+### [Release 4] - 2020-08-13
 
 #### Added
 - Robots are now placed into the world by the supervisor
