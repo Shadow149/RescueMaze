@@ -5,8 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
-## Added
+### Added
 - Quit button to remove robot from the simulation
+
+## [Release 5] - 2020-08-13
+
+### Fixed
+- Fixed bug with specific distance sensors only reading 0
+- Fixed bug where heat sensors weren't reading correct values
 
 ## [Release 4] - 2020-08-13
 
@@ -40,6 +46,7 @@ For example from `struct.pack('i i i c', data, data1, data2, data3)` to `struct.
 - Attempting to relocate with no robot no longer causes a crash
 
 [Unreleased]: https://github.com/Shadow149/RescueMaze  
+[Release 5]: https://github.com/Shadow149/RescueMaze/releases/tag/1.2.1
 [Release 4]: https://github.com/Shadow149/RescueMaze/releases/tag/1.2
 [Release 3]: https://github.com/Shadow149/RescueMaze/releases/tag/v1.1.1  
 [Release 2]: https://github.com/Shadow149/RescueMaze/releases/tag/v1.1  
