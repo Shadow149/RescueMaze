@@ -11,16 +11,22 @@ RescueMaze is a rescue simulation competition environment designed for semi-expe
 
 ## [Changelog](https://github.com/Shadow149/RescueMaze/blob/master/CHANGELOG.md)
 
-### [Release 4] - 2020-08-13
+## [Release 5] - 2020-08-13
 
-#### Added
+### Fixed
+- Fixed bug with specific distance sensors only reading 0
+- Fixed bug where heat sensors weren't reading correct values
+
+## [Release 4] - 2020-08-13
+
+### Added
 - Robots are now placed into the world by the supervisor
 - Export log of events after each game
 - Positions of tiles, humans and obstacles randomly generated and automatically calculated based on tile scale
 - Added an extra camera on the front of the robot. The cameras are labelled `camera_left` and `camera_right`.
 - Start tile changes from green to white when the robots move off it and doesn't change back.
 
-#### Changed
+### Changed
 - There is now no need to specify robot type when sending data for estimated victim detection and exit messages.   
 For example from `struct.pack('i i i c', data, data1, data2, data3)` to `struct.pack('i i c', data, data1, data2)`
 - Thermal victims radius decreased
@@ -34,10 +40,10 @@ For example from `struct.pack('i i i c', data, data1, data2, data3)` to `struct.
 - Changed robot sensor configuration internally however it shouldn't affect anything.
 - Distance sensor values are now linear ranging from 0 to 0.8, with a max range of around 2x tile size.
 
-#### Removed
+### Removed
 - Start 'bay' on outside of maze removed
 - Robots not in generated world file
 - Obstacles are not placed into the map due to smaller tile size
 
-#### Fixed
+### Fixed
 - Attempting to relocate with no robot no longer causes a crash
