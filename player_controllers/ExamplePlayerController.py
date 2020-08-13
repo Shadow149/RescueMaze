@@ -56,7 +56,7 @@ class Player (Robot):
         self.loadedActivityColour = [0,0,0]
         
         #config camera
-        self.camera = self.getCamera('camera')
+        self.camera = self.getCamera('camera_left')
         self.camera.enable(self.timeStep)
         self.camera.recognitionEnable(self.timeStep)
 
@@ -341,7 +341,7 @@ class Player (Robot):
         #for all sensors (greater value means obstical is closer)
         for i in range(2):
             #For sensors of the left
-            #print(self.leftSensors[i].getValue())
+            #print(self.leftSensors[0].getValue())
             if self.leftSensors[i].getValue() > 80:
                 self.mode = TURN_RIGHT
             #For sensors of the right

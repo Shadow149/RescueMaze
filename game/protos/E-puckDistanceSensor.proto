@@ -51,11 +51,8 @@ PROTO E-puckDistanceSensor [
             }
           }
         ]
-        lookupTable [
-          0     0    0
-          0.163 16.3    0
-        ]
-        type "sonar"
+        lookupTable [ 0 0 0, 0.8 0.8 0 ]
+        type "infra-red"
         numberOfRays IS numberOfRays
         aperture 0.01
       }

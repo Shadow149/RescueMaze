@@ -28,7 +28,8 @@ For example from `struct.pack('i i i c', data, data1, data2, data3)` to `struct.
 - Moved starting tile to within the maze
 - Removed automatic object recognition from the camera
 - Heated victims are now only a point light. Removed white box.
-- Distance sensor values are now linear ranging from 0 to 16.3.
+- Changed robot sensor configuration internally however it shouldn't affect anything.
+- Distance sensor values are now linear ranging from 0 to 0.8, with a max range of around 2x tile size.
 
 ### Removed
 - Start 'bay' on outside of maze removed

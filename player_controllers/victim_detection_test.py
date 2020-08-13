@@ -3,8 +3,8 @@ import cv2
 import numpy as np
 import os
 
-def process(image_data):
-	img = np.array(np.frombuffer(image_data, np.uint8).reshape((cl.getHeight(), cl.getWidth(), 4)))
+def process(image_data, camera):
+	img = np.array(np.frombuffer(image_data, np.uint8).reshape((camera.getHeight(), camera.getWidth(), 4)))
 	img[:,:,2] = np.zeros([img.shape[0], img.shape[1]])
 
 
@@ -24,11 +24,14 @@ def process(image_data):
 robot = Robot()
 timeStep = 32
 
+ps0 = robot.getDistanceSensor('ps0')
+ps0.enable(timeStep)
+
 left_camera = robot.getCamera("camera_left")
 left_camera.enable(timeStep)
 
 while robot.step(timeStep) != -1:
 	img = left_camera.getImage()
-	process(img)
+	process(img, left_camera)
 	
 	

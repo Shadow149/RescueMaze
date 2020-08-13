@@ -863,7 +863,8 @@ PROTO worldTile [
 									Shape {
 										appearance Appearance {
 											material Material {
-												diffuseColor 0.517647 0.392157 0.192157
+												diffuseColor 0 0 0
+												emissiveColor 0.733333 0.580392 0.32549
 											}
 										}
 										geometry Box {

@@ -654,161 +654,126 @@ Robot {
         ]
       }
     %{ end }%
-    DEF EPUCK_PS0 E-puckDistanceSensor {
-      translation 0.01 0.033 -0.03
-      rotation 0 1 0 1.27
+    Gyro {
+      rotation 0 0 1 1.57079
+    }
+    Camera {
+      translation 0 0.028 -0.04
+      rotation 1 0 0 -1.5708
+      name "colour_sensor"
+      width 1
+      height 1
+    }
+    GPS {
+    }
+    LightSensor {
+      translation -0.03 0 0
+      rotation 0 1 0 3.14
+      name "left_heat_sensor"
+      lookupTable [
+        0 21 0
+        2 25 0
+        5 30 0
+        12 37 0
+        1000 38 0
+      ]
+      colorFilter 1 0 0
+      occlusion TRUE
+    }
+    LightSensor {
+      translation 0.03 0 0
+      name "right_heat_sensor"
+      lookupTable [
+        0 21 0
+        2 25 0
+        5 30 0
+        12 37 0
+        1000 38 0
+      ]
+      colorFilter 1 0 0
+      occlusion TRUE
+    }
+    DistanceSensor {
+      translation 0.00941437 0.04 -0.0401418
+      rotation 0 -1 0 -1.323615307179586
       name "ps0"
-      numberOfRays 1
+      lookupTable [
+        0 0 0
+        0.8 0.8 0
+      ]
+      type "infra-red"
     }
-    DEF EPUCK_PS1 E-puckDistanceSensor {
-      translation 0.025 0.033 -0.022
-      rotation 0 1 0 0.77
+    DistanceSensor {
+      translation 0.0228994 0.04 -0.0255021
+      rotation 0 -1 0 -0.8000153071795859
       name "ps1"
-      numberOfRays 1
+      lookupTable [
+        0 0 0
+        0.8 0.8 0
+      ]
+      type "infra-red"
     }
-    DEF EPUCK_PS2 E-puckDistanceSensor {
-      translation 0.031 0.033 0
+    DistanceSensor {
+      translation 0.0298508 0.04 -0.0104376
+      rotation 0 1 0 0.0146173
       name "ps2"
-      numberOfRays 1
+      lookupTable [
+        0 0 0
+        0.8 0.8 0
+      ]
+      type "infra-red"
     }
-    DEF EPUCK_PS3 E-puckDistanceSensor {
-      translation 0.015 0.033 0.03
-      rotation 0 1 0 5.21
+    DistanceSensor {
+      translation 0.0202899 0.04 0.0197056
+      rotation 0 -1 0 1.03259
       name "ps3"
-      numberOfRays 1
+      lookupTable [
+        0 0 0
+        0.8 0.8 0
+      ]
+      type "infra-red"
     }
-    DEF EPUCK_PS4 E-puckDistanceSensor {
-      translation -0.015 0.033 0.03
-      rotation 0 1 0 4.21
+    DistanceSensor {
+      translation -0.0197058 0.04 0.02029
+      rotation 0 1 0 -2.079785307179586
       name "ps4"
-      numberOfRays 1
+      lookupTable [
+        0 0 0
+        0.8 0.8 0
+      ]
+      type "infra-red"
     }
-    DEF EPUCK_PS5 E-puckDistanceSensor {
-      translation -0.031 0.033 0
-      rotation 0 1 0 3.14159
+    DistanceSensor {
+      translation -0.0301427 0.04 -0.00956054
+      rotation 0 1 0 -3.126975307179586
       name "ps5"
-      numberOfRays 1
+      lookupTable [
+        0 0 0
+        0.8 0.8 0
+      ]
+      type "infra-red"
     }
-    DEF EPUCK_PS6 E-puckDistanceSensor {
-      translation -0.025 0.033 -0.022
-      rotation 0 1 0 2.37
+    DistanceSensor {
+      translation -0.0270952 0.04 -0.0247711
+      rotation 0 1 0 2.37081
       name "ps6"
-      numberOfRays 1
+      lookupTable [
+        0 0 0
+        0.8 0.8 0
+      ]
+      type "infra-red"
     }
-    DEF EPUCK_PS7 E-puckDistanceSensor {
-      translation -0.01 0.033 -0.03
-      rotation 0 1 0 1.87
+    DistanceSensor {
+      translation -0.0105835 0.04 -0.0398497
+      rotation 0 1 0 1.84721
       name "ps7"
-      numberOfRays 1
-    }
-    DEF EPUCK_LS0 LightSensor {
-      translation 0.01 0.0329 -0.03
-      rotation 0 1 0 1.27
-      name "ls0"
       lookupTable [
-        1 4095 0.01 2 0 0.01
+        0 0 0
+        0.8 0.8 0
       ]
+      type "infra-red"
     }
-    DEF EPUCK_LS1 LightSensor {
-      translation 0.025 0.0329 -0.022
-      rotation 0 1 0 0.77
-      name "ls1"
-      lookupTable [
-        1 4095 0.01 2 0 0.01
-      ]
-    }
-    DEF EPUCK_LS2 LightSensor {
-      translation 0.031 0.0329 0
-      name "ls2"
-      lookupTable [
-        1 4095 0.01 2 0 0.01
-      ]
-    }
-    DEF EPUCK_LS3 LightSensor {
-      translation 0.015 0.0329 0.03
-      rotation 0 1 0 5.21
-      name "ls3"
-      lookupTable [
-        1 4095 0.01 2 0 0.01
-      ]
-    }
-    DEF EPUCK_LS4 LightSensor {
-      translation -0.015 0.0329 0.03
-      rotation 0 1 0 4.21
-      name "ls4"
-      lookupTable [
-        1 4095 0.01 2 0 0.01
-      ]
-    }
-    DEF EPUCK_LS5 LightSensor {
-      translation -0.031 0.0329 0
-      rotation 0 1 0 3.14159
-      name "ls5"
-      lookupTable [
-        1 4095 0.01 2 0 0.01
-      ]
-    }
-    DEF EPUCK_LS6 LightSensor {
-      translation -0.025 0.0329 -0.022
-      rotation 0 1 0 2.37
-      name "ls6"
-      lookupTable [
-        1 4095 0.01 2 0 0.01
-      ]
-    }
-    DEF EPUCK_LS7 LightSensor {
-      translation -0.01 0.0329 -0.03
-      rotation 0 1 0 1.87
-      name "ls7"
-      lookupTable [
-        1 4095 0.01 2 0 0.01
-      ]
-    }
-    %{ if v2 then }%
-      DEF EPUCK_TOF DistanceSensor {
-        translation 0.0018 0.033 -0.034
-        rotation 0 1 0 1.57
-        name "tof"
-        type "generic"
-        lookupTable [
-            0.00    19.8  0.126
-            0.05    58.5  0.032
-            0.10   111.0  0.019
-            0.20   218.9  0.009
-            0.50   531.9  0.007
-            1.00  1052.0  0.010
-            1.70  1780.5  0.013
-            2.00  2000.0  0.000
-        ]
-        children [
-          Transform {
-            translation -0.0006 0.0008 0
-            children [
-              Shape {
-                appearance PBRAppearance {
-                  baseColor 0.5 0.5 0.5
-                  roughness 0.4
-                  metalness 0
-                }
-                geometry Box {
-                  size 0.0008 0.0035 0.0044
-                }
-              }
-            ]
-          }
-          Shape {
-            appearance PBRAppearance {
-              baseColor 0 0 0
-              roughness 0.4
-              metalness 0
-            }
-            geometry Box {
-              size 0.0005 0.0018 0.004
-            }
-          }
-        ]
-      }
-    %{ end }%
+   
     DEF EPUCK_CAMERA_LEFT Camera {
       name "camera_left"
       translation -0.01 0.028 -0.04
