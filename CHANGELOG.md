@@ -55,8 +55,8 @@ For example from `struct.pack('i i i c', data, data1, data2, data3)` to `struct.
 
 [Unreleased]: https://github.com/Shadow149/RescueMaze  
 [Release 6]: https://github.com/Shadow149/RescueMaze/releases/tag/v1.2.2
-[Release 5]: https://github.com/Shadow149/RescueMaze/releases/tag/1.2.1
-[Release 4]: https://github.com/Shadow149/RescueMaze/releases/tag/1.2
+[Release 5]: https://github.com/Shadow149/RescueMaze/releases/tag/v1.2.1
+[Release 4]: https://github.com/Shadow149/RescueMaze/releases/tag/v1.2
 [Release 3]: https://github.com/Shadow149/RescueMaze/releases/tag/v1.1.1  
 [Release 2]: https://github.com/Shadow149/RescueMaze/releases/tag/v1.1  
 [Release 1]: https://github.com/Shadow149/RescueMaze/releases/tag/v1.0  

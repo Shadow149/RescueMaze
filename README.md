@@ -11,6 +11,14 @@ RescueMaze is a rescue simulation competition environment designed for semi-expe
 
 ## [Changelog](https://github.com/Shadow149/RescueMaze/blob/master/CHANGELOG.md)
 
+## [Release 6] - 2020-08-18
+
+### Fixed
+- Fixed error messages on startup
+
+### Added
+- Added front facing camera labelled `camera_centre`.
+
 ## [Release 5] - 2020-08-13
 
 ### Fixed
@@ -47,3 +55,7 @@ For example from `struct.pack('i i i c', data, data1, data2, data3)` to `struct.
 
 ### Fixed
 - Attempting to relocate with no robot no longer causes a crash
+
+[Release 6]: https://github.com/Shadow149/RescueMaze/releases/tag/v1.2.2
+[Release 5]: https://github.com/Shadow149/RescueMaze/releases/tag/v1.2.1
+[Release 4]: https://github.com/Shadow149/RescueMaze/releases/tag/v1.2
