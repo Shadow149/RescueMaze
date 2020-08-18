@@ -30,6 +30,10 @@ wheel_right = robot.getMotor("right wheel motor")
 
 camera = robot.getCamera("camera_left")
 camera.enable(timeStep)
+camerar = robot.getCamera("camera_right")
+camerar.enable(timeStep)
+cameral = robot.getCamera("camera_centre")
+cameral.enable(timeStep)
 
 colour_camera = robot.getCamera("colour_sensor")
 colour_camera.enable(timeStep)
