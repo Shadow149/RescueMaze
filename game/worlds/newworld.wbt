@@ -903,26 +903,31 @@ DEF HUMANGROUP Group {
       translation -0.22799999999999998 0 -0.1744
       rotation 0 1 0 3.14
       name "HeatVictim3"
+      scoreWorth 30
     }
     HeatVictim {
       translation -0.2944 0 0.09600000000000011
       rotation 0 1 0 -1.57
       name "HeatVictim4"
+      scoreWorth 30
     }
     HeatVictim {
       translation -0.102 0 -0.1856
       name "HeatVictim5"
+      scoreWorth 30
     }
     Victim {
       translation -0.123 0 -0.06499999999999999
       name "Victim6"
       type "unharmed"
+      scoreWorth 30
     }
     Victim {
       translation -0.13 0 -0.05500000000000001
       rotation 0 1 0 3.14
       name "Victim7"
       type "unharmed"
+      scoreWorth 30
     }
     Victim {
       translation -0.088 0 0.295
@@ -934,6 +939,7 @@ DEF HUMANGROUP Group {
       rotation 0 1 0 -1.57
       name "Victim9"
       type "stable"
+      scoreWorth 30
     }
     HeatVictim {
       translation 0.054400000000000004 0 0.22399999999999998
@@ -951,10 +957,12 @@ DEF HUMANGROUP Group {
       rotation 0 1 0 3.14
       name "Victim12"
       type "unharmed"
+      scoreWorth 30
     }
     HeatVictim {
       translation 0.09800000000000011 0 0.054400000000000004
       name "HeatVictim13"
+      scoreWorth 30
     }
     Victim {
       translation 0.263 0 -0.185
