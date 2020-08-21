@@ -137,7 +137,14 @@ function updateHistory(history0){
 	while(!history0End){
 		text += "<tr id='historyrow'>";
 		if(history0[i] != null){
-			text += "<div class='outerDiv'><div class='innerDiv'><td id='historyrowtext'>"+history0[i]+"</td></div></div>";
+			if(history0[i].indexOf("+") != -1){
+				text += "<div class='outerDiv'><div class='innerDiv'><td id='historyrowtext' style='font-size:18px;color:#2980b9;'>"+history0[i]+"</td></div></div>";
+			}else if(history0[i].indexOf("-") != -1){
+				text += "<div class='outerDiv'><div class='innerDiv'><td id='historyrowtext' style='font-size:18px;color:#c0392b;'>"+history0[i]+"</td></div></div>";
+			}else{
+				text += "<div class='outerDiv'><div class='innerDiv'><td id='historyrowtext' style='font-size:18px;color:#2c3e50;'>"+history0[i]+"</td></div></div>";
+			}
+
 			i--;
 		}else{
 			text += "<div class='outerDiv'><div class='innerDiv'><td id='historyrowtext'></td></div></div>"
