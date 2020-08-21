@@ -7,8 +7,10 @@
 		<table id="robotTable">
 		<tr>
 		<th class="halfRow">
-		<p id="robot0Name">None</p>
-		<input type="file" class="hidden" accept=".py" onchange="fileOpened('0')" id="robot0File" />
+		<p id="robot0Name">Erebus Rescue Simulator<br>Release 6</p>
+		<form id="robot0Form" enctype="multipart/form-data" method="post" action="http://127.0.0.1:60520/robot0Controller/">
+			<input type="file" class="hidden" onchange="fileOpened('0')" id="robot0File" />
+		</form>
 		<button class="button buttonLoad" onclick="openLoadController('0')" style="display:inline-block;" id="load0">Load<br>Controller</button>
 		<button class="button buttonUnload" onclick="unloadPressed('0')" style="display:none;" id="unload0">Remove<br>Controller</button></th>
 		</th>
@@ -42,7 +44,7 @@
 		<br>
 		<table id="controlTable">
 		<tr>
-      
+
 			<th class = "buttonRow">
 				<button id="runButton" class="simulationStateButton" onclick="runPressed()">
 					<svg class="svg-button" width="30" height="30" viewBox="0 0 20 18">
@@ -50,7 +52,7 @@
 					</svg>
 				</button>
 			</td>
-			
+
 			<th class = "buttonRow">
 				<button disabled id="pauseButton" class="simulationStateButton" onclick="pausePressed()">
 					<svg class="svg-button" width="40" height="40" viewBox="0 0 20 20">
@@ -59,7 +61,7 @@
 					</svg>
 				</button>
 			</td>
-				
+
 			<th class = "buttonRow">
 				<button id="resetButton" class="simulationStateButton" onclick="resetPressed()">
 					<svg class="svg-icon" width="30" height="30" viewBox="0 0 19 18">
@@ -67,7 +69,7 @@
 					</svg>
 				</button>
 			</td>
-	
+
 		</tr>
 		</table>
 		<br>
@@ -77,7 +79,7 @@
 		<tr>
 		<th colspan=2><p id="timer">00:00</p></th>
 		</tr>
-		
+
 		<tr>
 		<th class="halfRow score"><p id="score0">0</th>
 		<!-- <th class="halfRow score"><p id="score1">0</th> -->
@@ -87,7 +89,7 @@
 	<img src="drip.png" width="100%" style="position: absolute;">
 	<div>
 		<table style="height:100%;width:100%;" id="history">
-			
+
 		</table>
 	</div>
 </div>
