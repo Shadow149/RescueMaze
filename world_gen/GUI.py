@@ -1,6 +1,6 @@
 """Generation Graphical User Interface Script Type 2 v1
    Written by Alfred Robers and Robbie Goldman
-   Based on Type 1 GUI but modified for maze 
+   Based on Type 1 GUI but modified for maze
 
 Changelog:
  V1:
@@ -16,7 +16,14 @@ import tkinter as tk
 from tkinter import font, filedialog
 from PIL import Image, ImageTk
 import os
+try:
+    import ctypes
+    ctypes.windll.shcore.SetProcessDpiAwareness(True)
+except:
+    pass
+
 dirname = os.path.dirname(__file__)
+
 
 class GenerateWindow(tk.Tk):
     '''A generation interface window'''
@@ -27,6 +34,7 @@ class GenerateWindow(tk.Tk):
         #Set a fixed geometry
         self.geometry("908x704")
         self.resizable(False, False)
+        self.title('Rescue Simulation Map Generator 2020')
         #Create a frame to hold the basic structure
         self.mainFrame = tk.Frame(self)
         self.mainFrame.grid(row = 0, column = 0, sticky = (tk.N, tk.E, tk.S, tk.W))
@@ -183,7 +191,7 @@ class GenerateWindow(tk.Tk):
         self.inputsArray.append(self.createSliderSection(self.advHumans, 0, 25, "Humans", "Visual:", 0, 25, "Thermal:"))
         self.inputsArray.append(self.createSliderSection(self.advObstacles, 0, 10, "Obstacles", "Debris:", 0, 20, "Bulky:"))
         self.inputsArray.append(self.createSliderSection(self.advTiles, 2, 4, "Tiles", "Traps:", 0, 4, "Checkpoints:", "Swamps:", 0, 6))
-        
+
         #Add a slider to choose the difficulty
         self.basicSlider = tk.Scale(self.basicSection, label="Difficulty:", font=self.inputFont, showvalue=0, from_=0, to=5, orient=tk.HORIZONTAL, length=250, command = self.moveBasicSlider)
         self.basicSlider.grid(row = 0, column = 1)
@@ -192,7 +200,7 @@ class GenerateWindow(tk.Tk):
 
         #Get the default trough colour (so it can be restored when a slider is enabled)
         self.troughColourDefault = self.basicSlider.cget("troughcolor")
-        
+
         #Not ready for generation
         self.ready = False
         #Not currently saving
@@ -206,7 +214,7 @@ class GenerateWindow(tk.Tk):
         #Set correct state of enabled sliders
         self.updateValues()
 
-    
+
     def updateImage (self) -> None:
         '''Update the map image once the new one has been generated'''
         #Get the image from the file
@@ -215,7 +223,7 @@ class GenerateWindow(tk.Tk):
         self.mapImage.configure(image = imageData)
         self.mapImage.image = imageData
 
-    
+
     def moveBasicSlider (self, value: int) -> None:
         '''Move the basic slider to a specific value'''
         #List of names of different difficulties
@@ -225,7 +233,7 @@ class GenerateWindow(tk.Tk):
         #Change the position of the slider
         self.setDifficulty(int(value) + 1)
 
-        
+
     def basicTabPressed (self) -> None:
         '''When the basic tab is pressed'''
         #Change the colour of the basic and advanced tabs
@@ -289,18 +297,18 @@ class GenerateWindow(tk.Tk):
         #Create locked check box
         enabledBox = tk.Checkbutton(headerFrame, onvalue = True, offvalue = False, variable = enabled, command = self.inputChanged)
         enabledBox.grid(row = 0, column = 1, sticky = (tk.N, tk.E, tk.S, tk.W))
-        
+
         #Boolean variable and both sliders
         toReturn = [enabled, mainSlider, extraSlider]
         #If there is a third
         if thirdTitle != None and thirdMin != None and thirdMax != None:
             #Add it to the data being returned
             toReturn.append(thirdSlider)
-        
+
         #Return the boolean variable and all sliders
         return toReturn
 
-        
+
     def createSlider (self, parent, minVal: int, maxVal: int, name: str, rowNum = 0) -> tk.Scale:
         '''Create a single slider'''
         #Configure parent's grid
@@ -313,10 +321,10 @@ class GenerateWindow(tk.Tk):
 
         #Place the slider into the grid
         slider.grid(row = rowNum, column = 0)
-        
+
         return slider
 
-    
+
     def setDifficulty (self, difficultyValue: int) -> None:
         '''Change the difficulty to a specific value'''
         difficultyValue = int(difficultyValue)
@@ -368,12 +376,12 @@ class GenerateWindow(tk.Tk):
             #Update the locked states
             self.updateValues()
 
-       
+
     def updateValues (self) -> None:
         '''Update the locked state of the sliders'''
         #Iterate through the inputs
         for field in self.inputsArray:
-            #If there is at least 3 items (enabled, slider and extra) 
+            #If there is at least 3 items (enabled, slider and extra)
             if len(field) > 2:
                 #If it is unlocked
                 if field[0].get():
@@ -420,7 +428,7 @@ class GenerateWindow(tk.Tk):
                         fieldValue.append(inputType[pos].get())
                 #Add all the fields values to the list of values
                 values.append(fieldValue)
-        
+
         return values
 
 
@@ -454,6 +462,7 @@ class GenerateWindow(tk.Tk):
 
     def getPathSelection (self) -> str:
         '''Get a path from the user as to where to save the file and return it'''
+        self.update()
         path = filedialog.asksaveasfilename(title = "Save World As", filetypes = [("Webots World File", ".wbt")])
         return path
 
@@ -471,5 +480,3 @@ class GenerateWindow(tk.Tk):
             self.outputBodies[position].configure(text = message)
             #Increment counter
             position = position + 1
-    
-    
