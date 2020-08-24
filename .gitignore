@@ -2,3 +2,5 @@
 game/controllers/MainSupervisor/__pycache__/
 
 game/controllers/robot0Controller/__pycache__/
+
+world_gen/__pycache__/
