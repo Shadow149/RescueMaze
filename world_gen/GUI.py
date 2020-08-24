@@ -218,7 +218,16 @@ class GenerateWindow(tk.Tk):
     def updateImage (self) -> None:
         '''Update the map image once the new one has been generated'''
         #Get the image from the file
-        imageData = ImageTk.PhotoImage(Image.open(os.path.join(dirname, "map.png")))
+        img = Image.open(os.path.join(dirname, "map.png"))
+        wx = 320 / img.width
+        hx = 320 / img.height
+        x = 0
+        if wx > hx:
+            x = hx
+        else:
+            x = wx
+        img = img.resize((int(img.width * x), int(img.height * x)))
+        imageData = ImageTk.PhotoImage(img)
         #Set the image of the mapImage
         self.mapImage.configure(image = imageData)
         self.mapImage.image = imageData
