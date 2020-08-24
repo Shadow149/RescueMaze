@@ -254,9 +254,6 @@ def createFileData (walls, obstacles, startPos):
     thermalHumanTemplate.close()
 
 
-    #Create file data - initialy just the header
-    fileData = fileHeader
-
     #Strings to hold the tile parts
     allTiles = ""
     #Strings to hold the boundaries for special tiles
@@ -273,6 +270,9 @@ def createFileData (walls, obstacles, startPos):
     height = len(walls)
     startX = -(len(walls[0]) * (0.3 * tileScale[0]) / 2.0)
     startZ = -(len(walls) * (0.3 * tileScale[2]) / 2.0)
+
+    #Create file data - initialy just the header
+    fileData = fileHeader.format(0.2*height,0.17*height)
 
     #Rotations of humans for each wall
     humanRotation = [3.14, 1.57, 0, -1.57]
