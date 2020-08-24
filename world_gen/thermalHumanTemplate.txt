@@ -2,4 +2,5 @@ HeatVictim {{
     translation {0} 0 {1}
     rotation 0 1 0 {2}
     name "HeatVictim{3}"
+    scoreWorth {4}
 }}

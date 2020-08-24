@@ -1329,8 +1329,8 @@ def generateWorldFile (world, obstacles, startPos, window):
         row = []
         #Iterate horizontally
         for x in range(0, len(world[0])):
-            #Add each tile [present, [uWall,rWall,dWall,lWall], checkpoint, trap, goal, swamp, humanType, humanWall]
-            row.append([False, [False, False, False, False], False, False, False, False, 0, 0])
+            #Add each tile [present, [uWall,rWall,dWall,lWall], checkpoint, trap, goal, swamp, humanType, humanWall, linearTile]
+            row.append([False, [False, False, False, False], False, False, False, False, 0, 0, False])
         #Add row to array
         walls.append(row)
 
@@ -1342,7 +1342,7 @@ def generateWorldFile (world, obstacles, startPos, window):
                 #Get the human data
                 humanInfo = world[y][x].getHumanData()
                 #Add the wall data
-                walls[y][x] = [True, world[y][x].getWalls(), world[y][x].getCheckpoint(), world[y][x].getTrap(), world[y][x].getGoal(), world[y][x].getSwamp(), humanInfo[0], humanInfo[1]]
+                walls[y][x] = [True, world[y][x].getWalls(), world[y][x].getCheckpoint(), world[y][x].getTrap(), world[y][x].getGoal(), world[y][x].getSwamp(), humanInfo[0], humanInfo[1], world[y][x].getTileType()]
 
     #Make a map from the walls and objects
     WorldCreator.makeFile(walls, obstacles, startPos, window)

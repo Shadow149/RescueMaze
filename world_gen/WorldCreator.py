@@ -358,11 +358,17 @@ def createFileData (walls, obstacles, startPos):
                 if walls[z][x][6] == 4:
                     humanPos[0] = humanPos[0] + humanOffsetThermal[walls[z][x][7]][0] + randomOffset[0]
                     humanPos[1] = humanPos[1] + humanOffsetThermal[walls[z][x][7]][1] + randomOffset[1]
-                    allHumans = allHumans + thermalHumanPart.format(humanPos[0], humanPos[1], humanRot, humanId)
+                    score = 30
+                    if walls[z][x][8]:
+                        score = 10
+                    allHumans = allHumans + thermalHumanPart.format(humanPos[0], humanPos[1], humanRot, humanId, score)
                 else:
                     humanPos[0] = humanPos[0] + humanOffset[walls[z][x][7]][0] + randomOffset[0]
                     humanPos[1] = humanPos[1] + humanOffset[walls[z][x][7]][1] + randomOffset[1]
-                    allHumans = allHumans + visualHumanPart.format(humanPos[0], humanPos[1], humanRot, humanId, humanTypesVisual[walls[z][x][6] - 1])
+                    score = 30
+                    if walls[z][x][8]:
+                        score = 10
+                    allHumans = allHumans + visualHumanPart.format(humanPos[0], humanPos[1], humanRot, humanId, humanTypesVisual[walls[z][x][6] - 1], score)
 
                 humanId = humanId + 1
 
