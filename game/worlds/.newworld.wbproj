@@ -10,7 +10,7 @@ orthographicViewHeight: 1
 textFiles: -1
 robotWindow: robot
 globalOptionalRendering: DistanceSensorRays
-renderingDevicePerspectives: e-puck 0:camera_left;1;1;0.00724053;0.0103613
 renderingDevicePerspectives: e-puck 0:colour_sensor;1;68;0.0199178;0.169029
-renderingDevicePerspectives: e-puck 0:camera_centre;1;1;0.229388;0.018931
 renderingDevicePerspectives: e-puck 0:camera_right;1;1;0.114913;0.0131264
+renderingDevicePerspectives: e-puck 0:camera_left;1;1;0.00724053;0.0103613
+renderingDevicePerspectives: e-puck 0:camera_centre;1;1;0.229388;0.018931
