@@ -10,3 +10,5 @@ world_gen/map.png
 world_gen/generatedWorld.wbt
 
 game/worlds/.*.wbproj
+
+*.cache
