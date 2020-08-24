@@ -1,5 +1,5 @@
     DEF {1} Group {{
         children [
-{0}
+          {0}
         ]
     }}

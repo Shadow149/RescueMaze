@@ -428,8 +428,8 @@ def createFileData (walls, obstacles, startPos):
 
     fileData = fileData + groupPart.format(allHumans, "HUMANGROUP")
 
-    #Add the robot data to the file (removed - now performed by supervisor)
-    '''fileData = fileData + robotData'''
+    #Add the robot data to the file
+    fileData = fileData + robotPart.format(0)
 
     #Add supervisors
     fileData = fileData + supervisorPart
