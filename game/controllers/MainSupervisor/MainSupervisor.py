@@ -807,6 +807,8 @@ if __name__ == '__main__':
                     finished = True
                     # Restart this supervisor
                     mainSupervisor.restartController()
+                    #Show start tile
+                    robot0Obj.startingTile.wb_node.getField("start").setSFBool(True)
 
                 if parts[0] == "robot0Unload":
                     # Unload the robot 0 controller
