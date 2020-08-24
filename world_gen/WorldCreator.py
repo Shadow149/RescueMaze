@@ -459,6 +459,8 @@ def makeFile(boxData, obstacles, startPos, uiWindow = None):
                 path = path + ".wbt"
             #Change the path to the one the user gave
             filePath = path
+        else:
+            return
 
     #Open the file to store the world in (cleared when opened)
     worldFile = open(filePath, "w")
