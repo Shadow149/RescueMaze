@@ -1,0 +1,14 @@
+
+game/controllers/MainSupervisor/__pycache__/
+
+game/controllers/robot0Controller/__pycache__/
+
+world_gen/__pycache__/
+
+world_gen/map.png
+
+world_gen/generatedWorld.wbt
+
+game/worlds/.*.wbproj
+
+*.cache

@@ -1,9 +1,8 @@
 DEF ROBOT{0} E-puck-custom {{
-  translation {1} -0.075 {2}
-  rotation 0 1 0 {3}
-  name "e-puck{0}"
+  translation 0 -1000 0
+  name "e-puck {0}"
   controller "robot{0}Controller"
-  camera_fieldOfView 0.9
+  camera_fieldOfView 1
   camera_width 128
   camera_height 128
   turretSlot [
@@ -15,8 +14,9 @@ DEF ROBOT{0} E-puck-custom {{
       name "left_heat_sensor"
       lookupTable [
         0 21 0
-        0.85 25 0
-        5 37 0
+        2 25 0
+        5 30 0
+        12 37 0
         1000 38 0
       ]
       colorFilter 1 0 0
@@ -27,8 +27,9 @@ DEF ROBOT{0} E-puck-custom {{
       name "right_heat_sensor"
       lookupTable [
         0 21 0
-        0.85 25 0
-        5 37 0
+        2 25 0
+        5 30 0
+        12 37 0
         1000 38 0
       ]
       colorFilter 1 0 0
@@ -36,6 +37,9 @@ DEF ROBOT{0} E-puck-custom {{
     }}
   ]
   groundSensorsSlot [
+    Gyro {{
+      rotation 0 0 1 1.57079
+    }}
     Camera {{
       translation -0.02 0 0.0299998
       rotation 0 1 0 -1.5707953071795862
@@ -43,8 +47,5 @@ DEF ROBOT{0} E-puck-custom {{
       width 1
       height 1
     }}
-	Gyro {{
-    rotation 0 0 1 1.57079
-	}}
   ]
 }}

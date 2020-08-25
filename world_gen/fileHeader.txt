@@ -1,12 +1,12 @@
-#VRML_SIM R2019b utf8
-WorldInfo {
+#VRML_SIM R2020a utf8
+WorldInfo {{
   basicTimeStep 16
-}
-Viewpoint {
-  orientation -0.9999999999923225 3.4205379360111924e-06 1.911742139300757e-06 1.2200007143181224
-  position -0.1747250529944413 4.641774456031315 1.622891680665535
-}
-TexturedBackground {
-}
-TexturedBackgroundLight {
-}
+}}
+Viewpoint {{
+  orientation -1 0 0 0.85
+  position -0.08 {0} {1}
+}}
+TexturedBackground {{
+}}
+TexturedBackgroundLight {{
+}}

@@ -90,7 +90,7 @@ def checkForExternalWalls (pos, walls):
     otherTiles = [False, False, False, False]
 
     d = 0
-    
+
     for a in around:
         #Get the tiles position
         xPos = pos[0] + a[0]
@@ -210,7 +210,7 @@ def createFileData (walls, obstacles, startPos):
     protoTilePart = protoTileTemplate.read()
     #Close template file
     protoTileTemplate.close()
-    
+
     #Open the file containing the template for a boundary
     boundsTemplate = open(os.path.join(dirname, "boundsTemplate.txt"), "r")
     #Read template
@@ -231,21 +231,21 @@ def createFileData (walls, obstacles, startPos):
     debrisPart = debrisTemplate.read()
     #Close template file
     debrisTemplate.close()
-    
+
     #Open the file containing the template for the supervisor
     supervisorTemplate = open(os.path.join(dirname, "supervisorTemplate.txt"), "r")
     #Read template
     supervisorPart = supervisorTemplate.read()
     #Close template file
     supervisorTemplate.close()
-    
+
     #Open the file containing the template for the visual humans
     visualHumanTemplate = open(os.path.join(dirname, "visualHumanTemplate.txt"), "r")
     #Read template
     visualHumanPart = visualHumanTemplate.read()
     #Close template file
     visualHumanTemplate.close()
-    
+
     #Open the file containing the template for the thermal humans
     thermalHumanTemplate = open(os.path.join(dirname, "thermalHumanTemplate.txt"), "r")
     #Read template
@@ -254,9 +254,6 @@ def createFileData (walls, obstacles, startPos):
     thermalHumanTemplate.close()
 
 
-    #Create file data - initialy just the header
-    fileData = fileHeader
-
     #Strings to hold the tile parts
     allTiles = ""
     #Strings to hold the boundaries for special tiles
@@ -264,7 +261,7 @@ def createFileData (walls, obstacles, startPos):
     allTrapBounds = ""
     allGoalBounds = ""
     allSwampBounds = ""
-    
+
     #String to hold all the humans
     allHumans = ""
 
@@ -273,7 +270,10 @@ def createFileData (walls, obstacles, startPos):
     height = len(walls)
     startX = -(len(walls[0]) * (0.3 * tileScale[0]) / 2.0)
     startZ = -(len(walls) * (0.3 * tileScale[2]) / 2.0)
-    
+
+    #Create file data - initialy just the header
+    fileData = fileHeader.format(0.2*height,0.17*height)
+
     #Rotations of humans for each wall
     humanRotation = [3.14, 1.57, 0, -1.57]
     #Offsets for visual and thermal humans
@@ -318,14 +318,14 @@ def createFileData (walls, obstacles, startPos):
                 allCheckpointBounds = allCheckpointBounds + boundsPart.format("checkpoint", checkId, (x * 0.3 * tileScale[0] + startX) - (0.15 * tileScale[0]), (z * 0.3 * tileScale[2] + startZ) - (0.15 * tileScale[2]), (x * 0.3 * tileScale[0] + startX) + (0.15 * tileScale[0]), (z * 0.3 * tileScale[2] + startZ) + (0.15 * tileScale[2]), floorPos)
                 #Increment id counter
                 checkId = checkId + 1
-                    
+
             #trap
             if walls[z][x][3]:
                 #Add bounds to the trap boundaries
                 allTrapBounds = allTrapBounds + boundsPart.format("trap", trapId, (x * 0.3 * tileScale[0] + startX) - (0.15 * tileScale[0]), (z * 0.3 * tileScale[2] + startZ) - (0.15 * tileScale[2]), (x * 0.3 * tileScale[0] + startX) + (0.15 * tileScale[0]), (z * 0.3 * tileScale[2] + startZ) + (0.15 * tileScale[2]), floorPos)
                 #Increment id counter
                 trapId = trapId + 1
-                    
+
             #goal
             if walls[z][x][4]:
                 #Add bounds to the goal boundaries
@@ -340,7 +340,7 @@ def createFileData (walls, obstacles, startPos):
                 swampId = swampId + 1
             #Increment id counter
             tileId = tileId + 1
-            
+
             #Human
             if walls[z][x][6] != 0:
                 #Position of tile
@@ -358,17 +358,23 @@ def createFileData (walls, obstacles, startPos):
                 if walls[z][x][6] == 4:
                     humanPos[0] = humanPos[0] + humanOffsetThermal[walls[z][x][7]][0] + randomOffset[0]
                     humanPos[1] = humanPos[1] + humanOffsetThermal[walls[z][x][7]][1] + randomOffset[1]
-                    allHumans = allHumans + thermalHumanPart.format(humanPos[0], humanPos[1], humanRot, humanId)
+                    score = 30
+                    if walls[z][x][8]:
+                        score = 10
+                    allHumans = allHumans + thermalHumanPart.format(humanPos[0], humanPos[1], humanRot, humanId, score)
                 else:
                     humanPos[0] = humanPos[0] + humanOffset[walls[z][x][7]][0] + randomOffset[0]
                     humanPos[1] = humanPos[1] + humanOffset[walls[z][x][7]][1] + randomOffset[1]
-                    allHumans = allHumans + visualHumanPart.format(humanPos[0], humanPos[1], humanRot, humanId, humanTypesVisual[walls[z][x][6] - 1])
-                
+                    score = 30
+                    if walls[z][x][8]:
+                        score = 10
+                    allHumans = allHumans + visualHumanPart.format(humanPos[0], humanPos[1], humanRot, humanId, humanTypesVisual[walls[z][x][6] - 1], score)
+
                 humanId = humanId + 1
-                
-                
-                
-            
+
+
+
+
 
     #Add the data pieces to the file data
     fileData = fileData + groupPart.format(allTiles, "WALLTILES")
@@ -402,7 +408,7 @@ def createFileData (walls, obstacles, startPos):
     #Add obstacles and debris to the file
     fileData = fileData + groupPart.format(allObstacles, "OBSTACLES")
     fileData = fileData + groupPart.format(allDebris, "DEBRIS")
-    
+
     #String to hold all the data for the robots (removed - now performed by supervisor)
     '''robotData = ""
     #If starting facing up
@@ -425,15 +431,15 @@ def createFileData (walls, obstacles, startPos):
         #Add robots (spaced +Z, -Z) and rotated
         robotData = robotData + robotPart.format(0, startPos[0][0] * 0.3 + startX, (startPos[0][1] * 0.3 + startZ) + 0.075, 1.5708)
         robotData = robotData + robotPart.format(1, startPos[0][0] * 0.3 + startX, (startPos[0][1] * 0.3 + startZ) - 0.075, 1.5708)'''
-                                            
+
     fileData = fileData + groupPart.format(allHumans, "HUMANGROUP")
-    
-    #Add the robot data to the file (removed - now performed by supervisor)
-    '''fileData = fileData + robotData'''
+
+    #Add the robot data to the file
+    fileData = fileData + robotPart.format(0)
 
     #Add supervisors
     fileData = fileData + supervisorPart
-    
+
     #Return the file data as a string
     return fileData
 
@@ -459,6 +465,8 @@ def makeFile(boxData, obstacles, startPos, uiWindow = None):
                 path = path + ".wbt"
             #Change the path to the one the user gave
             filePath = path
+        else:
+            return
 
     #Open the file to store the world in (cleared when opened)
     worldFile = open(filePath, "w")
