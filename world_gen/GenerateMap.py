@@ -1206,7 +1206,6 @@ def selectObstaclePositon(obstacle, array, x, y, obstacles, startPos):
         #Return default position (not in maze)
         return [0, -1000, 0, 0, r]
 
-    print(r)
     #Boundaries of tile to pick
     xBounds = [-0.15 + r, 0.15 - r]
     zBounds = [-0.15 + r, 0.15 - r]
