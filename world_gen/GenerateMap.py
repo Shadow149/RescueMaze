@@ -212,6 +212,7 @@ class Tile ():
 
     def getObstacle(self) -> bool:
         '''Returns true if an obstacle has been placed in this tile'''
+        return self.obstacle
 
     def getTileType(self) -> bool:
         return self.linear
@@ -1091,7 +1092,7 @@ def addObstacle(debris):
         height = 0.01
     #Default size contstraints for static obstacle
     minSize = 5
-    maxSize = 20
+    maxSize = 15
     #Adjust size constraints for debris
     if debris:
         minSize = 2
@@ -1196,7 +1197,7 @@ def selectObstaclePositon(obstacle, array, x, y, obstacles, startPos):
         #If this is a tile and not the start point
         if tile != None and startTile != [tPos[0], tPos[1]]:
             #If it is not a special tile and does not contain an obstacle already
-            if not tile.getCheckpoint() and not tile.getTrap() and not tile.getSwamp() and not tile.getObstacle() and not tile.getGoal():
+            if not tile.getCheckpoint() and not tile.getTrap() and not tile.getSwamp() and not tile.getObstacle() and not tile.getGoal() and not tile.hasHuman:
                 #Target tile found
                 tSelected = tile
 
@@ -1205,25 +1206,26 @@ def selectObstaclePositon(obstacle, array, x, y, obstacles, startPos):
         #Return default position (not in maze)
         return [0, -1000, 0, 0, r]
 
+    print(r)
     #Boundaries of tile to pick
-    xBounds = [-0.15, 0.15]
-    zBounds = [-0.15, 0.15]
+    xBounds = [-0.15 + r, 0.15 - r]
+    zBounds = [-0.15 + r, 0.15 - r]
 
     #Get the surrounding blocks
-    walls = getTileAroundBlocking(array, tPos[0], tPos[1])
+    #walls = getTileAroundBlocking(array, tPos[0], tPos[1])
 
     #Get the centre position of the tile
-    tPos = [(tPos[0] * 0.3) + startX, (tPos[1] * 0.3) + startZ]
+    tPos = [(tPos[0] * 0.3) + startX + 0.15, (tPos[1] * 0.3) + startZ + 0.15]
 
     #Adjust away from present walls by the wall thickness and the radius
-    if walls[0]:
+    '''if walls[0]:
         zBounds[0] = zBounds[0] + 0.015 + r
     if walls[2]:
         zBounds[1] = zBounds[1] - 0.015 - r
     if walls[1]:
         xBounds[1] = xBounds[1] - 0.015 - r
     if walls[3]:
-        xBounds[0] = xBounds[0] + 0.015 + r
+        xBounds[0] = xBounds[0] + 0.015 + r'''
 
     #Selected position
     pos = [0, 0]
@@ -1237,9 +1239,11 @@ def selectObstaclePositon(obstacle, array, x, y, obstacles, startPos):
         att -= 1
         #Get a random position
         pos = [round(random.uniform(xBounds[0], xBounds[1]), 5), round(random.uniform(zBounds[0], zBounds[1]), 5)]
+
         #Offset with tile position
         pos[0] = pos[0] + tPos[0]
         pos[1] = pos[1] + tPos[1]
+
         allowed = True
         #Iterate through placed obstacles
         for obs in obstacles:
@@ -1285,11 +1289,10 @@ def generateObstacles(bulky, debris, array, x, y, startPos):
     for i in range(0, bulky):
         #Create an obstacle and add it to the list
         newObstacle = addObstacle(False)
-        #Removed placement of obstacles due to tile size being too small to allow both obstacles and robots access
-        '''newObstaclePos = selectObstaclePositon(newObstacle, array, x, y, obstacles, startPos)
+        newObstaclePos = selectObstaclePositon(newObstacle, array, x, y, obstacles, startPos)
         if newObstaclePos[1] > -1:
             placedBulky = placedBulky + 1
-        obstacles.append([newObstacle, newObstaclePos])'''
+        obstacles.append([newObstacle, newObstaclePos])
         obstacles.append([newObstacle, [0, -1000, 0, 0, 0]])
 
     #Iterate for each piece of debris
