@@ -153,7 +153,7 @@ def sendVictimMessage(victimType='N'):
         # Stable = "S"  
         # Unharmed = "U"
         # Heated (Temperature) = "T"
-        sendMessage(int(position[0] * 100), int(position[2] * 100), b'H')
+        sendMessage(int(position[0] * 100), int(position[2] * 100), victimType)
         messageSent = True
 
 
