@@ -135,7 +135,7 @@ def sendMessage(v1, v2, victimType):
 
 
 # Sents a message of the game controller that a victim (of a certain type) has been detected
-def sendVictimMessage():
+def sendVictimMessage(victimType='N'):
     global messageSent
     position = gps.getValues()
 
