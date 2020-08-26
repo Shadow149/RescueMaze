@@ -1,6 +1,5 @@
 '''
-Sample code that can collect heated victims and detect visual victims.
-Please note this code doesn't detect when the victim changes to collected so stays stopped forever after collecting a victim.
+Updated version of the seminar code from day 2 to be used in release 6. 
 '''
 # Import all relevant libraries
 from controller import Robot
