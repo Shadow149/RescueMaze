@@ -6,12 +6,12 @@ from controller import Robot
 import math
 import struct
 
-# If you would like to use the camera to detect visual victims, set usecamera to True. This requires opencv to be installed.
-usecamera = False
+# If you would like to use the camera to detect visual victims, set useCV to True. This requires opencv to be installed.
+useCV = False
 try:
     import cv2
     import numpy as np
-    usecamera = True
+    useCV = True
     print("Camera-based visual victim detection is enabled.")
 except:
     print("[WARNING] Since OpenCV and numpy is not installed, the visual victim detection is turned off. \
@@ -20,8 +20,8 @@ except:
 
 # Set RGB colours of the swamp and hole to avoid them
 # These should be calibrated to match the environment
-hole_colour = b'\x1e\x1e\x1e\xff'
-swamp_colour = b'R\x89\xa7\xff'
+hole_colour = b'222\xff'
+swamp_colour = b'z\xca\xe8\xff'
 
 
 # Simulation time step and the maximum velocity of the robot
@@ -108,7 +108,7 @@ program_start = robot.getTime()
 # Function to detect visual victims
 def detectVisualSimple(image_data, camera):
 
-    if usecamera:
+    if useCV:
         coords_list = []
         img = np.array(np.frombuffer(image_data, np.uint8).reshape((camera.getHeight(), camera.getWidth(), 4)))
         img[:,:,2] = np.zeros([img.shape[0], img.shape[1]])
@@ -270,7 +270,7 @@ def avoidTilesHSV():
 
     # Change the range at which the robot detects the swamps and holes
     #       SWAMP                           HOLE
-    if (hsv[0] > 40 and hsv[0] < 45) or (hsv[2] < 30):
+    if (hsv[0] > 40 and hsv[0] < 45) or (hsv[2] < 55):
         move_backwards()
         startTime = robot.getTime()
         duration = 2
@@ -364,7 +364,7 @@ while robot.step(timeStep) != -1:
             spin()
 
         # Detect victims
-        if usecamera:
+        if useCV:
             stopAtVisualVictim()
         stopAtHeatedVictim()
 
@@ -373,8 +373,12 @@ while robot.step(timeStep) != -1:
             victimTimer = robot.getTime()
 
 
-        # Avoid if any tiles are detected
-        avoidTiles()
+        # Avoid if holes/swamps are detected
+        if useCV:
+            avoidTilesHSV() # If OpenCV is available, it is processed in HSV color space.
+        else:
+            avoidTiles()
+
 
         # Set the velocities of the wheels
         wheel_left.setVelocity(speeds[0])
