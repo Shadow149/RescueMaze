@@ -2065,7 +2065,7 @@ DEF boundary Group {
     }
     DEF DEBRIS Group {
         children [
-          
+
         ]
     }
     DEF HUMANGROUP Group {
@@ -2196,49 +2196,6 @@ DEF ROBOT0 E-puck-custom {
   camera_fieldOfView 1
   camera_width 128
   camera_height 128
-  turretSlot [
-    GPS {
-    }
-    LightSensor {
-      translation -0.03 0 0
-      rotation 0 1 0 3.14
-      name "left_heat_sensor"
-      lookupTable [
-        0 21 0
-        2 25 0
-        5 30 0
-        12 37 0
-        1000 38 0
-      ]
-      colorFilter 1 0 0
-      occlusion TRUE
-    }
-    LightSensor {
-      translation 0.03 0 0
-      name "right_heat_sensor"
-      lookupTable [
-        0 21 0
-        2 25 0
-        5 30 0
-        12 37 0
-        1000 38 0
-      ]
-      colorFilter 1 0 0
-      occlusion TRUE
-    }
-  ]
-  groundSensorsSlot [
-    Gyro {
-      rotation 0 0 1 1.57079
-    }
-    Camera {
-      translation -0.02 0 0.0299998
-      rotation 0 1 0 -1.5707953071795862
-      name "colour_sensor"
-      width 1
-      height 1
-    }
-  ]
 }
 DEF MAINSUPERVISOR Robot {
   children [
