@@ -701,8 +701,11 @@ if __name__ == '__main__':
                     # Check robot position is on starting tile
                     if robot0Obj.startingTile.checkPosition(robot0Obj.position):
                         robot0Obj.increaseScore(10)
-                        robot0Obj.increaseScore(int(robot0Obj.getScore() * 0.1))
-                        robot0Obj.history.enqueue("Exit bonus +" + str(10 + int(robot0Obj.getScore() * 0.1)))
+                        for i, h in enumerate(humans):
+                            if h.identified:
+                                robot0Obj.increaseScore(int(robot0Obj.getScore() * 0.1))
+                                robot0Obj.history.enqueue("Exit bonus +" + str(10 + int(robot0Obj.getScore() * 0.1)))
+                                break
 
                         # Update score and history
                         robot_quit(robot0Obj, 0, False)
