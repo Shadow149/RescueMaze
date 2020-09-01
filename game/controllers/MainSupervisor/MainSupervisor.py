@@ -700,14 +700,13 @@ if __name__ == '__main__':
 
                     # Check robot position is on starting tile
                     if robot0Obj.startingTile.checkPosition(robot0Obj.position):
+                        robot0Obj.increaseScore(10)
+                        robot0Obj.increaseScore(int(robot0Obj.getScore() * 0.1))
+                        robot0Obj.history.enqueue("Exit bonus +" + str(10 + int(robot0Obj.getScore() * 0.1)))
 
                         # Update score and history
                         robot_quit(robot0Obj, 0, False)
                         updateHistory()
-
-                        robot0Obj.increaseScore(10)
-                        robot0Obj.increaseScore(int(robot0Obj.getScore() * 0.1))
-                        robot0Obj.history.enqueue("Exit bonus +" + str(10 + int(robot0Obj.getScore() * 0.1)))
 
 
         if robot0Obj.inSimulation:
@@ -724,16 +723,18 @@ if __name__ == '__main__':
 
                     # For each human
                     # TODO optimise
-                    for i, h in enumerate(humans):
-                        # If not already identified
-                        if not h.identified:
-                            # Check if in range
-                            if h.checkPosition(robot0Obj.position):
-                                # Check if estimated position is in range
-                                if h.checkPosition(r0_est_vic_pos):
-                                    # If robot on same side
-                                    if h.onSameSide(robot0Obj.position):
 
+                    misidentification = True
+                    for i, h in enumerate(humans):
+                        # Check if in range
+                        if h.checkPosition(robot0Obj.position):
+                            # Check if estimated position is in range
+                            if h.checkPosition(r0_est_vic_pos):
+                                # If robot on same side
+                                if h.onSameSide(robot0Obj.position):
+                                    misidentification = False
+                                    # If not already identified
+                                    if not h.identified:
                                         # Get points scored depending on the type of victim
                                         pointsScored = h.scoreWorth
 
@@ -747,11 +748,11 @@ if __name__ == '__main__':
 
                                         h.identified = True
                                         updateHistory()
-                                else:
-                                    robot0Obj.history.enqueue("Misidentification of victim  - 5")
-                                    robot0Obj.increaseScore(-5)
 
-                                    updateHistory()
+                    if misidentification:
+                        robot0Obj.history.enqueue("Misidentification of victim  - 5")
+                        robot0Obj.increaseScore(-5)
+                        updateHistory()
 
         if robot0Obj.inSimulation:
             # Relocate robot if stationary for 20 sec
