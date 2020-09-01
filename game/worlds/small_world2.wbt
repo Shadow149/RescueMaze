@@ -898,14 +898,6 @@ Victim {
 
         ]
     }
-DEF ROBOT0 E-puck-custom {
-  translation 0 -1000 0
-  name "e-puck 0"
-  controller "robot0Controller"
-  camera_fieldOfView 1
-  camera_width 128
-  camera_height 128
-}
 DEF MAINSUPERVISOR Robot {
   children [
     Receiver {
