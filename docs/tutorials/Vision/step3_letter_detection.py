@@ -3,7 +3,7 @@ Example OpenCV letter detection
 Written by Fatemeh Pahlevan Aghababa, Amirreza Kabiri, MohammadHossein Goharinejad - 2020
 
 """
-# pip install opencv-python
+# if you haven't install opencv yet, please type "pip install opencv-python" in your terminal/command line.
 
 import cv2
 import numpy
