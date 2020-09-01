@@ -2198,4 +2198,5 @@ DEF MAINSUPERVISOR Robot {
   supervisor TRUE
   controller "MainSupervisor"
   window "MainSupervisorWindow"
+  showWindow TRUE
 }
