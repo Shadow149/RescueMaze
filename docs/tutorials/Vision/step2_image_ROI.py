@@ -11,7 +11,7 @@ Written by Fatemeh Pahlevan Aghababa, Amirreza Kabiri, MohammadHossein Goharinej
 # But we trying to show you basic operation and most useful functions in this project
 
 
-# pip install 
+# pip install opencv-python
 import cv2
 import numpy
 import matplotlib.pyplot as plt
