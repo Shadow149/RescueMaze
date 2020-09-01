@@ -33,7 +33,7 @@ max_velocity = 6.28
 sensor_value = 0.05
 
 # Threshold for the victim being close to the wall
-victimProximity = 0.03
+victimProximity = 0.1
 
 # Default setting for the "messageSent" variable
 messageSent = False
@@ -130,7 +130,7 @@ def detectVisualSimple(image_data, camera):
 
 # Sends a message to the game controller
 def sendMessage(v1, v2, victimType):
-    message = struct.pack('i i c', v1, v2, victimType)
+    message = struct.pack('i i c', v1, v2, victimType.encode())
     emitter.send(message)
 
 
@@ -186,6 +186,8 @@ def stopAtVisualVictim():
             foundVictim = True
 
             victimDetectedGlobal = True
+        else:
+            print("It's too far away.")
 
     if not foundVictim:
         messageSent = False
