@@ -3,6 +3,8 @@ Example OpenCV letter detection
 Written by Fatemeh Pahlevan Aghababa, Amirreza Kabiri, MohammadHossein Goharinejad - 2020
 
 """
+# pip install opencv-python
+
 import cv2
 import numpy
 import matplotlib.pyplot as plt
