@@ -707,6 +707,7 @@ if __name__ == '__main__':
 
                         robot0Obj.increaseScore(10)
                         robot0Obj.increaseScore(int(robot0Obj.getScore() * 0.1))
+                        robot0Obj.history.enqueue("Exit bonus +" + str(10 + int(robot0Obj.getScore() * 0.1)))
 
 
         if robot0Obj.inSimulation:
