@@ -197,12 +197,12 @@ def createFileData (walls, obstacles, startPos):
     #Close template file
     groupTemplate.close()
 
-    #Open the file containing the template for a robot
+    '''#Open the file containing the template for a robot
     robotTemplate = open(os.path.join(dirname, "robotTemplate.txt"), "r")
     #Read template
     robotPart = robotTemplate.read()
     #Close template file
-    robotTemplate.close()
+    robotTemplate.close()'''
 
     #Open the file containing the template for a proto tile
     protoTileTemplate = open(os.path.join(dirname, "protoTileTemplate.txt"), "r")
@@ -435,7 +435,7 @@ def createFileData (walls, obstacles, startPos):
     fileData = fileData + groupPart.format(allHumans, "HUMANGROUP")
 
     #Add the robot data to the file
-    fileData = fileData + robotPart.format(0)
+    #fileData = fileData + robotPart.format(0)
 
     #Add supervisors
     fileData = fileData + supervisorPart
