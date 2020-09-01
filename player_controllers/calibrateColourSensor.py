@@ -6,9 +6,15 @@ from controller import Robot
 
 # If you would like to view the HSV decomposition. Requires opencv installation
 viewHSV = False
-if viewHSV:
+try:
     import numpy as np
     import cv2
+    viewHSV = True
+    print("Calibration of HSV decomposition of the colour camera is enabled")
+except:
+    print("[WARNING] Since OpenCV and numpy is not installed, the visual victim detection is turned off. \
+        Run 'pip install opencv-python' to install OpenCV and 'pip install numpy' on your terminal/command line.\
+        If you have python2, try 'pip3 install' rather than 'pip install'. ")
 
 timeStep = 32
 startTime = 0

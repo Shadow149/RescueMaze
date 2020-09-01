@@ -1,6 +1,5 @@
 '''
-Sample code that can collect heated victims and detect visual victims.
-Please note this code doesn't detect when the victim changes to collected so stays stopped forever after collecting a victim.
+Updated version of the seminar code from day 2 to be used in release 6. 
 '''
 # Import all relevant libraries
 from controller import Robot
@@ -8,10 +7,17 @@ import math
 import struct
 
 # If you would like to use the camera to detect visual victims, set usecamera to True. This requires opencv to be installed. 
-usecamera = True
-if usecamera:
+usecamera = False
+try:
     import cv2
     import numpy as np
+    usecamera = True
+    print("Camera-based visual victim detection is enabled.")
+except:
+    print("[WARNING] Since OpenCV and numpy is not installed, the visual victim detection is turned off. \
+        Run 'pip install opencv-python' to install OpenCV and 'pip install numpy' on your terminal/command line.\
+        If you have python2, try 'pip3 install' rather than 'pip install'. ")
+
 
 # Set RGB colours of the swamp and hole to avoid them 
 # These should be calibrated to match the environment
@@ -111,10 +117,11 @@ def detectVisualSimple(image_data, camera):
         contours, h = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         
         for c in contours:
-            coords = list(c[0][0])
-            coords_list.append(coords)
-            #print("Victim at x="+str(coords[0])+" y="+str(coords[1]))
-        
+            if cv2.contourArea(c) > 1000:
+                coords = list(c[0][0])
+                coords_list.append(coords)
+                print("Victim at x="+str(coords[0])+" y="+str(coords[1]))
+
         return coords_list
 
     else: 
@@ -128,7 +135,7 @@ def sendMessage(v1, v2, victimType):
 
 
 # Sents a message of the game controller that a victim (of a certain type) has been detected
-def sendVictimMessage():
+def sendVictimMessage(victimType='N'):
     global messageSent
     position = gps.getValues()
 
@@ -139,7 +146,7 @@ def sendVictimMessage():
         # Stable = "S"  
         # Unharmed = "U"
         # Heated (Temperature) = "T"
-        sendMessage(int(position[0] * 100), int(position[2] * 100), b'H')
+        sendMessage(int(position[0] * 100), int(position[2] * 100), victimType)
         messageSent = True
 
 
@@ -174,7 +181,7 @@ def stopAtVisualVictim():
     for victim in victims:
         if nearObject(victim[0]) and not foundVictim and not victimDetectedGlobal:
             stop()
-            sendVictimMessage()
+            sendVictimMessage('H') # <- Put detected victim type here
             print("Found visual victim!!")
             foundVictim = True
 

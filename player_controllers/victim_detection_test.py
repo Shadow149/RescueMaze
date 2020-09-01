@@ -1,9 +1,10 @@
 from controller import Robot
 import cv2
 import numpy as np
-import os
 
-def process(image_data, camera):
+def detectVisualSimple(image_data, camera):
+
+	coords_list = []
 	img = np.array(np.frombuffer(image_data, np.uint8).reshape((camera.getHeight(), camera.getWidth(), 4)))
 	img[:,:,2] = np.zeros([img.shape[0], img.shape[1]])
 
@@ -15,23 +16,24 @@ def process(image_data, camera):
 
 	# draw all contours in green and accepted ones in red
 	contours, h = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-
+	
 	for c in contours:
-		coords = list(c[0][0])
-		print("Victim at x="+str(coords[0])+" y="+str(coords[1]))
+		if cv2.contourArea(c) > 1000:
+			coords = list(c[0][0])
+			coords_list.append(coords)
+			print("Victim at x="+str(coords[0])+" y="+str(coords[1]))
+
+	return coords_list
 
 
 robot = Robot()
 timeStep = 32
 
-ps0 = robot.getDistanceSensor('ps0')
-ps0.enable(timeStep)
-
-left_camera = robot.getCamera("camera_left")
-left_camera.enable(timeStep)
+camera = robot.getCamera("camera_centre")
+camera.enable(timeStep)
 
 while robot.step(timeStep) != -1:
-	img = left_camera.getImage()
-	process(img, left_camera)
+	img = camera.getImage()
+	process(img, camera)
 	
 	
