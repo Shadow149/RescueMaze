@@ -658,8 +658,9 @@ Robot {
       rotation 0 0 1 1.57079
     }
     SpotLight {
-      attenuation      0.2 0 12.56
-      location    0 0.005 -0.03
+      attenuation      0 0 12.56
+      intensity   0.01
+      location    0 0.01 -0.03
       direction   0 -1 0
       cutOffAngle 0.3
     }
