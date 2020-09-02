@@ -21,8 +21,8 @@ except:
 
 # Set RGB colours of the swamp and hole to avoid them
 # These should be calibrated to match the environment
-hole_colour = b'222\xff'
-swamp_colour = b'z\xca\xe8\xff'
+hole_colour = b';;@\xff'
+swamp_colour = b'\x8e\xde\xf4\xff'
 
 
 # Simulation time step and the maximum velocity of the robot
