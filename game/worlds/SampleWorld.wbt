@@ -12,12 +12,12 @@ TexturedBackgroundLight {
 }
     DEF WALLTILES Group {
         children [
-          DEF START_TILE worldTile {
+          DEF TILE worldTile {
   xPos 0
   zPos 0
-  floor TRUE
+  floor FALSE
   topWall TRUE
-  rightWall TRUE
+  rightWall FALSE
   bottomWall FALSE
   leftWall TRUE
   topLeftCorner FALSE
@@ -30,8 +30,8 @@ TexturedBackgroundLight {
   leftExternal TRUE
   notch ""
   notchRotation 0
-  start TRUE
-  trap FALSE
+  start FALSE
+  trap TRUE
   checkpoint FALSE
   swamp FALSE
   width 5
@@ -47,7 +47,7 @@ DEF TILE worldTile {
   floor TRUE
   topWall FALSE
   rightWall FALSE
-  bottomWall FALSE
+  bottomWall TRUE
   leftWall TRUE
   topLeftCorner FALSE
   bottomLeftCorner FALSE
@@ -73,9 +73,9 @@ DEF TILE worldTile {
 DEF TILE worldTile {
   xPos 0
   zPos 2
-  floor FALSE
-  topWall FALSE
-  rightWall TRUE
+  floor TRUE
+  topWall TRUE
+  rightWall FALSE
   bottomWall FALSE
   leftWall TRUE
   topLeftCorner FALSE
@@ -89,7 +89,7 @@ DEF TILE worldTile {
   notch ""
   notchRotation 0
   start FALSE
-  trap TRUE
+  trap FALSE
   checkpoint FALSE
   swamp FALSE
   width 5
@@ -104,7 +104,7 @@ DEF TILE worldTile {
   zPos 3
   floor TRUE
   topWall FALSE
-  rightWall FALSE
+  rightWall TRUE
   bottomWall FALSE
   leftWall TRUE
   topLeftCorner FALSE
@@ -128,7 +128,7 @@ DEF TILE worldTile {
   yScale 0.4
   zScale 0.4
 }
-DEF TILE worldTile {
+DEF START_TILE worldTile {
   xPos 0
   zPos 4
   floor TRUE
@@ -146,7 +146,7 @@ DEF TILE worldTile {
   leftExternal TRUE
   notch ""
   notchRotation 0
-  start FALSE
+  start TRUE
   trap FALSE
   checkpoint FALSE
   swamp FALSE
@@ -163,8 +163,8 @@ DEF TILE worldTile {
   floor TRUE
   topWall TRUE
   rightWall FALSE
-  bottomWall FALSE
-  leftWall TRUE
+  bottomWall TRUE
+  leftWall FALSE
   topLeftCorner FALSE
   bottomLeftCorner FALSE
   bottomRightCorner FALSE
@@ -190,7 +190,7 @@ DEF TILE worldTile {
   xPos 1
   zPos 1
   floor TRUE
-  topWall FALSE
+  topWall TRUE
   rightWall FALSE
   bottomWall FALSE
   leftWall FALSE
@@ -206,7 +206,7 @@ DEF TILE worldTile {
   notchRotation 0
   start FALSE
   trap FALSE
-  checkpoint FALSE
+  checkpoint TRUE
   swamp FALSE
   width 5
   height 5
@@ -220,9 +220,9 @@ DEF TILE worldTile {
   zPos 2
   floor TRUE
   topWall FALSE
-  rightWall TRUE
+  rightWall FALSE
   bottomWall FALSE
-  leftWall TRUE
+  leftWall FALSE
   topLeftCorner FALSE
   bottomLeftCorner FALSE
   bottomRightCorner FALSE
@@ -250,12 +250,12 @@ DEF TILE worldTile {
   floor TRUE
   topWall FALSE
   rightWall FALSE
-  bottomWall TRUE
-  leftWall FALSE
+  bottomWall FALSE
+  leftWall TRUE
   topLeftCorner FALSE
   bottomLeftCorner FALSE
   bottomRightCorner FALSE
-  topRightCorner TRUE
+  topRightCorner FALSE
   topExternal FALSE
   rightExternal FALSE
   bottomExternal FALSE
@@ -277,7 +277,7 @@ DEF TILE worldTile {
   xPos 1
   zPos 4
   floor TRUE
-  topWall TRUE
+  topWall FALSE
   rightWall FALSE
   bottomWall TRUE
   leftWall FALSE
@@ -293,7 +293,7 @@ DEF TILE worldTile {
   notchRotation 0
   start FALSE
   trap FALSE
-  checkpoint TRUE
+  checkpoint FALSE
   swamp FALSE
   width 5
   height 5
@@ -308,7 +308,7 @@ DEF TILE worldTile {
   floor TRUE
   topWall TRUE
   rightWall FALSE
-  bottomWall TRUE
+  bottomWall FALSE
   leftWall FALSE
   topLeftCorner FALSE
   bottomLeftCorner FALSE
@@ -335,8 +335,8 @@ DEF TILE worldTile {
   xPos 2
   zPos 1
   floor TRUE
-  topWall TRUE
-  rightWall FALSE
+  topWall FALSE
+  rightWall TRUE
   bottomWall FALSE
   leftWall FALSE
   topLeftCorner FALSE
@@ -367,7 +367,7 @@ DEF TILE worldTile {
   topWall FALSE
   rightWall FALSE
   bottomWall TRUE
-  leftWall TRUE
+  leftWall FALSE
   topLeftCorner FALSE
   bottomLeftCorner FALSE
   bottomRightCorner FALSE
@@ -468,7 +468,7 @@ DEF TILE worldTile {
   start FALSE
   trap FALSE
   checkpoint FALSE
-  swamp FALSE
+  swamp TRUE
   width 5
   height 5
   id "15"
@@ -481,9 +481,9 @@ DEF TILE worldTile {
   zPos 1
   floor TRUE
   topWall FALSE
-  rightWall FALSE
+  rightWall TRUE
   bottomWall FALSE
-  leftWall FALSE
+  leftWall TRUE
   topLeftCorner FALSE
   bottomLeftCorner FALSE
   bottomRightCorner FALSE
@@ -510,11 +510,11 @@ DEF TILE worldTile {
   zPos 2
   floor TRUE
   topWall FALSE
-  rightWall FALSE
-  bottomWall TRUE
+  rightWall TRUE
+  bottomWall FALSE
   leftWall FALSE
   topLeftCorner FALSE
-  bottomLeftCorner FALSE
+  bottomLeftCorner TRUE
   bottomRightCorner FALSE
   topRightCorner FALSE
   topExternal FALSE
@@ -538,7 +538,7 @@ DEF TILE worldTile {
   xPos 3
   zPos 3
   floor TRUE
-  topWall TRUE
+  topWall FALSE
   rightWall FALSE
   bottomWall FALSE
   leftWall TRUE
@@ -554,7 +554,7 @@ DEF TILE worldTile {
   notchRotation 0
   start FALSE
   trap FALSE
-  checkpoint TRUE
+  checkpoint FALSE
   swamp FALSE
   width 5
   height 5
@@ -613,7 +613,7 @@ DEF TILE worldTile {
   start FALSE
   trap FALSE
   checkpoint FALSE
-  swamp TRUE
+  swamp FALSE
   width 5
   height 5
   id "20"
@@ -628,7 +628,7 @@ DEF TILE worldTile {
   topWall FALSE
   rightWall TRUE
   bottomWall FALSE
-  leftWall FALSE
+  leftWall TRUE
   topLeftCorner FALSE
   bottomLeftCorner FALSE
   bottomRightCorner FALSE
@@ -641,7 +641,7 @@ DEF TILE worldTile {
   notchRotation 0
   start FALSE
   trap FALSE
-  checkpoint FALSE
+  checkpoint TRUE
   swamp FALSE
   width 5
   height 5
@@ -657,7 +657,7 @@ DEF TILE worldTile {
   topWall FALSE
   rightWall TRUE
   bottomWall FALSE
-  leftWall FALSE
+  leftWall TRUE
   topLeftCorner FALSE
   bottomLeftCorner FALSE
   bottomRightCorner FALSE
@@ -745,20 +745,20 @@ DEF TILE worldTile {
           DEF boundary Group {
   children [
     DEF checkpoint0min Transform {
-          translation -0.24 -0.03 0.12
+          translation -0.24 -0.03 -0.24
     }
     DEF checkpoint0max Transform {
-          translation -0.12 -0.03 0.24
+          translation -0.12 -0.03 -0.12
     }
   ]
 }
 DEF boundary Group {
   children [
     DEF checkpoint1min Transform {
-          translation 0.0 -0.03 0.0
+          translation 0.12 -0.03 -0.24
     }
     DEF checkpoint1max Transform {
-          translation 0.12 -0.03 0.12
+          translation 0.24 -0.03 -0.12
     }
   ]
 }
@@ -770,10 +770,10 @@ DEF boundary Group {
           DEF boundary Group {
   children [
     DEF trap0min Transform {
-          translation -0.36 -0.03 -0.12
+          translation -0.36 -0.03 -0.36
     }
     DEF trap0max Transform {
-          translation -0.24 -0.03 0.0
+          translation -0.24 -0.03 -0.24
     }
   ]
 }
@@ -785,10 +785,10 @@ DEF boundary Group {
           DEF boundary Group {
   children [
     DEF start0min Transform {
-          translation -0.36 -0.03 -0.36
+          translation -0.36 -0.03 0.12
     }
     DEF start0max Transform {
-          translation -0.24 -0.03 -0.24
+          translation -0.24 -0.03 0.24
     }
   ]
 }
@@ -800,10 +800,10 @@ DEF boundary Group {
           DEF boundary Group {
   children [
     DEF swamp0min Transform {
-          translation 0.12 -0.03 -0.36
+          translation 0.0 -0.03 -0.36
     }
     DEF swamp0max Transform {
-          translation 0.24 -0.03 -0.24
+          translation 0.12 -0.03 -0.24
     }
   ]
 }
@@ -823,75 +823,75 @@ DEF boundary Group {
     DEF HUMANGROUP Group {
         children [
           Victim {
-    translation -0.355 0 -0.193
+    translation -0.355 0 -0.206
     rotation 0 1 0 -1.57
     name "Victim0"
-    type "stable"
+    type "unharmed"
     scoreWorth 10
 }
 Victim {
-    translation -0.235 0 -0.306
-    rotation 0 1 0 -1.57
+    translation -0.316 0 -0.115
+    rotation 0 1 0 3.14
     name "Victim1"
     type "harmed"
     scoreWorth 10
 }
-Victim {
-    translation -0.235 0 -0.044
-    rotation 0 1 0 -1.57
-    name "Victim2"
-    type "unharmed"
-    scoreWorth 30
-}
-Victim {
-    translation -0.20199999999999999 0 0.115
+HeatVictim {
+    translation -0.21 0 -0.24559999999999998
     rotation 0 1 0 0
-    name "Victim3"
-    type "unharmed"
-    scoreWorth 30
-}
-Victim {
-    translation -0.062 0 -0.245
-    rotation 0 1 0 0
-    name "Victim4"
-    type "harmed"
+    name "HeatVictim2"
     scoreWorth 10
 }
+HeatVictim {
+    translation -0.2344 0 0.040999999999999995
+    rotation 0 1 0 -1.57
+    name "HeatVictim3"
+    scoreWorth 30
+}
 Victim {
-    translation -0.067 0 -0.235
-    rotation 0 1 0 3.14
-    name "Victim5"
+    translation -0.0049999999999999906 0 -0.162
+    rotation 0 1 0 1.57
+    name "Victim4"
     type "unharmed"
     scoreWorth 30
 }
 HeatVictim {
-    translation -0.1144 0 -0.08399999999999999
-    rotation 0 1 0 -1.57
-    name "HeatVictim6"
+    translation -0.06899999999999999 0 -0.005599999999999994
+    rotation 0 1 0 0
+    name "HeatVictim5"
     scoreWorth 30
 }
 Victim {
-    translation -0.0049999999999999906 0 0.061
+    translation -0.041999999999999996 0 0.0049999999999999906
+    rotation 0 1 0 3.14
+    name "Victim6"
+    type "stable"
+    scoreWorth 30
+}
+Victim {
+    translation 0.115 0 -0.195
     rotation 0 1 0 1.57
     name "Victim7"
+    type "stable"
+    scoreWorth 30
+}
+Victim {
+    translation 0.0049999999999999906 0 0.08299999999999999
+    rotation 0 1 0 -1.57
+    name "Victim8"
     type "harmed"
     scoreWorth 30
 }
-HeatVictim {
-    translation 0.06 0 -0.3544
-    rotation 0 1 0 3.14
-    name "HeatVictim8"
-    scoreWorth 10
-}
-HeatVictim {
-    translation 0.081 0 0.2344
-    rotation 0 1 0 0
-    name "HeatVictim9"
-    scoreWorth 10
-}
-HeatVictim {
-    translation 0.2344 0 0.207
+Victim {
+    translation 0.235 0 -0.329
     rotation 0 1 0 1.57
+    name "Victim9"
+    type "harmed"
+    scoreWorth 10
+}
+HeatVictim {
+    translation 0.1256 0 -0.032
+    rotation 0 1 0 -1.57
     name "HeatVictim10"
     scoreWorth 10
 }

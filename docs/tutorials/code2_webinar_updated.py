@@ -1,12 +1,12 @@
 '''
-Updated version of the seminar code from day 2 to be used in release 6. 
+Updated version of the seminar code from day 2 to be used in release 6 and later.
 '''
 # Import all relevant libraries
 from controller import Robot
 import math
 import struct
 
-# If you would like to use the camera to detect visual victims, set usecamera to True. This requires opencv to be installed. 
+# If you would like to use the camera to detect visual victims, set usecamera to True. This requires opencv to be installed.
 usecamera = False
 try:
     import cv2
@@ -19,21 +19,21 @@ except:
         If you have python2, try 'pip3 install' rather than 'pip install'. ")
 
 
-# Set RGB colours of the swamp and hole to avoid them 
+# Set RGB colours of the swamp and hole to avoid them
 # These should be calibrated to match the environment
-hole_colour = b'\x1e\x1e\x1e\xff'
-swamp_colour = b'R\x89\xa7\xff'
+hole_colour = b';;@\xff'
+swamp_colour = b'\x8e\xde\xf4\xff'
 
 
 # Simulation time step and the maximum velocity of the robot
 timeStep = 32
 max_velocity = 6.28
 
-# Threshold for detecting the wall 
+# Threshold for detecting the wall
 sensor_value = 0.05
 
 # Threshold for the victim being close to the wall
-victimProximity = 0.03
+victimProximity = 0.1
 
 # Default setting for the "messageSent" variable
 messageSent = False
@@ -115,7 +115,7 @@ def detectVisualSimple(image_data, camera):
 
         # draw all contours in green and accepted ones in red
         contours, h = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-        
+
         for c in contours:
             if cv2.contourArea(c) > 1000:
                 coords = list(c[0][0])
@@ -124,13 +124,13 @@ def detectVisualSimple(image_data, camera):
 
         return coords_list
 
-    else: 
+    else:
         return 0
 
 
 # Sends a message to the game controller
 def sendMessage(v1, v2, victimType):
-    message = struct.pack('i i c', v1, v2, victimType)
+    message = struct.pack('i i c', v1, v2, victimType.encode())
     emitter.send(message)
 
 
@@ -143,14 +143,14 @@ def sendVictimMessage(victimType='N'):
         #robot type, position x cm, position z cm, victim type
         # The victim type is hardcoded as "H", but this should be changed to different victims for your program
         # Harmed = "H"
-        # Stable = "S"  
+        # Stable = "S"
         # Unharmed = "U"
         # Heated (Temperature) = "T"
         sendMessage(int(position[0] * 100), int(position[2] * 100), victimType)
         messageSent = True
 
 
-# return True/False if the robot is near an object. Change the 
+# return True/False if the robot is near an object. Change the
 def nearObject(position):
     return position < victimProximity
 
@@ -186,6 +186,8 @@ def stopAtVisualVictim():
             foundVictim = True
 
             victimDetectedGlobal = True
+        else:
+            print("It's too far away.")
 
     if not foundVictim:
         messageSent = False
@@ -262,7 +264,7 @@ while robot.step(timeStep) != -1:
         pass
     elif victimDetectedGlobal:
 
-        if (robot.getTime() - victimTimer) > 3: 
+        if (robot.getTime() - victimTimer) > 3:
             print("Move away from victim")
             spin()
             wheel_left.setVelocity(speeds[0])
@@ -285,14 +287,14 @@ while robot.step(timeStep) != -1:
             #for sensors on the right, either
             elif rightSensors[i].getValue() < sensor_value:
                 turn_left()
-        
+
         # See if the front distance sensors are seeing anything ahead of itself
         if frontSensors[0].getValue() < sensor_value and frontSensors[1].getValue() < sensor_value:
             spin()
 
         # Detect victims
         if usecamera:
-            stopAtVisualVictim() 
+            stopAtVisualVictim()
 
         if victimDetectedGlobal:
             stop()

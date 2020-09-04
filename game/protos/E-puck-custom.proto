@@ -657,8 +657,15 @@ Robot {
     Gyro {
       rotation 0 0 1 1.57079
     }
+    SpotLight {
+      attenuation      0 0 12.56
+      intensity   0.01
+      location    0 0.01 -0.03
+      direction   0 -1 0
+      cutOffAngle 0.3
+    }
     Camera {
-      translation 0 0.028 -0.04
+      translation 0 0.028 -0.03
       rotation 1 0 0 -1.5708
       name "colour_sensor"
       width 1
@@ -773,7 +780,7 @@ Robot {
       ]
       type "infra-red"
     }
-   
+
     DEF EPUCK_CAMERA_LEFT Camera {
       name "camera_left"
       translation -0.01 0.028 -0.033
