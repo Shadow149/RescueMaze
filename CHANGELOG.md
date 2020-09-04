@@ -8,6 +8,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Added
 - Quit button to remove robot from the simulation
 
+## [Release 7] - TBC
+
+### Fixed
+- Fixed bugs in 9 new sample worlds provided
+- Fixed bugs in the world generator
+- Fixed bugs regarding misidentification scoring
+- Exit bonus scoring bonus now follows the correct rules
+- Fixed a bug in the tutorial 2 sample code
+
+### Added
+- Added downward-facing light to the robot to prevent the colour sensor value from being affected by the shadows of objects and the red light of the heated victim
+
+### Changed
+- Simulation controls now automatically display on start up
+- Changed the silver tile to CorrodedMetal
+- Added shadow effects back to the swamp time
+- Colour specification sample program updated
+
 ## [Release 6] - 2020-08-18
 
 ### Fixed
@@ -54,6 +72,7 @@ For example from `struct.pack('i i i c', data, data1, data2, data3)` to `struct.
 - Attempting to relocate with no robot no longer causes a crash
 
 [Unreleased]: https://github.com/Shadow149/RescueMaze  
+[Release 7]: 
 [Release 6]: https://github.com/Shadow149/RescueMaze/releases/tag/v1.2.2
 [Release 5]: https://github.com/Shadow149/RescueMaze/releases/tag/v1.2.1
 [Release 4]: https://github.com/Shadow149/RescueMaze/releases/tag/v1.2
