@@ -34,6 +34,6 @@ camera.enable(timeStep)
 
 while robot.step(timeStep) != -1:
 	img = camera.getImage()
-	process(img, camera)
+	detectVisualSimple(img, camera)
 	
 	
