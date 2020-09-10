@@ -170,6 +170,31 @@ class Robot:
 
         return log_str
 
+    def set_starting_orientation(self):
+        '''Gets starting orientation for robot using wall data from starting tile'''
+        # Get starting tile walls
+        top = self.startingTile.wb_node.getField("topWall").getSFBool()
+        right = self.startingTile.wb_node.getField("rightWall").getSFBool()
+        bottom = self.startingTile.wb_node.getField("bottomWall").getSFBool()
+        left = self.startingTile.wb_node.getField("leftWall").getSFBool()
+
+        # top: 0
+        # left: pi/2
+        # right: -pi/2
+        # bottom: pi
+        pi = 3.14
+        walls = [[top, 0],[right, -pi/2],[bottom, pi],[left, pi/2]]
+        direction = 0
+
+        for i in range(len(walls)):
+            # If there isn't a wall in the direction
+            if not walls[i][0]:
+                direction = walls[i][1]
+                break
+        
+        self.rotation = [0,1,0,direction]
+
+
 
 class Human():
     '''Human object holding the boundaries'''
@@ -519,6 +544,7 @@ def set_robot_start_pos():
     robot0Obj.visitedCheckpoints.append(startingTileObj.center)
 
     robot0Obj.position = [startingTileObj.center[0], startingTileObj.center[1], startingTileObj.center[2]]
+    robot0Obj.set_starting_orientation()
 
 # -------------------------------
 # CODED LOADED BEFORE GAME STARTS
