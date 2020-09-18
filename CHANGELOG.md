@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ### Added
 - Added downward-facing light to the robot to prevent the colour sensor value from being affected by the shadows of objects and the red light of the heated victim
+- Added a new button to allow the option to use the inbuilt webots victim detection API.
 
 ### Changed
 - Simulation controls now automatically display on start up
