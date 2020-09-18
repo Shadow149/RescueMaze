@@ -24,6 +24,7 @@ PROTO E-puck-custom [
   field SFRotation         camera_rotation              1 0 0 0                  # Is `Camera.rotation`. Interesting setup: set `1 0 0 -0.47` in order to simulate the linear camera mode.
   field SFFloat            camera_noise                 0.0                      # Is `Camera.noise`.
   field SFFloat            camera_motionBlur            0.0                      # Is `Camera.motionBlur`.
+  field SFBool             using_detection_api          FALSE
   field SFInt32            emitter_channel              1                        # Is `Emitter.channel`.
   field SFInt32            receiver_channel             1                        # Is `Receiver.channel`.
   field MFFloat            battery                      []                       # Is `Robot.battery`.
@@ -37,6 +38,7 @@ PROTO E-puck-custom [
   local v1 = fields.version.value:find("^1") ~= nil
   local v2 = fields.version.value:find("^2") ~= nil
   local kinematic = fields.kinematic.value
+  local usingDetectionApi = fields.using_detection_api.value
 }%
 Robot {
   translation IS translation
@@ -824,6 +826,10 @@ Robot {
       noise IS camera_noise
       zoom Zoom {
       }
+      %{ if usingDetectionApi == true then }%
+      recognition Recognition {
+	    }
+      %{ end }%
     }
     DEF EPUCK_CAMERA_RIGHT Camera {
       name "camera_right"
@@ -868,6 +874,11 @@ Robot {
       noise IS camera_noise
       zoom Zoom {
       }
+      %{ if usingDetectionApi == true then }%
+      recognition Recognition {
+      }
+      %{ end }%
+
     }
     DEF EPUCK_CAMERA_CENTRE Camera {
       name "camera_centre"
@@ -912,6 +923,10 @@ Robot {
       noise IS camera_noise
       zoom Zoom {
       }
+      %{ if usingDetectionApi == true then }%
+      recognition Recognition {
+      }     
+      %{ end }%
     }
     DEF EPUCK_LED0 LED {
       translation 0 0.041 -0.0337

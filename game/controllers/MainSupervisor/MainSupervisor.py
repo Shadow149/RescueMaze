@@ -24,6 +24,8 @@ maxTime = maxTimeMinute * 60
 
 DEFAULT_MAX_VELOCITY = 6.28
 
+robotApiDetection = False
+
 
 class Queue:
     #Simple queue data structure
@@ -77,8 +79,9 @@ class Robot:
         #webots node
         self.wb_node = node
 
-        self.wb_translationField = self.wb_node.getField('translation')
-        self.wb_rotationField = self.wb_node.getField('rotation')
+        if self.wb_node != None: 
+            self.wb_translationField = self.wb_node.getField('translation')
+            self.wb_rotationField = self.wb_node.getField('rotation')
 
         self.inCheckpoint = True
         self.inSwamp = True
@@ -99,7 +102,7 @@ class Robot:
 
         self.startingTile = None
 
-        self.inSimulation = True
+        self.inSimulation = False
 
         self.name = "NO_TEAM_NAME"
 
@@ -477,6 +480,9 @@ def add_robot():
         # Update robot window to say robot is in simulation
         supervisor.wwiSendText("robotInSimulation0")
 
+        robot0.getField("using_detection_api").setSFBool(robotApiDetection)
+        
+
 def create_log_str():
     '''Create log text for log file'''
     # Get robot events
@@ -587,15 +593,6 @@ if __name__ == '__main__':
     # The game has not yet started
     gameStarted = False
 
-    # Get the robot nodes by their DEF names
-    robot0 = supervisor.getFromDef("ROBOT0")
-
-    # Add robot into world
-    add_robot()
-
-    # Init both robots as objects to hold their info
-    robot0Obj = Robot(robot0)
-
     # The simulation is running
     simulationRunning = True
     finished = False
@@ -616,9 +613,8 @@ if __name__ == '__main__':
     receiver = supervisor.getReceiver('receiver')
     receiver.enable(32)
 
-    # Set robots starting position in world
-    set_robot_start_pos()
-
+    # Init robot as object to hold their info
+    robot0Obj = Robot()
 
     # -------------------------------
 
@@ -629,8 +625,19 @@ if __name__ == '__main__':
 
         # The first frame of the game running only
         if first and currentlyRunning:
+            # Get the robot nodes by their DEF names
+            robot0 = supervisor.getFromDef("ROBOT0")
+            # Add robot into world
+            add_robot()
+            # Init robot as object to hold their info
+            robot0Obj = Robot(robot0)
+            # Set robots starting position in world
+            set_robot_start_pos()
+            robot0Obj.inSimulation = True
+            
+
             # Restart controller code
-            robot0.restartController()
+            # robot0.restartController()
             first = False
 
         # Test if the robots are in checkpoints
@@ -840,8 +847,10 @@ if __name__ == '__main__':
                     finished = True
                     # Restart this supervisor
                     mainSupervisor.restartController()
-                    #Show start tile
-                    robot0Obj.startingTile.wb_node.getField("start").setSFBool(True)
+
+                    if robot0Obj.startingTile != None:
+                        #Show start tile
+                        robot0Obj.startingTile.wb_node.getField("start").setSFBool(True)
 
                 if parts[0] == "robot0Unload":
                     # Unload the robot 0 controller
@@ -861,6 +870,14 @@ if __name__ == '__main__':
                             if gameStarted:
                                 robot_quit(robot0Obj, 0, True)
                         updateHistory()
+                
+                if parts[0] == 'detectionApi':
+                    data = message.split(",", 1)
+                    if len(data) > 1:
+                        if int(data[1]) == 0:
+                            robotApiDetection = False
+                        elif int(data[1]) == 1:
+                            robotApiDetection = True
 
         # Send the update information to the robot window
         supervisor.wwiSendText("update," + str(robot0Obj.getScore()) + "," + str(timeElapsed))

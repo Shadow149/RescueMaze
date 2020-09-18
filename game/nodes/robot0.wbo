@@ -7,6 +7,7 @@ DEF ROBOT0 E-puck-custom {
   camera_fieldOfView 1
   camera_width 128
   camera_height 128
+  using_detection_api FALSE
   turretSlot [
     
   ]
