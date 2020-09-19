@@ -57,14 +57,14 @@ while robot.step(timeStep) != -1:
 
     for i in range(2):
         #for sensors on the left, either
-        if leftSensors[i].getValue() > 80:
+        if leftSensors[i].getValue() > 0.05:
             turn_right()
         #for sensors on the right, either
-        elif rightSensors[i].getValue() > 80:
+        elif rightSensors[i].getValue() > 0.05:
             turn_left()
     
     #for both front sensors
-    if frontSensors[0].getValue() > 80 and frontSensors[1].getValue() > 80:
+    if frontSensors[0].getValue() > 0.05 and frontSensors[1].getValue() > 0.05:
         spin()
 
     wheel_left.setVelocity(speeds[0])
