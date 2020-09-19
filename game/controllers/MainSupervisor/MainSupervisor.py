@@ -26,6 +26,8 @@ DEFAULT_MAX_VELOCITY = 6.28
 
 robotApiDetection = False
 
+pointsMultiplier = 1
+
 
 class Queue:
     #Simple queue data structure
@@ -155,11 +157,11 @@ class Robot:
 
         return self.robot_timeStopped
 
-    def increaseScore(self, score: int) -> None:
+    def increaseScore(self, score: int, multiplier = 1.0) -> None:
         if self._score + score < 0:
             self._score = 0
         else:
-            self._score += score
+            self._score += int(score * multiplier)
 
     def getScore(self) -> int:
         return self._score
@@ -774,15 +776,16 @@ if __name__ == '__main__':
                                     # If not already identified
                                     if not h.identified:
                                         # Get points scored depending on the type of victim
-                                        pointsScored = h.scoreWorth
+                                        #pointsScored = h.scoreWorth
 
                                         # Update score and history
                                         if r0_est_vic_type.lower() == h.simple_victim_type.lower():
-                                            robot0Obj.history.enqueue("Successful Victim Type Correct Bonus  + 10")
-                                            pointsScored += 10
+                                            robot0Obj.history.enqueue("Successful Victim Type Correct Bonus  +" + str(int(10*pointsMultiplier)))
+                                            robot0Obj.increaseScore(10, pointsMultiplier)
+                                            #pointsScored += 10
 
-                                        robot0Obj.history.enqueue("Successful Victim Identification " + " +" + str(h.scoreWorth))
-                                        robot0Obj.increaseScore(pointsScored)
+                                        robot0Obj.history.enqueue("Successful Victim Identification " + " +" + str(int(h.scoreWorth*pointsMultiplier)))
+                                        robot0Obj.increaseScore(h.scoreWorth, pointsMultiplier)
 
                                         h.identified = True
                                         updateHistory()
@@ -837,6 +840,7 @@ if __name__ == '__main__':
                     # Pause the match
                     currentlyRunning = False
                 if parts[0] == "reset":
+                    robot_quit(robot0Obj, 0, False)
                     # Reset both controller files
                     resetControllerFile(0)
                     resetVictimsTextures()
@@ -876,8 +880,10 @@ if __name__ == '__main__':
                     if len(data) > 1:
                         if int(data[1]) == 0:
                             robotApiDetection = False
+                            pointsMultiplier = 1
                         elif int(data[1]) == 1:
                             robotApiDetection = True
+                            pointsMultiplier = 0.3
 
         # Send the update information to the robot window
         supervisor.wwiSendText("update," + str(robot0Obj.getScore()) + "," + str(timeElapsed))
