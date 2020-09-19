@@ -81,7 +81,7 @@ class Robot:
         #webots node
         self.wb_node = node
 
-        if self.wb_node != None: 
+        if self.wb_node != None:
             self.wb_translationField = self.wb_node.getField('translation')
             self.wb_rotationField = self.wb_node.getField('rotation')
 
@@ -196,7 +196,7 @@ class Robot:
             if not walls[i][0]:
                 direction = walls[i][1]
                 break
-        
+
         self.rotation = [0,1,0,direction]
 
 
@@ -483,7 +483,7 @@ def add_robot():
         supervisor.wwiSendText("robotInSimulation0")
 
         robot0.getField("using_detection_api").setSFBool(robotApiDetection)
-        
+
 
 def create_log_str():
     '''Create log text for log file'''
@@ -618,6 +618,9 @@ if __name__ == '__main__':
     # Init robot as object to hold their info
     robot0Obj = Robot()
 
+    lastSentScore = 0
+    lastSentTime = 0
+
     # -------------------------------
 
     # Until the match ends (also while paused)
@@ -636,15 +639,15 @@ if __name__ == '__main__':
             # Set robots starting position in world
             set_robot_start_pos()
             robot0Obj.inSimulation = True
-            
+
 
             # Restart controller code
             # robot0.restartController()
             first = False
 
-        # Test if the robots are in checkpoints
-        for checkpoint in checkpoints:
-            if robot0Obj.inSimulation:
+        if robot0Obj.inSimulation:
+            # Test if the robots are in checkpoints
+            for checkpoint in checkpoints:
                 # Check position of checkpoint with the robots position
                 if checkpoint.checkPosition(robot0Obj.position):
                     r0 = True
@@ -667,9 +670,9 @@ if __name__ == '__main__':
                         robot0Obj.history.enqueue("Found checkpoint  +10")
                         updateHistory()
 
-        # Print when robot0 enters or exits a checkpoint
-        # Not really needed
-        if robot0Obj.inSimulation:
+            # Print when robot0 enters or exits a checkpoint
+            # Not really needed
+
             if robot0Obj.inCheckpoint != r0:
                 robot0Obj.inCheckpoint = r0
                 if robot0Obj.inCheckpoint:
@@ -677,14 +680,12 @@ if __name__ == '__main__':
                 else:
                     print("Robot 0 exited a checkpoint")
 
-        # Check if the robots are in swamps
-        for swamp in swamps:
-            if robot0Obj.inSimulation:
+            # Check if the robots are in swamps
+            for swamp in swamps:
                 if swamp.checkPosition(robot0Obj.position):
                     r0s = True
 
-        # Check if robot is in swamp
-        if robot0Obj.inSimulation:
+            # Check if robot is in swamp
             if robot0Obj.inSwamp != r0s:
                 robot0Obj.inSwamp = r0s
                 if robot0Obj.inSwamp:
@@ -697,32 +698,30 @@ if __name__ == '__main__':
                     # If not in swamp, reset max velocity to default
                     robot0Obj.setMaxVelocity(DEFAULT_MAX_VELOCITY)
 
-        # If receiver has got a message
-        if receiver.getQueueLength() > 0:
-            # Get receiver data
-            receivedData = receiver.getData()
-            try:
-                # Unpack data
-                tup = struct.unpack('i i c', receivedData)
+            # If receiver has got a message
+            if receiver.getQueueLength() > 0:
+                # Get receiver data
+                receivedData = receiver.getData()
+                try:
+                    # Unpack data
+                    tup = struct.unpack('i i c', receivedData)
 
-                # Get data in format (est. x position, est. z position, est. victim type)
-                x = tup[0]
-                z = tup[1]
+                    # Get data in format (est. x position, est. z position, est. victim type)
+                    x = tup[0]
+                    z = tup[1]
 
-                estimated_victim_position = (x / 100, 0, z / 100)
+                    estimated_victim_position = (x / 100, 0, z / 100)
 
-                victimType = tup[2].decode("utf-8")
+                    victimType = tup[2].decode("utf-8")
 
 
-                if robot0Obj.inSimulation:
                     # Store data recieved
                     robot0Obj.message = [estimated_victim_position, victimType]
-            except:
-                print("Incorrect data format sent")
+                except:
+                    print("Incorrect data format sent")
 
-            receiver.nextPacket()
+                receiver.nextPacket()
 
-        if robot0Obj.inSimulation:
             # If data sent to receiver
             if robot0Obj.message != []:
 
@@ -749,7 +748,6 @@ if __name__ == '__main__':
                         updateHistory()
 
 
-        if robot0Obj.inSimulation:
             # If robot stopped for 3 seconds
             if robot0Obj.timeStopped() >= 3:
 
@@ -795,7 +793,6 @@ if __name__ == '__main__':
                         robot0Obj.increaseScore(-5)
                         updateHistory()
 
-        if robot0Obj.inSimulation:
             # Relocate robot if stationary for 20 sec
             if robot0Obj.timeStopped() >= 20:
                 relocate(robot0Obj)
@@ -874,7 +871,7 @@ if __name__ == '__main__':
                             if gameStarted:
                                 robot_quit(robot0Obj, 0, True)
                         updateHistory()
-                
+
                 if parts[0] == 'detectionApi':
                     data = message.split(",", 1)
                     if len(data) > 1:
@@ -886,7 +883,11 @@ if __name__ == '__main__':
                             pointsMultiplier = 0.3
 
         # Send the update information to the robot window
-        supervisor.wwiSendText("update," + str(robot0Obj.getScore()) + "," + str(timeElapsed))
+        nowScore = robot0Obj.getScore()
+        if lastSentScore != nowScore or lastSentTime != timeElapsed:
+            supervisor.wwiSendText("update," + str(nowScore) + "," + str(timeElapsed))
+            lastSentScore = nowScore
+            lastSentTime = timeElapsed
 
         # If the time is up
         if timeElapsed >= maxTime:
@@ -908,6 +909,8 @@ if __name__ == '__main__':
                 # Stop simulating
                 simulationRunning = False
                 finished = True
+        elif first:
+            supervisor.step(32)
 
         if not simulationRunning and timeElapsed > 0:
             #write log for game if the game ran for more than 0 seconds
