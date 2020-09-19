@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Fixed bugs regarding misidentification scoring
 - Exit bonus scoring bonus now follows the correct rules
 - Fixed a bug in the tutorial 2 sample code
+- Fixed point allocation based on linear and floating walls
 
 ### Added
 - Added downward-facing light to the robot to prevent the colour sensor value from being affected by the shadows of objects and the red light of the heated victim
