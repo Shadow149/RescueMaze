@@ -115,7 +115,7 @@ body{
   background: #eeeeee;
 }
 
-.buttonLoad:disabled,.buttonUnload:disabled,.buttonQuit:disabled, .buttonRelocate:disabled, .buttonAPI:disabled{
+#load0:disabled,#unload0:disabled, #relocate0:disabled, #detectionApi:disabled{
   border-color: #9e9e9e;
   color: #9e9e9e;
   fill: none;

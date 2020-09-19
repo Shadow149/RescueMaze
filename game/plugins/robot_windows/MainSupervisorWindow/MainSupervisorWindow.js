@@ -24,7 +24,7 @@ function receive (message){
 	var parts = message.split(",");
 
 	//If there is a message
-	if (parts.length > 0){
+	if (parts.length > 0){			
 		switch (parts[0]){
 			case "startup":
 				//Call for set up the robot window
@@ -97,15 +97,15 @@ function receive (message){
 
 function robotQuitColour(id){
 	//setEnableButton('quit'+id, true)
-	setEnableButton('relocate'+id, true)
-	setEnableButton('load'+id, true)
-	setEnableButton('unload'+id, true)
+	// setEnableButton('relocate'+id, true)
+	// setEnableButton('load'+id, true)
+	// setEnableButton('unload'+id, true)
 }
 function robotQuitUnavailableColour(id){
 	//setEnableButton('quit'+id, false)
-	setEnableButton('relocate'+id, false)
-	setEnableButton('load'+id, false)
-	setEnableButton('unload'+id, false)
+	// setEnableButton('relocate'+id, false)
+	// setEnableButton('load'+id, false)
+	// setEnableButton('unload'+id, false)
 }
 
 function humanLoadedColour(id){
@@ -180,6 +180,9 @@ function startup (){
 
 	// setEnableButton('quit0', false)
 	setEnableButton('relocate0', false)
+
+	setEnableButton("load0", true);
+	setEnableButton("unload0", true);
 }
 
 function update (data){
@@ -220,28 +223,28 @@ function calculateTimeRemaining(done){
 }
 
 function runPressed(){
+	//Disable all the loading buttons (cannot change loaded controllers once simulation starts)
+	setEnableButton("load0", false);
+	setEnableButton("unload0", false);
 	//When the run button is pressed
 	//Disable the run button
 	setEnableButton("runButton", false);
 	//Send a run command
-	window.robotWindow.send("run");
 	//Enable the pause button
 	setEnableButton("pauseButton", true);
-	//Disable all the loading buttons (cannot change loaded controllers once simulation starts)
-	setEnableButton("load0", false);
-	setEnableButton("unload0", false);
-
+	
 	// setEnableButton('quit0', true)
 	setEnableButton('relocate0', true)
 	setEnableButton('detectionApi', false)
+	window.robotWindow.send("run");
 }
 
 function pausePressed(){
 	//When the pause button is pressed
 	//Turn off pause button, on run button and send signal to pause
 	setEnableButton("pauseButton", false);
-	window.robotWindow.send("pause");
 	setEnableButton("runButton", true);
+	window.robotWindow.send("pause");
 }
 
 function resetPressed(){
@@ -261,7 +264,7 @@ function openLoadController(robotNumber){
 
 function setEnableButton(name, state){
 	//Set the disabled state of a button (state is if it is enabled as a boolean)
-	document.getElementById(name).disabled = !(state);
+	document.getElementById(name).disabled = !state;
 }
 
 //Set the onload command for the window

@@ -607,7 +607,7 @@ if __name__ == '__main__':
     lastTime = -1
 
     # Send message to robot window to perform setup
-    #supervisor.wwiSendText("startup")
+    supervisor.wwiSendText("startup")
 
     # For checking the first update with the game running
     first = True
