@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Added
 - Quit button to remove robot from the simulation
 
-## [Release 7] - TBC
+## [Release 7] - 2020-09-20
 
 ### Fixed
 - Fixed bugs in 9 new sample worlds provided
@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Exit bonus scoring bonus now follows the correct rules
 - Fixed a bug in the tutorial 2 sample code
 - Fixed point allocation based on linear and floating walls
+- Fixed performance issues
 
 ### Added
 - Added downward-facing light to the robot to prevent the colour sensor value from being affected by the shadows of objects and the red light of the heated victim
